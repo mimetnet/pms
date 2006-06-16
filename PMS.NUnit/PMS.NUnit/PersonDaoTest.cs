@@ -8,6 +8,7 @@ using NUnit.Framework;
 
 namespace PMS.NUnit
 {
+
     [TestFixture]
     public class PersonDaoTest
     {
@@ -17,20 +18,29 @@ namespace PMS.NUnit
 
         public PersonDaoTest()
         {
-            //Npgsql.NpgsqlEventLog.Level = Npgsql.LogLevel.Debug;
-            //Npgsql.NpgsqlEventLog.LogName = "npgsql.log";
-            //Npgsql.NpgsqlEventLog.EchoMessages = true;
+            Npgsql.NpgsqlEventLog.Level = Npgsql.LogLevel.Debug;
+            Npgsql.NpgsqlEventLog.LogName = "npgsql.log";
+            Npgsql.NpgsqlEventLog.EchoMessages = false;
+        }
 
+        [TestFixtureSetUp]
+        public void Constructor()
+        {
             // obtain instance of PersistenceBroker
             broker = PersistenceBroker.Instance;
             broker.Load(); // load the repository.xml found in "." directory
             broker.Open(); // open database connection pool
 
+            //broker.BeginTransaction();
+
             dao = new PersonDao();
         }
 
-        ~PersonDaoTest()
+        [TestFixtureTearDown]
+        public void Destructor()
         {
+            //broker.RollbackTransaction();
+
             if (broker != null)
                 broker.Close(); // close pool
         }
@@ -39,7 +49,7 @@ namespace PMS.NUnit
         public void SetUp()
         {
             person = new Person();
-            person.FirstName = "Tyler";
+            person.FirstName = "TylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTyler";
             person.LastName = "Willingham";
             person.Email = "blah@blah.com";
         }
@@ -59,7 +69,10 @@ namespace PMS.NUnit
         [Test]
         public void C()
         {
-            Assert.AreEqual(1, broker.Insert(person).Count);
+            //Assert.AreEqual(1, broker.Insert(person).Count);
+
+            Console.WriteLine("broker.Insert.Count = " + broker.Insert(person).Count);
+            Console.WriteLine("broker.Insert.Ex = " + broker.Insert(person).Exception);
         }
 
         [Test]

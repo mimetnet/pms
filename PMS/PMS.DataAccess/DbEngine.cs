@@ -15,6 +15,21 @@ namespace PMS.DataAccess
 
         private static IDbManager dbManager = null;
 
+        public static bool BeginTransaction()
+        {
+            return dbManager.BeginTransaction();
+        }
+
+        public static bool RollbackTransaction()
+        {
+            return dbManager.RollbackTransaction();
+        }
+
+        public static bool CommitTransaction()
+        {
+            return dbManager.CommitTransaction();
+        }
+
         public static object ExecuteSelectObject(IQuery query)
         {
             IDataReader reader = null;
@@ -31,7 +46,7 @@ namespace PMS.DataAccess
                 return null;
             } finally {
                 if (cmd != null) {
-                    Console.WriteLine("SQL = " + cmd.CommandText);
+                    //Console.WriteLine("SQL = " + cmd.CommandText);
                 }
                 if (reader != null) {
                     reader.Close();
@@ -63,7 +78,7 @@ namespace PMS.DataAccess
                 return null;
             } finally {
                 if (cmd != null) {
-                    Console.WriteLine("SQL = " + cmd.CommandText);
+                    //Console.WriteLine("SQL = " + cmd.CommandText);
                 }
                 if (reader != null) {
                     reader.Close();
@@ -161,13 +176,12 @@ namespace PMS.DataAccess
                 cmd = dbManager.GetCommand(sql, AccessMode.Write);
                 int x = cmd.ExecuteNonQuery();
                 result = new DbResult(x, sql);
-                Console.WriteLine(result);
+                //Console.WriteLine(result);
                 return result;
-            } catch (Exception) {
-                result = new DbResult(sql);
+            } catch (Exception ex) {
+                result = new DbResult(sql, ex);
+                //Console.WriteLine(result);
                 return result;
-            } finally {
-                result = null;
             }
         }
 
@@ -180,21 +194,17 @@ namespace PMS.DataAccess
                 cmd = dbManager.GetCommand(sql, AccessMode.Read);
                 object count = cmd.ExecuteScalar();
                 result = new DbResult(Convert.ToInt32(count), sql);
-                Console.WriteLine(result);
+                //Console.WriteLine(result);
                 return result;
-            } catch (InvalidOperationException) {
-                result = new DbResult(sql);
-
-                return result;
-            } finally {
-                result = null;
+            } catch (InvalidOperationException ex) {
+                return new DbResult(sql, ex);
             }
         }
         
         public static bool Start(DbManagerMode mode)
         {
             if (DbManagerMode.Single == mode) {
-                Console.WriteLine("PMS Start`ing");
+                //Console.WriteLine("DBEngine.Start(" + mode + ")");
                 dbManager = SingleDbManager.Instance;
                 dbManager.Start();
 
@@ -208,7 +218,7 @@ namespace PMS.DataAccess
         public static bool Stop()
         {
             if (dbManager != null) {
-                Console.WriteLine("PMS Stop`ing");
+                //Console.WriteLine("DBEngine.Stop()");
                 dbManager.Stop();
                 dbManager = null;
             }

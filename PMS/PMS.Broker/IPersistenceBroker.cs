@@ -30,6 +30,10 @@ namespace PMS.Broker
         bool Open();
         bool Close();
 
+        bool BeginTransaction();
+        bool RollbackTransaction();
+        bool CommitTransaction();
+
         bool IsOpen { get; }
         bool IsLoaded { get; }
 

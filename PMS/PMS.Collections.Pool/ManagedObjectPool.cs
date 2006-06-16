@@ -6,32 +6,27 @@ namespace PMS.Collections.Pool
 {
     public class ManagedObjectPool
     {
-        
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         protected int min, max;
         protected int index = -1;
         protected string cleanup;
         protected ArrayList pool;
 
-        public ManagedObjectPool(int _max)
+        public ManagedObjectPool(int max) : this(max, null)
         {
-            max = _max;
-            pool = new ArrayList();
         }
 
-        public ManagedObjectPool(string user_cleanup)
+        public ManagedObjectPool(string sFree) : this(5, sFree)
         {
-            min = 0;
-            max = 5;
-            cleanup = user_cleanup;
-            pool = new ArrayList();
         }
 
-        public ManagedObjectPool(int _max, string user_cleanup)
+        public ManagedObjectPool(int max, string sFree)
         {
-            min = 0;
-            max = _max;
-            cleanup = user_cleanup;
-            pool = new ArrayList();
+            this.min = 0;
+            this.max = max;
+            this.cleanup = sFree;
+            this.pool = new ArrayList();
         }
         
         ~ManagedObjectPool()
@@ -42,11 +37,12 @@ namespace PMS.Collections.Pool
         public bool Add(object obj)
         {
             pool.Add(new Item(obj, true));
+
+            if (log.IsDebugEnabled)
+                log.Debug("ManagedObjectPool.Add(new {" + obj.GetType() + "}())");
             
             return true;
         }
-
-        // index = (index != (max-1))? index + 1 : 0;
 
         public object Borrow()
         {
@@ -55,6 +51,8 @@ namespace PMS.Collections.Pool
             Item item = (Item) pool[index];
             if (item.Available == true) {
                 ((Item)pool[index]).Available = false;
+                //Console.WriteLine("ManagedObjectPool.Borrow({0})", 
+                //                  pool[index].GetHashCode());
                 return item.Object;
             }
 
@@ -67,6 +65,8 @@ namespace PMS.Collections.Pool
             for (int x=0; x < pool.Count; x++) {
                 if (((Item)pool[x]).Object.GetHashCode() == code) {
                     ((Item)pool[x]).Available = true;
+                    //Console.WriteLine("ManagedObjectPool.Return({0})",
+                    //                  pool[index].GetHashCode());
                     return true;
                 }
             }
@@ -81,6 +81,8 @@ namespace PMS.Collections.Pool
                 if (((Item)pool[x]).Object.GetHashCode() == code) {
                     CleanObject(ref ((Item)pool[x]).Object);
                     pool.RemoveAt(x);
+                    //Console.WriteLine("ManagedObjectPool.Remove({0})",
+                    //                  pool[index].GetHashCode());
                     return true;
                 }
             }
@@ -90,7 +92,9 @@ namespace PMS.Collections.Pool
 
         public void Close()
         {
-            foreach (Item item in pool) {
+            //Console.WriteLine("ManagedObjectPool.Close()");
+
+            foreach (Item item in this.pool) {
                 CleanObject(ref item.Object);
             }
             pool.Clear();
@@ -103,6 +107,8 @@ namespace PMS.Collections.Pool
                     Type objType = obj.GetType();
                     MethodInfo methInfo = objType.GetMethod(cleanup);
                     methInfo.Invoke(obj, null);
+
+                    //Console.WriteLine(objType + "." + this.cleanup + "()");
                 }
             } finally {
                 obj = null;

@@ -9,22 +9,25 @@ namespace PMS.Data.Pool
     public class ConnectionPool
     {
         private ManagedObjectPool pool;
-
+        private const Int32 DEFAULT_NUM = 5;
         private IProvider provider;
-        private string connString;
-        private int defaultMaxConns = 5;
+        private String connString;
+        private Type type = null;
+        private Int32 defaultMaxConns = ConnectionPool.DEFAULT_NUM;
 
-        public ConnectionPool(Type type, string connectionString)
+        public ConnectionPool(Type type, string sConn)
+            : this(type, sConn, ConnectionPool.DEFAULT_NUM)
         {
-            provider = PMS.Data.ProviderFactory.Factory(type);
-            connString = connectionString;
         }
 
         public ConnectionPool(Type type, string sConn, int max)
         {
-            provider = PMS.Data.ProviderFactory.Factory(type);
-            connString = sConn;
-            defaultMaxConns = max;           
+            this.provider = PMS.Data.ProviderFactory.Factory(type);
+            this.connString = sConn;
+            this.defaultMaxConns = max;
+            this.type = type;
+
+            //Console.WriteLine("ConnectionPool({0}, '*****', {1})", type, max);
         }
 
         public IDbConnection GetConnection()
@@ -65,7 +68,7 @@ namespace PMS.Data.Pool
             try {
                 pool.Return(conn);
             } catch (Exception e) {
-				Console.WriteLine(e);
+				//Console.WriteLine(e);
             }
         }
 
@@ -79,18 +82,17 @@ namespace PMS.Data.Pool
 
         public void Open()
         {
-            int i;
-
-            pool = new ManagedObjectPool(defaultMaxConns);
-
-            for (i=0; i < defaultMaxConns; i++)
+            pool = new ManagedObjectPool(defaultMaxConns, "Close");
+            //Console.WriteLine("ConnectionPool.Open()");
+            for (int i=0; i < defaultMaxConns; i++) {
                 pool.Add(CreateConnection());
+            }
         }
 
         public void Close()
         {
-            if (pool != null)
-                pool.Close();
+            //Console.WriteLine("ConnectionPool.Close()");
+            if (pool != null) pool.Close();
         }
 
         ~ConnectionPool()

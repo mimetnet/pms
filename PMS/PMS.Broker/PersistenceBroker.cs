@@ -21,11 +21,8 @@ namespace PMS.Broker
 
         public static IPersistenceBroker Instance {
             get {
-                    if (_instance == null) {
-                        _instance = new PersistenceBroker();
-                    }
-
-                return _instance;
+                return (_instance != null) 
+                    ? _instance : (_instance = new PersistenceBroker());
             }
         }
 
@@ -36,6 +33,21 @@ namespace PMS.Broker
         ~PersistenceBroker()
         {
             Close();
+        }
+
+        public bool BeginTransaction()
+        {
+            return DbEngine.BeginTransaction();
+        }
+
+        public bool RollbackTransaction()
+        {
+            return DbEngine.RollbackTransaction();
+        }
+
+        public bool CommitTransaction()
+        {
+            return DbEngine.CommitTransaction();
         }
 
         public object GetObject(IQuery query)
@@ -127,7 +139,6 @@ namespace PMS.Broker
         public bool Close()
         {
             if (isOpen) {
-                Console.WriteLine("Shutup");
                 DbEngine.Stop();
             }
 

@@ -7,7 +7,12 @@ namespace PMS.DataAccess
     {
         IDbCommand GetCommand(string sql, AccessMode mode);
         IDbCommand GetCommand(AccessMode mode);
+
         void Start();
         void Stop();
+
+        bool BeginTransaction();
+        bool RollbackTransaction();
+        bool CommitTransaction();
     }
 }
