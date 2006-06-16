@@ -1,0 +1,113 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DD828130-E4B7-404F-8F2B-56D1AF2BBC48}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PMS</RootNamespace>
+    <AssemblyName>PMS</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>PMS.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET_2_0</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NET_2_0</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\PMS.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net" />
+    <Reference Include="Npgsql" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PMS.Broker\IPersistenceBroker.cs" />
+    <Compile Include="PMS.Broker\PersistenceBroker.cs" />
+    <Compile Include="PMS.Broker\PersistenceBrokerFactory.cs" />
+    <Compile Include="PMS.Collections.Pool\ForeignObjectException.cs" />
+    <Compile Include="PMS.Collections.Pool\ManagedObjectPool.cs" />
+    <Compile Include="PMS.Collections.Pool\ObjectNotCheckedOutException.cs" />
+    <Compile Include="PMS.Collections.Pool\ObjectNotInPoolException.cs" />
+    <Compile Include="PMS.Collections.Pool\PoolEmptyException.cs" />
+    <Compile Include="PMS.Collections.Pool\PoolFullException.cs" />
+    <Compile Include="PMS.Data.Pgsql\PostgreSqlInspector.cs" />
+    <Compile Include="PMS.Data.Pgsql\PostgreSqlProvider.cs" />
+    <Compile Include="PMS.Data.Pool\ConnectionPool.cs" />
+    <Compile Include="PMS.DataAccess\AccessMode.cs" />
+    <Compile Include="PMS.DataAccess\DbEngine.cs" />
+    <Compile Include="PMS.DataAccess\IDbManager.cs" />
+    <Compile Include="PMS.DataAccess\SingleDbManager.cs" />
+    <Compile Include="PMS.Data\AbstractProvider.cs" />
+    <Compile Include="PMS.Data\DbResult.cs" />
+    <Compile Include="PMS.Data\IDbInspector.cs" />
+    <Compile Include="PMS.Data\IProvider.cs" />
+    <Compile Include="PMS.Data\ProviderDefaultException.cs" />
+    <Compile Include="PMS.Data\ProviderFactory.cs" />
+    <Compile Include="PMS.Data\ProviderNotFoundException.cs" />
+    <Compile Include="PMS.Metadata\Class.cs" />
+    <Compile Include="PMS.Metadata\ClassNotFoundException.cs" />
+    <Compile Include="PMS.Metadata\Collection.cs" />
+    <Compile Include="PMS.Metadata\Connection.cs" />
+    <Compile Include="PMS.Metadata\Field.cs" />
+    <Compile Include="PMS.Metadata\FieldNotFoundException.cs" />
+    <Compile Include="PMS.Metadata\MetaObject.cs" />
+    <Compile Include="PMS.Metadata\Reference.cs" />
+    <Compile Include="PMS.Metadata\Repository.cs" />
+    <Compile Include="PMS.Metadata\RepositoryManager.cs" />
+    <Compile Include="PMS.Query\AbstractQuery.cs" />
+    <Compile Include="PMS.Query\AndClause.cs" />
+    <Compile Include="PMS.Query\Criteria.cs" />
+    <Compile Include="PMS.Query\EqualToClause.cs" />
+    <Compile Include="PMS.Query\GreaterOrEqualToClause.cs" />
+    <Compile Include="PMS.Query\GreaterThanClause.cs" />
+    <Compile Include="PMS.Query\IClause.cs" />
+    <Compile Include="PMS.Query\IQuery.cs" />
+    <Compile Include="PMS.Query\IsNotNullClause.cs" />
+    <Compile Include="PMS.Query\IsNullClause.cs" />
+    <Compile Include="PMS.Query\LessOrEqualToClause.cs" />
+    <Compile Include="PMS.Query\LessThanClause.cs" />
+    <Compile Include="PMS.Query\LikeClause.cs" />
+    <Compile Include="PMS.Query\NotEqualToClause.cs" />
+    <Compile Include="PMS.Query\NotLikeClause.cs" />
+    <Compile Include="PMS.Query\OrClause.cs" />
+    <Compile Include="PMS.Query\QueryByCriteria.cs" />
+    <Compile Include="PMS.Query\QueryByObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PMS.Query\QueryByObjectDiff.cs" />
+    <Compile Include="PMS.Query\QueryBySql.cs" />
+    <Compile Include="PMS.Query\QueryByType.cs" />
+    <Compile Include="PMS.Query\SqlCommand.cs" />
+    <Compile Include="PMS.Query\ValueClause.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PMS.pfx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

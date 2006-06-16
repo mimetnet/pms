@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS", "PMS\PMS.csproj", "{DD828130-E4B7-404F-8F2B-56D1AF2BBC48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.NUnit", "PMS.NUnit\PMS.NUnit.csproj", "{00442EB2-FDEB-4293-A37F-C3AF9856D862}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PMS.Setup", "PMS.Setup\PMS.Setup.vdproj", "{1881F951-0E34-42D4-A846-1AE1A62171AB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DD828130-E4B7-404F-8F2B-56D1AF2BBC48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD828130-E4B7-404F-8F2B-56D1AF2BBC48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD828130-E4B7-404F-8F2B-56D1AF2BBC48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD828130-E4B7-404F-8F2B-56D1AF2BBC48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00442EB2-FDEB-4293-A37F-C3AF9856D862}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00442EB2-FDEB-4293-A37F-C3AF9856D862}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00442EB2-FDEB-4293-A37F-C3AF9856D862}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00442EB2-FDEB-4293-A37F-C3AF9856D862}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1881F951-0E34-42D4-A846-1AE1A62171AB}.Debug|Any CPU.ActiveCfg = Debug
+		{1881F951-0E34-42D4-A846-1AE1A62171AB}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

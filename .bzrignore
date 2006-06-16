@@ -1,0 +1,7 @@
+PMS/bin
+PMS.NUnit/bin
+PMS.Setup/bin
+PMS/obj
+PMS.NUnit/obj
+PMS.Setup/Release
+PMS.Setup/Debug
