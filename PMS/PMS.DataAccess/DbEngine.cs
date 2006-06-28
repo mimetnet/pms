@@ -9,28 +9,53 @@ using PMS.Query;
 
 namespace PMS.DataAccess
 {
-    public class DbEngine
+    /// <summary>
+    /// Manages access to DbManager instance objects
+    /// </summary>
+    public sealed class DbEngine
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private static IDbManager dbManager = null;
 
+        private DbEngine()
+        {
+        }
+
+        #region Transactions
+        /// <summary>
+        /// Begin transaction with Dbmanager
+        /// </summary>
+        /// <returns>status</returns>
         public static bool BeginTransaction()
         {
             return dbManager.BeginTransaction();
         }
 
+        /// <summary>
+        /// Rollback transaction with Dbmanager
+        /// </summary>
+        /// <returns>status</returns>
         public static bool RollbackTransaction()
         {
             return dbManager.RollbackTransaction();
         }
 
+        /// <summary>
+        /// Commit transaction with Dbmanager
+        /// </summary>
+        /// <returns>status</returns>
         public static bool CommitTransaction()
         {
             return dbManager.CommitTransaction();
-        }
+        } 
+        #endregion
 
-        public static object ExecuteSelectObject(IQuery query)
+        /// <summary>
+        /// Execute SQL built by IQuery and return instantiated class
+        /// </summary>
+        /// <param name="query">Query to perform</param>
+        /// <returns>Instantiated class or null</returns>
+        internal static object ExecuteSelectObject(IQuery query)
         {
             IDataReader reader = null;
             IDbCommand cmd = null;
@@ -45,9 +70,10 @@ namespace PMS.DataAccess
             } catch (InvalidOperationException) {
                 return null;
             } finally {
-                if (cmd != null) {
-                    //Console.WriteLine("SQL = " + cmd.CommandText);
-                }
+                if (cmd != null)
+                    if (log.IsDebugEnabled)
+                        log.Debug("SQL = " + cmd.CommandText);
+
                 if (reader != null) {
                     reader.Close();
                     reader = null;
@@ -58,7 +84,12 @@ namespace PMS.DataAccess
             }
         }
 
-        public static object[] ExecuteSelectList(IQuery query)
+        /// <summary>
+        /// Execute SQL built by IQuery and return instantiated classes
+        /// </summary>
+        /// <param name="query">Query to perform</param>
+        /// <returns>Instantiated classes or null</returns>
+        internal static object[] ExecuteSelectList(IQuery query)
         {
             IDataReader reader = null;
             IDbCommand cmd = null;
@@ -78,7 +109,8 @@ namespace PMS.DataAccess
                 return null;
             } finally {
                 if (cmd != null) {
-                    //Console.WriteLine("SQL = " + cmd.CommandText);
+                    if (log.IsDebugEnabled)
+                        log.Debug("SQL = " + cmd.CommandText);
                 }
                 if (reader != null) {
                     reader.Close();
@@ -88,33 +120,46 @@ namespace PMS.DataAccess
             }
         }
 
-        public static DbResult ExecuteDelete(object obj)
+        /// <summary>
+        /// Delete object
+        /// </summary>
+        /// <param name="obj">Object to delete</param>
+        /// <returns>Result of query</returns>
+        internal static DbResult ExecuteDelete(object obj)
         {
             IQuery query = null;
 
             try {
                 query = new QueryByObject(obj);
-
                 return ExecuteNonQuery(query.Delete());
             } catch (Exception e) {
                 throw e;
             } 
         }
 
-        public static DbResult ExecuteDelete(Type type)
+        /// <summary>
+        /// Delete all objects of this type
+        /// </summary>
+        /// <param name="type">type to delete</param>
+        /// <returns>Result of query</returns>
+        internal static DbResult ExecuteDelete(Type type)
         {
             IQuery query = null;
 
             try {
                 query = new QueryByType(type);
-
                 return ExecuteNonQuery(query.Delete());
             } catch (Exception e) {
                 throw e;
             } 
         }
 
-        public static DbResult ExecutePersist(object obj)
+        /// <summary>
+        /// Insert or update object based on count retrieved
+        /// </summary>
+        /// <param name="obj">Object to save</param>
+        /// <returns>Result of query</returns>
+        internal static DbResult ExecutePersist(object obj)
         {
             IQuery query = null;
             DbResult result = null;
@@ -133,59 +178,69 @@ namespace PMS.DataAccess
             }
         }
 
-        public static DbResult ExecuteInsert(object obj)
+        /// <summary>
+        /// Insert object
+        /// </summary>
+        /// <param name="obj">Object to insert</param>
+        /// <returns>Result of query</returns>
+        internal static DbResult ExecuteInsert(object obj)
         {
             IQuery query = null;
 
             try {
                 query = new QueryByObject(obj);
-
                 return ExecuteNonQuery(query.Insert());
             } catch (Exception e) {
                 throw e;
             }
         }
 
-        public static DbResult ExecuteUpdate(object obj)
+        /// <summary>
+        /// Update object
+        /// </summary>
+        /// <param name="obj">Object to update</param>
+        /// <returns>Result of query</returns>
+        internal static DbResult ExecuteUpdate(object obj)
         {
-            IQuery query = new QueryByObject(obj);
-
-            return ExecuteNonQuery(query.Update());
+            return ExecuteNonQuery((new QueryByObject(obj)).Update());
         }
 
-        public static DbResult ExecuteUpdate(object oldObj, object newObj)
+        /// <summary>
+        /// Update object
+        /// </summary>
+        /// <param name="obj">Object to update</param>
+        /// <returns>Result of query</returns>
+        internal static DbResult ExecuteUpdate(object oldObj, object newObj)
         {
-            IQuery query = new QueryByObjectDiff(oldObj, newObj);
-
-            return ExecuteNonQuery(query.Update());
+            return ExecuteNonQuery((new QueryByObjectDiff(oldObj, newObj)).Update());
         }
 
-        public static DbResult ExecuteCount(object obj)
+        internal static DbResult ExecuteCount(object obj)
         {
             IQuery query = new QueryByObject(obj);
 
             return ExecuteScalar(query.Count());
-        }        
+        }
 
-        public static DbResult ExecuteNonQuery(string sql)
+        internal static DbResult ExecuteNonQuery(string sql)
         {
             IDbCommand cmd   = null;
             DbResult result = null;
 
             try {
                 cmd = dbManager.GetCommand(sql, AccessMode.Write);
-                int x = cmd.ExecuteNonQuery();
-                result = new DbResult(x, sql);
-                //Console.WriteLine(result);
-                return result;
+                result = new DbResult(cmd.ExecuteNonQuery(), sql);
             } catch (Exception ex) {
                 result = new DbResult(sql, ex);
-                //Console.WriteLine(result);
-                return result;
+            } finally {
+                if (log.IsDebugEnabled)
+                    log.Debug(result);
             }
+
+            return result;
         }
 
-        public static DbResult ExecuteScalar(string sql)
+        internal static DbResult ExecuteScalar(string sql)
         {
             IDbCommand cmd   = null;
             DbResult result = null;
@@ -194,31 +249,44 @@ namespace PMS.DataAccess
                 cmd = dbManager.GetCommand(sql, AccessMode.Read);
                 object count = cmd.ExecuteScalar();
                 result = new DbResult(Convert.ToInt32(count), sql);
-                //Console.WriteLine(result);
-                return result;
             } catch (InvalidOperationException ex) {
-                return new DbResult(sql, ex);
+                result = new DbResult(sql, ex);
+            } finally {
+                if (log.IsDebugEnabled)
+                    log.Debug(result);
             }
+
+            return result;
         }
         
+        /// <summary>
+        /// Start DbEngine with specified DbManagerMode
+        /// </summary>
+        /// <param name="mode">Mode to operate under</param>
+        /// <returns>status</returns>
         public static bool Start(DbManagerMode mode)
         {
             if (DbManagerMode.Single == mode) {
-                //Console.WriteLine("DBEngine.Start(" + mode + ")");
+                if (log.IsDebugEnabled)
+                    log.Debug("DBEngine.Start(" + mode + ")");
                 dbManager = SingleDbManager.Instance;
                 dbManager.Start();
 
                 return true;
             }
 
-//            throw new ApplicationException(Resource.Format("PMS001", mode));
             throw new ApplicationException("DbManagerMode Not Currently Support: " + mode);
         }
 
+        /// <summary>
+        /// Shutdown engine and subsequent DbManager
+        /// </summary>
+        /// <returns>status</returns>
         public static bool Stop()
         {
             if (dbManager != null) {
-                //Console.WriteLine("DBEngine.Stop()");
+                if (log.IsDebugEnabled)
+                    log.Debug("DBEngine.Stop()");
                 dbManager.Stop();
                 dbManager = null;
             }
@@ -226,21 +294,41 @@ namespace PMS.DataAccess
             return true;
         }
 
-        public static IDbCommand GetCommand(string s, AccessMode mode)
+        /// <summary>
+        /// Retrieve IDbCommand from pool with sql for specified AccessMode
+        /// </summary>
+        /// <param name="sql">SQL to execute</param>
+        /// <param name="mode">AccessMode (is command reading or writing)</param>
+        /// <returns>IDbCommand</returns>
+        public static IDbCommand GetCommand(string sql, AccessMode mode)
         {
-            return dbManager.GetCommand(s, mode);
+            return dbManager.GetCommand(sql, mode);
         }
 
+        /// <summary>
+        /// Retrieve IDbCommand from pool for specified AccessMode
+        /// </summary>
+        /// <param name="mode">AccessMode (is command reading or writing)</param>
+        /// <returns>IDbCommand</returns>
         public static IDbCommand GetCommand(AccessMode mode)
         {
             return dbManager.GetCommand(mode);
         }
 
-        public static IDbCommand GetCommand(string s)
+        /// <summary>
+        /// Retieve IDbCommand from pool where access mode defaults to Read
+        /// </summary>
+        /// <param name="sql">SQL to execute</param>
+        /// <returns>IDbCommand</returns>
+        public static IDbCommand GetCommand(string sql)
         {
-            return dbManager.GetCommand(s, AccessMode.Read);
+            return dbManager.GetCommand(sql, AccessMode.Read);
         }
 
+        /// <summary>
+        /// Retrieves IDbCommand from pool where access mode defaults to Read
+        /// </summary>
+        /// <returns>IDbCommand</returns>
         public static IDbCommand GetCommand()
         {
             return dbManager.GetCommand(AccessMode.Read);

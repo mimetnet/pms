@@ -18,9 +18,9 @@ namespace PMS.NUnit
 
         public PersonDaoTest()
         {
-            Npgsql.NpgsqlEventLog.Level = Npgsql.LogLevel.Debug;
-            Npgsql.NpgsqlEventLog.LogName = "npgsql.log";
-            Npgsql.NpgsqlEventLog.EchoMessages = false;
+            //Npgsql.NpgsqlEventLog.Level = Npgsql.LogLevel.Debug;
+            //Npgsql.NpgsqlEventLog.LogName = "npgsql.log";
+            //Npgsql.NpgsqlEventLog.EchoMessages = false;
         }
 
         [TestFixtureSetUp]
@@ -40,6 +40,7 @@ namespace PMS.NUnit
         public void Destructor()
         {
             //broker.RollbackTransaction();
+            //broker.CommitTransaction();
 
             if (broker != null)
                 broker.Close(); // close pool
@@ -49,7 +50,7 @@ namespace PMS.NUnit
         public void SetUp()
         {
             person = new Person();
-            person.FirstName = "TylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTylerTyler";
+            person.FirstName = "Tyler";
             person.LastName = "Willingham";
             person.Email = "blah@blah.com";
         }
@@ -69,10 +70,7 @@ namespace PMS.NUnit
         [Test]
         public void C()
         {
-            //Assert.AreEqual(1, broker.Insert(person).Count);
-
-            Console.WriteLine("broker.Insert.Count = " + broker.Insert(person).Count);
-            Console.WriteLine("broker.Insert.Ex = " + broker.Insert(person).Exception);
+            Assert.AreEqual(1, broker.Insert(person).Count);
         }
 
         [Test]
@@ -89,6 +87,17 @@ namespace PMS.NUnit
             person.Email = null; // don't delete by old email address
 
             Assert.AreEqual(1, broker.Delete(person).Count);
+        }
+
+        [Test]
+        public void F()
+        {
+            DateTime now = DateTime.Now;
+            DateTime three = now.Subtract(new TimeSpan(72, 0, 0));
+
+            Criteria crit = new Criteria(typeof(Person));
+            crit.Between("creation_date", three, now);
+            Person[] persons = (Person[])broker.GetObjectList(new QueryByCriteria(crit));
         }
     }
 }

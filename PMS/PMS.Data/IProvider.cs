@@ -3,7 +3,7 @@ using System.Data;
 
 namespace PMS.Data
 {
-    public interface IProvider
+    internal interface IProvider
     {
         object PrepareSqlValue(string dbType, object value);
         object PrepareSqlString(object value);

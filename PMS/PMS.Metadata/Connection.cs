@@ -3,8 +3,8 @@ using System.Reflection;
 using System.Xml.Serialization;
 
 namespace PMS.Metadata
-{  
-    public class Connection
+{
+    public sealed class Connection
     {
         [XmlIgnore]
         private Type type;

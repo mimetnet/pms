@@ -8,14 +8,24 @@ using PMS.Metadata;
 
 namespace PMS.Query
 {
+    /// <summary>
+    /// Query by values set by Criteria
+    /// </summary>
     public class QueryByCriteria : AbstractQuery
     {
-        public QueryByCriteria(Criteria c)
+        /// <summary>
+        /// Construct with criteria
+        /// </summary>
+        /// <param name="criteria">Criteria to use for SQL</param>
+        public QueryByCriteria(Criteria criteria)
         {
-            criteria = c;
-            metaObject = c.metaObject;
+            this.criteria = criteria;
+            this.metaObject = criteria.metaObject;
         }
 
+        /// <summary>
+        /// Return WhereClauses from criteria
+        /// </summary>
         public override string Condition {
             get {
                 return (criteria.ClauseCount > 0) ? 
@@ -23,6 +33,9 @@ namespace PMS.Query
             }
         }
 
+        /// <summary>
+        /// Return OrderByClauses from criteria
+        /// </summary>
         public override string OrderBy {
             get {
                 return (criteria.OrderCount > 0) ?
@@ -30,12 +43,18 @@ namespace PMS.Query
             }
         }
 
+        /// <summary>
+        /// Not implemented
+        /// </summary>
         public override string InsertClause {
             get {
                 throw new NotImplementedException();
             }
         }
 
+        /// <summary>
+        /// Not implemented
+        /// </summary>
         public override string UpdateClause {
             get {
                 throw new NotImplementedException();

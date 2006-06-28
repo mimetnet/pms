@@ -6,7 +6,7 @@ using PMS.Data.PostgreSql;
 
 namespace PMS.Data
 {
-    public class ProviderFactory
+    internal sealed class ProviderFactory
     {
         private static string PROVIDER_KEY = "Umbrella.Data.Provider";
 

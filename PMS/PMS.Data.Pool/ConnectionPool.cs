@@ -6,7 +6,7 @@ using PMS.Collections.Pool;
 
 namespace PMS.Data.Pool
 {
-    public class ConnectionPool
+    internal sealed class ConnectionPool
     {
         private ManagedObjectPool pool;
         private const Int32 DEFAULT_NUM = 5;
@@ -67,7 +67,7 @@ namespace PMS.Data.Pool
         {
             try {
                 pool.Return(conn);
-            } catch (Exception e) {
+            } catch (Exception) {
 				//Console.WriteLine(e);
             }
         }

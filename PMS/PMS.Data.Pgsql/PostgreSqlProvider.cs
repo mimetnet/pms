@@ -7,8 +7,7 @@ using PMS.Data;
 
 namespace PMS.Data.PostgreSql
 {
-    [Serializable]
-    public class PostgreSqlProvider : AbstractProvider
+    internal sealed class PostgreSqlProvider : AbstractProvider
     {
         private static IProvider _instance;
 

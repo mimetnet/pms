@@ -20,6 +20,7 @@
     <DefineConstants>TRACE;DEBUG;NET_2_0</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\PMS.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -74,6 +75,9 @@
     <Compile Include="PMS.Metadata\RepositoryManager.cs" />
     <Compile Include="PMS.Query\AbstractQuery.cs" />
     <Compile Include="PMS.Query\AndClause.cs" />
+    <Compile Include="PMS.Query\BetweenClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PMS.Query\Criteria.cs" />
     <Compile Include="PMS.Query\EqualToClause.cs" />
     <Compile Include="PMS.Query\GreaterOrEqualToClause.cs" />
@@ -85,6 +89,7 @@
     <Compile Include="PMS.Query\LessOrEqualToClause.cs" />
     <Compile Include="PMS.Query\LessThanClause.cs" />
     <Compile Include="PMS.Query\LikeClause.cs" />
+    <Compile Include="PMS.Query\NotBetweenClause.cs" />
     <Compile Include="PMS.Query\NotEqualToClause.cs" />
     <Compile Include="PMS.Query\NotLikeClause.cs" />
     <Compile Include="PMS.Query\OrClause.cs" />
@@ -95,12 +100,16 @@
     <Compile Include="PMS.Query\QueryByObjectDiff.cs" />
     <Compile Include="PMS.Query\QueryBySql.cs" />
     <Compile Include="PMS.Query\QueryByType.cs" />
+    <Compile Include="PMS.Query\RangeClause.cs" />
     <Compile Include="PMS.Query\SqlCommand.cs" />
-    <Compile Include="PMS.Query\ValueClause.cs" />
+    <Compile Include="PMS.Query\ValueClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PMS.pfx" />
+    <None Include="dll.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -110,4 +119,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(ProjectDir)dll.config"  "$(TargetPath).config"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

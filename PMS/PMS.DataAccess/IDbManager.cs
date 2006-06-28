@@ -3,7 +3,7 @@ using System.Data;
 
 namespace PMS.DataAccess
 {
-    public interface IDbManager
+    internal interface IDbManager
     {
         IDbCommand GetCommand(string sql, AccessMode mode);
         IDbCommand GetCommand(AccessMode mode);

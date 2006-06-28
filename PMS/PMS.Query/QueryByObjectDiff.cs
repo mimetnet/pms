@@ -8,8 +8,16 @@ using PMS.Metadata;
 
 namespace PMS.Query
 {
+    /// <summary>
+    /// Query by comparing two objects properties
+    /// </summary>
     public class QueryByObjectDiff : AbstractQuery
     {
+        /// <summary>
+        /// Construct with old and new objects
+        /// </summary>
+        /// <param name="oldObj">Old Object</param>
+        /// <param name="newObj">Updated Object</param>
         public QueryByObjectDiff(object oldObj, object newObj)
         {
             throw new NotImplementedException();
@@ -150,6 +158,9 @@ namespace PMS.Query
             }
         }
 
+        /// <summary>
+        /// Create SQL like "ORDER BY x ASC, y DESC, z"
+        /// </summary>
         public override string OrderBy {
             get {
                 if (criteria.OrderCount > 0)

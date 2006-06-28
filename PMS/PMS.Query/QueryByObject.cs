@@ -8,8 +8,15 @@ using PMS.Metadata;
 
 namespace PMS.Query
 {
+    /// <summary>
+    /// Query based on object properties
+    /// </summary>
     public class QueryByObject : AbstractQuery
     {
+        /// <summary>
+        /// Construct with object
+        /// </summary>
+        /// <param name="obj">Object used to create SQL from</param>
         public QueryByObject(Object obj)
         {
             metaObject = new MetaObject(obj);
@@ -18,6 +25,11 @@ namespace PMS.Query
             keys       = metaObject.PrimaryKeys;
         }
 
+        /// <summary>
+        /// Construct with object and detailed criteria
+        /// </summary>
+        /// <param name="obj">Object used to create SQL from</param>
+        /// <param name="crit">Criteria to append object properties with</param>
         public QueryByObject(Object obj, Criteria crit)
         {
             metaObject = new MetaObject(obj);
@@ -144,6 +156,9 @@ namespace PMS.Query
             }
         }
 
+        /// <summary>
+        /// Create SQL like "ORDER BY x ASC, y DESC, z"
+        /// </summary>
         public override string OrderBy {
             get {
                 if (criteria.OrderCount > 0)

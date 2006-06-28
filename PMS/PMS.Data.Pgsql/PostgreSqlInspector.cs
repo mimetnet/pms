@@ -5,7 +5,7 @@ using PMS.Data;
 
 namespace PMS.Data.PostgreSql
 {
-    public class PostgreSqlInspector : IDbInspector
+    public sealed class PostgreSqlInspector : IDbInspector
     {
         private DataSet database = new DataSet();
         private IProvider provider = PostgreSqlProvider.Instance;
@@ -18,17 +18,26 @@ namespace PMS.Data.PostgreSql
 
         private const string selectConstraints = "select c.relname, c.relkind from pg_class c inner join pg_constraint x on c.oid = x.conrelid where c.relkind in ('r','i','S');";
 
-
+        /// <summary>
+        /// Construct
+        /// </summary>
         public PostgreSqlInspector()
         {
 
         }
 
+        /// <summary>
+        /// Construct and set connection
+        /// </summary>
+        /// <param name="conn">Connection to inspect</param>
         public PostgreSqlInspector(IDbConnection conn)
         {
             connection = conn;
         }
 
+        /// <summary>
+        /// Connection to inspect
+        /// </summary>
         public IDbConnection Connection {
             get {
                 return connection;
@@ -38,6 +47,9 @@ namespace PMS.Data.PostgreSql
             }
         }
 
+        /// <summary>
+        /// Inspect database set via Connection
+        /// </summary>
         public void Examine()
         {
             try {
@@ -79,6 +91,9 @@ namespace PMS.Data.PostgreSql
             }
         }
 
+        /// <summary>
+        /// Database object set to reflect actual database specified by connection
+        /// </summary>
         public DataSet Database {
             get { return database; }
         }

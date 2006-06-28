@@ -4,8 +4,11 @@ using System.Data;
 
 namespace PMS.Data
 {
-    [Serializable]
-    public abstract class AbstractProvider : IProvider
+    /// <summary>
+    /// Used to Compare/Convert .NET types to database types
+    /// Should be changed to work with events
+    /// </summary>
+    internal abstract class AbstractProvider : IProvider
     {
         public virtual object PrepareSqlValue(string dbType, object value)
         {

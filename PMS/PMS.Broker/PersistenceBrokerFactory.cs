@@ -1,7 +1,10 @@
 namespace PMS.Broker
 {
-    public class PersistenceBrokerFactory
+    public sealed class PersistenceBrokerFactory
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public PersistenceBrokerFactory()
         {
             throw new System.NotImplementedException();
