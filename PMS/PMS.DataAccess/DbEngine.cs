@@ -55,7 +55,7 @@ namespace PMS.DataAccess
         /// </summary>
         /// <param name="query">Query to perform</param>
         /// <returns>Instantiated class or null</returns>
-        internal static object ExecuteSelectObject(IQuery query)
+        public static object ExecuteSelectObject(IQuery query)
         {
             IDataReader reader = null;
             IDbCommand cmd = null;
@@ -89,7 +89,7 @@ namespace PMS.DataAccess
         /// </summary>
         /// <param name="query">Query to perform</param>
         /// <returns>Instantiated classes or null</returns>
-        internal static object[] ExecuteSelectList(IQuery query)
+        public static object[] ExecuteSelectList(IQuery query)
         {
             IDataReader reader = null;
             IDbCommand cmd = null;
@@ -125,7 +125,7 @@ namespace PMS.DataAccess
         /// </summary>
         /// <param name="obj">Object to delete</param>
         /// <returns>Result of query</returns>
-        internal static DbResult ExecuteDelete(object obj)
+        public static DbResult ExecuteDelete(object obj)
         {
             IQuery query = null;
 
@@ -142,7 +142,7 @@ namespace PMS.DataAccess
         /// </summary>
         /// <param name="type">type to delete</param>
         /// <returns>Result of query</returns>
-        internal static DbResult ExecuteDelete(Type type)
+        public static DbResult ExecuteDelete(Type type)
         {
             IQuery query = null;
 
@@ -159,7 +159,7 @@ namespace PMS.DataAccess
         /// </summary>
         /// <param name="obj">Object to save</param>
         /// <returns>Result of query</returns>
-        internal static DbResult ExecutePersist(object obj)
+        public static DbResult ExecutePersist(object obj)
         {
             IQuery query = null;
             DbResult result = null;
@@ -183,7 +183,7 @@ namespace PMS.DataAccess
         /// </summary>
         /// <param name="obj">Object to insert</param>
         /// <returns>Result of query</returns>
-        internal static DbResult ExecuteInsert(object obj)
+        public static DbResult ExecuteInsert(object obj)
         {
             IQuery query = null;
 
@@ -200,7 +200,7 @@ namespace PMS.DataAccess
         /// </summary>
         /// <param name="obj">Object to update</param>
         /// <returns>Result of query</returns>
-        internal static DbResult ExecuteUpdate(object obj)
+        public static DbResult ExecuteUpdate(object obj)
         {
             return ExecuteNonQuery((new QueryByObject(obj)).Update());
         }
@@ -210,19 +210,27 @@ namespace PMS.DataAccess
         /// </summary>
         /// <param name="obj">Object to update</param>
         /// <returns>Result of query</returns>
-        internal static DbResult ExecuteUpdate(object oldObj, object newObj)
+        public static DbResult ExecuteUpdate(object oldObj, object newObj)
         {
             return ExecuteNonQuery((new QueryByObjectDiff(oldObj, newObj)).Update());
         }
 
-        internal static DbResult ExecuteCount(object obj)
+        /// <summary>
+        /// Perform SQL "SELECT * FROM obj;"
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static DbResult ExecuteCount(object obj)
         {
-            IQuery query = new QueryByObject(obj);
-
-            return ExecuteScalar(query.Count());
+            return ExecuteScalar((new QueryByObject(obj)).Count());
         }
 
-        internal static DbResult ExecuteNonQuery(string sql)
+        /// <summary>
+        /// Perform IDbCommand.ExecuteNonQuery()
+        /// </summary>
+        /// <param name="sql">SQL to execute</param>
+        /// <returns>Result of query</returns>
+        public static DbResult ExecuteNonQuery(string sql)
         {
             IDbCommand cmd   = null;
             DbResult result = null;
@@ -240,7 +248,12 @@ namespace PMS.DataAccess
             return result;
         }
 
-        internal static DbResult ExecuteScalar(string sql)
+        /// <summary>
+        /// Perform IDbCommand.ExecuteScalar()
+        /// </summary>
+        /// <param name="sql">SQL to execute</param>
+        /// <returns>Result of query</returns>
+        public static DbResult ExecuteScalar(string sql)
         {
             IDbCommand cmd   = null;
             DbResult result = null;

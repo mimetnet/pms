@@ -102,6 +102,16 @@ namespace PMS.Query
         /// </summary>
         /// <param name="field">database field</param>
         /// <param name="value">field value</param>
+        public void LessOrEqual(string field, object value)
+        {
+            AndLessOrEqual(field, value);
+        } 
+
+        /// <summary>
+        /// Add LessOrEqualToClause()
+        /// </summary>
+        /// <param name="field">database field</param>
+        /// <param name="value">field value</param>
         public void AndLessOrEqual(string field, object value)
         {
             AndClause();
@@ -118,24 +128,18 @@ namespace PMS.Query
             OrClause();
             LessOrEqual(field, value);
         }
-
-        /// <summary>
-        /// Add LessOrEqualToClause()
-        /// </summary>
-        /// <param name="field">database field</param>
-        /// <param name="value">field value</param>
-        public void LessOrEqual(string field, object value)
-        {
-            AndClause();
-            clause.Add(new LessOrEqualToClause(field, PrepareValue(field, value)));
-        } 
         #endregion
 
         #region GreaterThan
+        public void GreaterThan(string field, object value)
+        {
+            AndGreaterThan(field, value);
+        }
+
         public void AndGreaterThan(string field, object value)
         {
             AndClause();
-            GreaterThan(field, value);
+            clause.Add(new GreaterThanClause(field, PrepareValue(field, value)));
         }
 
         public void OrGreaterThan(string field, object value)
@@ -143,12 +147,6 @@ namespace PMS.Query
             OrClause();
             GreaterThan(field, value);
         }
-
-        public void GreaterThan(string field, object value)
-        {
-            AndClause();
-            clause.Add(new GreaterThanClause(field, PrepareValue(field, value)));
-        } 
         #endregion
 
         #region LessThan
@@ -172,10 +170,15 @@ namespace PMS.Query
         #endregion
 
         #region EqualTo
+        public void EqualTo(string field, object value)
+        {
+            AndEqualTo(field, value);
+        }
+
         public void AndEqualTo(string field, object value)
         {
             AndClause();
-            EqualTo(field, value);
+            clause.Add(new EqualToClause(field, PrepareValue(field, value)));
         }
 
         public void OrEqualTo(string field, object value)
@@ -183,15 +186,14 @@ namespace PMS.Query
             OrClause();
             clause.Add(new EqualToClause(field, PrepareValue(field, value)));
         }
-
-        public void EqualTo(string field, object value)
-        {
-            AndClause();
-            clause.Add(new EqualToClause(field, PrepareValue(field, value)));
-        } 
         #endregion
 
         #region NotEqualTo
+        public void NotEqualTo(string field, object value)
+        {
+            AndNotEqualTo(field, value);
+        }
+
         public void AndNotEqualTo(string field, object value)
         {
             AndClause();
@@ -203,24 +205,18 @@ namespace PMS.Query
             OrClause();
             this.NotEqualTo(field, value);
         }
-
-        public void NotEqualTo(string field, object value)
-        {
-            AndClause();
-            clause.Add(new NotEqualToClause(field, PrepareValue(field, value)));
-        } 
         #endregion
 
         #region NotNull
         public void IsNotNull(string field)
         {
-            AndClause();
-            clause.Add(new IsNotNullClause(field));
+            AndIsNotNull(field);
         }
 
         public void AndIsNotNull(string field)
         {
-            IsNotNull(field);
+            AndClause();
+            clause.Add(new IsNotNullClause(field));
         }
 
         public void OrIsNotNull(string field)
@@ -233,8 +229,7 @@ namespace PMS.Query
         #region IsNull
         public void IsNull(string field)
         {
-            AndClause();
-            clause.Add(new IsNullClause(field));
+            AndIsNull(field);
         }
 
         public void OrIsNull(string field)
@@ -245,50 +240,48 @@ namespace PMS.Query
 
         public void AndIsNull(string field)
         {
-            IsNull(field);
+            AndClause();
+            clause.Add(new IsNullClause(field));
         } 
         #endregion
 
         #region Like
-        public void Like(string f, object v)
+        public void Like(string field, object value)
         {
-            AndClause();
-            clause.Add(new LikeClause(f, PrepareValue(f, v)));
+            AndLike(field, value);
         }
 
-        public void Like(string f, object v, string method)
+        public void AndLike(string field, object value)
         {
             AndClause();
-            clause.Add(new LikeClause(method + "(" + f + ")",
-                                      PrepareValue(f, v)));
+            clause.Add(new LikeClause(field, PrepareValue(field, value)));
         }
 
-        public void AndLike(string f, object v)
+        public void AndLike(string field, object value, string fieldFunction)
         {
             AndClause();
-            clause.Add(new LikeClause(f, PrepareValue(f, v)));
+            clause.Add(new LikeClause(fieldFunction + "(" + field + ")",
+                                      PrepareValue(field, value)));
         }
 
-        public void OrLike(string f, object v)
+        public void OrLike(string field, object value)
         {
             OrClause();
-            clause.Add(new LikeClause(f, PrepareValue(f, v)));
+            clause.Add(new LikeClause(field, PrepareValue(field, value)));
         }
 
-        public void OrLike(string f, object v, string method)
+        public void OrLike(string field, object value, string fieldFunction)
         {
             OrClause();
-
-            clause.Add(new LikeClause(method + "(" + f + ")",
-                                      PrepareValue(f, v)));
+            clause.Add(new LikeClause(fieldFunction + "(" + field + ")",
+                                      PrepareValue(field, value)));
         } 
         #endregion
 
         #region NotLike
-        public void NotLike(string f, object v)
+        public void NotLike(string field, object value)
         {
-            AndClause();
-            clause.Add(new NotLikeClause(f, PrepareValue(f, v)));
+            AndNotLike(field, value);
         }
 
         public void AndNotLike(string f, object v)

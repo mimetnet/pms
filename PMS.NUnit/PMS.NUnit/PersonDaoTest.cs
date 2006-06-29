@@ -96,6 +96,8 @@ namespace PMS.NUnit
             DateTime three = now.Subtract(new TimeSpan(72, 0, 0));
 
             Criteria crit = new Criteria(typeof(Person));
+            crit.AndEqualTo("first_name", person.FirstName);
+            crit.AndEqualTo("first_name", person.FirstName);
             crit.Between("creation_date", three, now);
             Person[] persons = (Person[])broker.GetObjectList(new QueryByCriteria(crit));
         }
