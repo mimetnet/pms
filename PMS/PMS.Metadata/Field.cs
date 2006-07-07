@@ -6,19 +6,10 @@ namespace PMS.Metadata
 {  
     public class Field
     {
-        [XmlAttributeAttribute("name")] 
         public string Name;
-
-        [XmlAttributeAttribute("column")] 
         public string Column;
-
-        [XmlAttributeAttribute("db_type")] 
         public string DbType;
-
-        [XmlAttributeAttribute("primarykey")] 
         public bool PrimaryKey = false;
-        
-        [XmlAttributeAttribute("ignore_default")]
         public bool IgnoreDefault = false;
 
         public Field()
@@ -26,14 +17,16 @@ namespace PMS.Metadata
         }
 
         public Field(string name, string column, string dbType)
+            : this(name, column, dbType, false, false)
         {
-            Name = name;
-            Column = column;
-            DbType = dbType;
+        }
+
+        public Field(string name, string column, string dbType, bool ignoreDefault)
+            : this(name, column, dbType, ignoreDefault, false)
+        {
         }
         
-        public Field(string name, string column, string dbType, 
-                     bool ignoreDefault, bool iskey)
+        public Field(string name, string column, string dbType, bool ignoreDefault, bool iskey)
         {
             Name = name;
             Column = column;

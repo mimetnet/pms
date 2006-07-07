@@ -97,9 +97,9 @@ namespace PMS.Broker
         /// </summary>
         /// <param name="query">Query to search for one or more objects</param>
         /// <returns>List of instantiated classes</returns>
-        public object[] GetObjectList(IQuery query)
+        public object[] GetObjectArray(IQuery query)
         {
-            return DbEngine.ExecuteSelectList(query);
+            return DbEngine.ExecuteSelectArray(query);
         }
 
         /// <summary>
@@ -107,7 +107,27 @@ namespace PMS.Broker
         /// </summary>
         /// <param name="type">Type that maps to a database table</param>
         /// <returns>List of instantiated classes</returns>
-        public object[] GetObjectList(Type type)
+        public object[] GetObjectArray(Type type)
+        {
+            return DbEngine.ExecuteSelectArray(new QueryByObject(type));
+        }
+
+        /// <summary>
+        /// Retrieve CollectionBase IList of classes based on IQuery provided
+        /// </summary>
+        /// <param name="query">Query to search for one or more objects</param>
+        /// <returns>CollectionBase of instantiated classes</returns>
+        public IList GetObjectList(IQuery query)
+        {
+            return DbEngine.ExecuteSelectList(query);
+        }
+
+        /// <summary>
+        /// Retrieve CollectionBase IList of classes based on Type provided
+        /// </summary>
+        /// <param name="type">Type that maps to a database table</param>
+        /// <returns>CollectionBase of instantiated classes</returns>
+        public IList GetObjectList(Type type)
         {
             return DbEngine.ExecuteSelectList(new QueryByObject(type));
         }

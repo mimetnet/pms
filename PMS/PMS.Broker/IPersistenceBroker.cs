@@ -24,10 +24,28 @@ namespace PMS.Broker
         /// </summary>
         /// <param name="type">Type that maps to a database table</param>
         /// <returns>List of instantiated classes</returns>
-        object[] GetObjectList(IQuery query);
+        IList GetObjectList(IQuery query);
 
-        //object GetObject(object obj);
-        //object[] GetObjectList(object obj);
+        /// <summary>
+        /// Retrieve multiple instances of a class based on type, which maps to a table
+        /// </summary>
+        /// <param name="type">Type that maps to a database table</param>
+        /// <returns>List of instantiated classes</returns>
+        IList GetObjectList(Type type);
+
+        /// <summary>
+        /// Retrieve Object[] of classes based on IQuery provided
+        /// </summary>
+        /// <param name="query">Query to search for one or more objects</param>
+        /// <returns>Object[] of instantiated classes</returns>
+        object[] GetObjectArray(IQuery query);
+
+        /// <summary>
+        /// Retrieve Object[] of classes based on Type provided
+        /// </summary>
+        /// <param name="type">Type that maps to a database table</param>
+        /// <returns>Object[] of instantiated classes</returns>
+        object[] GetObjectArray(Type type);
 
         /// <summary>
         /// Perform PersistenceBroker.Count and based on result do Insert(obj) or Update(obj)

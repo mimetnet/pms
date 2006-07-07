@@ -7,35 +7,49 @@ namespace PMS.Metadata
     public sealed class Connection
     {
         [XmlIgnore]
+        public const int DEFAULT_POOL_SIZE = 5;
+
+        [XmlIgnore]
         private Type type;
 
-        [XmlElementAttribute("string")]
-        public string String;
+        [XmlText]
+        public string Value;
 
-        [XmlAttributeAttribute("type")]
+        [XmlAttribute("type")]
         public string sType;
 
-        [XmlAttributeAttribute("assembly")]
+        [XmlAttribute("assembly")]
         public string sAssembly;
 
-        [XmlAttributeAttribute("id")]
+        [XmlAttribute("id")]
         public string Id;
 
-        [XmlAttributeAttribute("default")]
+        [XmlAttribute("default")]
         public bool IsDefault;
 
-        [XmlAttributeAttribute("pool-size")]
-        public int PoolSize = 5;
+        [XmlAttribute("pool-size")]
+        public int PoolSize = DEFAULT_POOL_SIZE;
 
         public Connection()
         {
         }
 
-        public Connection(string id, string conn, string stype, bool isDefault, int pool)
+        public Connection(string id, string conn, Type type)
+            : this(id, conn, type, true, DEFAULT_POOL_SIZE)
+        {
+        }
+
+        public Connection(string id, string conn, Type type, bool isDefault)
+            : this(id, conn, type, isDefault, DEFAULT_POOL_SIZE)
+        {
+        }
+
+        public Connection(string id, string conn, Type type, bool isDefault, int pool)
         {
             Id = id;
-            sType = stype;
-            String = conn;
+            sType = type.FullName;
+            sAssembly = type.Assembly.FullName;
+            Value = conn;
             IsDefault = isDefault;
             PoolSize = pool;
         }
@@ -72,7 +86,7 @@ namespace PMS.Metadata
                 "\n  Id = " + Id +
                 "\n  sType = " + sType +
                 "\n  sAssembly = " + sAssembly +
-                "\n  String = " + String +
+                "\n  String = " + Value +
                 "\n  IsDefault = " + IsDefault +
                 "\n  PoolSize = " + PoolSize;
         }

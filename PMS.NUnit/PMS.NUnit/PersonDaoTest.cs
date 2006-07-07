@@ -10,13 +10,13 @@ namespace PMS.NUnit
 {
 
     [TestFixture]
-    public class PersonDaoTest
+    public class B_PersonDaoTest
     {
         private IPersistenceBroker broker = null;
         private Person person = null;
         private PersonDao dao = null;
 
-        public PersonDaoTest()
+        public B_PersonDaoTest()
         {
             //Npgsql.NpgsqlEventLog.Level = Npgsql.LogLevel.Debug;
             //Npgsql.NpgsqlEventLog.LogName = "npgsql.log";
@@ -28,8 +28,8 @@ namespace PMS.NUnit
         {
             // obtain instance of PersistenceBroker
             broker = PersistenceBroker.Instance;
-            broker.Load(); // load the repository.xml found in "." directory
-            broker.Open(); // open database connection pool
+            Assert.AreEqual(true, broker.Load()); // load the repository.xml found in "." directory
+            Assert.AreEqual(true, broker.Open()); // open database connection pool
 
             //broker.BeginTransaction();
 
@@ -62,27 +62,35 @@ namespace PMS.NUnit
         }
 
         [Test]
-        public void B()
+        public void A_DeleteByType()
         {
             Assert.Greater((broker.Delete(new Person()).Count), -1);
         }
 
         [Test]
-        public void C()
+        public void B_Insert()
         {
             Assert.AreEqual(1, broker.Insert(person).Count);
         }
 
         [Test]
-        public void D()
+        public void C_GetObjectList()
         {
-            int len = broker.GetObjectList(new QueryByType(typeof(Person))).Length;
+            int len = broker.GetObjectList(new QueryByType(typeof(Person))).Count;
 
             Assert.Greater(len, 0);
         }
 
         [Test]
-        public void E()
+        public void D_GetObjectArray()
+        {
+            int len = broker.GetObjectArray(new QueryByType(typeof(Person))).Length;
+
+            Assert.Greater(len, 0);
+        }
+
+        [Test]
+        public void E_DeleteByIdEtc()
         {
             person.Email = null; // don't delete by old email address
 
@@ -90,7 +98,7 @@ namespace PMS.NUnit
         }
 
         [Test]
-        public void F()
+        public void F_QueryByCriteriaEqualAndBetween()
         {
             DateTime now = DateTime.Now;
             DateTime three = now.Subtract(new TimeSpan(72, 0, 0));
@@ -99,7 +107,12 @@ namespace PMS.NUnit
             crit.AndEqualTo("first_name", person.FirstName);
             crit.AndEqualTo("first_name", person.FirstName);
             crit.Between("creation_date", three, now);
-            Person[] persons = (Person[])broker.GetObjectList(new QueryByCriteria(crit));
+            PersonCollection persons = 
+                (PersonCollection)broker.GetObjectList(new QueryByCriteria(crit));
+
+            foreach (Person p in persons) {
+                Console.WriteLine(p);
+            }
         }
     }
 }

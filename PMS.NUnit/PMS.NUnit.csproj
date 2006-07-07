@@ -38,6 +38,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PMS.NUnit\RepositoryManagerTest.cs" />
     <Compile Include="PMS.NUnit\PersonDao.cs" />
     <Compile Include="PMS.NUnit\PersonDaoTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -47,9 +48,6 @@
       <Project>{DD828130-E4B7-404F-8F2B-56D1AF2BBC48}</Project>
       <Name>PMS</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="repository.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -62,7 +60,6 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>copy /Y "$(ProjectDir)repository.xml" "$(ProjectDir)$(OutDir)repository.xml
-copy /Y "$(SolutionDir)PMS\dll.config"  "$(TargetDir)PMS.dll.config"</PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(SolutionDir)PMS\dll.config"  "$(TargetDir)PMS.dll.config"</PostBuildEvent>
   </PropertyGroup>
 </Project>

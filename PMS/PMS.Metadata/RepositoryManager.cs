@@ -87,11 +87,21 @@ namespace PMS.Metadata
 
         public static Class GetClass(Type type)
         {
-            foreach (Class classDesc in Repository.Classes)
-                if (classDesc.Name.Equals(type.ToString()))
-                    return (Class) classDesc;
-            
-            //throw new ClassNotFoundException(Resource.Format("PMS100", type));
+            foreach (Class cdesc in Repository.Classes)
+                if (cdesc.Name.Equals(type.ToString()))
+                    return cdesc;
+
+            throw new ApplicationException(type + " Not Found in Repository");
+        }
+
+        public static Type GetClassListType(Type type)
+        {
+            string sType = type.ToString();
+
+            foreach (Class cdesc in Repository.Classes)
+                if (cdesc.Name.Equals(sType))
+                    return cdesc.ListType;
+
             throw new ApplicationException(type + " Not Found in Repository");
         }
         
@@ -113,9 +123,8 @@ namespace PMS.Metadata
         public static bool Load(string file)
         {
             file = Path.GetFullPath(file);
+
             if (File.Exists(file) == false) {
-                //throw new FileNotFoundException(Resource.Format("PMS101", 
-                //                                                file));
                 throw new FileNotFoundException(file);
             }
 

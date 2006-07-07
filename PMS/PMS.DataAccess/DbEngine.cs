@@ -89,7 +89,7 @@ namespace PMS.DataAccess
         /// </summary>
         /// <param name="query">Query to perform</param>
         /// <returns>Instantiated classes or null</returns>
-        public static object[] ExecuteSelectList(IQuery query)
+        public static object[] ExecuteSelectArray(IQuery query)
         {
             IDataReader reader = null;
             IDbCommand cmd = null;
@@ -102,9 +102,7 @@ namespace PMS.DataAccess
                 reader = cmd.ExecuteReader();
                 metaObject = new MetaObject(query.Type);
                 
-                list = metaObject.MaterializeList(reader);
-
-                return list;
+                return metaObject.MaterializeArray(reader);
             } catch (InvalidOperationException) {
                 return null;
             } finally {
@@ -121,20 +119,45 @@ namespace PMS.DataAccess
         }
 
         /// <summary>
+        /// Execute SQL built by IQuery and return instantiated classes inside CollectionBase
+        /// </summary>
+        /// <param name="query">Query to perform</param>
+        /// <returns>CollectionBase of instantiated classes</returns>
+        public static IList ExecuteSelectList(IQuery query)
+        {
+            IDataReader reader = null;
+            IDbCommand cmd = null;
+            MetaObject metaObject = null;
+
+            try {
+                cmd = dbManager.GetCommand(query.Select(), AccessMode.Read);
+                reader = cmd.ExecuteReader();
+                metaObject = new MetaObject(query.Type);
+
+                return metaObject.MaterializeList(reader);
+            } catch (InvalidOperationException) {
+                return null;
+            } finally {
+                if (cmd != null) {
+                    if (log.IsDebugEnabled)
+                        log.Debug("SQL = " + cmd.CommandText);
+                }
+                if (reader != null) {
+                    reader.Close();
+                    reader = null;
+                }
+                query = null;
+            }
+        }
+
+        /// <summary>
         /// Delete object
         /// </summary>
         /// <param name="obj">Object to delete</param>
         /// <returns>Result of query</returns>
         public static DbResult ExecuteDelete(object obj)
         {
-            IQuery query = null;
-
-            try {
-                query = new QueryByObject(obj);
-                return ExecuteNonQuery(query.Delete());
-            } catch (Exception e) {
-                throw e;
-            } 
+            return ExecuteNonQuery((new QueryByObject(obj)).Delete());
         }
 
         /// <summary>
@@ -144,14 +167,9 @@ namespace PMS.DataAccess
         /// <returns>Result of query</returns>
         public static DbResult ExecuteDelete(Type type)
         {
-            IQuery query = null;
+            IQuery query = query = new QueryByType(type);
 
-            try {
-                query = new QueryByType(type);
-                return ExecuteNonQuery(query.Delete());
-            } catch (Exception e) {
-                throw e;
-            } 
+            return ExecuteNonQuery(query.Delete());
         }
 
         /// <summary>

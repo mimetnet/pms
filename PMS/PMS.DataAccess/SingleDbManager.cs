@@ -121,7 +121,7 @@ namespace PMS.DataAccess
                 Stop();
 
             Connection conn = RepositoryManager.DefaultConnection;
-            pool = new ConnectionPool(conn.Type, conn.String, conn.PoolSize);
+            pool = new ConnectionPool(conn.Type, conn.Value, conn.PoolSize);
             pool.Open();
 
             isInit = true;

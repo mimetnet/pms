@@ -9,6 +9,7 @@ namespace PMS.Metadata
 {
     internal sealed class MetaObject
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private static Hashtable fieldCache = new Hashtable();
         private IProvider provider = null;
         private Object obj = null;
@@ -63,7 +64,7 @@ namespace PMS.Metadata
             return null;
         }
 
-        public object[] MaterializeList(IDataReader reader)
+        public object[] MaterializeArray(IDataReader reader)
         {
             ArrayList list = new ArrayList();
 
@@ -76,6 +77,24 @@ namespace PMS.Metadata
             }
 
             return (object[])list.ToArray(type);
+        }
+
+        public IList MaterializeList(IDataReader reader)
+        {
+            Type listType = null;
+            IList list = null;
+
+            listType = RepositoryManager.GetClassListType(this.type);
+            list = (IList) Activator.CreateInstance(listType);
+
+            try {
+                while (reader.Read())
+                    list.Add(PopulateObject(CreateObject(), reader));
+            } catch (Exception e) {
+                Console.WriteLine("MaterializeList :: " + e.Message);
+            }
+
+            return list;
         }
 
         private object CreateObject()
