@@ -114,5 +114,23 @@ namespace PMS.NUnit
                 Console.WriteLine(p);
             }
         }
+
+        [Test]
+        public void G_GetObjectList_Bad()
+        {
+            Criteria crit = new Criteria(typeof(Person));
+            crit.AndEqualTo("does_not_exist", "blah");
+
+            Assert.AreEqual(broker.GetObjectList(new QueryByCriteria(crit)), null);
+        }
+
+        [Test]
+        public void G_GetOblistArray_Bad()
+        {
+            Criteria crit = new Criteria(typeof(Person));
+            crit.AndEqualTo("does_not_exist", "blah");
+
+            Assert.AreEqual(broker.GetObjectArray(new QueryByCriteria(crit)), null);
+        }
     }
 }

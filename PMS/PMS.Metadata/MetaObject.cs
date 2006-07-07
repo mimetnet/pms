@@ -64,6 +64,11 @@ namespace PMS.Metadata
             return null;
         }
 
+        /// <summary>
+        /// Convert IDataReader to object[]
+        /// </summary>
+        /// <param name="reader">List of results to create objects from</param>
+        /// <returns>Empty or full Object[] list</returns>
         public object[] MaterializeArray(IDataReader reader)
         {
             ArrayList list = new ArrayList();
@@ -72,20 +77,29 @@ namespace PMS.Metadata
                 while (reader.Read())
                     list.Add(PopulateObject(CreateObject(), reader));
             } catch (Exception e) {
-                Console.WriteLine("MaterializeList :: " + e.Message);
-                throw e;
+                log.Error("MaterializeList", e);
             }
 
             return (object[])list.ToArray(type);
         }
 
+        /// <summary>
+        /// Convert IDataReader to IList of Objects
+        /// </summary>
+        /// <param name="reader">List of Results to create objects from</param>
+        /// <returns>IList is null if list/@type is invalid, otherwise its always an IList</returns>
         public IList MaterializeList(IDataReader reader)
         {
             Type listType = null;
             IList list = null;
 
-            listType = RepositoryManager.GetClassListType(this.type);
-            list = (IList) Activator.CreateInstance(listType);
+            try {
+                listType = RepositoryManager.GetClassListType(this.type);
+                list = (IList) Activator.CreateInstance(listType);
+            } catch (Exception e) {
+                log.Error("MaterializeList", e);
+                return null;
+            }
 
             try {
                 while (reader.Read())

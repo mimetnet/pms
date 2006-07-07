@@ -103,7 +103,8 @@ namespace PMS.DataAccess
                 metaObject = new MetaObject(query.Type);
                 
                 return metaObject.MaterializeArray(reader);
-            } catch (InvalidOperationException) {
+            } catch (Exception e) {
+                log.Error("ExecuteSelectArray", e);
                 return null;
             } finally {
                 if (cmd != null) {
@@ -135,7 +136,8 @@ namespace PMS.DataAccess
                 metaObject = new MetaObject(query.Type);
 
                 return metaObject.MaterializeList(reader);
-            } catch (InvalidOperationException) {
+            } catch (Exception e) {
+                log.Error("ExecuteSelectArray", e);
                 return null;
             } finally {
                 if (cmd != null) {
