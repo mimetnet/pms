@@ -4,7 +4,7 @@ using System.Data;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace PMS.NUnit
+namespace PMS.NUnit.Model
 {
     /// <summary>
     /// PersonCollection Class

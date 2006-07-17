@@ -7,3 +7,7 @@ PMS.Setup/Release
 PMS.Setup/Debug
 PMS.suo
 Desktop.ini
+PMS.NUnit.Model\bin
+PMS.NUnit.Model\obj
+bin
+obj

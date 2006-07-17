@@ -83,7 +83,7 @@ namespace PMS.Metadata
         public static Class GetClass(Type type)
         {
             foreach (Class cdesc in Repository.Classes) {
-                if (cdesc.Name == type.ToString()) {
+                if (cdesc.Name.Equals(type.ToString())) {
                     return cdesc;
                 }
             }

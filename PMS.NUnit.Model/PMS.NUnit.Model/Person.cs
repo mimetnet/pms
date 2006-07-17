@@ -3,7 +3,7 @@ using System.Data;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace PMS.NUnit
+namespace PMS.NUnit.Model
 {
     /// <summary>
     /// Person class 
@@ -131,9 +131,6 @@ namespace PMS.NUnit
 			get { return mCreationDate; }
 			set { mCreationDate = value;}
 		}
-
-
-
     }
  
 }

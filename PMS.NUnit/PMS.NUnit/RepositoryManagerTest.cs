@@ -4,11 +4,12 @@ using System.Collections;
 using PMS.Metadata;
 
 using NUnit.Framework;
+using PMS.NUnit.Model;
 
 namespace PMS.NUnit
 {
 
-    [TestFixture]
+    [TestFixture(Description="Create, Read, and Compare repository.xml files")]
     public class A_RepositoryManagerTest
     {
         private Repository r1 = null;
@@ -19,7 +20,7 @@ namespace PMS.NUnit
         {
             r1 = new Repository();
 
-            string sConn = "Server=localhost;Database=jupiter;User ID=granny;Password=chinwag;Pooling=false";
+            string sConn = "Server=10.5.4.20;Database=jupiter;User ID=granny;Password=all_your_base;Pooling=false";
 
             r1.Connections.Add(new Connection("1", sConn, typeof(Npgsql.NpgsqlConnection)));
 
@@ -51,18 +52,12 @@ namespace PMS.NUnit
             r2 = RepositoryManager.Repository;
             Class c2 = r2.Classes[0] as Class;
 
-            Assert.AreEqual(c1.Name, c2.Name);
-            Assert.AreEqual(c1.Table, c2.Table);
-            Assert.AreEqual(c1.ListType, c2.ListType);
+            Assert.AreEqual(c1, c2);
 
             Field f1 = c1.Fields[0];
             Field f2 = c2.Fields[0];
 
-            Assert.AreEqual(f1.Name, f2.Name);
-            Assert.AreEqual(f1.Column, f2.Column);
-            Assert.AreEqual(f1.DbType, f2.DbType);
-            Assert.AreEqual(f1.IgnoreDefault, f2.IgnoreDefault);
-            Assert.AreEqual(f1.PrimaryKey, f2.PrimaryKey);
+            Assert.AreEqual(f1, f2);
 
             Connection conn1 = r1.Connections[0] as Connection;
             Connection conn2 = r2.Connections[0] as Connection;

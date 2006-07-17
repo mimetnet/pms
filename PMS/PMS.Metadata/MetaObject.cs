@@ -95,6 +95,8 @@ namespace PMS.Metadata
 
             try {
                 listType = RepositoryManager.GetClassListType(this.type);
+                Console.WriteLine("this.type : " + this.type.ToString());
+                Console.WriteLine("listType : " + listType.ToString());
                 list = (IList) Activator.CreateInstance(listType);
             } catch (Exception e) {
                 log.Error("MaterializeList", e);
@@ -107,7 +109,6 @@ namespace PMS.Metadata
             } catch (Exception e) {
                 Console.WriteLine("MaterializeList :: " + e.Message);
             }
-
             return list;
         }
 

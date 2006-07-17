@@ -223,5 +223,61 @@ namespace PMS.Metadata
         }
 
         #endregion
+
+        #region ObjectOverloads
+
+        ///<summary>
+        ///OverLoading == operator
+        ///</summary> 
+        public static bool operator ==(Class obj1, Class obj2)
+        {
+            if (Object.ReferenceEquals(obj1, obj2)) return true;
+            if (Object.ReferenceEquals(obj1, null)) return false;
+            if (Object.ReferenceEquals(obj2, null)) return false;
+
+            if (obj1.Name != obj2.Name) return false;
+            if (obj1.Table != obj2.Table) return false;
+            if (obj1.ListType != obj2.ListType) return false;
+            if (obj1.PrimaryKeys.Length != obj2.PrimaryKeys.Length) return false;
+            if (obj1.Fields.Length != obj2.Fields.Length) return false;
+
+            return true;
+        }
+
+        ///<summary>
+        ///OverLoading != operator
+        ///</summary> 
+        public static bool operator !=(Class obj1, Class obj2)
+        {
+            return !(obj1 == obj2);
+        }
+
+        ///<summary>
+        ///Overriden Equals
+        ///</summary> 
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Class)) return false;
+
+            return this == (Class)obj;
+        }
+
+        ///<summary>
+        ///ToString()
+        ///</summary> 
+        public override string ToString()
+        {
+            return String.Format("[Class (Name={0}) (Table={1}) (Type={2})]", Name, Table, ListType);
+        }
+
+        ///<summary>
+        ///Overriden GetHashCode()
+        ///</summary> 
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
+        } 
+
+        #endregion
     }
 }

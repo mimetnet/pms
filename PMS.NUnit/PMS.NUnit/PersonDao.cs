@@ -8,6 +8,8 @@ using PMS.Broker;
 using PMS.Query;
 using PMS.DataAccess;
 
+using PMS.NUnit.Model;
+
 namespace PMS.NUnit
 {
     public sealed class PersonDao
