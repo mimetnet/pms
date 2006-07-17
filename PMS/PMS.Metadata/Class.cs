@@ -78,8 +78,8 @@ namespace PMS.Metadata
         }
 
         public Type ListType {
-            get { return listType; }
-            set { listType = value; }
+            get { return this.listType; }
+            set { this.listType = value; }
         }
 
         public Collection[] Collections {
@@ -135,11 +135,10 @@ namespace PMS.Metadata
 
         public void ReadXml(System.Xml.XmlReader reader)
         {
-            reader.Read();
-            reader.MoveToElement();
-
-            if (reader.Name != "class")
+            if (reader.Name != "class") {
+                Console.WriteLine("ReadXml did not find <class> tag, but <{0}> instead", reader.Name);
                 return;
+            }
 
             this.Name = reader.GetAttribute("name");
             this.Table = reader.GetAttribute("table");
@@ -149,26 +148,30 @@ namespace PMS.Metadata
 
                 if (reader.LocalName == "list") {
                     if (reader.HasAttributes) {
-                        this.ListType = LoadType(reader["type"], reader["assembly"]);
+                        this.listType = LoadType(reader["type"], reader["assembly"]);
                     }
-                    continue;
-                }
-
-                if (reader.LocalName == "field") {
+                } else if (reader.LocalName == "field") {
                     Field f = new Field(reader["name"], reader["column"], reader["db_type"]);
 
                     string pk = reader["primarykey"];
                     string ig = reader["ignore_default"];
 
-                    if (pk != null) {
-                        f.PrimaryKey = Convert.ToBoolean(pk);
+                    if (pk != null && (pk == "true" || pk == "True" || pk == "TRUE" || pk == "1")) {
+                        f.PrimaryKey = true;
                     }
 
-                    if (ig != null) {
-                        f.IgnoreDefault = Convert.ToBoolean(ig);
+                    if (ig != null && (ig == "true" || ig == "True" || ig == "TRUE" || ig == "1")) {
+                        f.IgnoreDefault = true;
                     }
                     
                     fields.Add(f);
+                    f = null;
+                } else {
+                    // WEIRDNESS
+                    // break out on new <class> element so not instance can handle it
+                    if (reader.LocalName == "class" && reader.IsStartElement("class"))
+                        return;
+
                 }
             }
         }
@@ -194,8 +197,6 @@ namespace PMS.Metadata
         /// <param name="writer">XmlWriter</param>
         public void WriteXml(System.Xml.XmlWriter writer)
         {
-            writer.WriteStartElement("class");
-
             writer.WriteAttributeString("name", this.Name);
             writer.WriteAttributeString("table", this.Table);
 
@@ -219,7 +220,6 @@ namespace PMS.Metadata
             }
 
             writer.WriteEndElement(); // end fields
-            writer.WriteEndElement(); // end class
         }
 
         #endregion

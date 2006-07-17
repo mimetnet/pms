@@ -1,6 +1,9 @@
 using System;
+using System.Data;
+using System.Collections;
 
 using PMS.Data;
+using PMS.DataAccess;
 using PMS.Broker;
 using PMS.Query;
 
@@ -15,6 +18,7 @@ namespace PMS.NUnit
         private IPersistenceBroker broker = null;
         private Person person = null;
         private PersonDao dao = null;
+        private int pid = 0;
 
         public B_PersonDaoTest()
         {
@@ -68,25 +72,86 @@ namespace PMS.NUnit
         }
 
         [Test]
-        public void B_Insert()
+        public void B_Insert_GetIdSequence()
         {
-            Assert.AreEqual(1, broker.Insert(person).Count);
+            IDbCommand cmd = DbEngine.GetCommand("SELECT nextval('person_id_seq')", AccessMode.Write);
+            object obj = cmd.ExecuteScalar();
+
+            Assert.IsNotNull(obj, "Object is null");
+            Assert.IsInstanceOfType(typeof(Int64), obj);
+
+            Int64 id = (Int64)obj;
+
+            this.pid = Convert.ToInt32(id);
+
+            Assert.Greater(this.pid, 0);
+        }
+
+        [Test]
+        public void B_Insert_WithIdSequence()
+        {
+            this.person.ID = pid;
+
+            Assert.AreEqual(1, broker.Insert(this.person).Count);
+        }
+
+        [Test]
+        public void C_GetObject_QueryByObjectPrimaryKey()
+        {
+            Person ps = new Person();
+            ps.ID = this.pid;
+
+            Object obj = broker.GetObject(new QueryByObject(ps));
+
+            Assert.IsNotNull(obj, "Person is null");
+            Assert.IsInstanceOfType(typeof(Person), obj, "Object is not Person");
+
+            Person p = obj as Person;
+
+            Assert.Greater(p.ID, 0, "Person.ID !> 0");
+        }
+
+
+        [Test]
+        public void C_GetObject_QueryByObjectFields()
+        {
+            Object obj = broker.GetObject(new QueryByObject(this.person));
+
+            Assert.IsNotNull(obj, "Person is null");
+            Assert.IsInstanceOfType(typeof(Person), obj, "Object is not Person");
+
+            Person p = obj as Person;
+
+            Assert.Greater(p.ID, 0, "Person.ID !> 0");
+        }
+
+        [Test]
+        public void C_GetObject_QueryByType()
+        {
+            Object obj = broker.GetObject(new QueryByType(typeof(Person)));
+
+            Assert.IsNotNull(obj, "Person is null");
+            Assert.IsInstanceOfType(typeof(Person), obj, "Object is not Person");
         }
 
         [Test]
         public void C_GetObjectList()
         {
-            int len = broker.GetObjectList(new QueryByType(typeof(Person))).Count;
+            IList pc = broker.GetObjectList(new QueryByType(typeof(Person)));
 
-            Assert.Greater(len, 0);
+            Assert.IsNotNull(pc, "PersonCollection is null");
+            Assert.IsInstanceOfType(typeof(PersonCollection), pc);
+            Assert.Greater(pc.Count, 0);
         }
 
         [Test]
-        public void D_GetObjectArray()
+        public void C_GetObjectArray()
         {
-            int len = broker.GetObjectArray(new QueryByType(typeof(Person))).Length;
+            object[] pc = broker.GetObjectArray(new QueryByType(typeof(Person)));
 
-            Assert.Greater(len, 0);
+            Assert.IsNotNull(pc, "Person[] is null");
+            Assert.IsInstanceOfType(typeof(Person[]), pc);
+            Assert.Greater(pc.Length, 0);
         }
 
         [Test]

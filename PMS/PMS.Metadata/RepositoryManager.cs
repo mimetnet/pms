@@ -76,20 +76,17 @@ namespace PMS.Metadata
 
         public static Field GetField(Type type, FieldInfo fieldInfo)
         {
-            Field field = GetClass(type).GetField(fieldInfo);
-            if (field != null)
-                return field;
-
-            return null;
-
-            // if strict throw Exception();
+            return GetClass(type).GetField(fieldInfo);
+            // if NULL && strict throw Exception();
         }
 
         public static Class GetClass(Type type)
         {
-            foreach (Class cdesc in Repository.Classes)
-                if (cdesc.Name.Equals(type.ToString()))
+            foreach (Class cdesc in Repository.Classes) {
+                if (cdesc.Name == type.ToString()) {
                     return cdesc;
+                }
+            }
 
             throw new ApplicationException(type + " Not Found in Repository");
         }

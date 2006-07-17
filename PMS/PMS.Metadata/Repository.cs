@@ -10,8 +10,8 @@ namespace PMS.Metadata
         [XmlEnum("Replication")] Replication = 1
     };
 
-    [XmlRootAttribute("repository")]
-    public class Repository
+    [XmlRoot("repository")]
+    public sealed class Repository //: IXmlSerializable
     {
         [XmlElementAttribute("dbmanager-mode", typeof(DbManagerMode))]
         public DbManagerMode DbManagerMode;
@@ -54,5 +54,26 @@ namespace PMS.Metadata
 
             return c;
         }
+
+        /**
+        #region IXmlSerializable Members
+
+        public System.Xml.Schema.XmlSchema GetSchema()
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        public void ReadXml(System.Xml.XmlReader reader)
+        {
+            
+        }
+
+        public void WriteXml(System.Xml.XmlWriter writer)
+        {
+            
+        }
+
+        #endregion
+        **/
     }
 }

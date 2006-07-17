@@ -94,7 +94,6 @@ namespace PMS.DataAccess
             IDataReader reader = null;
             IDbCommand cmd = null;
             MetaObject metaObject = null;
-            Object[] list;
 
             try {
                 cmd = dbManager.GetCommand(query.Select(),

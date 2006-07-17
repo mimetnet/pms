@@ -19,18 +19,19 @@ namespace PMS.NUnit
         {
             r1 = new Repository();
 
-            string sConn = "Server=10.5.4.111;Database=jupiter;User ID=dha;Password=123;Pooling=false";
+            string sConn = "Server=localhost;Database=jupiter;User ID=granny;Password=chinwag;Pooling=false";
 
             r1.Connections.Add(new Connection("1", sConn, typeof(Npgsql.NpgsqlConnection)));
 
             ArrayList fields = new ArrayList();
-            fields.Add(new Field("id", "id", "int4", true, true));
-            fields.Add(new Field("firstName", "first_name", "varchar"));
-            fields.Add(new Field("lastName", "last_name", "varchar"));
-            fields.Add(new Field("email", "email", "varchar"));
-            fields.Add(new Field("cdate", "creation_date", "timestamp", true));
+            fields.Add(new Field("mID", "id", "int4", true, true));
+            fields.Add(new Field("mFirstName", "first_name", "varchar"));
+            fields.Add(new Field("mLastName", "last_name", "varchar"));
+            fields.Add(new Field("mEmail", "email", "varchar"));
+            fields.Add(new Field("mCreationDate", "creation_date", "timestamp", true));
 
             r1.Classes.Add(new Class(typeof(Person), "person", fields, typeof(PersonCollection)));
+            r1.Classes.Add(new Class(typeof(Person), "human", fields, typeof(PersonCollection)));
         }
 
         [Test(Description="Write To Xml")]

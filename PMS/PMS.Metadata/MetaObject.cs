@@ -148,6 +148,7 @@ namespace PMS.Metadata
             return obj;
         }
 
+        /** PopulateObject2
         private object PopulateObject2(object obj, IDataReader reader)
         {
             Class classDesc = RepositoryManager.GetClass(type);
@@ -172,6 +173,7 @@ namespace PMS.Metadata
             
             return obj;
         }
+        **/
 
         public FieldInfo[] TypeFields {
             get {
@@ -212,8 +214,8 @@ namespace PMS.Metadata
         public string[] PrimaryKeys {
             get {
                 ArrayList keys = new ArrayList();
-                Class classDesc = RepositoryManager.GetClass(type);
-                foreach (Field field in classDesc.PrimaryKeys) {
+                Class cdesc = RepositoryManager.GetClass(type);
+                foreach (Field field in cdesc.PrimaryKeys) {
                     if (field.PrimaryKey == true) {
                         keys.Add(field.Column);
                     }

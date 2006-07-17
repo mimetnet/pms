@@ -202,7 +202,7 @@ namespace PMS.Collections.Pool
         /// <summary>
         /// Wraps an object in the Pool
         /// </summary>
-        protected class Item
+        public sealed class Item
         {
             /// <summary>
             /// Contains the element in the pool

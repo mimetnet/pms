@@ -38,6 +38,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PMS.NUnit\Person.cs" />
+    <Compile Include="PMS.NUnit\PersonCollection.cs" />
     <Compile Include="PMS.NUnit\RepositoryManagerTest.cs" />
     <Compile Include="PMS.NUnit\PersonDao.cs" />
     <Compile Include="PMS.NUnit\PersonDaoTest.cs" />

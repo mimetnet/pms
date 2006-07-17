@@ -17,12 +17,8 @@ namespace PMS.Query
         /// Construct with object
         /// </summary>
         /// <param name="obj">Object used to create SQL from</param>
-        public QueryByObject(Object obj)
+        public QueryByObject(Object obj) : this (obj, null)
         {
-            metaObject = new MetaObject(obj);
-            criteria   = new Criteria(obj.GetType());
-            columns    = metaObject.Columns;
-            keys       = metaObject.PrimaryKeys;
         }
 
         /// <summary>
@@ -32,10 +28,10 @@ namespace PMS.Query
         /// <param name="crit">Criteria to append object properties with</param>
         public QueryByObject(Object obj, Criteria crit)
         {
-            metaObject = new MetaObject(obj);
-            criteria   = crit;
-            columns    = metaObject.Columns;
-            keys       = metaObject.PrimaryKeys;
+            this.metaObject = new MetaObject(obj);
+            this.criteria = (crit == null) ? new Criteria(obj.GetType()) : crit;
+            this.columns = metaObject.Columns;
+            this.keys = metaObject.PrimaryKeys;
         }
 
         /// <summary>
@@ -103,14 +99,14 @@ namespace PMS.Query
                 StringBuilder sql1 = new StringBuilder();
                 StringBuilder sql2 = new StringBuilder();
 
-                for (int i=0; i < keys.Length; i++) {
-                    if (metaObject.IsFieldSet(keys[i])) {
+                for (int i=0; i < this.keys.Length; i++) {
+                    if (metaObject.IsFieldSet(this.keys[i])) {
                         if (i > 0 && keyClause) {
                             sql1.Append(", ");
                             sql2.Append(", ");
                         }
-                        sql1.Append(keys[i]);
-                        sql2.Append(metaObject.GetSqlValue(keys[i]));
+                        sql1.Append(this.keys[i]);
+                        sql2.Append(metaObject.GetSqlValue(this.keys[i]));
                         keyClause = true;
                     }
                 }
