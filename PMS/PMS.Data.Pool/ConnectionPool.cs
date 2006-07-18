@@ -9,25 +9,23 @@ namespace PMS.Data.Pool
     internal sealed class ConnectionPool
     {
         private ManagedObjectPool pool;
-        private const Int32 DEFAULT_NUM = 5;
+        private const Int32 DEFAULT_OPEN = 5;
         private IProvider provider;
-        private String connString;
+        private String sConn;
         private Type type = null;
-        private Int32 defaultMaxConns = ConnectionPool.DEFAULT_NUM;
+        private Int32 maxOpen = ConnectionPool.DEFAULT_OPEN;
 
         public ConnectionPool(Type type, string sConn)
-            : this(type, sConn, ConnectionPool.DEFAULT_NUM)
+            : this(type, sConn, ConnectionPool.DEFAULT_OPEN)
         {
         }
 
         public ConnectionPool(Type type, string sConn, int max)
         {
             this.provider = PMS.Data.ProviderFactory.Factory(type);
-            this.connString = sConn;
-            this.defaultMaxConns = max;
+            this.sConn = sConn;
+            this.maxOpen = max;
             this.type = type;
-
-            //Console.WriteLine("ConnectionPool({0}, '*****', {1})", type, max);
         }
 
         public IDbConnection GetConnection()
@@ -35,20 +33,20 @@ namespace PMS.Data.Pool
             IDbConnection conn = (IDbConnection) pool.Borrow();
             
             switch (conn.State) {
-            case ConnectionState.Open:
-                return conn;
+                case ConnectionState.Open:
+                    return conn;
 
-            case ConnectionState.Closed:
-                conn.Open();
-                return conn;
+                case ConnectionState.Closed:
+                    conn.Open();
+                    return conn;
 
-            case ConnectionState.Broken:
-                DestroyConnection(conn);
-                break;
+                case ConnectionState.Broken:
+                    DestroyConnection(conn);
+                    break;
 
-            default:
-                ReturnConnection(conn);
-                break;
+                default:
+                    ReturnConnection(conn);
+                    break;
             }
             
             return GetConnection();
@@ -57,49 +55,48 @@ namespace PMS.Data.Pool
         public void DestroyConnection(IDbConnection conn)
         {
             if (conn != null) {
+                Console.WriteLine("\n\n\nDestroyConnection");
                 conn.Close();
-                if (pool.Count < defaultMaxConns)
-                    pool.Remove(CreateConnection());
+                pool.Remove(conn);
+                if (pool.Count < maxOpen) {
+                    Console.WriteLine("Adding new to replace");
+                    pool.Add(CreateConnection());
+                }
             }
         }
 
         public void ReturnConnection(IDbConnection conn)
         {
-            try {
-                pool.Return(conn);
-            } catch (Exception) {
-				//Console.WriteLine(e);
-            }
+            pool.Return(conn);
         }
 
         private IDbConnection CreateConnection()
         {
-            IDbConnection connection = provider.GetConnection(connString);
-            connection.Open();
+            IDbConnection connection = provider.GetConnection(sConn);
+            //connection.Open();
 
             return connection;
         }
 
         public void Open()
         {
-            pool = new ManagedObjectPool(defaultMaxConns, "Close");
-            //Console.WriteLine("ConnectionPool.Open()");
-            for (int i=0; i < defaultMaxConns; i++) {
+            pool = new ManagedObjectPool(maxOpen, "Close");
+            for (int i=0; i < maxOpen; i++) {
                 pool.Add(CreateConnection());
             }
         }
 
         public void Close()
         {
-            //Console.WriteLine("ConnectionPool.Close()");
-            if (pool != null) pool.Close();
+            if (pool != null) 
+                pool.Close();
         }
 
         ~ConnectionPool()
         {
             Close();
             pool = null;
-            connString = null;
+            sConn = null;
         }
     }
 }

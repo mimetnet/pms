@@ -5,13 +5,13 @@ namespace PMS.Data
 {
     internal interface IProvider
     {
-        object PrepareSqlValue(string dbType, object value);
-        object PrepareSqlString(object value);
-        object PrepareSqlBoolean(object value);
-        object PrepareSqlAutoIncrement(object value);
-        object PrepareSqlTimestamp(object value);
-        object PrepareSqlDate(object value);
-        object PrepareSqlBit(object value);
+        string PrepareSqlValue(string dbType, object value);
+        string PrepareSqlString(object value);
+        string PrepareSqlBoolean(object value);
+        string PrepareSqlAutoIncrement(object value);
+        string PrepareSqlTimestamp(object value);
+        string PrepareSqlDate(object value);
+        string PrepareSqlBit(object value);
         
         // ---------------------------------------------------------------
 

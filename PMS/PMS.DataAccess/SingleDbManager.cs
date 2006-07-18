@@ -30,43 +30,23 @@ namespace PMS.DataAccess
             }
         }
 
-        /// <summary>
-        /// Retrieve IDbCommand at from pool based on AccessMode (Read|Write)
-        /// and sets the IDbCommand.CommandText = sql
-        /// </summary>
-        /// <param name="sql">SQL</param>
-        /// <param name="mode">AccessMode</param>
-        /// <returns>IDbCommand instance</returns>
-        public IDbCommand GetCommand(string sql, AccessMode mode)
+        private SingleDbManager()
         {
-            IDbCommand cmd = CurrentConnection.CreateCommand();
-            cmd.CommandText = sql;
-
-            return cmd;
         }
 
-        /// <summary>
-        /// Retrieve IDbCommand at from pool based on AccessMode (Read|Write)
-        /// </summary>
-        /// <param name="mode">AccessMode</param>
-        /// <returns>IDbCommand instance</returns>
-        public IDbCommand GetCommand(AccessMode mode)
+        private IDbConnection GetConnection()
         {
-            return CurrentConnection.CreateCommand();
-        }
-        
-        private IDbConnection CurrentConnection {
-            get {
-                if (InTransaction == false) {
+            if (InTransaction == false) {
+                if (connection != null)
                     pool.ReturnConnection(connection);
 
-                    return (connection = pool.GetConnection());
-                } else {
-                    return trans.Connection;
-                }
+                return (connection = pool.GetConnection());
             }
+
+            return trans.Connection;
         }
 
+        #region Transactions
         public bool BeginTransaction()
         {
             if (trans != null)
@@ -76,7 +56,7 @@ namespace PMS.DataAccess
                 connection = pool.GetConnection();
 
             trans = connection.BeginTransaction();
-            
+
 
             return (InTransaction = true);
         }
@@ -107,16 +87,43 @@ namespace PMS.DataAccess
             }
 
             return true;
+        } 
+        #endregion
+
+        #region GetCommand
+        /// <summary>
+        /// Retrieve IDbCommand at from pool based on AccessMode (Read|Write)
+        /// and sets the IDbCommand.CommandText = sql
+        /// </summary>
+        /// <param name="sql">SQL</param>
+        /// <param name="mode">AccessMode</param>
+        /// <returns>IDbCommand instance</returns>
+        public IDbCommand GetCommand(string sql, AccessMode mode)
+        {
+            IDbCommand cmd = GetConnection().CreateCommand();
+            cmd.CommandText = sql;
+
+            return cmd;
         }
 
+        /// <summary>
+        /// Retrieve IDbCommand at from pool based on AccessMode (Read|Write)
+        /// </summary>
+        /// <param name="mode">AccessMode</param>
+        /// <returns>IDbCommand instance</returns>
+        public IDbCommand GetCommand(AccessMode mode)
+        {
+            return GetConnection().CreateCommand();
+        }
+        #endregion
+
+        #region Control
         /// <summary>
         /// Pull default connection information from repository and initialize
         /// the database pool.
         /// </summary>
         public void Start()
         {
-            //Console.WriteLine("SingleDbManager.Start()");
-
             if (isInit)
                 Stop();
 
@@ -124,9 +131,9 @@ namespace PMS.DataAccess
             pool = new ConnectionPool(conn.Type, conn.Value, conn.PoolSize);
             pool.Open();
 
-            isInit = true;
+            //connection = pool.GetConnection();
 
-            connection = pool.GetConnection();
+            isInit = true;
         }
 
         /// <summary>
@@ -134,17 +141,16 @@ namespace PMS.DataAccess
         /// </summary>
         public void Stop()
         {
-            //Console.WriteLine("SingleDbManager.Stop()");
-
             if (connection != null) {
                 pool.ReturnConnection(connection);
             }
-            
+
             if (pool != null)
                 pool.Close();
 
             isInit = false;
-        }
+        } 
+        #endregion
 
         public bool IsInitialized {
             get { return isInit; }

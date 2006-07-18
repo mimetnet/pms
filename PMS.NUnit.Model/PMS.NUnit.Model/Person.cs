@@ -67,7 +67,7 @@ namespace PMS.NUnit.Model
         ///</summary> 
         public override string ToString()
         {
-            return "[ID: "+ mID.ToString() +"] [FirstName: "+ mFirstName.ToString() +"] [LastName: "+ mLastName.ToString() +"] [Email: "+ mEmail.ToString() +"] [CompanyId: "+ mCompanyId.ToString() +"] [CreationDate: "+ mCreationDate.ToString() +"] ";
+            return "[Person (ID: " + mID + ") (FirstName: " + mFirstName + ") (LastName: " + mLastName + ") (Email: " + mEmail + ") (CompanyId: " + mCompanyId + ") (CreationDate: " + mCreationDate + ") ]";
         }
 
         ///<summary>

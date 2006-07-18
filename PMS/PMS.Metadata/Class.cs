@@ -12,6 +12,7 @@ namespace PMS.Metadata
         public string Name;
         public string Table;
 
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private ArrayList fields = new ArrayList();
         private ArrayList references = new ArrayList();
         private ArrayList collections = new ArrayList();
@@ -136,12 +137,16 @@ namespace PMS.Metadata
         public void ReadXml(System.Xml.XmlReader reader)
         {
             if (reader.Name != "class") {
-                Console.WriteLine("ReadXml did not find <class> tag, but <{0}> instead", reader.Name);
+                log.Error("Class:ReadXml did not find <class> tag, but <" + reader.Name + "> instead");
                 return;
             }
 
             this.Name = reader.GetAttribute("name");
             this.Table = reader.GetAttribute("table");
+
+            //if (log.IsDebugEnabled) {
+            //    log.Debug("<class name=" + this.Name + " table=" + this.Table + ">");
+            //}
 
             while (reader.Read()) {
                 reader.MoveToElement();
@@ -165,6 +170,11 @@ namespace PMS.Metadata
                     }
                     
                     fields.Add(f);
+
+                    //if (log.IsDebugEnabled) {
+                    //    log.Debug("\t<field name=" + f.Name + " column=" + f.Column + " db_type=" + f.DbType + " primarykey=" + f.PrimaryKey + " ignore_default=" + f.IgnoreDefault + " >");
+                    //}
+
                     f = null;
                 } else {
                     // WEIRDNESS
@@ -178,15 +188,23 @@ namespace PMS.Metadata
 
         private Type LoadType(string stype, string sassembly)
         {
-            if (sassembly == null || sassembly == String.Empty)
+            if (sassembly == null || sassembly == String.Empty) {
+                if (log.IsInfoEnabled)
+                    log.Info("Class:LoadType @assembly is empty or missing");
                 return null;
+            }
 
-            if (stype == null || stype == String.Empty)
+            if (stype == null || stype == String.Empty) {
+                if (log.IsInfoEnabled)
+                    log.Info("Class:LoadType @type is empty or missing");
                 return null;
+            }
 
             try {
                 return Assembly.Load(sassembly).GetType(stype, false);
-            } catch (Exception) {
+            } catch (Exception e) {
+                if (log.IsInfoEnabled)
+                    log.Info("Class:LoadType", e);
                 return null;
             }
         }

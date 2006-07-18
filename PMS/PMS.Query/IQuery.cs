@@ -10,7 +10,7 @@ namespace PMS.Query
 
         SqlCommand Command { get; set; }
 
-        string Selection { get; }
+        string Selection { get; set; }
 
         string Table { get; }
 
@@ -29,6 +29,9 @@ namespace PMS.Query
         string Delete();
         string Select();
         string Count();
+
+        bool IsValid { get; }
+        Exception ValidationException { get; }
 
         Criteria Criteria { get; set;}
     }

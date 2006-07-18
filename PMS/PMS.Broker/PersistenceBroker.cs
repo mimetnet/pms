@@ -20,7 +20,8 @@ namespace PMS.Broker
         private string R_FILE = "repository.xml";
         private const string R_KEY = "PMS.Repository";
         private static PersistenceBroker _instance = null;
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog log = 
+            log4net.LogManager.GetLogger("PMS.Broker.PersistenceBroker");
         #endregion
 
         #region Construct/Destruct
@@ -129,7 +130,7 @@ namespace PMS.Broker
         /// <returns>CollectionBase of instantiated classes</returns>
         public IList GetObjectList(Type type)
         {
-            return DbEngine.ExecuteSelectList(new QueryByObject(type));
+            return this.GetObjectList(new QueryByType(type));
         }
 
         /// <summary>

@@ -6,7 +6,9 @@ namespace PMS.Collections.Pool
 {
     public sealed class ManagedObjectPool
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog log = 
+            log4net.LogManager.GetLogger("PMS.Collections.Pool.ManagedObjectPool");
+        
 
         private int max;
         private int index = -1;
@@ -38,7 +40,7 @@ namespace PMS.Collections.Pool
         {
             this.max = max;
             this.cleanup = sFree;
-            this.pool = new ArrayList();
+            this.pool = new ArrayList();   
         }
         
         /// <summary>
@@ -145,8 +147,8 @@ namespace PMS.Collections.Pool
         }         
 
         /// <summary>
-        /// Objects to clean are passed by reference and reflection is
-        /// invoked 
+        /// Objects to clean are passed by reference and closing 
+        /// method is invoked via reflection.
         /// </summary>
         /// <param name="obj">Element by ref to clean</param>
         public void CleanObject(ref Object obj)

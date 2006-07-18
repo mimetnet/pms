@@ -7,9 +7,10 @@ namespace PMS.Metadata
 {
     public class RepositoryManager
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private static XmlSerializer serializer = new XmlSerializer(typeof(Repository));
         private static Repository repository = new Repository();
-        private static Connection _currentConnection = null;
+        private static Connection cConn = null;
         private static bool isLoaded = false;
         
         public static Repository Repository {
@@ -38,11 +39,11 @@ namespace PMS.Metadata
 
         public static Connection CurrentConnection {
             get { 
-                if (_currentConnection == null)
-                    _currentConnection = DefaultConnection;
-                return _currentConnection; 
+                if (cConn == null)
+                    cConn = DefaultConnection;
+                return cConn; 
             }
-            set { _currentConnection = value; }
+            set { cConn = value; }
         }
 
         public static bool IsFieldInClass(Type type, string field)
@@ -82,24 +83,36 @@ namespace PMS.Metadata
 
         public static Class GetClass(Type type)
         {
+            string stype = type.ToString();
+
             foreach (Class cdesc in Repository.Classes) {
-                if (cdesc.Name.Equals(type.ToString())) {
+                if (cdesc.Name.Equals(stype)) {
                     return cdesc;
                 }
             }
 
-            throw new ApplicationException(type + " Not Found in Repository");
+            if (log.IsErrorEnabled)
+                log.Error("Type '" + type.FullName + ", " + type.Assembly + "' Not Found in Repository");
+
+            return null;
         }
 
         public static Type GetClassListType(Type type)
         {
-            string sType = type.ToString();
+            Class cdesc = GetClass(type);
 
-            foreach (Class cdesc in Repository.Classes)
-                if (cdesc.Name.Equals(sType))
-                    return cdesc.ListType;
+            if (cdesc != null)
+                return cdesc.ListType;
 
-            throw new ApplicationException(type + " Not Found in Repository");
+            if (log.IsErrorEnabled)
+                log.Error("ListType '" + type + "' Not Found in Repository");
+
+            return null;
+        }
+
+        public static bool Exists(Type type)
+        {
+            return (GetClass(type) != null) ? true : false;
         }
         
         public static bool SaveAs(string fileName)
@@ -139,10 +152,7 @@ namespace PMS.Metadata
         }
 
         public static bool IsLoaded {
-            get {
-                return isLoaded;
-            }
+            get { return isLoaded; }
         }
-
     }
 }

@@ -9,24 +9,13 @@ namespace PMS.Query
 {
     public sealed class Criteria
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private ArrayList clause = null;
         private ArrayList order = null;
-        private string[] columns = null;
-        private string[] keys = null;
         private int limit = -1;
         private uint offset = 0;
 
         internal MetaObject metaObject = null;
-
-        /// <summary>
-        /// Instantiate empty criteria object
-        /// </summary>
-        public Criteria()
-        {
-            clause     = new ArrayList();
-            order      = new ArrayList();
-            metaObject = new MetaObject();
-        }
 
         /// <summary>
         /// Instance criteria object based on type
@@ -37,23 +26,24 @@ namespace PMS.Query
             clause     = new ArrayList();
             order      = new ArrayList();
             metaObject = new MetaObject(type);
-            columns    = metaObject.Columns;
-            keys       = metaObject.PrimaryKeys;
         }
 
-        private object PrepareValue(string field, object value)
+        private string PrepareValue(string field, object value)
         {
-            for (int i = 0; i < columns.Length; i++) {
-                if (field == columns[i]) {
-                    return metaObject.Provider.PrepareSqlValue(metaObject.GetColumnType(columns[i]), value);
+            string dbType;
+            Field[] fs = RepositoryManager.GetClass(metaObject.Type).Fields;
+
+            for (int i = 0; i < fs.Length; i++) {
+                if (field == fs[i].Name || field == fs[i].Column) {
+                    dbType = fs[i].DbType;
+                    if (dbType.StartsWith("serial"))
+                        dbType = dbType.Replace("serial", "int");
+                    return metaObject.Provider.PrepareSqlValue(dbType, value);
                 }
             }
 
-            for (int i = 0; i < keys.Length; i++) {
-                if (field == keys[i]) {
-                    return metaObject.Provider.PrepareSqlValue(metaObject.GetColumnType(keys[i]), value);
-                }
-            }
+            if (log.IsDebugEnabled)
+                log.Debug("PrepareValue " + field + " not found, defaulting to varchar dbType");
 
             return metaObject.Provider.PrepareSqlValue("varchar", value);
         }
@@ -68,7 +58,7 @@ namespace PMS.Query
         {
             AndClause();
             clause.Add(new GreaterOrEqualToClause(field,
-                                                   PrepareValue(field, value)));
+                                                  PrepareValue(field, value)));
         }
 
         /// <summary>
@@ -80,7 +70,7 @@ namespace PMS.Query
         {
             OrClause();
             clause.Add(new GreaterOrEqualToClause(field,
-                                                   PrepareValue(field, value)));
+                                                  PrepareValue(field, value)));
         }
 
         /// <summary>

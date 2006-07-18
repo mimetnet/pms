@@ -20,12 +20,12 @@ namespace PMS.NUnit
         {
             r1 = new Repository();
 
-            string sConn = "Server=10.5.4.20;Database=jupiter;User ID=granny;Password=all_your_base;Pooling=false";
+            string sConn = "Server=10.5.4.20;Database=duncan;User ID=granny;Password=all_your_base;Pooling=false";
 
-            r1.Connections.Add(new Connection("1", sConn, typeof(Npgsql.NpgsqlConnection)));
+            r1.Connections.Add(new Connection("1", sConn, typeof(Npgsql.NpgsqlConnection), true, 2));
 
             ArrayList fields = new ArrayList();
-            fields.Add(new Field("mID", "id", "int4", true, true));
+            fields.Add(new Field("mID", "id", "serial4", true, true));
             fields.Add(new Field("mFirstName", "first_name", "varchar"));
             fields.Add(new Field("mLastName", "last_name", "varchar"));
             fields.Add(new Field("mEmail", "email", "varchar"));

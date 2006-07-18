@@ -55,8 +55,8 @@ namespace PMS.NUnit
         public void SetUp()
         {
             person = new Person();
-            person.FirstName = "Tyler";
-            person.LastName = "Willingham";
+            person.FirstName = "Matthew";
+            person.LastName = "Metnetsky";
             person.Email = "blah@blah.com";
         }
 
@@ -112,6 +112,21 @@ namespace PMS.NUnit
             Assert.Greater(p.ID, 0, "Person.ID !> 0");
         }
 
+        [Test]
+        public void C_GetObject_QueryByObjectPK_0_SQL()
+        {
+            Person ps = new Person();
+            ps.ID = 0;
+
+            IQuery query = new QueryByObject(ps);
+
+            String sql = query.Select();
+
+            Assert.AreEqual("SELECT * FROM person", 
+                            sql,
+                            "Generated SQL '" + sql + "' does not match 'SELECT * FROM person'");
+        }
+
 
         [Test]
         public void C_GetObject_QueryByObjectFields()
@@ -133,6 +148,21 @@ namespace PMS.NUnit
 
             Assert.IsNotNull(obj, "Person is null");
             Assert.IsInstanceOfType(typeof(Person), obj, "Object is not Person");
+        }
+
+        [Test]
+        public void C_GetObject_QueryByCriteriaPK_0_SQL()
+        {
+            Criteria criteria = new Criteria(typeof(Person));
+            criteria.EqualTo("id", 0);
+
+            IQuery query = new QueryByCriteria(criteria);
+
+            String sql = query.Select();
+
+            Assert.AreEqual("SELECT * FROM person WHERE id = 0",
+                            sql,
+                            "Generated SQL does not match");
         }
 
         [Test]
@@ -179,7 +209,29 @@ namespace PMS.NUnit
             foreach (Person p in persons) {
                 Console.WriteLine(p);
             }
+        }
 
+        [Test]
+        public void F_QueryByCriteriaColumns()
+        {
+            DateTime now = DateTime.Now;
+            DateTime three = now.Subtract(new TimeSpan(72, 0, 0));
+            Criteria crit = new Criteria(typeof(Person));
+            IQuery query = new QueryByCriteria(crit);
+            query.Selection = "first_name, last_name";
+
+            Assert.AreEqual("SELECT first_name, last_name FROM person", query.Select());
+            
+            PersonCollection persons =
+                    (PersonCollection)broker.GetObjectList(query);
+
+            foreach (Person p in persons) {
+                Assert.IsNull(p.Email);
+                Assert.AreEqual(0, p.ID);
+                Assert.AreEqual(0, p.CompanyId);
+                Assert.AreEqual(new DateTime(), p.CreationDate);
+                Console.WriteLine(p);
+            }
         }
 
         [Test]

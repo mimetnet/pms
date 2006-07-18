@@ -10,13 +10,13 @@ namespace PMS.Data
     /// </summary>
     internal abstract class AbstractProvider : IProvider
     {
-        public virtual object PrepareSqlValue(string dbType, object value)
+        public virtual string PrepareSqlValue(string dbType, object value)
         {
             if (dbType == "varchar" || dbType == "text") {
                 return PrepareSqlString(value);
-            } else if ((dbType == "boolean") || (dbType == "bool")) {
+            } else if (dbType.StartsWith("bool")) {
                 return PrepareSqlBoolean(value);
-            } else if (dbType == "serial") {
+            } else if (dbType.StartsWith("serial")) {
                 return PrepareSqlAutoIncrement(value);
             } else if (dbType == "timestamp") {
                 return PrepareSqlTimestamp(value);
@@ -28,36 +28,36 @@ namespace PMS.Data
                 return PrepareSqlInetAddr(value);
             }
 
-            return value;
+            return value.ToString();
         }
 
-        public virtual object PrepareSqlString(object value)
+        public virtual string PrepareSqlString(object value)
         {
             return "'" + value + "'";
         }
 
-        public virtual object PrepareSqlBoolean(object value)
+        public virtual string PrepareSqlBoolean(object value)
         {
             return (Convert.ToBoolean(value) == true)? "'t'" : "'f'";
         }
 
-        public virtual object PrepareSqlAutoIncrement(object value)
+        public virtual string PrepareSqlAutoIncrement(object value)
         {
-            return (Convert.ToInt32(value) == 0)? "DEFAULT" : value;
+            return (Convert.ToInt32(value) == 0)? "DEFAULT" : value.ToString();
         }
 
-        public virtual object PrepareSqlTimestamp(object value)
+        public virtual string PrepareSqlTimestamp(object value)
         {
             return "'" + Convert.ToDateTime(value) + "'";
         }
 
-        public virtual object PrepareSqlDate(object value)
+        public virtual string PrepareSqlDate(object value)
         {
             DateTime date = Convert.ToDateTime(value);
             return "'" + date.ToString("yyyyMMdd") + "'";
         }
 
-        public virtual object PrepareSqlBit(object value)
+        public virtual string PrepareSqlBit(object value)
         {
             string sBit = String.Empty;
             if (value is BitArray) { 
@@ -70,7 +70,7 @@ namespace PMS.Data
             return "B'" + sBit + "'";
         }
 
-        public virtual object PrepareSqlInetAddr(object value)
+        public virtual string PrepareSqlInetAddr(object value)
         {
             return "inet'" + value + "'";
         }

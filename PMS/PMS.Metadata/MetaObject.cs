@@ -27,34 +27,41 @@ namespace PMS.Metadata
         public MetaObject(object obj)
         {
             this.obj = obj;
+            
+            if (this.obj == null) {
+                throw new NoNullAllowedException("Parameter obj cannot be null");
+            }
+
             this.type = obj.GetType();
+        }
+
+        public bool Exists {
+            get { return RepositoryManager.Exists(this.type); }
         }
 
         public IProvider Provider {
             get {
                 if (provider == null)
-                    provider = PMS.Data.ProviderFactory.Factory(RepositoryManager.CurrentConnection.Type);
+                    provider = 
+                        PMS.Data.ProviderFactory.Factory(RepositoryManager.CurrentConnection.Type);
 
                 return provider;
             }
         }
 
         public object BaseObject {
-            get {
-                return this.obj;
-            }
+            get { return this.obj; }
         }
 
         public Type Type {
-            get {
-                return this.type;
-            }
+            get { return this.type; }
         }
 
-        /// ==================================================================
-        /// Create Object for use
-        /// ==================================================================
-
+        /// <summary>
+        /// Converts IDataReader into instantiated object
+        /// </summary>
+        /// <param name="reader">IDataReader containing SQL SELECT results</param>
+        /// <returns>Instantiated Object</returns>
         public object Materialize(IDataReader reader)
         {
             if (reader.Read()) {
@@ -77,7 +84,8 @@ namespace PMS.Metadata
                 while (reader.Read())
                     list.Add(PopulateObject(CreateObject(), reader));
             } catch (Exception e) {
-                log.Error("MaterializeList", e);
+                if (log.IsErrorEnabled)
+                    log.Error("MaterializeList", e);
             }
 
             return (object[])list.ToArray(type);
@@ -95,20 +103,29 @@ namespace PMS.Metadata
 
             try {
                 listType = RepositoryManager.GetClassListType(this.type);
-                Console.WriteLine("this.type : " + this.type.ToString());
-                Console.WriteLine("listType : " + listType.ToString());
+
+                if (listType == null) {
+                    if (log.IsErrorEnabled)
+                        log.Error("MaterializeList:GetClassListType(" + type + ") == NULL");
+                    return list;
+                }
+
                 list = (IList) Activator.CreateInstance(listType);
             } catch (Exception e) {
-                log.Error("MaterializeList", e);
-                return null;
+                if (log.IsErrorEnabled)
+                    log.Error("MaterializeList:GetClassListType", e);
+                return list;
             }
 
             try {
-                while (reader.Read())
+                while (reader.Read()) {
                     list.Add(PopulateObject(CreateObject(), reader));
+                }
             } catch (Exception e) {
-                Console.WriteLine("MaterializeList :: " + e.Message);
+                if (log.IsErrorEnabled)
+                    log.Error("MaterializeList:reader.Read()", e);
             }
+
             return list;
         }
 
@@ -176,6 +193,7 @@ namespace PMS.Metadata
         }
         **/
 
+
         public FieldInfo[] TypeFields {
             get {
                 if (fieldCache.ContainsKey(type.ToString()))
@@ -188,10 +206,6 @@ namespace PMS.Metadata
             }
         }
 
-        /// ==================================================================
-        /// Get Data About the Object for database/sql use
-        /// ==================================================================
-
         public string Table {
             get {
                 return RepositoryManager.GetClass(type).Table;
@@ -202,6 +216,7 @@ namespace PMS.Metadata
             get {
                 ArrayList columns = new ArrayList();
                 Class classDesc = RepositoryManager.GetClass(type);
+
                 foreach (Field field in classDesc.Fields) {
                     if (field.PrimaryKey == false) {
                         columns.Add(field.Column);
@@ -216,6 +231,7 @@ namespace PMS.Metadata
             get {
                 ArrayList keys = new ArrayList();
                 Class cdesc = RepositoryManager.GetClass(type);
+
                 foreach (Field field in cdesc.PrimaryKeys) {
                     if (field.PrimaryKey == true) {
                         keys.Add(field.Column);
@@ -228,8 +244,9 @@ namespace PMS.Metadata
 
         public bool IsColumnDefaultIgnored(string colName)
         {
-            Class classDesc = RepositoryManager.GetClass(type);
-            foreach (Field field in classDesc.Fields) {
+            Class cdesc = RepositoryManager.GetClass(type);
+
+            foreach (Field field in cdesc.Fields) {
                 if (field.Column.Equals(colName)) {
                     return field.IgnoreDefault;
                 }
@@ -252,10 +269,16 @@ namespace PMS.Metadata
 
         public string GetColumnType(string column)
         {
-            Class classDesc = RepositoryManager.GetClass(type);
-            foreach (Field field in classDesc.Fields)
-                if (field.Column.Equals(column))
+            Class cdesc = RepositoryManager.GetClass(type);
+
+            if (cdesc == null)
+                return null;
+
+            foreach (Field field in cdesc.Fields) {
+                if (field.Column.Equals(column)) {
                     return field.DbType;
+                }
+            }
 
             return null;
         }
@@ -265,12 +288,7 @@ namespace PMS.Metadata
             return RepositoryManager.GetField(type, name);
         }
 
-        public Field GetField(FieldInfo fieldInfo)
-        {
-            return RepositoryManager.GetField(type, fieldInfo);
-        }
-
-        public object GetSqlValue(string column)
+        public string GetSqlValue(string column)
         {
             string dbType = GetColumnType(column);
             object val = GetColumnValue(column);
@@ -280,29 +298,34 @@ namespace PMS.Metadata
         
         public bool IsFieldSet(string column)
         {
-            object init;
-            object val = GetColumnValue(column);
+            return IsFieldSet(column, this.GetColumnValue(column));
+        }
 
-            //Console.WriteLine("Column: " + column);
-            //Console.WriteLine(" Value: " + val);
+        public bool IsFieldSet(string column, object value)
+        {
+            //Console.WriteLine("   Column: " + column);
+            //Console.WriteLine("    Value: " + value);
 
-            if (val != null) {
-                init = Provider.GetTypeInit(GetColumnType(column));
+            if (value != null) {
+                string ctype = GetColumnType(column);
+                object init = Provider.GetTypeInit(ctype);
 
-                //Console.WriteLine("Default: " + init);
-                //Console.WriteLine("Ignore: " + IsColumnDefaultIgnored(column));
-                //Console.WriteLine("Is Ignored: " + val.Equals(init));
+                //Console.WriteLine("   DbType: " + ctype);
+                //Console.WriteLine("  Default: " + init);
+                //Console.WriteLine("   Ignore: " + IsColumnDefaultIgnored(column));
+                //Console.WriteLine("IsIgnored: " + value.Equals(init));
                 //Console.WriteLine();
 
-                if (IsColumnDefaultIgnored(column) && val.Equals(init))
+                if (IsColumnDefaultIgnored(column) && value.Equals(init)) {
                     return false;
-
+                }
+                
                 return true;
             }
+
             //Console.WriteLine();
 
             return false;
         }
-
     }
 }

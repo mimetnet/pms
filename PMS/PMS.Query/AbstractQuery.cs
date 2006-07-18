@@ -13,6 +13,7 @@ namespace PMS.Query
         protected string[] columns;
         protected string[] keys;
         protected string _selection = "*";
+        protected Exception vExe = null;
 
         public SqlCommand Command {
             get { return command; }
@@ -131,6 +132,22 @@ namespace PMS.Query
             sql.Append(this.Condition);
 
             return sql.ToString();
+        }
+
+        public virtual bool IsValid {
+            get { 
+                bool exists = metaObject.Exists;
+
+                if (!exists) {
+                    this.vExe = new ClassNotFoundException(this.Type);
+                }
+
+                return exists;
+            }
+        }
+
+        public virtual Exception ValidationException {
+            get { return vExe; }
         }
 
         public override string ToString()

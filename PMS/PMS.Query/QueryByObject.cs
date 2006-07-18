@@ -29,9 +29,12 @@ namespace PMS.Query
         public QueryByObject(Object obj, Criteria crit)
         {
             this.metaObject = new MetaObject(obj);
-            this.criteria = (crit == null) ? new Criteria(obj.GetType()) : crit;
-            this.columns = metaObject.Columns;
-            this.keys = metaObject.PrimaryKeys;
+
+            if (this.metaObject.Exists) {
+                this.criteria = (crit == null) ? new Criteria(obj.GetType()) : crit;
+                this.columns = metaObject.Columns;
+                this.keys = metaObject.PrimaryKeys;
+            }
         }
 
         /// <summary>

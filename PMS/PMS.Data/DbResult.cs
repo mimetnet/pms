@@ -65,6 +65,11 @@ namespace PMS.Data
         {
         }
 
+        public DbResult(Exception exception)
+            : this(0, String.Empty, exception)
+        {
+        }
+
         /// <summary>
         /// Simple construct used to help combine results (PersistenceBroker.Delete(object[] list)
         /// </summary>
