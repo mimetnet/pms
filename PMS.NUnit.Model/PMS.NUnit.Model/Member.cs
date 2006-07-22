@@ -9,37 +9,38 @@ namespace PMS.NUnit.Model
     /// Person class 
     /// </summary>
     [Serializable]
-    public class Person
+    public class Member
     {
-		private int mID;				// id
-		private string mFirstName;				// first_name
-		private string mLastName;				// last_name
-		private string mEmail;				// email
-		private int mCompanyId;				// company_id
-		private DateTime mCreationDate;				// creation_date
-
+		private int mID;
+		private string mUsername;
+		private string mPassword;
+		private int mPersonId;
+        private Person mPerson;
+		private DateTime mCreationDate;
 
 	    ///<summary>
         ///Default Constructor
         ///</summary> 
-        public Person()
+        public Member()
         {
 	    }
+
+        #region Overloads
 
         ///<summary>
         ///OverLoading == operator
         ///</summary> 
-        public static bool operator ==(Person obj1, Person obj2)
+        public static bool operator ==(Member obj1, Member obj2)
         {
             if (Object.ReferenceEquals(obj1, obj2)) return true;
             if (Object.ReferenceEquals(obj1, null)) return false;
             if (Object.ReferenceEquals(obj2, null)) return false;
-            
-			if (obj1.ID != obj2.ID) return false;
-			if (obj1.FirstName != obj2.FirstName) return false;
-			if (obj1.LastName != obj2.LastName) return false;
-			if (obj1.Email != obj2.Email) return false;
-			if (obj1.CompanyId != obj2.CompanyId) return false;
+
+            if (obj1.ID != obj2.ID) return false;
+            if (obj1.Username != obj2.Username) return false;
+            if (obj1.Password != obj2.Password) return false;
+            if (obj1.PersonId != obj2.PersonId) return false;
+            if (obj1.CreationDate != obj2.CreationDate) return false;
 
             return true;
         }
@@ -47,7 +48,7 @@ namespace PMS.NUnit.Model
         ///<summary>
         ///OverLoading != operator
         ///</summary> 
-        public static bool operator !=(Person obj1, Person obj2)
+        public static bool operator !=(Member obj1, Member obj2)
         {
             return !(obj1 == obj2);
         }
@@ -57,17 +58,17 @@ namespace PMS.NUnit.Model
         ///</summary> 
         public override bool Equals(object obj)
         {
-            if (!(obj is Person)) return false;
+            if (!(obj is Member)) return false;
 
-            return this == (Person)obj;
+            return this == (Member)obj;
         }
-        
+
         ///<summary>
         ///ToString()
         ///</summary> 
         public override string ToString()
         {
-            return "[Person (ID: " + mID + ") (FirstName: " + mFirstName + ") (LastName: " + mLastName + ") (Email: " + mEmail + ") (CompanyId: " + mCompanyId + ") (CreationDate: " + mCreationDate + ") ]";
+            return "[Member (ID: " + mID + ") (Username: " + mUsername + ") (PersonId: " + mPersonId + ") (CreationDate: " + mCreationDate + ") ]";
         }
 
         ///<summary>
@@ -76,7 +77,8 @@ namespace PMS.NUnit.Model
         public override int GetHashCode()
         {
             return ToString().GetHashCode();
-        }
+        } 
+        #endregion
 
 		///<summary>
 		///Required = true
@@ -89,34 +91,31 @@ namespace PMS.NUnit.Model
 		///<summary>
 		///Required = false
 		///</summary>
-		public string FirstName {
-			get { return mFirstName; }
-			set { mFirstName = value;}
+		public string Username {
+            get { return mUsername; }
+            set { mUsername = value; }
 		}
 
 		///<summary>
 		///Required = true
 		///</summary>
-		public string LastName {
-			get { return mLastName; }
-			set { mLastName = value;}
+		public string Password {
+            get { return mPassword; }
+            set { mPassword = value; }
 		}
 
 		///<summary>
 		///Required = true
 		///</summary>
-		public string Email {
-			get { return mEmail; }
-			set { mEmail = value;}
+		public int PersonId {
+            get { return mPersonId; }
+            set { mPersonId = value; }
 		}
 
-		///<summary>
-		///Required = true
-		///</summary>
-		public int CompanyId {
-			get { return mCompanyId; }
-			set { mCompanyId = value;}
-		}
+        public Person Person {
+            get { return mPerson; }
+            set { mPerson = value; mPersonId = value.ID; }
+        }
 
 		///<summary>
 		///Required = false

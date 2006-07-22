@@ -11,3 +11,5 @@ PMS.NUnit.Model\bin
 PMS.NUnit.Model\obj
 bin
 obj
+PMS.Server/bin
+PMS.Server/obj

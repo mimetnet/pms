@@ -1,5 +1,6 @@
 using System;
 
+using PMS.Broker;
 using PMS.DataAccess;
 using PMS.Metadata;
 using PMS.Query;
@@ -10,7 +11,7 @@ namespace PMS.NUnit
 {
 
     [TestFixture(Description="Create, Read, and Compare repository.xml files")]
-    public class C_DbEngineTest
+    public class F_DbEngineTest
     {
         [Test]
         [ExpectedException("System.ArgumentNullException")]

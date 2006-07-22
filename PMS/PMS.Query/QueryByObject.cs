@@ -11,6 +11,7 @@ namespace PMS.Query
     /// <summary>
     /// Query based on object properties
     /// </summary>
+    [Serializable]
     public class QueryByObject : AbstractQuery
     {
         /// <summary>

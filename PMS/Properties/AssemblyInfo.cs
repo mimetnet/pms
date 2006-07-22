@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("PMS")]
 [assembly: AssemblyDescription("Object Relational Mapping Tool")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Konica Minolta Business Solutions")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("PMS")]
 [assembly: AssemblyCopyright("Copyright © Matthew Metnetsky 2004-2006")]
 [assembly: AssemblyTrademark("")]

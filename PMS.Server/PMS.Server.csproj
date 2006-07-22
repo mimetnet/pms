@@ -4,11 +4,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4CC25088-AFB4-4DE8-855D-7E1EB3E48870}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{A4F9503A-4338-475E-9D45-4050994D47BC}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PMS.NUnit.Model</RootNamespace>
-    <AssemblyName>PMS.NUnit.Model</AssemblyName>
+    <RootNamespace>PMS.Server</RootNamespace>
+    <AssemblyName>PMS.Server</AssemblyName>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,15 +31,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Runtime.Remoting" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PMS.NUnit.Model\MemberCollection.cs" />
-    <Compile Include="PMS.NUnit.Model\Member.cs" />
-    <Compile Include="PMS.NUnit.Model\Person.cs" />
-    <Compile Include="PMS.NUnit.Model\PersonCollection.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PMS\PMS.csproj">
+      <Project>{DD828130-E4B7-404F-8F2B-56D1AF2BBC48}</Project>
+      <Name>PMS</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -48,6 +52,6 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(TargetPath)" "$(SolutionDir)PMS.Server\$(OutDir)</PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(SolutionDir)PMS\dll.config"  "$(TargetDir)PMS.dll.config"</PostBuildEvent>
   </PropertyGroup>
 </Project>

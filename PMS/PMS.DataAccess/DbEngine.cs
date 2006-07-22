@@ -12,7 +12,7 @@ namespace PMS.DataAccess
     /// <summary>
     /// Manages access to DbManager instance objects
     /// </summary>
-    public sealed class DbEngine
+    public sealed class DbEngine : MarshalByRefObject
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private static IDbManager dbManager = null;
@@ -323,6 +323,8 @@ namespace PMS.DataAccess
             } finally {
                 if (log.IsDebugEnabled)
                     log.Debug(result);
+                if (log.IsErrorEnabled && result.Exception != null)
+                    log.Error("ExecuteNonQuery", result.Exception);
             }
 
             return result;
@@ -352,6 +354,8 @@ namespace PMS.DataAccess
             } finally {
                 if (log.IsDebugEnabled)
                     log.Debug(result);
+                if (log.IsErrorEnabled && result.Exception != null)
+                    log.Error("ExecuteNonQuery", result.Exception);
             }
 
             return result;

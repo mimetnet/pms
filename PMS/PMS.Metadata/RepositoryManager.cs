@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 namespace PMS.Metadata
 {
-    public class RepositoryManager
+    public class RepositoryManager : MarshalByRefObject
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private static XmlSerializer serializer = new XmlSerializer(typeof(Repository));
@@ -86,7 +86,7 @@ namespace PMS.Metadata
             string stype = type.ToString();
 
             foreach (Class cdesc in Repository.Classes) {
-                if (cdesc.Name.Equals(stype)) {
+                if (cdesc.Type.Equals(stype)) {
                     return cdesc;
                 }
             }
@@ -132,23 +132,34 @@ namespace PMS.Metadata
 
         public static bool Load(string file)
         {
-            file = Path.GetFullPath(file);
+            return Load(new FileInfo(Path.GetFullPath(file)));
+        }
 
-            if (File.Exists(file) == false) {
-                throw new FileNotFoundException(file);
-            }
+        public static bool Load(FileInfo file)
+        {
+            try {
+                using (FileStream fs = file.OpenRead()) {
+                    repository += (Repository) serializer.Deserialize(fs);
 
-            using (FileStream fs = new FileStream(file, 
-                                                  FileMode.Open, 
-                                                  FileAccess.Read, 
-                                                  FileShare.Read)) {
-                repository += (Repository) serializer.Deserialize(fs);
-
-                fs.Close();
-                isLoaded = true;
+                    fs.Close();
+                    isLoaded = true;    
+                }
+            } catch (FileNotFoundException) {
+                if (log.IsErrorEnabled)
+                    log.Error("Load(" + file + ") failed");
+            } catch (Exception e) {
+                if (log.IsErrorEnabled)
+                    log.Error("Unkown failure", e);
             }
 
             return IsLoaded;
+        }
+
+        public static void Close()
+        {
+            if (isLoaded) {
+                repository = null;
+            }
         }
 
         public static bool IsLoaded {

@@ -114,9 +114,21 @@ namespace PMS.Broker
         /// <summary>
         /// Load configuration file at specified location
         /// </summary>
-        /// <param name="fileName">Repository file to load</param>
+        /// <param name="fileName">Path to the repository to load</param>
         /// <returns>success status</returns>
         bool Load(string repositoryFile);
+
+        /// <summary>
+        /// Load configuration file at specified location
+        /// </summary>
+        /// <param name="fileName">Repository file to load</param>
+        /// <returns>success status</returns>
+        bool Load(System.IO.FileInfo file);
+
+        /// <summary>
+        /// Closes all Load()'ed repositories
+        /// </summary>
+        void Clear();
 
         /// <summary>
         /// Starts DbEngine based on Load()'ed repository.xml
@@ -127,8 +139,7 @@ namespace PMS.Broker
         /// <summary>
         /// Closes DbEngine
         /// </summary>
-        /// <returns>success status</returns>
-        bool Close(); 
+        void Close(); 
         #endregion
 
         #region Transactions
@@ -167,7 +178,8 @@ namespace PMS.Broker
         /// <summary>
         /// Current Version of PMS
         /// </summary>
-        string Version { get; } 
+        string Version { get; }
+
         #endregion
     }
 }

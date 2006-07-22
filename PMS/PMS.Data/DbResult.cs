@@ -2,6 +2,7 @@ using System;
 
 namespace PMS.Data
 {
+    [Serializable]
     public sealed class DbResult
     {
         private int records;

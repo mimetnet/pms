@@ -11,6 +11,7 @@ namespace PMS.Query
     /// <summary>
     /// Query by comparing two objects properties
     /// </summary>
+    [Serializable]
     public class QueryByObjectDiff : AbstractQuery
     {
         /// <summary>

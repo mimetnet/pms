@@ -5,6 +5,7 @@ using PMS.Metadata;
 
 namespace PMS.Query
 {
+    [Serializable]
     public abstract class AbstractQuery : IQuery
     {
         internal MetaObject metaObject = null;

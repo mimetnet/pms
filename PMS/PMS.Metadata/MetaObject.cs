@@ -7,6 +7,7 @@ using PMS.Data;
 
 namespace PMS.Metadata
 {
+    [Serializable]
     internal sealed class MetaObject
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -232,7 +233,7 @@ namespace PMS.Metadata
                 ArrayList keys = new ArrayList();
                 Class cdesc = RepositoryManager.GetClass(type);
 
-                foreach (Field field in cdesc.PrimaryKeys) {
+                foreach (Field field in cdesc.Fields) {
                     if (field.PrimaryKey == true) {
                         keys.Add(field.Column);
                     }

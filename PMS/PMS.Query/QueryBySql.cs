@@ -8,6 +8,7 @@ namespace PMS.Query
     /// <summary>
     /// Perform Query based on raw SQL and Type
     /// </summary>
+    [Serializable]
     public class QueryBySql : AbstractQuery
     {
         private Type mtype;

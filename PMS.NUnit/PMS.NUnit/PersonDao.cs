@@ -23,13 +23,12 @@ namespace PMS.NUnit
 
         private int NextIdSeq() 
         {
-            return (int) DbEngine.GetCommand("SELECT nextval('person_id_seq')").ExecuteScalar();
+            return (int) 
+                DbEngine.GetCommand("SELECT nextval('person_id_seq')").ExecuteScalar();
         }
 
         public bool Insert(Person person)
         {
-            person.ID = NextIdSeq();
-
             IQuery query = new QueryByObject(person);
 
             return (broker.Insert(person).Count > 0)? true : false;

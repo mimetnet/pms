@@ -7,6 +7,7 @@ using PMS.Metadata;
 
 namespace PMS.Query
 {
+    [Serializable]
     public sealed class Criteria
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -31,9 +32,9 @@ namespace PMS.Query
         private string PrepareValue(string field, object value)
         {
             string dbType;
-            Field[] fs = RepositoryManager.GetClass(metaObject.Type).Fields;
+            FieldCollection fs = RepositoryManager.GetClass(metaObject.Type).Fields;
 
-            for (int i = 0; i < fs.Length; i++) {
+            for (int i = 0; i < fs.Count; i++) {
                 if (field == fs[i].Name || field == fs[i].Column) {
                     dbType = fs[i].DbType;
                     if (dbType.StartsWith("serial"))

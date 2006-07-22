@@ -5,12 +5,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS", "PMS\PMS.csproj", "{D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.NUnit", "PMS.NUnit\PMS.NUnit.csproj", "{00442EB2-FDEB-4293-A37F-C3AF9856D862}"
 	ProjectSection(ProjectDependencies) = postProject
+		{A4F9503A-4338-475E-9D45-4050994D47BC} = {A4F9503A-4338-475E-9D45-4050994D47BC}
 		{4CC25088-AFB4-4DE8-855D-7E1EB3E48870} = {4CC25088-AFB4-4DE8-855D-7E1EB3E48870}
 	EndProjectSection
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PMS.Setup", "PMS.Setup\PMS.Setup.vdproj", "{1881F951-0E34-42D4-A846-1AE1A62171AB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.NUnit.Model", "PMS.NUnit.Model\PMS.NUnit.Model.csproj", "{4CC25088-AFB4-4DE8-855D-7E1EB3E48870}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.Server", "PMS.Server\PMS.Server.csproj", "{A4F9503A-4338-475E-9D45-4050994D47BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +35,10 @@ Global
 		{4CC25088-AFB4-4DE8-855D-7E1EB3E48870}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CC25088-AFB4-4DE8-855D-7E1EB3E48870}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CC25088-AFB4-4DE8-855D-7E1EB3E48870}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4F9503A-4338-475E-9D45-4050994D47BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4F9503A-4338-475E-9D45-4050994D47BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4F9503A-4338-475E-9D45-4050994D47BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4F9503A-4338-475E-9D45-4050994D47BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

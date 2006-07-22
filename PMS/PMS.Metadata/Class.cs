@@ -6,97 +6,59 @@ using System.Xml.Serialization;
 using PMS.Metadata;
 
 namespace PMS.Metadata
-{  
+{
+    [XmlRoot("class")]
     public class Class : IXmlSerializable
     {
-        public string Name;
+        public string Type;
         public string Table;
-
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private ArrayList fields = new ArrayList();
-        private ArrayList references = new ArrayList();
-        private ArrayList collections = new ArrayList();
+        private FieldCollection fields = new FieldCollection();
         private Type listType = null;
 
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger("PMS.Metadata.Class");
+
+        #region Constructors
         public Class()
         {
         }
 
-        public Class(Type type, string table, ArrayList fields)
+        public Class(Type type, string table, FieldCollection fields)
         {
-            this.Name = type.ToString();
+            this.Type = type.ToString();
             this.Table = table;
             this.fields = fields;
         }
 
-        public Class(Type type, string table, Field[] fieldsArray)
+        public Class(Type type, string table, FieldCollection fields, Type listType)
         {
-            this.Name = type.ToString();
-            this.Table = table;
-
-            for (int x = 0; x < fieldsArray.Length; x++) {
-                fields.Add(fieldsArray[x]);
-            }
-        }
-
-        public Class(Type type, string table, ArrayList fields, Type listType)
-        {
-            this.Name = type.ToString();
+            this.Type = type.ToString();
             this.Table = table;
             this.fields = fields;
             this.ListType = listType;
         }
+        #endregion
 
-        public Class(Type type, string table, Field[] fieldsArray, Type listType)
-        {
-            this.Name = type.ToString();
-            this.Table = table;
-            this.ListType = listType;
+        #region Properties
 
-            for (int x = 0; x < fieldsArray.Length; x++) {
-                fields.Add(fieldsArray[x]);
-            }
-        }
-
-        public Field[] PrimaryKeys {
-            get {
-                ArrayList list = new ArrayList();
-                foreach (Field field in Fields)
-                    if (field.PrimaryKey)
-                        list.Add(field);
-
-                return (Field[])fields.ToArray(typeof(Field));
-            }
-        }
-
-        public Field[] Fields {
-            get { return (Field[])fields.ToArray(typeof(Field)); }
-            set {
-                for (int x=0; x < value.Length; x++) {
-                    fields.Add(value[x]);
-                }
-            }
+        public FieldCollection Fields {
+            get { return fields; }
+            set { fields = value; }
         }
 
         public Type ListType {
             get { return this.listType; }
-            set { this.listType = value; }
+            set { listType = value; }
         }
+        #endregion
 
-        public Collection[] Collections {
-            get { return (Collection[])collections.ToArray(typeof(Collection));  }
-        }
-
-        public Reference[] References {
-            get { return (Reference[])references.ToArray(typeof(Reference)); }
-        }
-
+        #region Methods
         public string GetColumnByField(string fieldName)
         {
             foreach (Field field in Fields)
                 if (field.Name.Equals(fieldName))
                     return field.Column;
-            
+
             return null;
         }
 
@@ -105,7 +67,7 @@ namespace PMS.Metadata
             foreach (Field field in Fields)
                 if (field.Column.Equals(colName))
                     return field.Name;
-            
+
             return null;
         }
 
@@ -114,7 +76,7 @@ namespace PMS.Metadata
             foreach (Field field in Fields)
                 if (field.Name.Equals(name))
                     return field;
-            
+
             return null;
         }
 
@@ -123,9 +85,10 @@ namespace PMS.Metadata
             foreach (Field field in Fields)
                 if (field.Name.Equals(fieldInfo.Name))
                     return field;
-            
+
             return null;
-        }
+        } 
+        #endregion
 
         #region IXmlSerializable Members
 
@@ -137,52 +100,29 @@ namespace PMS.Metadata
         public void ReadXml(System.Xml.XmlReader reader)
         {
             if (reader.Name != "class") {
-                log.Error("Class:ReadXml did not find <class> tag, but <" + reader.Name + "> instead");
+                log.Error("ReadXml did not find <class> tag, but <" + reader.Name + "> instead");
                 return;
             }
 
-            this.Name = reader.GetAttribute("name");
+            this.Type = reader.GetAttribute("type");
             this.Table = reader.GetAttribute("table");
 
-            //if (log.IsDebugEnabled) {
-            //    log.Debug("<class name=" + this.Name + " table=" + this.Table + ">");
-            //}
+            XmlSerializer xml = new XmlSerializer(typeof(FieldCollection));
 
             while (reader.Read()) {
                 reader.MoveToElement();
 
                 if (reader.LocalName == "list") {
-                    if (reader.HasAttributes) {
-                        this.listType = LoadType(reader["type"], reader["assembly"]);
-                    }
-                } else if (reader.LocalName == "field") {
-                    Field f = new Field(reader["name"], reader["column"], reader["db_type"]);
-
-                    string pk = reader["primarykey"];
-                    string ig = reader["ignore_default"];
-
-                    if (pk != null && (pk == "true" || pk == "True" || pk == "TRUE" || pk == "1")) {
-                        f.PrimaryKey = true;
-                    }
-
-                    if (ig != null && (ig == "true" || ig == "True" || ig == "TRUE" || ig == "1")) {
-                        f.IgnoreDefault = true;
-                    }
-                    
-                    fields.Add(f);
-
-                    //if (log.IsDebugEnabled) {
-                    //    log.Debug("\t<field name=" + f.Name + " column=" + f.Column + " db_type=" + f.DbType + " primarykey=" + f.PrimaryKey + " ignore_default=" + f.IgnoreDefault + " >");
-                    //}
-
-                    f = null;
-                } else {
-                    // WEIRDNESS
-                    // break out on new <class> element so not instance can handle it
-                    if (reader.LocalName == "class" && reader.IsStartElement("class"))
-                        return;
-
+                    string stype = reader.GetAttribute("type");
+                    string sassembly = reader.GetAttribute("assembly");
+                    this.ListType = this.LoadType(stype, sassembly);
                 }
+
+                if (reader.LocalName == "fields")
+                    this.Fields = (FieldCollection)xml.Deserialize(reader);
+
+                if (reader.LocalName == "class")
+                    break;
             }
         }
 
@@ -215,26 +155,21 @@ namespace PMS.Metadata
         /// <param name="writer">XmlWriter</param>
         public void WriteXml(System.Xml.XmlWriter writer)
         {
-            writer.WriteAttributeString("name", this.Name);
+            writer.WriteAttributeString("type", this.Type);
             writer.WriteAttributeString("table", this.Table);
 
             if (listType != null) {
                 writer.WriteStartElement("list");
                 writer.WriteAttributeString("type", listType.FullName);
-                writer.WriteAttributeString("assembly", listType.Assembly.FullName);
+                writer.WriteAttributeString("assembly", listType.Assembly.GetName().Name);
                 writer.WriteEndElement();
             }
 
-            writer.WriteStartElement("fields");
+            XmlSerializer xml = new XmlSerializer(typeof(Field));
 
+            writer.WriteStartElement("fields");
             foreach (Field f in this.Fields) {
-                writer.WriteStartElement("field");
-                writer.WriteAttributeString("name", f.Name);
-                writer.WriteAttributeString("column", f.Column);
-                writer.WriteAttributeString("db_type", f.DbType);
-                writer.WriteAttributeString("ignore_default", f.IgnoreDefault.ToString().ToLower());
-                writer.WriteAttributeString("primarykey", f.PrimaryKey.ToString().ToLower());
-                writer.WriteEndElement();
+                xml.Serialize(writer, f);
             }
 
             writer.WriteEndElement(); // end fields
@@ -253,11 +188,27 @@ namespace PMS.Metadata
             if (Object.ReferenceEquals(obj1, null)) return false;
             if (Object.ReferenceEquals(obj2, null)) return false;
 
-            if (obj1.Name != obj2.Name) return false;
+            if (obj1.Type != obj2.Type) return false;
             if (obj1.Table != obj2.Table) return false;
             if (obj1.ListType != obj2.ListType) return false;
-            if (obj1.PrimaryKeys.Length != obj2.PrimaryKeys.Length) return false;
-            if (obj1.Fields.Length != obj2.Fields.Length) return false;
+            if (obj1.Fields.Count != obj2.Fields.Count) return false;
+
+            FieldCollection fc1 = obj1.Fields;
+            FieldCollection fc2 = obj2.Fields;
+
+            if (fc1.Count != fc2.Count) {
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("fc1.Count({0}) != fc2.Count({1})", fc1.Count, fc2.Count);
+                return false;
+            }
+
+            for (int y = 0; y < fc1.Count; y++) {
+                if (fc1[y] != fc2[y]) {
+                    if (log.IsDebugEnabled)
+                        log.Debug("fc1 != fc2");
+                    return false;
+                }
+            }
 
             return true;
         }
@@ -285,7 +236,8 @@ namespace PMS.Metadata
         ///</summary> 
         public override string ToString()
         {
-            return String.Format("[Class (Name={0}) (Table={1}) (Type={2})]", Name, Table, ListType);
+            return String.Format("[ Class (Name={0}) (Table={1}) (Type={2}) (Fields={3}) ]",
+                                 Type, Table, ListType, Fields.Count);
         }
 
         ///<summary>

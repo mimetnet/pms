@@ -12,30 +12,22 @@ namespace PMS.Broker
     /// <summary>
     /// Use this class to control all marshalling of data to/from the database.
     /// </summary>
-    [Serializable]
-    public sealed class PersistenceBroker : IPersistenceBroker
+    public sealed class PersistenceBroker : MarshalByRefObject, IPersistenceBroker
     {
         #region variables
         private bool isOpen = false;
         private string R_FILE = "repository.xml";
         private const string R_KEY = "PMS.Repository";
+
         private static PersistenceBroker _instance = null;
+
         private static readonly log4net.ILog log = 
             log4net.LogManager.GetLogger("PMS.Broker.PersistenceBroker");
+        
         #endregion
 
         #region Construct/Destruct
-        /// <summary>
-        /// Return Singleton
-        /// </summary>
-        public static IPersistenceBroker Instance {
-            get  {
-                return (_instance != null) ?
-                    _instance : (_instance = new PersistenceBroker());
-            }
-        }
-
-        private PersistenceBroker()
+        public PersistenceBroker()
         {
             System.IO.FileInfo file = new System.IO.FileInfo("PMS.dll.config");
             if (file.Exists)
@@ -44,7 +36,7 @@ namespace PMS.Broker
                 Console.WriteLine("NOCONFIG: " + file.FullName);
 
             if (log.IsInfoEnabled)
-                log.Info("Version " + Version);
+                log.Info("Version " + this.Version);
         }
 
         ~PersistenceBroker()
@@ -90,6 +82,16 @@ namespace PMS.Broker
         /// <returns>single instance of class or null</returns>
         public object GetObject(IQuery query)
         {
+            if (!IsOpen) {
+                log.Warn("GetObject(query) called before .Open()");
+                throw new RepositoryNotFoundException("GetObject(query) called before .Open()");
+            }
+
+            if (!IsLoaded) {
+                log.Warn("GetObject(query) called before .Load()");
+                throw new DbEngineNotStartedException("GetObject(query) called before .Load()");
+            }
+
             return DbEngine.ExecuteSelectObject(query);
         }
 
@@ -100,6 +102,16 @@ namespace PMS.Broker
         /// <returns>List of instantiated classes</returns>
         public object[] GetObjectArray(IQuery query)
         {
+            if (!IsOpen) {
+                log.Warn("GetObjectArray(query) called before .Open()");
+                throw new RepositoryNotFoundException("GetObject(query) called before .Open()");
+            }
+
+            if (!IsLoaded) {
+                log.Warn("GetObjectArray(query) called before .Load()");
+                throw new DbEngineNotStartedException("GetObject(query) called before .Load()");
+            }
+
             return DbEngine.ExecuteSelectArray(query);
         }
 
@@ -110,6 +122,16 @@ namespace PMS.Broker
         /// <returns>List of instantiated classes</returns>
         public object[] GetObjectArray(Type type)
         {
+            if (!IsOpen) {
+                log.Warn("GetObjectArray(type) called before .Open()");
+                throw new RepositoryNotFoundException("GetObject(query) called before .Open()");
+            }
+
+            if (!IsLoaded) {
+                log.Warn("GetObjectArray(type) called before .Load()");
+                throw new DbEngineNotStartedException("GetObject(query) called before .Load()");
+            }
+
             return DbEngine.ExecuteSelectArray(new QueryByObject(type));
         }
 
@@ -120,6 +142,16 @@ namespace PMS.Broker
         /// <returns>CollectionBase of instantiated classes</returns>
         public IList GetObjectList(IQuery query)
         {
+            if (!IsOpen) {
+                log.Warn("GetObjectList(query) called before .Open()");
+                throw new RepositoryNotFoundException("GetObject(query) called before .Open()");
+            }
+
+            if (!IsLoaded) {
+                log.Warn("GetObjectList(query) called before .Load()");
+                throw new DbEngineNotStartedException("GetObject(query) called before .Load()");
+            }
+
             return DbEngine.ExecuteSelectList(query);
         }
 
@@ -130,6 +162,16 @@ namespace PMS.Broker
         /// <returns>CollectionBase of instantiated classes</returns>
         public IList GetObjectList(Type type)
         {
+            if (!IsOpen) {
+                log.Warn("GetObjectList(type) called before .Open()");
+                throw new RepositoryNotFoundException("GetObject(query) called before .Open()");
+            }
+
+            if (!IsLoaded) {
+                log.Warn("GetObjectList(type) called before .Load()");
+                throw new DbEngineNotStartedException("GetObject(query) called before .Load()");
+            }
+
             return this.GetObjectList(new QueryByType(type));
         }
 
@@ -145,6 +187,16 @@ namespace PMS.Broker
         /// <returns>Result holding Count and executed SQL</returns>
         public DbResult Persist(object obj)
         {
+            if (!IsOpen) {
+                log.Warn("Persist(obj) called before .Open()");
+                throw new RepositoryNotFoundException("GetObject(query) called before .Open()");
+            }
+
+            if (!IsLoaded) {
+                log.Warn("Persist(obj) called before .Load()");
+                throw new DbEngineNotStartedException("GetObject(query) called before .Load()");
+            }
+
             return DbEngine.ExecutePersist(obj);
         }
 
@@ -156,6 +208,16 @@ namespace PMS.Broker
         /// <returns>Result holding Count and executed SQL</returns>
         public DbResult Count(object obj)
         {
+            if (!IsOpen) {
+                log.Warn("Count(obj) called before .Open()");
+                throw new RepositoryNotFoundException("GetObject(query) called before .Open()");
+            }
+
+            if (!IsLoaded) {
+                log.Warn("Count(obj) called before .Load()");
+                throw new DbEngineNotStartedException("GetObject(query) called before .Load()");
+            }
+
             return DbEngine.ExecuteCount(obj);
         }
 
@@ -166,6 +228,16 @@ namespace PMS.Broker
         /// <returns>Result holding Count and executed SQL</returns>
         public DbResult Insert(object obj)
         {
+            if (!IsOpen) {
+                log.Warn("Insert(obj) called before .Open()");
+                throw new RepositoryNotFoundException("GetObject(query) called before .Open()");
+            }
+
+            if (!IsLoaded) {
+                log.Warn("Insert(obj) called before .Load()");
+                throw new DbEngineNotStartedException("GetObject(query) called before .Load()");
+            }
+
             return DbEngine.ExecuteInsert(obj);
         }
 
@@ -176,6 +248,16 @@ namespace PMS.Broker
         /// <returns>Result holding Count and executed SQL</returns>
         public DbResult Update(object obj)
         {
+            if (!IsOpen) {
+                log.Warn("Update(obj) called before .Open()");
+                throw new RepositoryNotFoundException("GetObject(query) called before .Open()");
+            }
+
+            if (!IsLoaded) {
+                log.Warn("Update(obj) called before .Load()");
+                throw new DbEngineNotStartedException("GetObject(query) called before .Load()");
+            }
+
             return DbEngine.ExecuteUpdate(obj);
         }
 
@@ -187,6 +269,16 @@ namespace PMS.Broker
         /// <returns>Result holding Count and executed SQL</returns>
         public DbResult Update(object oldObj, object newObj)
         {
+            if (!IsOpen) {
+                log.Warn("Update(obj) called before .Open()");
+                throw new RepositoryNotFoundException("GetObject(query) called before .Open()");
+            }
+
+            if (!IsLoaded) {
+                log.Warn("Update(obj) called before .Load()");
+                throw new DbEngineNotStartedException("GetObject(query) called before .Load()");
+            }
+
             return DbEngine.ExecuteUpdate(oldObj, newObj);
         }
 
@@ -197,6 +289,16 @@ namespace PMS.Broker
         /// <returns>Result holding Count and executed SQL</returns>
         public DbResult Delete(object obj)
         {
+            if (!IsOpen) {
+                log.Warn("Delete(obj) called before .Open()");
+                throw new RepositoryNotFoundException("GetObject(query) called before .Open()");
+            }
+
+            if (!IsLoaded) {
+                log.Warn("Delete(obj) called before .Load()");
+                throw new DbEngineNotStartedException("GetObject(query) called before .Load()");
+            }
+
             return DbEngine.ExecuteDelete(obj);
         }
 
@@ -207,6 +309,16 @@ namespace PMS.Broker
         /// <returns>Result holding Count and executed SQL</returns>
         public DbResult Delete(object[] list)
         {
+            if (!IsOpen) {
+                log.Warn("Delete(list) called before .Open()");
+                throw new RepositoryNotFoundException("GetObject(query) called before .Open()");
+            }
+
+            if (!IsLoaded) {
+                log.Warn("Delete(list) called before .Load()");
+                throw new DbEngineNotStartedException("GetObject(query) called before .Load()");
+            }
+
             DbResult result = new DbResult();
             foreach (object obj in list)
                 result += Delete(obj);
@@ -237,11 +349,29 @@ namespace PMS.Broker
         /// <summary>
         /// Load configuration file at specified location
         /// </summary>
-        /// <param name="fileName">Repository file to load</param>
+        /// <param name="fileName">Path to the repository to load</param>
         /// <returns>success status</returns>
         public bool Load(string fileName)
         {
             return PMS.Metadata.RepositoryManager.Load(fileName);
+        }
+
+        /// <summary>
+        /// Load configuration file at specified location
+        /// </summary>
+        /// <param name="fileName">Repository file to load</param>
+        /// <returns>success status</returns>
+        public bool Load(System.IO.FileInfo file)
+        {
+            return PMS.Metadata.RepositoryManager.Load(file);
+        }
+
+        /// <summary>
+        /// Closes all Load()'ed repositories
+        /// </summary>
+        public void Clear()
+        {
+            PMS.Metadata.RepositoryManager.Close();
         }
 
         /// <summary>
@@ -250,10 +380,7 @@ namespace PMS.Broker
         /// <returns>success status</returns>
         public bool Open()
         {
-            if (IsOpen == false) {
-                if (IsLoaded == false)
-                    PersistenceBroker.Instance.Load();
-
+            if (IsLoaded == true && IsOpen == false) {
                 DbEngine.Start(RepositoryManager.Repository.DbManagerMode);
                 isOpen = true;
             }
@@ -264,14 +391,11 @@ namespace PMS.Broker
         /// <summary>
         /// Closes DbEngine
         /// </summary>
-        /// <returns>success status</returns>
-        public bool Close()
+        public void Close()
         {
             if (isOpen) {
-                DbEngine.Stop();
+                isOpen = !(DbEngine.Stop());
             }
-
-            return true;
         } 
         #endregion
 
@@ -297,6 +421,16 @@ namespace PMS.Broker
         public string Version {
             get {
                 return System.Reflection.Assembly.GetCallingAssembly().GetName().Version.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Return Singleton
+        /// </summary>
+        public static IPersistenceBroker Instance {
+            get {
+                return (_instance != null) ?
+                    _instance : (_instance = new PersistenceBroker());
             }
         }
 

@@ -38,6 +38,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PMS.NUnit\MemberDao.cs" />
+    <Compile Include="PMS.NUnit\MemberDaoTest.cs" />
+    <Compile Include="PMS.NUnit\RemotingTest.cs" />
     <Compile Include="PMS.NUnit\DbEngineTest.cs" />
     <Compile Include="PMS.NUnit\RepositoryManagerTest.cs" />
     <Compile Include="PMS.NUnit\PersonDao.cs" />

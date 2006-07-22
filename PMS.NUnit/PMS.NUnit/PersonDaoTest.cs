@@ -16,20 +16,13 @@ namespace PMS.NUnit
     [TestFixture]
     public class B_PersonDaoTest
     {
-        private IPersistenceBroker broker = null;
-        private Person person = null;
-        private PersonDao dao = null;
-        private int pid = 0;
-
-        public B_PersonDaoTest()
-        {
-            //Npgsql.NpgsqlEventLog.Level = Npgsql.LogLevel.Debug;
-            //Npgsql.NpgsqlEventLog.LogName = "npgsql.log";
-            //Npgsql.NpgsqlEventLog.EchoMessages = false;
-        }
+        protected IPersistenceBroker broker = null;
+        protected Person person = null;
+        protected PersonDao dao = null;
+        protected int pid = 0;
 
         [TestFixtureSetUp]
-        public void Constructor()
+        public virtual void Constructor()
         {
             // obtain instance of PersistenceBroker
             broker = PersistenceBroker.Instance;
@@ -42,7 +35,7 @@ namespace PMS.NUnit
         }
 
         [TestFixtureTearDown]
-        public void Destructor()
+        public virtual void Destructor()
         {
             //broker.RollbackTransaction();
             //broker.CommitTransaction();
@@ -73,9 +66,11 @@ namespace PMS.NUnit
         }
 
         [Test]
-        public void B_Insert_GetIdSequence()
+        public void B_Insert_WithIdSequence()
         {
-            IDbCommand cmd = DbEngine.GetCommand("SELECT nextval('person_id_seq')", AccessMode.Write);
+            IDbCommand cmd = 
+                DbEngine.GetCommand("SELECT nextval('person_id_seq')", AccessMode.Write);
+
             object obj = cmd.ExecuteScalar();
 
             Assert.IsNotNull(obj, "Object is null");
@@ -86,11 +81,7 @@ namespace PMS.NUnit
             this.pid = Convert.ToInt32(id);
 
             Assert.Greater(this.pid, 0);
-        }
 
-        [Test]
-        public void B_Insert_WithIdSequence()
-        {
             this.person.ID = pid;
 
             Assert.AreEqual(1, broker.Insert(this.person).Count);
@@ -185,12 +176,12 @@ namespace PMS.NUnit
             Assert.Greater(pc.Length, 0);
         }
 
-        [Test]
+        //[Test]
         public void E_DeleteByIdEtc()
         {
             person.Email = null; // don't delete by old email address
 
-           // Assert.AreEqual(1, broker.Delete(person).Count);
+            Assert.AreEqual(1, broker.Delete(person).Count);
         }
 
         [Test]

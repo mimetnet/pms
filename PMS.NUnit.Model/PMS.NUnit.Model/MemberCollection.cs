@@ -7,26 +7,26 @@ using System.Xml.Serialization;
 namespace PMS.NUnit.Model
 {
     /// <summary>
-    /// PersonCollection Class
+    /// MemberCollection Class
     /// </summary>
-    [XmlRoot("persons")]
-    public class PersonCollection : CollectionBase
+    [XmlRoot("members")]
+    public class MemberCollection : CollectionBase
     {
         ///<summary>
         /// Default constructor.
         ///</summary>
-        public PersonCollection()
+        public MemberCollection()
         {
         }
         
         ///<summary>
         /// The zero-based index of the element to get or set.
         ///</summary>
-        public Person this[int index]
+        public Member this[int index]
         {
             get
             {
-                return (Person)this.List[index];
+                return (Member)this.List[index];
             }
             set
             {
@@ -35,7 +35,7 @@ namespace PMS.NUnit.Model
         }
 
         ///<summary>
-        /// Gets the number of elements contained in the PersonCollection.
+        /// Gets the number of elements contained in the MemberCollection.
         ///</summary>
         public new int Count
         {
@@ -46,7 +46,7 @@ namespace PMS.NUnit.Model
         }
 
         ///<summary>
-        /// Removes all items from the PersonCollection.
+        /// Removes all items from the MemberCollection.
         ///</summary>
         public new void Clear()
         {
@@ -54,23 +54,23 @@ namespace PMS.NUnit.Model
         }
 
         ///<summary>
-        /// Adds an item to the PersonCollection.
+        /// Adds an item to the MemberCollection.
         ///</summary>
-        public void Add(Person value)
+        public void Add(Member value)
         {
             this.List.Add(value);
         }
 
         ///<summary>
-        /// Removes the first occurrence of a specific object from the PersonCollection.
+        /// Removes the first occurrence of a specific object from the MemberCollection.
         ///</summary>
-        public void Remove(Person value)
+        public void Remove(Member value)
         {
             this.List.Remove(value);
         }
 
         ///<summary>
-        /// Removes the PersonCollection item at the specified index.
+        /// Removes the MemberCollection item at the specified index.
         ///</summary>
         public new void RemoveAt(int index)
         {
@@ -78,31 +78,31 @@ namespace PMS.NUnit.Model
         }
 
         ///<summary>
-        /// Inserts an item to the PersonCollection at the specified index.
+        /// Inserts an item to the MemberCollection at the specified index.
         ///</summary>
-        public void Insert(int index, Person value)
+        public void Insert(int index, Member value)
         {
             this.List.Insert(index, value);
         }
 
         ///<summary>
-        /// Determines the index of a specific item in the PersonCollection.
+        /// Determines the index of a specific item in the MemberCollection.
         ///</summary>
-        public int IndexOf(Person value)
+        public int IndexOf(Member value)
         {
             return this.List.IndexOf(value);
         }
 
         ///<summary>
-        /// Determines whether the PersonCollection contains a specific value.
+        /// Determines whether the MemberCollection contains a specific value.
         ///</summary>
-        public bool Contains(Person value)
+        public bool Contains(Member value)
         {
             return this.List.Contains(value);
         }
 
         ///<summary>
-        /// Copies elements of the PersonCollection to a Syste.Array, starting at a particular System.Array index.
+        /// Copies elements of the MemberCollection to a Syste.Array, starting at a particular System.Array index.
         ///</summary>
         public void CopyTo(Array array, int index)
         {

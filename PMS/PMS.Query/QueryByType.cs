@@ -11,6 +11,7 @@ namespace PMS.Query
     /// <summary>
     /// Create Query representing a class type
     /// </summary>
+    [Serializable]
     public class QueryByType : QueryByObject
     {
         /// <summary>

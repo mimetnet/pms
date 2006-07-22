@@ -18,21 +18,32 @@ namespace PMS.NUnit
         [TestFixtureSetUp]
         public void Constructor()
         {
+            Assert.IsNotNull(PMS.Broker.PersistenceBroker.Instance);
+
             r1 = new Repository();
 
             string sConn = "Server=10.5.4.20;Database=duncan;User ID=granny;Password=all_your_base;Pooling=false";
 
             r1.Connections.Add(new Connection("1", sConn, typeof(Npgsql.NpgsqlConnection), true, 2));
 
-            ArrayList fields = new ArrayList();
+            FieldCollection fields = new FieldCollection();
             fields.Add(new Field("mID", "id", "serial4", true, true));
             fields.Add(new Field("mFirstName", "first_name", "varchar"));
             fields.Add(new Field("mLastName", "last_name", "varchar"));
             fields.Add(new Field("mEmail", "email", "varchar"));
             fields.Add(new Field("mCreationDate", "creation_date", "timestamp", true));
-
             r1.Classes.Add(new Class(typeof(Person), "person", fields, typeof(PersonCollection)));
-            r1.Classes.Add(new Class(typeof(Person), "human", fields, typeof(PersonCollection)));
+
+            string sql = "SELECT * FROM person WHERE id = #mPerson#";
+            ClassRef personReference = new ClassRef("mPerson", typeof(Person), sql);
+
+            fields = new FieldCollection();
+            fields.Add(new Field("mID", "id", "int4", true, true));
+            fields.Add(new Field("mUsername", "username", "varchar"));
+            fields.Add(new Field("mPassword", "password", "varchar"));
+            fields.Add(new Field("mPersonId", "person_id", "int4", true, personReference));
+            fields.Add(new Field("mCreationDate", "creation_date", "timestamp", true));
+            r1.Classes.Add(new Class(typeof(Member), "member", fields, typeof(MemberCollection)));
         }
 
         [Test(Description="Write To Xml")]
@@ -47,22 +58,15 @@ namespace PMS.NUnit
             if (!RepositoryManager.Load("repository.xml"))
                 return;
 
-            Class c1 = r1.Classes[0] as Class;
-
             r2 = RepositoryManager.Repository;
-            Class c2 = r2.Classes[0] as Class;
 
-            Assert.AreEqual(c1, c2);
+            Assert.IsNotNull(r1);
+            Assert.IsNotNull(r2);
 
-            Field f1 = c1.Fields[0];
-            Field f2 = c2.Fields[0];
+            Assert.IsInstanceOfType(typeof(Repository), r1);
+            Assert.IsInstanceOfType(typeof(Repository), r2);
 
-            Assert.AreEqual(f1, f2);
-
-            Connection conn1 = r1.Connections[0] as Connection;
-            Connection conn2 = r2.Connections[0] as Connection;
-
-            Assert.AreEqual(conn1.Type, conn2.Type);
+            Assert.AreEqual(r1, r2);
         }
 
         [TestFixtureTearDown]
