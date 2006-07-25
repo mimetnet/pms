@@ -34,7 +34,7 @@ namespace PMS.NUnit
             fields.Add(new Field("mCreationDate", "creation_date", "timestamp", true));
             r1.Classes.Add(new Class(typeof(Person), "person", fields, typeof(PersonCollection)));
 
-            string sql = "SELECT * FROM person WHERE id = #mPerson#";
+            string sql = "SELECT * FROM person WHERE id = #mPersonId#";
             ClassRef personReference = new ClassRef("mPerson", typeof(Person), sql);
 
             fields = new FieldCollection();
