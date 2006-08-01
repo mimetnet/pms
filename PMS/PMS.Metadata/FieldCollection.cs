@@ -23,10 +23,22 @@ namespace PMS.Metadata
         ///<summary>
         /// The zero-based index of the element to get or set.
         ///</summary>
-        public Field this[int index]
-        {
+        public Field this[int index] {
             get { return (Field)this.List[index]; }
             set { this.List[index] = value; }
+        }
+
+        ///<summary>
+        /// The zero-based index of the element to get or set.
+        ///</summary>
+        public Field this[string name] {
+            get { 
+                foreach (Field f in this.List)
+                    if (f.Name == name)
+                        return f;
+
+                return null;
+            }
         }
 
         ///<summary>

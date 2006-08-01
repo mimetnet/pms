@@ -8,12 +8,12 @@ using PMS.Metadata;
 namespace PMS.Metadata
 {
     [XmlRoot("class")]
-    public class Class : IXmlSerializable
+    public sealed class Class : IXmlSerializable
     {
-        public string Type;
+        public Type Type;
+        public FieldCollection Fields = new FieldCollection();
+        public Type ListType = null;
         public string Table;
-        private FieldCollection fields = new FieldCollection();
-        private Type listType = null;
 
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger("PMS.Metadata.Class");
@@ -25,69 +25,50 @@ namespace PMS.Metadata
 
         public Class(Type type, string table, FieldCollection fields)
         {
-            this.Type = type.ToString();
+            this.Type = type;
             this.Table = table;
-            this.fields = fields;
+            this.Fields = fields;
         }
 
         public Class(Type type, string table, FieldCollection fields, Type listType)
         {
-            this.Type = type.ToString();
+            this.Type = type;
             this.Table = table;
-            this.fields = fields;
+            this.Fields = fields;
             this.ListType = listType;
         }
         #endregion
 
-        #region Properties
+        public bool HasReferences {
+            get {
+                for (int x = 0; x < this.Fields.Count; x++)
+                    if (this.Fields[x].HasReference)
+                        return true;
 
-        public FieldCollection Fields {
-            get { return fields; }
-            set { fields = value; }
+                return false;
+            }
         }
-
-        public Type ListType {
-            get { return this.listType; }
-            set { listType = value; }
-        }
-        #endregion
 
         #region Methods
-        public string GetColumnByField(string fieldName)
-        {
-            foreach (Field field in Fields)
-                if (field.Name.Equals(fieldName))
-                    return field.Column;
 
-            return null;
-        }
-
-        public string GetFieldByColumn(string colName)
+        public Field GetFieldByColumn(string colName)
         {
             foreach (Field field in Fields)
                 if (field.Column.Equals(colName))
-                    return field.Name;
-
-            return null;
-        }
-
-        public Field GetField(string name)
-        {
-            foreach (Field field in Fields)
-                if (field.Name.Equals(name))
                     return field;
 
             return null;
         }
 
-        public Field GetField(FieldInfo fieldInfo)
-        {
-            foreach (Field field in Fields)
-                if (field.Name.Equals(fieldInfo.Name))
-                    return field;
+        public Field this[int index] {
+            get { return Fields[index]; }
+            set { Fields[index] = value; }
+        }
 
-            return null;
-        } 
+        public Field this[string fieldName] {
+            get { return Fields[fieldName]; }
+        }
+
         #endregion
 
         #region IXmlSerializable Members
@@ -104,19 +85,14 @@ namespace PMS.Metadata
                 return;
             }
 
-            this.Type = reader.GetAttribute("type");
+            this.Type = MetaObject.LoadType(reader.GetAttribute("type"));
             this.Table = reader.GetAttribute("table");
+            this.ListType = MetaObject.LoadType(reader.GetAttribute("list-type"));
 
             XmlSerializer xml = new XmlSerializer(typeof(FieldCollection));
 
             while (reader.Read()) {
                 reader.MoveToElement();
-
-                if (reader.LocalName == "list") {
-                    string stype = reader.GetAttribute("type");
-                    string sassembly = reader.GetAttribute("assembly");
-                    this.ListType = this.LoadType(stype, sassembly);
-                }
 
                 if (reader.LocalName == "fields")
                     this.Fields = (FieldCollection)xml.Deserialize(reader);
@@ -126,43 +102,24 @@ namespace PMS.Metadata
             }
         }
 
-        private Type LoadType(string stype, string sassembly)
-        {
-            if (sassembly == null || sassembly == String.Empty) {
-                if (log.IsInfoEnabled)
-                    log.Info("Class:LoadType @assembly is empty or missing");
-                return null;
-            }
-
-            if (stype == null || stype == String.Empty) {
-                if (log.IsInfoEnabled)
-                    log.Info("Class:LoadType @type is empty or missing");
-                return null;
-            }
-
-            try {
-                return Assembly.Load(sassembly).GetType(stype, false);
-            } catch (Exception e) {
-                if (log.IsInfoEnabled)
-                    log.Info("Class:LoadType", e);
-                return null;
-            }
-        }
-
         /// <summary>
         /// Write XML to stream
         /// </summary>
         /// <param name="writer">XmlWriter</param>
         public void WriteXml(System.Xml.XmlWriter writer)
         {
-            writer.WriteAttributeString("type", this.Type);
+            string stype;
+
+            stype = this.Type.FullName + ", ";
+            stype += this.Type.Assembly.GetName().Name;
+
+            writer.WriteAttributeString("type", stype);
             writer.WriteAttributeString("table", this.Table);
 
-            if (listType != null) {
-                writer.WriteStartElement("list");
-                writer.WriteAttributeString("type", listType.FullName);
-                writer.WriteAttributeString("assembly", listType.Assembly.GetName().Name);
-                writer.WriteEndElement();
+            if (this.ListType != null) {
+                stype = this.ListType.FullName + ", ";
+                stype += this.ListType.Assembly.GetName().Name;
+                writer.WriteAttributeString("list-type", stype);
             }
 
             XmlSerializer xml = new XmlSerializer(typeof(Field));
@@ -177,7 +134,7 @@ namespace PMS.Metadata
 
         #endregion
 
-        #region ObjectOverloads
+        #region Object Overloads
 
         ///<summary>
         ///OverLoading == operator

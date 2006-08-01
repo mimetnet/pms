@@ -5,17 +5,21 @@ using System.Xml.Serialization;
 namespace PMS.Metadata
 {
     [XmlRoot("field")]
-    public class Field : IXmlSerializable
+    public sealed class Field : IXmlSerializable
     {
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger("PMS.Metadata.Field");
+
         public string Name;
         public string Column;
         public string DbType;
         public bool PrimaryKey = false;
         public bool IgnoreDefault = false;
-        public ClassRef ClassReference = null;
+        public Reference Reference = null;
 
-        private static readonly log4net.ILog log =
-            log4net.LogManager.GetLogger("PMS.Metadata.Class");
+        public bool HasReference {
+            get { return (Reference != null)? true : false; }
+        }
 
         #region Constructors
         public Field()
@@ -27,7 +31,7 @@ namespace PMS.Metadata
         {
         }
 
-        public Field(string name, string column, string dbType, ClassRef classReference)
+        public Field(string name, string column, string dbType, Reference classReference)
             : this(name, column, dbType, false, false, classReference)
         {
         }
@@ -37,7 +41,7 @@ namespace PMS.Metadata
         {
         }
 
-        public Field(string name, string column, string dbType, bool ignoreDefault, ClassRef classReference)
+        public Field(string name, string column, string dbType, bool ignoreDefault, Reference classReference)
             : this(name, column, dbType, ignoreDefault, false, classReference)
         {
         }
@@ -47,14 +51,14 @@ namespace PMS.Metadata
         {
         }
 
-        public Field(string name, string column, string dbType, bool ignoreDefault, bool iskey, ClassRef classReference)
+        public Field(string name, string column, string dbType, bool ignoreDefault, bool iskey, Reference classReference)
         {
             this.Name = name;
             this.Column = column;
             this.DbType = dbType;
             this.PrimaryKey = iskey;
             this.IgnoreDefault = ignoreDefault;
-            this.ClassReference = classReference;
+            this.Reference = classReference;
         }
         #endregion
 
@@ -89,7 +93,7 @@ namespace PMS.Metadata
                 return false;
             }
             
-            if (obj1.ClassReference != obj2.ClassReference) {
+            if (obj1.Reference != obj2.Reference) {
                 return false;
             }
 
@@ -155,8 +159,8 @@ namespace PMS.Metadata
             if (reader.IsEmptyElement == false) {
                 if (reader.Read()) {
                     reader.MoveToElement();
-                    XmlSerializer xml = new XmlSerializer(typeof(ClassRef));
-                    this.ClassReference = (ClassRef)xml.Deserialize(reader);
+                    XmlSerializer xml = new XmlSerializer(typeof(Reference));
+                    this.Reference = (Reference)xml.Deserialize(reader);
                 }
             }
         }
@@ -175,9 +179,9 @@ namespace PMS.Metadata
                 writer.WriteAttributeString("primarykey", 
                                             this.PrimaryKey.ToString().ToLower());
 
-            if (this.ClassReference != null) {
-                XmlSerializer xml = new XmlSerializer(typeof(ClassRef));
-                xml.Serialize(writer, this.ClassReference);
+            if (this.Reference != null) {
+                XmlSerializer xml = new XmlSerializer(typeof(Reference));
+                xml.Serialize(writer, this.Reference);
             }
         }
 

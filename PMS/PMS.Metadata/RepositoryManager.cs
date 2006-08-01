@@ -5,29 +5,37 @@ using System.Xml.Serialization;
 
 namespace PMS.Metadata
 {
-    public class RepositoryManager : MarshalByRefObject
+    public sealed class RepositoryManager : MarshalByRefObject
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        #region Private Fields
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger("PMS.Metadata.RepositoryManager");
         private static XmlSerializer serializer = new XmlSerializer(typeof(Repository));
         private static Repository repository = new Repository();
         private static Connection cConn = null;
         private static bool isLoaded = false;
-        
-        public static Repository Repository {
+        #endregion
+
+        #region Properties
+        public static Repository Repository
+        {
             get { return repository; }
             set { repository = value; }
         }
-        
-        public static Connection DefaultConnection {
-            get {
+
+        public static Connection DefaultConnection
+        {
+            get
+            {
                 foreach (Connection conn in Repository.Connections) {
                     if (conn.IsDefault == true)
                         return conn;
                 }
 
-                return (Connection) Repository.Connections[0];
+                return (Connection)Repository.Connections[0];
             }
-            set {
+            set
+            {
                 value.IsDefault = true;
                 foreach (Connection conn in Repository.Connections) {
                     conn.IsDefault = false;
@@ -37,56 +45,23 @@ namespace PMS.Metadata
             }
         }
 
-        public static Connection CurrentConnection {
-            get { 
+        public static Connection CurrentConnection
+        {
+            get
+            {
                 if (cConn == null)
                     cConn = DefaultConnection;
-                return cConn; 
+                return cConn;
             }
             set { cConn = value; }
-        }
+        } 
+        #endregion
 
-        public static bool IsFieldInClass(Type type, string field)
-        {
-            if (GetField(type, field) != null)
-                return true;
-            else
-                return false;
-        }
-
-        public static string GetColumn(Type type, string fieldName)
-        {
-            Field field = GetField(type, fieldName);
-
-            if (field != null)
-                return field.Column;
-            
-            return null;
-        }
-
-        public static Field GetField(Type type, string Sfield)
-        {
-            Field field = GetClass(type).GetField(Sfield);
-            if (field != null)
-                return field;
-
-            return null;
-
-            // if strict throw Exception();
-        }
-
-        public static Field GetField(Type type, FieldInfo fieldInfo)
-        {
-            return GetClass(type).GetField(fieldInfo);
-            // if NULL && strict throw Exception();
-        }
-
+        #region Methods
         public static Class GetClass(Type type)
         {
-            string stype = type.ToString();
-
             foreach (Class cdesc in Repository.Classes) {
-                if (cdesc.Type.Equals(stype)) {
+                if (cdesc.Type == type) {
                     return cdesc;
                 }
             }
@@ -113,8 +88,10 @@ namespace PMS.Metadata
         public static bool Exists(Type type)
         {
             return (GetClass(type) != null) ? true : false;
-        }
-        
+        } 
+        #endregion
+
+        #region File IO
         public static bool SaveAs(string fileName)
         {
             return SaveAs(repository, fileName);
@@ -123,7 +100,11 @@ namespace PMS.Metadata
         public static bool SaveAs(Repository rep, string fileName)
         {
             using (TextWriter writer = new StreamWriter(fileName)) {
-                serializer.Serialize(writer, rep);
+                try {
+                    serializer.Serialize(writer, rep);
+                } catch (Exception e) {
+                    log.Error("SaveAs", e);
+                }
                 writer.Close();
             }
 
@@ -139,10 +120,10 @@ namespace PMS.Metadata
         {
             try {
                 using (FileStream fs = file.OpenRead()) {
-                    repository += (Repository) serializer.Deserialize(fs);
+                    repository += (Repository)serializer.Deserialize(fs);
 
                     fs.Close();
-                    isLoaded = true;    
+                    isLoaded = true;
                 }
             } catch (FileNotFoundException) {
                 if (log.IsErrorEnabled)
@@ -155,6 +136,11 @@ namespace PMS.Metadata
             return IsLoaded;
         }
 
+        private static void RepositoryChanged(object sender, FileSystemEventArgs e)
+        {
+            Console.WriteLine("Repo Event " + e.ChangeType);
+        }
+
         public static void Close()
         {
             if (isLoaded) {
@@ -164,6 +150,7 @@ namespace PMS.Metadata
 
         public static bool IsLoaded {
             get { return isLoaded; }
-        }
+        } 
+        #endregion
     }
 }

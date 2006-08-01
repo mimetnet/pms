@@ -124,8 +124,6 @@ namespace PMS.Metadata
 
                 if (reader.LocalName == "classes")
                     return;
-
-                Console.WriteLine("\n");
             }
         }
 
