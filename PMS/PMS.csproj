@@ -44,11 +44,15 @@
     <Compile Include="PMS.Broker\IPersistenceBroker.cs" />
     <Compile Include="PMS.Broker\PersistenceBroker.cs" />
     <Compile Include="PMS.Broker\PersistenceBrokerFactory.cs" />
+    <Compile Include="PMS.Collections.Pool\AbstractObjectPool.cs" />
+    <Compile Include="PMS.Collections.Pool\IObjectPool.cs" />
+    <Compile Include="PMS.Data.Pool\IConnectionPool.cs" />
     <Compile Include="PMS.DataAccess\DbEngineNotStartedException.cs" />
     <Compile Include="PMS.Metadata\Auto.cs" />
     <Compile Include="PMS.Metadata\Class.cs" />
     <Compile Include="PMS.Metadata\ClassCollection.cs" />
     <Compile Include="PMS.Metadata\ConnectionCollection.cs" />
+    <Compile Include="PMS.Metadata\AssemblyCollection.cs" />
     <Compile Include="PMS.Metadata\FieldCollection.cs" />
     <Compile Include="PMS.Metadata\RepositoryNotFoundException.cs" />
     <Compile Include="PMS.Collections.Pool\ForeignObjectException.cs" />
@@ -71,7 +75,7 @@
     <Compile Include="PMS.Data\ProviderDefaultException.cs" />
     <Compile Include="PMS.Data\ProviderFactory.cs" />
     <Compile Include="PMS.Data\ProviderNotFoundException.cs" />
-    <Compile Include="PMS.Metadata\ClassRef.cs" />
+    <Compile Include="PMS.Metadata\Reference.cs" />
     <Compile Include="PMS.Metadata\ClassNotFoundException.cs" />
     <Compile Include="PMS.Metadata\Connection.cs" />
     <Compile Include="PMS.Metadata\Field.cs" />
@@ -99,6 +103,7 @@
     <Compile Include="PMS.Query\NotEqualToClause.cs" />
     <Compile Include="PMS.Query\NotLikeClause.cs" />
     <Compile Include="PMS.Query\OrClause.cs" />
+    <Compile Include="PMS.Query\QueryFactory.cs" />
     <Compile Include="PMS.Query\QueryByCriteria.cs" />
     <Compile Include="PMS.Query\QueryByObject.cs">
       <SubType>Code</SubType>

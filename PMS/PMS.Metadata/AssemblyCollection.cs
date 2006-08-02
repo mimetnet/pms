@@ -144,13 +144,13 @@ namespace PMS.Metadata
                 if (reader.LocalName == "add") {
                     sAssembly = reader["assembly"];
                     if (sAssembly != null && sAssembly != String.Empty) {
-                        if (!sAssembly.EndsWith(".dll") && 
-                            !sAssembly.EndsWith(".DLL") &&
-                            !IsLoaded(sAssembly)) {
-                            Assembly.Load(sAssembly);
-                            log.Info("Loading " + sAssembly);
+                        if (!IsLoaded(sAssembly)) {
+                            try {
+                                Assembly.Load(sAssembly);
+                            } catch (Exception e) {
+                                log.Error("Assembly.Load", e);
+                            }
                         }
-
                     }
                 }
 

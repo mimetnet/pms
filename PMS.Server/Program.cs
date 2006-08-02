@@ -13,12 +13,16 @@ namespace PMS.Server
         static void Main()
         {
             Type type = null;
-            TcpChannel chnl = new TcpChannel(8085);
+            TcpChannel chnl = new TcpChannel(5642);
             ChannelServices.RegisterChannel(chnl, false);
 
             type = typeof(PMS.Broker.PersistenceBroker);
             RemotingConfiguration.RegisterWellKnownServiceType(type, type.ToString(),
                                                                WellKnownObjectMode.Singleton);
+
+            type = typeof(PMS.Query.QueryByObject);
+            RemotingConfiguration.RegisterWellKnownServiceType(type, type.ToString(),
+                                                               WellKnownObjectMode.SingleCall);
 
             Console.WriteLine("Press [Enter] to halt...");
             Console.ReadLine();

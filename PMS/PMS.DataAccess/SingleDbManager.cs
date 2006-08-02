@@ -6,11 +6,11 @@ using PMS.Metadata;
 
 namespace PMS.DataAccess
 {
-    internal sealed class SingleDbManager : IDbManager
+    internal sealed class SingleDbManager : MarshalByRefObject, IDbManager
     {
         private IDbConnection connection = null;
         private IDbTransaction trans = null;
-        private ConnectionPool pool = null;
+        private IConnectionPool pool = null;
         private bool isInit = false;
 
         private static IDbManager _instance = null;

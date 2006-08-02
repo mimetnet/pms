@@ -14,6 +14,7 @@ namespace PMS.Metadata
     public sealed class Repository : IXmlSerializable
     {
         public DbManagerMode DbManagerMode = DbManagerMode.Single;
+        public AssemblyCollection Assemblies = new AssemblyCollection();
         public ConnectionCollection Connections = new ConnectionCollection();
         public ClassCollection Classes = new ClassCollection();
 
@@ -66,7 +67,6 @@ namespace PMS.Metadata
             if (Object.ReferenceEquals(obj2, null)) return false;
 
             if (obj1.Connections.Count != obj2.Connections.Count) {
-                Console.WriteLine("Connection Count off");
                 return false;    
             }
 
@@ -76,13 +76,11 @@ namespace PMS.Metadata
                 cn1 = obj1.Connections[x];
                 cn2 = obj2.Connections[x];
                 if (cn1 != cn2) {
-                    Console.WriteLine("cn1 != cn2");
                     return false;
                 }
             }
 
             if (obj1.Classes.Count != obj2.Classes.Count) {
-                Console.WriteLine("Class Count off");
                 return false;
             }
 
@@ -150,22 +148,44 @@ namespace PMS.Metadata
             while (reader.Read()) {
                 reader.MoveToElement();
 
-                if (reader.LocalName == "dbmanager-mode") {
-                    string mode = reader.ReadString();
-                    if (mode.ToLower() == "single") {
-                        this.DbManagerMode = DbManagerMode.Single;
-                    }
+                switch (reader.LocalName) {
+                    case "dbmanager-mode":
+                        if (reader.ReadString().ToLower() == "single")
+                            this.DbManagerMode = DbManagerMode.Single;
+                        break;
+
+                    case "assemblies":
+                        xml = new XmlSerializer(typeof(AssemblyCollection));
+                        this.Assemblies = (AssemblyCollection)xml.Deserialize(reader);
+                        break;
+
+                    case "connections":
+                        xml = new XmlSerializer(typeof(ConnectionCollection));
+                        this.Connections = (ConnectionCollection)xml.Deserialize(reader);
+                        break;
+
+                    case "classes":
+                        xml = new XmlSerializer(typeof(ClassCollection));
+                        this.Classes = (ClassCollection)xml.Deserialize(reader);
+                        break;
                 }
 
-                if (reader.LocalName == "connections") {
-                    xml = new XmlSerializer(typeof(ConnectionCollection));
-                    this.Connections = (ConnectionCollection)xml.Deserialize(reader);
-                }
+                //if (reader.LocalName == "dbmanager-mode") {
+                //    string mode = reader.ReadString();
+                //    if (mode.ToLower() == "single") {
+                //        this.DbManagerMode = DbManagerMode.Single;
+                //    }
+                //}
 
-                if (reader.LocalName == "classes") {
-                    xml = new XmlSerializer(typeof(ClassCollection));
-                    this.Classes = (ClassCollection)xml.Deserialize(reader);
-                }
+                //if (reader.LocalName == "connections") {
+                //    xml = new XmlSerializer(typeof(ConnectionCollection));
+                //    this.Connections = (ConnectionCollection)xml.Deserialize(reader);
+                //}
+
+                //if (reader.LocalName == "classes") {
+                //    xml = new XmlSerializer(typeof(ClassCollection));
+                //    this.Classes = (ClassCollection)xml.Deserialize(reader);
+                //}
             }
         }
 
@@ -175,11 +195,22 @@ namespace PMS.Metadata
             writer.WriteValue(this.DbManagerMode.ToString());
             writer.WriteEndElement();
 
-            XmlSerializer conXml = new XmlSerializer(typeof(ConnectionCollection));
-            conXml.Serialize(writer, this.Connections);
+            XmlSerializer xml = null;
 
-            XmlSerializer classXml = new XmlSerializer(typeof(ClassCollection));
-            classXml.Serialize(writer, this.Classes);
+            if (Assemblies.Count > 0) {
+                xml = new XmlSerializer(typeof(AssemblyCollection));
+                xml.Serialize(writer, this.Assemblies);
+            }
+
+            if (Connections.Count > 0) {
+                xml = new XmlSerializer(typeof(ConnectionCollection));
+                xml.Serialize(writer, this.Connections);
+            }
+
+            if (Classes.Count > 0) {
+                xml = new XmlSerializer(typeof(ClassCollection));
+                xml.Serialize(writer, this.Classes);
+            }
         }
 
         #endregion
