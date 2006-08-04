@@ -55,12 +55,12 @@ namespace PMS.Query
                 bool withClause = false;
 
                 // loop through keys (not columns)
-                for (int i=0; i < keys.Length; i++) {
+                for (int i=0; i < keys.Count; i++) {
                     if (metaObject.IsFieldSet(keys[i])) {
                         if (i > 0 && keyClause) 
                             sql.Append(" AND ");
-                        
-                        sql.Append(keys[i]);
+
+                        sql.Append(keys[i].Column);
                         sql.Append("=");
                         sql.Append(metaObject.GetSqlValue(keys[i]));
                         keyClause = true;
@@ -71,12 +71,12 @@ namespace PMS.Query
                     return sql.ToString();
                 
                 // loop through columns (not keys)
-                for (int i=0; i < columns.Length; i++) {
+                for (int i = 0; i < columns.Count; i++) {
                     if (metaObject.IsFieldSet(columns[i])) {
                         if (keyClause == true || (i > 0 && withClause)) 
                             sql.Append(" AND ");
-                        
-                        sql.Append(columns[i]);
+
+                        sql.Append(columns[i].Column);
                         sql.Append("=");
                         sql.Append(metaObject.GetSqlValue(columns[i]));
                         
@@ -106,7 +106,7 @@ namespace PMS.Query
                 StringBuilder sql1 = new StringBuilder();
                 StringBuilder sql2 = new StringBuilder();
 
-                for (int i=0; i < keys.Length; i++) {
+                for (int i = 0; i < keys.Count; i++) {
                     if (metaObject.IsFieldSet(keys[i])) {
                         if (i > 0 && keyClause) {
                             sql1.Append(", ");
@@ -118,7 +118,7 @@ namespace PMS.Query
                     }
                 }
 
-                for (int i=0; i < columns.Length; i++) {
+                for (int i = 0; i < columns.Count; i++) {
                     if (metaObject.IsFieldSet(columns[i])) {
                         if (keyClause == true || i > 0 && clause) {
                             sql1.Append(", ");
@@ -143,12 +143,12 @@ namespace PMS.Query
                 bool clause    = false;
                 StringBuilder sql = new StringBuilder(" SET ");
 
-                for (int i=0; i < columns.Length; i++) {
+                for (int i = 0; i < columns.Count; i++) {
                     if (metaObject.IsFieldSet(columns[i])) {
                         if (i > 0 && clause) 
                             sql.Append(", ");
                         
-                        sql.Append(columns[i]);
+                        sql.Append(columns[i].Column);
                         sql.Append("=");
                         sql.Append(metaObject.GetSqlValue(columns[i]));
                         clause = true;

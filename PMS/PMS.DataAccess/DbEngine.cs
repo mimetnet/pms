@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Data;
+using System.Security.Principal;
 
 using PMS.Data;
 
@@ -26,31 +27,31 @@ namespace PMS.DataAccess
         /// Begin transaction with Dbmanager
         /// </summary>
         /// <returns>status</returns>
-        public static bool BeginTransaction()
+        public static bool BeginTransaction(IPrincipal principal)
         {
-            return dbManager.BeginTransaction();
+            return dbManager.BeginTransaction(principal);
         }
 
         /// <summary>
         /// Rollback transaction with Dbmanager
         /// </summary>
         /// <returns>status</returns>
-        public static bool RollbackTransaction()
+        public static bool RollbackTransaction(IPrincipal principal)
         {
-            return dbManager.RollbackTransaction();
+            return dbManager.RollbackTransaction(principal);
         }
 
         /// <summary>
         /// Commit transaction with Dbmanager
         /// </summary>
         /// <returns>status</returns>
-        public static bool CommitTransaction()
+        public static bool CommitTransaction(IPrincipal principal)
         {
-            return dbManager.CommitTransaction();
+            return dbManager.CommitTransaction(principal);
         } 
         #endregion
 
-        #region Execution
+        
         /// <summary>
         /// Execute SQL built by IQuery and return instantiated class
         /// </summary>
@@ -77,9 +78,11 @@ namespace PMS.DataAccess
             } catch (InvalidOperationException e) {
                 log.Error("ExecuteSelectObject", e);
             } finally {
-                if (cmd != null)
+                if (cmd != null) {
                     if (log.IsDebugEnabled)
                         log.Debug("SQL = " + cmd.CommandText);
+                    dbManager.ReturnCommand(cmd);
+                }
 
                 if (reader != null) {
                     reader.Close();
@@ -123,6 +126,7 @@ namespace PMS.DataAccess
                 if (cmd != null) {
                     if (log.IsDebugEnabled)
                         log.Debug("SQL = " + cmd.CommandText);
+                    dbManager.ReturnCommand(cmd);
                 }
                 if (reader != null) {
                     reader.Close();
@@ -163,6 +167,7 @@ namespace PMS.DataAccess
                 if (cmd != null) {
                     if (log.IsDebugEnabled)
                         log.Debug("SQL = " + cmd.CommandText);
+                    dbManager.ReturnCommand(cmd);
                 }
                 if (reader != null) {
                     reader.Close();
@@ -300,6 +305,7 @@ namespace PMS.DataAccess
                 ExecuteScalar(query.Count()) : new DbResult(query.ValidationException);
         }
 
+        #region Execution
         /// <summary>
         /// Perform IDbCommand.ExecuteNonQuery()
         /// </summary>
@@ -325,6 +331,8 @@ namespace PMS.DataAccess
                     log.Debug(result);
                 if (log.IsErrorEnabled && result.Exception != null)
                     log.Error("ExecuteNonQuery", result.Exception);
+                if (cmd != null)
+                    dbManager.ReturnCommand(cmd);
             }
 
             return result;
@@ -356,9 +364,36 @@ namespace PMS.DataAccess
                     log.Debug(result);
                 if (log.IsErrorEnabled && result.Exception != null)
                     log.Error("ExecuteNonQuery", result.Exception);
+                if (cmd != null)
+                    dbManager.ReturnCommand(cmd);
             }
 
             return result;
+        }
+
+        public static IDataReader ExecuteReader(string sql)
+        {
+            IDbCommand cmd = null;
+            IDataReader reader = null;
+
+            if (sql == null)
+                throw new ArgumentNullException("Parameter cannot be null");
+            if (sql == String.Empty)
+                throw new ArgumentNullException("Parameter cannot be String.Empty");
+
+            try {
+                cmd = dbManager.GetCommand(sql, AccessMode.Read);
+                reader = cmd.ExecuteReader();
+            } catch (Exception ex) {
+                log.Error("ExecuteReader(): " + new DbResult(sql, ex).ToString());
+            } finally {
+                if (log.IsDebugEnabled)
+                    log.Debug("SQL = " + sql);
+                if (cmd != null)
+                    dbManager.ReturnCommand(cmd);
+            }
+
+            return reader;
         } 
         #endregion
 
@@ -373,7 +408,7 @@ namespace PMS.DataAccess
             if (DbManagerMode.Single == mode) {
                 if (log.IsDebugEnabled)
                     log.Debug("DBEngine.Start(" + mode + ")");
-                dbManager = SingleDbManager.Instance;
+                dbManager = new SingleDbManager();
                 dbManager.Start();
 
                 return true;
@@ -399,56 +434,5 @@ namespace PMS.DataAccess
         } 
         #endregion
 
-        #region GetCommand
-        /// <summary>
-        /// Retrieve IDbCommand from pool with sql for specified AccessMode
-        /// </summary>
-        /// <param name="sql">SQL to execute</param>
-        /// <param name="mode">AccessMode (is command reading or writing)</param>
-        /// <returns>IDbCommand</returns>
-        public static IDbCommand GetCommand(string sql, AccessMode mode)
-        {
-            if (sql == null)
-                throw new ArgumentNullException("Parameter cannot be null");
-            if (sql == String.Empty)
-                throw new ArgumentNullException("Parameter cannot be String.Empty");
-
-            return dbManager.GetCommand(sql, mode);
-        }
-
-        /// <summary>
-        /// Retrieve IDbCommand from pool for specified AccessMode
-        /// </summary>
-        /// <param name="mode">AccessMode (is command reading or writing)</param>
-        /// <returns>IDbCommand</returns>
-        public static IDbCommand GetCommand(AccessMode mode)
-        {
-            return dbManager.GetCommand(mode);
-        }
-
-        /// <summary>
-        /// Retieve IDbCommand from pool where access mode defaults to Read
-        /// </summary>
-        /// <param name="sql">SQL to execute</param>
-        /// <returns>IDbCommand</returns>
-        public static IDbCommand GetCommand(string sql)
-        {
-            if (sql == null)
-                throw new ArgumentNullException("Parameter cannot be null");
-            if (sql == String.Empty)
-                throw new ArgumentNullException("Parameter cannot be String.Empty");
-
-            return dbManager.GetCommand(sql, AccessMode.Read);
-        }
-
-        /// <summary>
-        /// Retrieves IDbCommand from pool where access mode defaults to Read
-        /// </summary>
-        /// <returns>IDbCommand</returns>
-        public static IDbCommand GetCommand()
-        {
-            return dbManager.GetCommand(AccessMode.Read);
-        } 
-        #endregion
     }
 }

@@ -148,7 +148,7 @@ namespace PMS.Metadata
                             try {
                                 Assembly.Load(sAssembly);
                             } catch (Exception e) {
-                                log.Error("Assembly.Load", e);
+                                log.Error("Assembly.Load: " + e.Message);
                             }
                         }
                     }

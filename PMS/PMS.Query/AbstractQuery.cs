@@ -5,16 +5,32 @@ using PMS.Metadata;
 
 namespace PMS.Query
 {
-    [Serializable]
-    public abstract class AbstractQuery : IQuery
+    public abstract class AbstractQuery : MarshalByRefObject, IQuery
     {
         internal MetaObject metaObject = null;
         protected SqlCommand command;
         protected Criteria criteria = null;
-        protected string[] columns;
-        protected string[] keys;
+        protected FieldCollection columns;
+        protected FieldCollection keys;
         protected string _selection = "*";
         protected Exception vExe = null;
+
+        public void LoadMetaObject(object obj)
+        {
+            this.LoadMetaObject(obj, null);
+        }
+
+        public void LoadMetaObject(object obj, Criteria crit)
+        {
+            
+
+            this.metaObject = new MetaObject(obj);
+            if (this.metaObject.Exists) {
+                this.criteria = (crit == null) ? new Criteria(obj.GetType()) : crit;
+                this.columns = metaObject.Columns;
+                this.keys = metaObject.PrimaryKeys;
+            }
+        }
 
         public SqlCommand Command {
             get { return command; }
@@ -28,12 +44,6 @@ namespace PMS.Query
 
         public virtual string Table {
             get { return metaObject.Table; }
-        }
-
-        public virtual object BaseObject {
-            get {
-                return metaObject.BaseObject;
-            }
         }
 
         public virtual Type Type {

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Data;
 using System.IO;
+using System.Runtime.Remoting;
 
 using PMS.Data;
 using PMS.DataAccess;
@@ -9,21 +10,23 @@ using PMS.Broker;
 using PMS.Query;
 
 using NUnit.Framework;
+
 using PMS.NUnit.Model;
 
 namespace PMS.NUnit
 {
-    /**
-    //[TestFixture]
+    [TestFixture]
     public class D_RemotingTest
     {
+        IPersistenceBroker broker = null;
+        PersonDao dao = null;
+        Person person = null;
+
         [TestFixtureSetUp]
-        public override void Constructor()
+        public void Constructor()
         {
             // obtain instance of PersistenceBroker
-            broker = ((IPersistenceBroker)
-                Activator.GetObject(Type.GetType("PMS.Broker.PersistenceBroker, PMS"),
-                                    "tcp://localhost:8085/PMS.Broker.PersistenceBroker"));
+            broker = PersistenceBrokerFactory.CreateProxiedBroker();
 
             Assert.IsNotNull(broker, "PersistenceBroker not retrieved from remote service");
 
@@ -37,12 +40,41 @@ namespace PMS.NUnit
             dao = new PersonDao();
         }
 
+        [SetUp]
+        public void SetUp()
+        {
+            person = new Person();
+            person.FirstName = "Matthew";
+            person.LastName = "Metnetsky";
+            person.Email = "blah@blah.com";
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            person = null;
+        }
+
+        [Test]
+        public void C_GetObject_QueryByObjectPK_0_SQL()
+        {
+            Person ps = new Person();
+            ps.ID = 0;
+
+            IQuery query = QueryFactory.ByObjectProxied(ps);
+
+            String sql = query.Select();
+
+            Assert.AreEqual("SELECT * FROM person",
+                            sql,
+                            "Generated SQL '" + sql + "' does not match 'SELECT * FROM person'");
+        }
+
         [TestFixtureTearDown]
-        public override void Destructor()
+        public void Destructor()
         {
             if (broker != null)
                 broker.Close(); // close pool
         }
     }
-    **/
 }

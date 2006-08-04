@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Configuration;
+using System.Security.Principal;
 
 using PMS.Data;
 using PMS.DataAccess;
@@ -18,22 +19,20 @@ namespace PMS.Broker
         private bool isOpen = false;
         private string R_FILE = "repository.xml";
         private const string R_KEY = "PMS.Repository";
-
-        private static PersistenceBroker _instance = null;
-
+        
         private static readonly log4net.ILog log = 
             log4net.LogManager.GetLogger("PMS.Broker.PersistenceBroker");
         
         #endregion
 
         #region Construct/Destruct
-        public PersistenceBroker()
+        internal PersistenceBroker()
         {
             System.IO.FileInfo file = new System.IO.FileInfo("PMS.dll.config");
             if (file.Exists)
                 log4net.Config.XmlConfigurator.Configure(file);
             else
-                Console.WriteLine("NOCONFIG: " + file.FullName);
+                Console.WriteLine("PMS NoConfig: " + file.FullName);
 
             if (log.IsInfoEnabled)
                 log.Info("Version " + this.Version);
@@ -50,27 +49,27 @@ namespace PMS.Broker
         /// Begin transaction
         /// </summary>
         /// <returns>success status</returns>
-        public bool BeginTransaction()
+        public bool BeginTransaction(IPrincipal principal)
         {
-            return DbEngine.BeginTransaction();
+            return DbEngine.BeginTransaction(principal);
         }
 
         /// <summary>
         /// Rollback transaction
         /// </summary>
         /// <returns>success status</returns>
-        public bool RollbackTransaction()
+        public bool RollbackTransaction(IPrincipal principal)
         {
-            return DbEngine.RollbackTransaction();
+            return DbEngine.RollbackTransaction(principal);
         }
 
         /// <summary>
         /// Commit transaction
         /// </summary>
         /// <returns>success status</returns>
-        public bool CommitTransaction()
+        public bool CommitTransaction(IPrincipal principal)
         {
-            return DbEngine.CommitTransaction();
+            return DbEngine.CommitTransaction(principal);
         } 
         #endregion
 
@@ -267,20 +266,20 @@ namespace PMS.Broker
         /// <param name="oldObj">Original class</param>
         /// <param name="newObj">Modified class</param>
         /// <returns>Result holding Count and executed SQL</returns>
-        public DbResult Update(object oldObj, object newObj)
-        {
-            if (!IsOpen) {
-                log.Warn("Update(obj) called before .Open()");
-                throw new RepositoryNotFoundException("GetObject(query) called before .Open()");
-            }
+        //public DbResult Update(object oldObj, object newObj)
+        //{
+        //    if (!IsOpen) {
+        //        log.Warn("Update(obj) called before .Open()");
+        //        throw new RepositoryNotFoundException("GetObject(query) called before .Open()");
+        //    }
 
-            if (!IsLoaded) {
-                log.Warn("Update(obj) called before .Load()");
-                throw new DbEngineNotStartedException("GetObject(query) called before .Load()");
-            }
+        //    if (!IsLoaded) {
+        //        log.Warn("Update(obj) called before .Load()");
+        //        throw new DbEngineNotStartedException("GetObject(query) called before .Load()");
+        //    }
 
-            return DbEngine.ExecuteUpdate(oldObj, newObj);
-        }
+        //    return DbEngine.ExecuteUpdate(oldObj, newObj);
+        //}
 
         /// <summary>
         /// Delete object based on its properties
@@ -353,6 +352,7 @@ namespace PMS.Broker
         /// <returns>success status</returns>
         public bool Load(string fileName)
         {
+            
             return PMS.Metadata.RepositoryManager.Load(fileName);
         }
 
@@ -421,16 +421,6 @@ namespace PMS.Broker
         public string Version {
             get {
                 return System.Reflection.Assembly.GetCallingAssembly().GetName().Version.ToString();
-            }
-        }
-
-        /// <summary>
-        /// Return Singleton
-        /// </summary>
-        public static IPersistenceBroker Instance {
-            get {
-                return (_instance != null) ?
-                    _instance : (_instance = new PersistenceBroker());
             }
         }
 

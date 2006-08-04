@@ -4,8 +4,6 @@ namespace PMS.Query
 {
     public interface IQuery
     {
-        object BaseObject { get; }
-
         Type Type { get; }
 
         SqlCommand Command { get; set; }

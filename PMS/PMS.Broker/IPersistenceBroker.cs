@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Configuration;
+using System.Security.Principal;
 
 using PMS.Data;
 using PMS.DataAccess;
@@ -87,7 +88,7 @@ namespace PMS.Broker
         /// <param name="oldObj">Original class</param>
         /// <param name="newObj">Modified class</param>
         /// <returns>Result holding Count and executed SQL</returns>
-        DbResult Update(object oldObj, object newObj);
+        //DbResult Update(object oldObj, object newObj);
 
         /// <summary>
         /// Delete object based on its properties
@@ -148,19 +149,19 @@ namespace PMS.Broker
         /// Begin transaction
         /// </summary>
         /// <returns>success status</returns>
-        bool BeginTransaction();
+        bool BeginTransaction(IPrincipal principal);
 
         /// <summary>
         /// Rollback transaction
         /// </summary>
         /// <returns>success status</returns>
-        bool RollbackTransaction();
+        bool RollbackTransaction(IPrincipal principal);
 
         /// <summary>
         /// Commit transaction
         /// </summary>
         /// <returns>success status</returns>
-        bool CommitTransaction(); 
+        bool CommitTransaction(IPrincipal principal); 
 
         #endregion
 

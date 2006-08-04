@@ -13,3 +13,4 @@ bin
 obj
 PMS.Server/bin
 PMS.Server/obj
+PMS/PMS.csproj.user

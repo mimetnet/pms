@@ -70,12 +70,8 @@ namespace PMS.Metadata
                 return false;    
             }
 
-            Connection cn1, cn2;
-
             for (int x = 0; x < obj1.Connections.Count; x++) {
-                cn1 = obj1.Connections[x];
-                cn2 = obj2.Connections[x];
-                if (cn1 != cn2) {
+                if (obj1.Connections[x] != obj2.Connections[x]) {
                     return false;
                 }
             }
@@ -84,12 +80,8 @@ namespace PMS.Metadata
                 return false;
             }
 
-            Class c1, c2;
-
             for (int x = 0; x < obj1.Classes.Count; x++) {
-                c1 = obj1.Classes[x];
-                c2 = obj2.Classes[x];
-                if (c1 != c2) {
+                if (obj1.Classes[x] != obj2.Classes[x]) {
                     return false;
                 }
             }
@@ -169,23 +161,6 @@ namespace PMS.Metadata
                         this.Classes = (ClassCollection)xml.Deserialize(reader);
                         break;
                 }
-
-                //if (reader.LocalName == "dbmanager-mode") {
-                //    string mode = reader.ReadString();
-                //    if (mode.ToLower() == "single") {
-                //        this.DbManagerMode = DbManagerMode.Single;
-                //    }
-                //}
-
-                //if (reader.LocalName == "connections") {
-                //    xml = new XmlSerializer(typeof(ConnectionCollection));
-                //    this.Connections = (ConnectionCollection)xml.Deserialize(reader);
-                //}
-
-                //if (reader.LocalName == "classes") {
-                //    xml = new XmlSerializer(typeof(ClassCollection));
-                //    this.Classes = (ClassCollection)xml.Deserialize(reader);
-                //}
             }
         }
 

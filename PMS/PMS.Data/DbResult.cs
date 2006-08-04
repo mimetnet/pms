@@ -5,7 +5,7 @@ namespace PMS.Data
     [Serializable]
     public sealed class DbResult
     {
-        private int records;
+        private Int64 records;
         private string sql;
         private Exception ex;
 
@@ -15,7 +15,7 @@ namespace PMS.Data
         /// <param name="records">Records Affected/Returned</param>
         /// <param name="sql">SQL Executed</param>
         /// <param name="ex">Exception from database</param>
-        public DbResult(int records, string sql, Exception ex)
+        public DbResult(Int64 records, string sql, Exception ex)
         {
             this.records = records;
             this.sql = sql;
@@ -27,7 +27,7 @@ namespace PMS.Data
         /// </summary>
         /// <param name="records">Records Affected/Returned</param>
         /// <param name="sql">SQL Executed</param>
-        public DbResult(int records, string sql) : this(records, sql, null)
+        public DbResult(Int64 records, string sql) : this(records, sql, null)
         {
         }
 
@@ -52,7 +52,7 @@ namespace PMS.Data
         /// Construct with records result
         /// </summary>
         /// <param name="records">Records Affected/Returned</param>
-        public DbResult(int records) : this(records, String.Empty, null)
+        public DbResult(Int64 records) : this(records, String.Empty, null)
         {
         }
 
@@ -61,7 +61,7 @@ namespace PMS.Data
         /// </summary>
         /// <param name="records">Records Affected/Returned</param>
         /// <param name="ex">Exception fromd database</param>
-        public DbResult(int records, Exception ex)
+        public DbResult(Int64 records, Exception ex)
             : this(records, String.Empty, ex)
         {
         }
@@ -82,7 +82,7 @@ namespace PMS.Data
         /// <summary>
         /// Records Retrieved/Affected
         /// </summary>
-        public int Count {
+        public Int64 Count {
             get { return records; }
         }
 
@@ -101,7 +101,7 @@ namespace PMS.Data
         }
 
         /// <summary>
-        /// Printer friendly description of object
+        /// PrInt64er friendly description of object
         /// </summary>
         /// <returns></returns>
         public override string ToString()

@@ -13,10 +13,7 @@ namespace PMS.Metadata
         public string Field;
         public Type Type;
         public Auto Auto;
-        public string Create;
         public string Retrieve;
-        public string Update;
-        public string Delete;
 
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger("PMS.Metadata.ClassRef");
@@ -27,41 +24,20 @@ namespace PMS.Metadata
         }
 
         public Reference(string field, Type type) :
-            this(field, type, null, null, null, null)
+            this(field, type, 0, null)
         {
         }
 
-        public Reference(string field, Type type, string createSql)
-            : this(field, type, createSql, null, null, null)
+        public Reference(string field, Type type, Auto auto) :
+            this(field, type, auto, null)
         {
         }
 
-        public Reference(string field, Type type, string createSql, string retrieveSql) 
-            : this (field, type, createSql, retrieveSql, null, null)
-        {
-        }
-
-        public Reference(string field, Type type, 
-                         string createSql, 
-                         string retrieveSql, 
-                         string updateSql)
-            : this (field, type, createSql, retrieveSql, updateSql, null)
-        {
-        }
-
-        public Reference(string field, 
-                         Type type, 
-                         string createSql, 
-                         string retrieveSql, 
-                         string updateSql, 
-                         string deleteSql)
+        public Reference(string field, Type type, Auto auto, string retrieveSql)
         {
             this.Field = field;
             this.Type = type;
-            this.Create = createSql;
             this.Retrieve = retrieveSql;
-            this.Update = updateSql;
-            this.Delete = deleteSql;
         }
         #endregion
 
@@ -94,21 +70,10 @@ namespace PMS.Metadata
             if (reader.IsEmptyElement == false) {
                 while (reader.Read()) {
                     reader.MoveToElement();
-
-                    if (reader.LocalName == "create")
-                        this.Create = reader.ReadElementString();
-
-                    if (reader.LocalName == "retrieve")
+                    if (reader.LocalName == "retrieve") {
                         this.Retrieve = reader.ReadElementString();
-
-                    if (reader.LocalName == "update")
-                        this.Update = reader.ReadElementString();
-
-                    if (reader.LocalName == "delete")
-                        this.Delete = reader.ReadElementString();
-
-                    if (reader.LocalName == "reference")
                         return;
+                    }
                 }
             }
         }
@@ -129,20 +94,8 @@ namespace PMS.Metadata
                 writer.WriteAttributeString("auto", this.AutoCrud);
             }
 
-            if (this.Create != null && this.Create != String.Empty) {
-                writer.WriteElementString("create", this.Create);
-            }
-
             if (this.Retrieve != null && this.Retrieve != String.Empty) {
                 writer.WriteElementString("retrieve", this.Retrieve);
-            }
-
-            if (this.Update != null && this.Update != String.Empty) {
-                writer.WriteElementString("update", this.Update);
-            }
-
-            if (this.Delete != null && this.Delete != String.Empty) {
-                writer.WriteElementString("delete", this.Delete);
             }
         }
 
@@ -167,19 +120,7 @@ namespace PMS.Metadata
                 return false;
             }
 
-            if (obj1.Create != obj2.Create) {
-                return false;
-            }
-
             if (obj1.Retrieve != obj2.Retrieve) {
-                return false;
-            }
-
-            if (obj1.Update != obj2.Update) {
-                return false;
-            }
-
-            if (obj1.Delete != obj2.Delete) {
                 return false;
             }
             

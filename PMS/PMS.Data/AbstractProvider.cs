@@ -8,6 +8,7 @@ namespace PMS.Data
     /// Used to Compare/Convert .NET types to database types
     /// Should be changed to work with events
     /// </summary>
+    [Serializable]
     internal abstract class AbstractProvider : IProvider
     {
         public virtual string PrepareSqlValue(string dbType, object value)

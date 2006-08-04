@@ -18,13 +18,7 @@ namespace PMS.NUnit
 
         public MemberDao()
         {
-            broker = PersistenceBroker.Instance;
-        }
-
-        private int NextIdSeq() 
-        {
-            return (int) 
-                DbEngine.GetCommand("SELECT nextval('person_id_seq')").ExecuteScalar();
+            broker = PersistenceBrokerFactory.CreateBroker();
         }
 
         public bool Insert(Member member)
@@ -34,12 +28,12 @@ namespace PMS.NUnit
             return (broker.Insert(member).Count > 0) ? true : false;
         }
 
-        public int Delete(Member member)
+        public long Delete(Member member)
         {
             return broker.Delete(member).Count;
         }
 
-        public int Update(Member member)
+        public long Update(Member member)
         {
             return broker.Delete(member).Count;
         }

@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
+using System.Reflection;
 
 using PMS.Metadata;
 
-using NUnit.Framework;
 using PMS.NUnit.Model;
+
+using NUnit.Framework;
 
 namespace PMS.NUnit
 {
@@ -18,11 +20,13 @@ namespace PMS.NUnit
         [TestFixtureSetUp]
         public void Constructor()
         {
-            Assert.IsNotNull(PMS.Broker.PersistenceBroker.Instance);
+            Assert.IsNotNull(PMS.Broker.PersistenceBrokerFactory.CreateBroker());
 
             r1 = new Repository();
 
-            string sConn = "Server=10.5.4.20;Database=duncan;User ID=granny;Password=all_your_base;Pooling=false";
+            r1.Assemblies.Add(Assembly.LoadFrom("PMS.NUnit.Model.dll"));
+
+            string sConn = "Server=10.5.4.20;Database=jupiter;User ID=granny;Password=all_your_base;Pooling=false";
 
             r1.Connections.Add(new Connection("1", sConn, typeof(Npgsql.NpgsqlConnection), true, 2));
 
@@ -34,14 +38,15 @@ namespace PMS.NUnit
             fields.Add(new Field("mCreationDate", "creation_date", "timestamp", true));
             r1.Classes.Add(new Class(typeof(Person), "person", fields, typeof(PersonCollection)));
 
-            string sql = "SELECT * FROM person WHERE id = #mPersonId#";
-            ClassRef personReference = new ClassRef("mPerson", typeof(Person), sql);
+            Reference pRef = new Reference("mPerson", typeof(Person));
+            pRef.Retrieve = "SELECT * FROM person WHERE id = :mPersonId LIMIT 1";
+            pRef.Auto = Auto.Create | Auto.Retrieve | Auto.Update | Auto.Delete;
 
             fields = new FieldCollection();
             fields.Add(new Field("mID", "id", "int4", true, true));
             fields.Add(new Field("mUsername", "username", "varchar"));
             fields.Add(new Field("mPassword", "password", "varchar"));
-            fields.Add(new Field("mPersonId", "person_id", "int4", true, personReference));
+            fields.Add(new Field("mPersonId", "person_id", "int4", true, pRef));
             fields.Add(new Field("mCreationDate", "creation_date", "timestamp", true));
             r1.Classes.Add(new Class(typeof(Member), "member", fields, typeof(MemberCollection)));
         }

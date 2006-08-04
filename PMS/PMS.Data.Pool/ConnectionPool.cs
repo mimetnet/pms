@@ -1,42 +1,56 @@
 using System;
 using System.Collections;
 using System.Data;
+using System.Security.Principal;
 
 using PMS.Collections.Pool;
 
 namespace PMS.Data.Pool
 {
-    internal sealed class ConnectionPool
+    internal sealed class ConnectionPool : ManagedObjectPool
     {
-        private ManagedObjectPool pool;
-        private const Int32 DEFAULT_OPEN = 5;
-        private IProvider provider;
+        public const Int32 DEFAULT_MAX = 20;
+        public const Int32 DEFAULT_MIN = 2;
         private String sConn;
-        private Type type = null;
-        private Int32 maxOpen = ConnectionPool.DEFAULT_OPEN;
 
-        public ConnectionPool(Type type, string sConn)
-            : this(type, sConn, ConnectionPool.DEFAULT_OPEN)
+        #region Constructors
+
+        public ConnectionPool(Type type, string sConn) :
+            this(type, sConn, ConnectionPool.DEFAULT_MIN, ConnectionPool.DEFAULT_MAX)
         {
         }
 
-        public ConnectionPool(Type type, string sConn, int max)
+        public ConnectionPool(Type type, string sConn, int min) :
+            this(type, sConn, min, DEFAULT_MAX)
         {
-            this.provider = PMS.Data.ProviderFactory.Factory(type);
+        }
+
+        public ConnectionPool(Type type, string sConn, int min, int max) :
+            base(type, min, max, "Close")
+        {
             this.sConn = sConn;
-            this.maxOpen = max;
-            this.type = type;
         }
+
+        ~ConnectionPool()
+        {
+            Close();
+        } 
+        #endregion // Constructors
+
+        #region Connection Operations
 
         public IDbConnection GetConnection()
         {
-            IDbConnection conn = (IDbConnection) pool.Borrow();
-            
+            IDbConnection conn = null;
+
+            conn = (IDbConnection)this.Borrow();
+
             switch (conn.State) {
                 case ConnectionState.Open:
                     return conn;
 
                 case ConnectionState.Closed:
+                    conn.ConnectionString = this.sConn;
                     conn.Open();
                     return conn;
 
@@ -48,8 +62,13 @@ namespace PMS.Data.Pool
                     ReturnConnection(conn);
                     break;
             }
-            
+
             return GetConnection();
+        }
+
+        public void ReturnConnection(IDbConnection conn)
+        {
+            this.Return(conn);
         }
 
         public void DestroyConnection(IDbConnection conn)
@@ -57,46 +76,31 @@ namespace PMS.Data.Pool
             if (conn != null) {
                 Console.WriteLine("\n\n\nDestroyConnection");
                 conn.Close();
-                pool.Remove(conn);
-                if (pool.Count < maxOpen) {
+                this.Remove(conn);
+                if (this.Count < this.Min) {
                     Console.WriteLine("Adding new to replace");
-                    pool.Add(CreateConnection());
+                    this.Add();
                 }
             }
         }
 
-        public void ReturnConnection(IDbConnection conn)
+        #endregion
+
+        #region Transactions
+        public bool BeginTransaction(IPrincipal principal)
         {
-            pool.Return(conn);
+            return true;
         }
 
-        private IDbConnection CreateConnection()
+        public bool CommitTransaction(IPrincipal principal)
         {
-            IDbConnection connection = provider.GetConnection(sConn);
-            //connection.Open();
-
-            return connection;
+            return true;
         }
 
-        public void Open()
+        public bool RollbackTransaction(IPrincipal principal)
         {
-            pool = new ManagedObjectPool(maxOpen, "Close");
-            for (int i=0; i < maxOpen; i++) {
-                pool.Add(CreateConnection());
-            }
+            return true;
         }
-
-        public void Close()
-        {
-            if (pool != null) 
-                pool.Close();
-        }
-
-        ~ConnectionPool()
-        {
-            Close();
-            pool = null;
-            sConn = null;
-        }
+        #endregion
     }
 }

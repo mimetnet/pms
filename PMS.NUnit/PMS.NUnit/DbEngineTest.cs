@@ -104,34 +104,6 @@ namespace PMS.NUnit
         }
 
         [Test]
-        [ExpectedException("System.ArgumentNullException")]
-        public void GetCommand_Sql_AccessMode()
-        {
-            DbEngine.GetCommand(null, PMS.DataAccess.AccessMode.Read);
-        }
-
-        [Test]
-        [ExpectedException("System.ArgumentNullException")]
-        public void GetCommand_Sql()
-        {
-            DbEngine.GetCommand(null);
-        }
-
-        [Test]
-        [ExpectedException("System.ArgumentNullException")]
-        public void GetCommand_Sql_AccessMode_Empty()
-        {
-            DbEngine.GetCommand(String.Empty, PMS.DataAccess.AccessMode.Read);
-        }
-
-        [Test]
-        [ExpectedException("System.ArgumentNullException")]
-        public void GetCommand_Sql_Empty()
-        {
-            DbEngine.GetCommand(String.Empty);
-        }
-
-        [Test]
         public void ExecuteSelectObject_ClassNotFound()
         {
             IQuery query = new QueryByObject(new Int16());

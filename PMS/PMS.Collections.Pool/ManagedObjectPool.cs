@@ -1,68 +1,60 @@
 using System;
 using System.Collections;
+using System.Security.Principal;
 using System.Reflection;
+using System.Threading;
 
 namespace PMS.Collections.Pool
 {
-    public sealed class ManagedObjectPool
+    public class ManagedObjectPool : MarshalByRefObject, IObjectPool
     {
-        private static readonly log4net.ILog log = 
+        protected static readonly log4net.ILog log =
             log4net.LogManager.GetLogger("PMS.Collections.Pool.ManagedObjectPool");
-        
 
-        private int max;
+        private int min = 0;
+        private int max = 0;
         private int index = -1;
         private string cleanup;
-        private ArrayList pool;
+        private IList pool;
+        private object ilock = 0;
+        private Type type = null;
 
-        /// <summary>
-        /// Construct while setting max number of items in pool
-        /// </summary>
-        /// <param name="max">Max Items in pool</param>
-        public ManagedObjectPool(int max) : this(max, null)
+        #region Constructors
+        
+        public ManagedObjectPool(Type type, int min, int max, string sFree)
         {
-        }
-
-        /// <summary>
-        /// Construct while setting string representing Close()-like method
-        /// </summary>
-        /// <param name="sFree">Method called via reflection when removing object from pool</param>
-        public ManagedObjectPool(string sFree) : this(5, sFree)
-        {
-        }
-
-        /// <summary>
-        /// Construct while setting max items and Close()-like method
-        /// </summary>
-        /// <param name="max">Max items in pool</param>
-        /// <param name="sFree">Method called via reflection when removing object from pool</param>
-        public ManagedObjectPool(int max, string sFree)
-        {
+            this.type = type;
+            this.min = min;
             this.max = max;
             this.cleanup = sFree;
-            this.pool = new ArrayList();   
+            this.pool = new ArrayList();
         }
-        
+
         /// <summary>
         /// Destructor
         /// </summary>
         ~ManagedObjectPool()
         {
             Close();
-        }
+        } 
+        #endregion
 
+        #region Abstract
         /// <summary>
-        /// Add item to pool
+        /// Add new instance of Type to pool
         /// </summary>
-        /// <param name="obj">object to add to pool</param>
         /// <returns>status</returns>
-        public bool Add(object obj)
+        protected virtual bool Add()
         {
-            pool.Add(new Item(obj));
+            Item obj = null;
+
+            lock (ilock) {
+                pool.Add((obj = new Item(Activator.CreateInstance(type))));
+            }
 
             if (log.IsDebugEnabled)
-                log.Debug("ManagedObjectPool.Add(new {" + obj.GetType() + "}())");
-            
+                log.DebugFormat("ManagedObjectPool.Add(new {0}())", obj.Object.GetType());
+
             return true;
         }
 
@@ -70,21 +62,28 @@ namespace PMS.Collections.Pool
         /// Borrow next object in pool
         /// </summary>
         /// <returns>next object in pool</returns>
-        public object Borrow()
+        public virtual object Borrow()
         {
-            index = (index != (max-1))? index + 1 : 0;
+            lock (ilock) {
+                index = (index != (this.Actual - 1)) ? index + 1 : 0;
 
-            Item item = (Item) pool[index];
-            if (item.Available == true) {
-                ((Item)pool[index]).Available = false;
+                if (((Item)pool[index]).Available == true) {
+                    ((Item)pool[index]).Available = false;
 
-                if (log.IsDebugEnabled)
-                    log.Debug("ManagedObjectPool.Borrow(" + pool[index].GetHashCode() + ")");
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("ManagedObjectPool.Borrow(OID={0} TID={1})",
+                                        pool[index].GetHashCode(),
+                                        Thread.CurrentThread.ManagedThreadId);
 
-                return item.Object;
+                    return ((Item)pool[index]).Object;
+                }
+
+                // nothing left, so add one more and recurse
+                this.Add();
+                return this.Borrow();
             }
 
-            throw new PoolEmptyException("Empty");
+            //throw new PoolEmptyException("Max Reached and No Objects Left");
         }
 
         /// <summary>
@@ -92,20 +91,30 @@ namespace PMS.Collections.Pool
         /// </summary>
         /// <param name="obj">object to return</param>
         /// <returns>status</returns>
-        public bool Return(object obj)
+        public virtual bool Return(object obj)
         {
             int code = obj.GetHashCode();
-            for (int x=0; x < pool.Count; x++) {
-                if (((Item)pool[x]).Object.GetHashCode() == code) {
-                    ((Item)pool[x]).Available = true;
+            //Console.WriteLine("BEFORE");
+            //this.Debug();
 
-                    if (log.IsDebugEnabled)
-                        log.Debug("ManagedObjectPool.Return(" + pool[index].GetHashCode() + ")");
+            lock (ilock) {
+                for (int x = 0; x < pool.Count; x++) {
+                    if (((Item)pool[x]).Object.GetHashCode() == code) {
+                        ((Item)pool[x]).Available = true;
 
-                    return true;
+                        if (log.IsDebugEnabled)
+                            log.DebugFormat("ManagedObjectPool.Return(OID={0} TID={1})",
+                                            pool[index].GetHashCode(),
+                                            Thread.CurrentThread.ManagedThreadId);
+
+                        //Console.WriteLine("AFTER");
+                        //this.Debug();
+                        return true;
+                    }
                 }
             }
 
+            //Console.WriteLine("NOT FOUND");
             return false;
         }
 
@@ -114,22 +123,38 @@ namespace PMS.Collections.Pool
         /// </summary>
         /// <param name="obj">object to remove</param>
         /// <returns>status</returns>
-        public bool Remove(object obj)
+        public virtual bool Remove(object obj)
         {
             int code = obj.GetHashCode();
-            for (int x=0; x < pool.Count; x++) {
-                if (((Item)pool[x]).Object.GetHashCode() == code) {
-                    CleanObject(ref ((Item)pool[x]).Object);
-                    pool.RemoveAt(x);
 
-                    if (log.IsDebugEnabled)
-                        log.Debug("ManagedObjectPool.Remove(" + pool[index].GetHashCode() + ")");
+            lock (ilock) {
+                for (int x = 0; x < pool.Count; x++) {
+                    if (((Item)pool[x]).Object.GetHashCode() == code) {
+                        CleanObject(ref ((Item)pool[x]).Object);
+                        pool.RemoveAt(x);
 
-                    return true;
+                        if (log.IsDebugEnabled)
+                            log.Debug("ManagedObjectPool.Remove(" + pool[index].GetHashCode() + ")");
+
+                        return true;
+                    }
                 }
             }
 
             return false;
+        }
+
+        public bool Open()
+        {
+            string l = String.Empty;
+
+            lock (l) {
+                for (int i = 0; i < this.Min; i++) {
+                    this.Add();
+                }
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -143,8 +168,9 @@ namespace PMS.Collections.Pool
             foreach (Item item in this.pool) {
                 CleanObject(ref item.Object);
             }
+
             pool.Clear();
-        }         
+        }
 
         /// <summary>
         /// Objects to clean are passed by reference and closing 
@@ -175,14 +201,33 @@ namespace PMS.Collections.Pool
         /// <summary>
         /// Returns the number of elements within the pool
         /// </summary>
-        public int Count {
+        public int Count
+        {
+            get { return pool.Count; }
+        }
+
+        /// <summary>
+        /// Returns how small the pool can be
+        /// </summary>
+        public int Min
+        {
+            get { return min; }
+            set { min = value; }
+        }
+
+        /// <summary>
+        /// Returns the actual size of Pool GE min AND LE max
+        /// </summary>
+        public int Actual
+        {
             get { return pool.Count; }
         }
 
         /// <summary>
         /// Returns how large the pool can be
         /// </summary>
-        public int Max {
+        public int Max
+        {
             get { return max; }
             set { max = value; }
         }
@@ -190,21 +235,32 @@ namespace PMS.Collections.Pool
         /// <summary>
         /// Returns the number of available elements within the pool
         /// </summary>
-        public int Available {
+        public int Available
+        {
             get {
-                int y=0;
-                for (int x=0; x < pool.Count; x++)
+                int y = 0;
+                for (int x = 0; x < pool.Count; x++)
                     if (((Item)pool[x]).Available == true)
                         y++;
-                
-                return y;    
+
+                return y;
             }
         }
-        
+
+        public void Debug()
+        {
+            Console.WriteLine("<ManagedObjectPool>");
+            foreach (Item item in pool) {
+                Console.WriteLine("\t<Item Avail={0} Hash={1} TID={2} />", item.Available, item.GetHashCode(), System.Threading.Thread.CurrentThread.ManagedThreadId);
+            }
+            Console.WriteLine("</ManagedObjectPool>");
+        }
+        #endregion // Abstract
+
         /// <summary>
         /// Wraps an object in the Pool
         /// </summary>
-        public sealed class Item
+        protected class Item
         {
             /// <summary>
             /// Contains the element in the pool
@@ -215,7 +271,12 @@ namespace PMS.Collections.Pool
             /// Is the element available
             /// </summary>
             public bool Available = false;
-            
+
+            /// <summary>
+            /// Identity of the wrapped object
+            /// </summary>
+            public IPrincipal Principal = null;
+
             /// <summary>
             /// Create Item to wrap obj (Available by default)
             /// </summary>
@@ -234,6 +295,6 @@ namespace PMS.Collections.Pool
                 Object = obj;
                 Available = avail;
             }
-        }
+        } 
     }
 }

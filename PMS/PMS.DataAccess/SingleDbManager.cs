@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Security.Principal;
 
 using PMS.Data.Pool;
 using PMS.Metadata;
@@ -8,89 +9,31 @@ namespace PMS.DataAccess
 {
     internal sealed class SingleDbManager : MarshalByRefObject, IDbManager
     {
-        private IDbConnection connection = null;
-        private IDbTransaction trans = null;
-        private IConnectionPool pool = null;
+        private ConnectionPool pool = null;
         private bool isInit = false;
 
-        private static IDbManager _instance = null;
-
-        public bool InTransaction = false;
-
-        /// <summary>
-        /// Return singleton instance of SingleDbManager
-        /// </summary>
-        public static IDbManager Instance {
-            get {
-                if (_instance == null) {
-                    _instance = new SingleDbManager();
-                }
-
-                return _instance;
-            }
-        }
-
-        private SingleDbManager()
+        public SingleDbManager()
         {
-        }
-
-        private IDbConnection GetConnection()
-        {
-            if (InTransaction == false) {
-                if (connection != null)
-                    pool.ReturnConnection(connection);
-
-                return (connection = pool.GetConnection());
-            }
-
-            return trans.Connection;
         }
 
         #region Transactions
-        public bool BeginTransaction()
+        public bool BeginTransaction(IPrincipal principal)
         {
-            if (trans != null)
-                return false;
-
-            if (connection == null)
-                connection = pool.GetConnection();
-
-            trans = connection.BeginTransaction();
-
-
-            return (InTransaction = true);
+            return pool.BeginTransaction(principal);
         }
 
-        public bool RollbackTransaction()
+        public bool CommitTransaction(IPrincipal principal)
         {
-            if (trans == null || InTransaction == false)
-                return false;
-
-            try {
-                trans.Rollback();
-            } catch (Exception) {
-                return false;
-            }
-
-            return true;
+            return pool.CommitTransaction(principal);
         }
 
-        public bool CommitTransaction()
+        public bool RollbackTransaction(IPrincipal principal)
         {
-            if (trans == null || InTransaction == false)
-                return false;
-
-            try {
-                trans.Commit();
-            } catch (Exception) {
-                return false;
-            }
-
-            return true;
-        } 
+            return pool.RollbackTransaction(principal);
+        }
         #endregion
 
-        #region GetCommand
+        #region IDbCommand Methods
         /// <summary>
         /// Retrieve IDbCommand at from pool based on AccessMode (Read|Write)
         /// and sets the IDbCommand.CommandText = sql
@@ -100,7 +43,7 @@ namespace PMS.DataAccess
         /// <returns>IDbCommand instance</returns>
         public IDbCommand GetCommand(string sql, AccessMode mode)
         {
-            IDbCommand cmd = GetConnection().CreateCommand();
+            IDbCommand cmd = this.pool.GetConnection().CreateCommand();
             cmd.CommandText = sql;
 
             return cmd;
@@ -113,7 +56,12 @@ namespace PMS.DataAccess
         /// <returns>IDbCommand instance</returns>
         public IDbCommand GetCommand(AccessMode mode)
         {
-            return GetConnection().CreateCommand();
+            return this.pool.GetConnection().CreateCommand();
+        }
+
+        public void ReturnCommand(IDbCommand command)
+        {
+            pool.ReturnConnection(command.Connection);
         }
         #endregion
 
@@ -131,8 +79,6 @@ namespace PMS.DataAccess
             pool = new ConnectionPool(conn.Type, conn.Value, conn.PoolSize);
             pool.Open();
 
-            //connection = pool.GetConnection();
-
             isInit = true;
         }
 
@@ -141,10 +87,6 @@ namespace PMS.DataAccess
         /// </summary>
         public void Stop()
         {
-            if (connection != null) {
-                pool.ReturnConnection(connection);
-            }
-
             if (pool != null)
                 pool.Close();
 

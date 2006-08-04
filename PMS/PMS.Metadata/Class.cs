@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Reflection;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 
 using PMS.Metadata;
@@ -94,11 +95,14 @@ namespace PMS.Metadata
             while (reader.Read()) {
                 reader.MoveToElement();
 
-                if (reader.LocalName == "fields")
-                    this.Fields = (FieldCollection)xml.Deserialize(reader);
+                switch (reader.LocalName) {
+                    case "fields":
+                        this.Fields = (FieldCollection)xml.Deserialize(reader);
+                        break;
 
-                if (reader.LocalName == "class")
-                    break;
+                    case "class":
+                        return;
+                }
             }
         }
 
@@ -145,24 +149,28 @@ namespace PMS.Metadata
             if (Object.ReferenceEquals(obj1, null)) return false;
             if (Object.ReferenceEquals(obj2, null)) return false;
 
-            if (obj1.Type != obj2.Type) return false;
-            if (obj1.Table != obj2.Table) return false;
-            if (obj1.ListType != obj2.ListType) return false;
-            if (obj1.Fields.Count != obj2.Fields.Count) return false;
-
-            FieldCollection fc1 = obj1.Fields;
-            FieldCollection fc2 = obj2.Fields;
-
-            if (fc1.Count != fc2.Count) {
-                if (log.IsDebugEnabled)
-                    log.DebugFormat("fc1.Count({0}) != fc2.Count({1})", fc1.Count, fc2.Count);
+            if (obj1.Type != obj2.Type) {
+                Console.WriteLine("1");
                 return false;
             }
 
-            for (int y = 0; y < fc1.Count; y++) {
-                if (fc1[y] != fc2[y]) {
-                    if (log.IsDebugEnabled)
-                        log.Debug("fc1 != fc2");
+            if (obj1.Table != obj2.Table) {
+                Console.WriteLine("2");
+                return false;
+            }
+
+            if (obj1.ListType != obj2.ListType) {
+                Console.WriteLine("3");
+                return false;
+            }
+
+            if (obj1.Fields.Count != obj2.Fields.Count) {
+                Console.WriteLine("f1.Count {0} f2.Count {1}", obj1.Fields.Count, obj2.Fields.Count);
+                return false;
+            }
+
+            for (int y = 0; y < obj2.Fields.Count; y++) {
+                if (obj1.Fields[y] != obj2.Fields[y]) {
                     return false;
                 }
             }

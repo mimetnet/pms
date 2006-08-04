@@ -25,7 +25,7 @@ namespace PMS.NUnit
         public virtual void Constructor()
         {
             // obtain instance of PersistenceBroker
-            broker = PersistenceBroker.Instance;
+            broker = PersistenceBrokerFactory.CreateBroker();
             Assert.AreEqual(true, broker.Load()); // load the repository.xml found in "." directory
             Assert.AreEqual(true, broker.Open()); // open database connection pool
 
@@ -57,18 +57,9 @@ namespace PMS.NUnit
         }
 
         [Test]
-        public void A_DeleteByType()
-        {
-            Assert.Greater((broker.Delete(new Member()).Count), -1);
-        }
-
-        [Test]
         public void B_Insert_WithIdSequence()
         {
-            IDbCommand cmd =
-                DbEngine.GetCommand("SELECT nextval('member_id_seq')", AccessMode.Write);
-
-            object obj = cmd.ExecuteScalar();
+            object obj = DbEngine.ExecuteScalar("SELECT nextval('member_id_seq')");
 
             Assert.IsNotNull(obj, "Object is null");
             Assert.IsInstanceOfType(typeof(Int64), obj);
@@ -78,8 +69,7 @@ namespace PMS.NUnit
 
             Assert.Greater(this.mid, 0, "mid !> 0");
 
-            cmd = DbEngine.GetCommand("SELECT id FROM person LIMIT 1", AccessMode.Read);
-            IDataReader read = cmd.ExecuteReader();
+            IDataReader read = DbEngine.ExecuteReader("SELECT id FROM person LIMIT 1");
             Assert.IsTrue(read.Read(), "Cannot read person.id");
 
             int pid = read.GetInt32(0);

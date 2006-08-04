@@ -6,9 +6,10 @@ using PMS.Data.PostgreSql;
 
 namespace PMS.Data
 {
+    [Serializable]
     internal sealed class ProviderFactory
     {
-        private static string PROVIDER_KEY = "Umbrella.Data.Provider";
+        private static string PROVIDER_KEY = "PMS.Data.Provider";
 
         public static IProvider Factory(Type type)
         {
@@ -17,15 +18,15 @@ namespace PMS.Data
             //else if (type == typeof(ByteFX.Data.MySqlClient.MySqlConnection))
             //    return MySqlProvider.Instance;
             
-            throw new ProviderNotFoundException("'" + type + "' does not exist within the ADO framework");
+            throw new ProviderNotFoundException("'" + type + "' does not exist within AppDomain");
         }
             
         public static IProvider Factory(string name)
         {
-            if (name.Equals("PostgreSql"))
+            if (name.Equals("npgsql"))
                 return PostgreSqlProvider.Instance;
             
-            throw new ProviderNotFoundException("'" + name + "' does not exist within the ADO framework");
+            throw new ProviderNotFoundException("'" + name + "' does not exist within framework");
         }
 
         public static IProvider Factory()
