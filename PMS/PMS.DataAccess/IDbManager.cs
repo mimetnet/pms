@@ -6,15 +6,14 @@ namespace PMS.DataAccess
 {
     internal interface IDbManager
     {
-        IDbCommand GetCommand(string sql, AccessMode mode);
-        IDbCommand GetCommand(AccessMode mode);
+        IDbCommand GetCommand(string sql);
         void ReturnCommand(IDbCommand command);
 
         void Start();
         void Stop();
 
-        bool BeginTransaction(IPrincipal principal);
-        bool RollbackTransaction(IPrincipal principal);
-        bool CommitTransaction(IPrincipal principal);
+        void BeginTransaction();
+        void RollbackTransaction();
+        void CommitTransaction();
     }
 }

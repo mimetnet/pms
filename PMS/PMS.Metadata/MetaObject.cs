@@ -276,7 +276,8 @@ namespace PMS.Metadata
             if (!match.Success) {
                 if (log.IsWarnEnabled)
                     log.Warn("LoadType: failed to match regex");
-                return null;
+
+                throw new TypeLoadException("LoadType: failed to match regex - " + fullTypeName);
             }
 
             Type type = null;
@@ -300,13 +301,24 @@ namespace PMS.Metadata
                 }
             }
 
-            try {
-                return Type.GetType(sType, true);
-            } catch (Exception e) {
-                log.Error("TypeLoad", e);
+            foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies()) {
+                //Console.WriteLine("a = " + a.GetName().Name);
+                if (a.GetName().Name.StartsWith(sType.Split('.')[0])) {
+                    //Console.WriteLine("checking " + a.FullName);
+                    foreach (Type t in a.GetTypes()) {
+                        if (t.FullName == sType) {
+                            return t;
+                        }
+                    }
+                }
             }
+            
+            string msg = sType;
+            msg += " not found in AppDomain.CurrentDomain. ";
+            msg += "Please add a reference in /repository/assemblies/add/@assembly";
+            log.Error(msg);
 
-            return null;
+            throw new TypeLoadException(msg);
         }
     }
 }

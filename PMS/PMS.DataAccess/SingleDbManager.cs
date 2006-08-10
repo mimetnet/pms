@@ -17,19 +17,19 @@ namespace PMS.DataAccess
         }
 
         #region Transactions
-        public bool BeginTransaction(IPrincipal principal)
+        public void BeginTransaction()
         {
-            return pool.BeginTransaction(principal);
+            pool.BeginTransaction();
         }
 
-        public bool CommitTransaction(IPrincipal principal)
+        public void CommitTransaction()
         {
-            return pool.CommitTransaction(principal);
+            pool.CommitTransaction();
         }
 
-        public bool RollbackTransaction(IPrincipal principal)
+        public void RollbackTransaction()
         {
-            return pool.RollbackTransaction(principal);
+            pool.RollbackTransaction();
         }
         #endregion
 
@@ -39,24 +39,13 @@ namespace PMS.DataAccess
         /// and sets the IDbCommand.CommandText = sql
         /// </summary>
         /// <param name="sql">SQL</param>
-        /// <param name="mode">AccessMode</param>
         /// <returns>IDbCommand instance</returns>
-        public IDbCommand GetCommand(string sql, AccessMode mode)
+        public IDbCommand GetCommand(string sql)
         {
             IDbCommand cmd = this.pool.GetConnection().CreateCommand();
             cmd.CommandText = sql;
 
             return cmd;
-        }
-
-        /// <summary>
-        /// Retrieve IDbCommand at from pool based on AccessMode (Read|Write)
-        /// </summary>
-        /// <param name="mode">AccessMode</param>
-        /// <returns>IDbCommand instance</returns>
-        public IDbCommand GetCommand(AccessMode mode)
-        {
-            return this.pool.GetConnection().CreateCommand();
         }
 
         public void ReturnCommand(IDbCommand command)
@@ -76,10 +65,8 @@ namespace PMS.DataAccess
                 Stop();
 
             Connection conn = RepositoryManager.DefaultConnection;
-            pool = new ConnectionPool(conn.Type, conn.Value, conn.PoolSize);
-            pool.Open();
-
-            isInit = true;
+            pool = new ConnectionPool(conn.Type, conn.Value);
+            isInit = pool.Open();
         }
 
         /// <summary>

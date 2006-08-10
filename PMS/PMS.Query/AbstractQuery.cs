@@ -22,8 +22,6 @@ namespace PMS.Query
 
         public void LoadMetaObject(object obj, Criteria crit)
         {
-            
-
             this.metaObject = new MetaObject(obj);
             if (this.metaObject.Exists) {
                 this.criteria = (crit == null) ? new Criteria(obj.GetType()) : crit;

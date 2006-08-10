@@ -48,28 +48,25 @@ namespace PMS.Broker
         /// <summary>
         /// Begin transaction
         /// </summary>
-        /// <returns>success status</returns>
-        public bool BeginTransaction(IPrincipal principal)
+        public void BeginTransaction()
         {
-            return DbEngine.BeginTransaction(principal);
+            DbEngine.BeginTransaction();
         }
 
         /// <summary>
         /// Rollback transaction
         /// </summary>
-        /// <returns>success status</returns>
-        public bool RollbackTransaction(IPrincipal principal)
+        public void RollbackTransaction()
         {
-            return DbEngine.RollbackTransaction(principal);
+            DbEngine.RollbackTransaction();
         }
 
         /// <summary>
         /// Commit transaction
         /// </summary>
-        /// <returns>success status</returns>
-        public bool CommitTransaction(IPrincipal principal)
+        public void CommitTransaction()
         {
-            return DbEngine.CommitTransaction(principal);
+            DbEngine.CommitTransaction();
         } 
         #endregion
 

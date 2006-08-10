@@ -34,7 +34,7 @@ namespace PMS.Data
 
         public virtual string PrepareSqlString(object value)
         {
-            return "'" + value + "'";
+            return "'" + value.ToString().Replace("\'", "\\'") + "'";
         }
 
         public virtual string PrepareSqlBoolean(object value)
@@ -54,8 +54,7 @@ namespace PMS.Data
 
         public virtual string PrepareSqlDate(object value)
         {
-            DateTime date = Convert.ToDateTime(value);
-            return "'" + date.ToString("yyyyMMdd") + "'";
+            return "'" + Convert.ToDateTime(value).ToString("yyyyMMdd") + "'";
         }
 
         public virtual string PrepareSqlBit(object value)
@@ -135,7 +134,7 @@ namespace PMS.Data
                 return GetTypeInit(dbType);
             
             if (dbType == "varchar" || dbType == "text") {
-                return Convert.ToString(obj);
+                return Convert.ToString(obj).Replace("\'", "'");
             } else if ((dbType == "boolean") || (dbType == "bool")) {
                 return Convert.ToBoolean(obj);
             } else if ((dbType == "int") || (dbType == "int4") || 

@@ -22,6 +22,7 @@ namespace PMS.Query
         /// <param name="sql">SQL</param>
         public QueryBySql(Type type, String sql) : this(type, sql, null)
         {
+            this.criteria = new Criteria(type);
         }
 
         /// <summary>

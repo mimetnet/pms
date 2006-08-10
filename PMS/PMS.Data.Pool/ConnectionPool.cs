@@ -7,10 +7,10 @@ using PMS.Collections.Pool;
 
 namespace PMS.Data.Pool
 {
-    internal sealed class ConnectionPool : ManagedObjectPool
+    internal sealed class ConnectionPool : PrincipalObjectPool
     {
-        public const Int32 DEFAULT_MAX = 20;
-        public const Int32 DEFAULT_MIN = 2;
+        public const Int32 DEFAULT_MAX = 30;
+        public const Int32 DEFAULT_MIN = 0;
         private String sConn;
 
         #region Constructors
@@ -26,7 +26,7 @@ namespace PMS.Data.Pool
         }
 
         public ConnectionPool(Type type, string sConn, int min, int max) :
-            base(type, min, max, "Close")
+            base(typeof(DbConnectionProxy), new object[]{type}, min, max, "Close")
         {
             this.sConn = sConn;
         }
@@ -39,28 +39,30 @@ namespace PMS.Data.Pool
 
         #region Connection Operations
 
-        public IDbConnection GetConnection()
+        public DbConnectionProxy GetConnection()
         {
-            IDbConnection conn = null;
+            DbConnectionProxy conn = null;
 
-            conn = (IDbConnection)this.Borrow();
+            lock (ilock) {
+                conn = (DbConnectionProxy)this.Borrow();
 
-            switch (conn.State) {
-                case ConnectionState.Open:
-                    return conn;
+                switch (conn.State) {
+                    case ConnectionState.Open:
+                        return conn;
 
-                case ConnectionState.Closed:
-                    conn.ConnectionString = this.sConn;
-                    conn.Open();
-                    return conn;
+                    case ConnectionState.Closed:
+                        conn.ConnectionString = this.sConn;
+                        conn.Open();
+                        return conn;
 
-                case ConnectionState.Broken:
-                    DestroyConnection(conn);
-                    break;
+                    case ConnectionState.Broken:
+                        DestroyConnection(conn);
+                        break;
 
-                default:
-                    ReturnConnection(conn);
-                    break;
+                    default:
+                        ReturnConnection(conn);
+                        break;
+                }
             }
 
             return GetConnection();
@@ -74,12 +76,14 @@ namespace PMS.Data.Pool
         public void DestroyConnection(IDbConnection conn)
         {
             if (conn != null) {
-                Console.WriteLine("\n\n\nDestroyConnection");
-                conn.Close();
-                this.Remove(conn);
-                if (this.Count < this.Min) {
-                    Console.WriteLine("Adding new to replace");
-                    this.Add();
+                lock (ilock) {
+                    Console.WriteLine("\n\n\nDestroyConnection");
+                    conn.Close();
+                    this.Remove(conn);
+                    if (this.Count < this.Min) {
+                        Console.WriteLine("Adding new to replace");
+                        this.Add();
+                    }
                 }
             }
         }
@@ -87,19 +91,19 @@ namespace PMS.Data.Pool
         #endregion
 
         #region Transactions
-        public bool BeginTransaction(IPrincipal principal)
+        public void BeginTransaction()
         {
-            return true;
+            this.GetConnection().BeginTransaction();
         }
 
-        public bool CommitTransaction(IPrincipal principal)
+        public void CommitTransaction()
         {
-            return true;
+            this.GetConnection().CommitTransation();
         }
 
-        public bool RollbackTransaction(IPrincipal principal)
+        public void RollbackTransaction()
         {
-            return true;
+            this.GetConnection().RollbackTransaction();
         }
         #endregion
     }

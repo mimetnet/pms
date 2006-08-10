@@ -26,18 +26,20 @@ namespace PMS.Metadata
         ///<summary>
         /// The zero-based index of the element to get or set.
         ///</summary>
-        public Assembly this[int index] {
-            get { return (Assembly)this.List[index]; }
+        public string this[int index]
+        {
+            get { return (string)this.List[index]; }
             set { this.List[index] = value; }
         }
 
         ///<summary>
         /// The zero-based index of the element to get or set.
         ///</summary>
-        public Assembly this[string name] {
+        public string this[string assemblyName] 
+        {
             get { 
-                foreach (Assembly f in this.List)
-                    if (f.GetName().Name == name)
+                foreach (string f in this.List)
+                    if (f == assemblyName)
                         return f;
 
                 return null;
@@ -63,26 +65,26 @@ namespace PMS.Metadata
         ///<summary>
         /// Adds an item to the AssemblyCollection.
         ///</summary>
-        public void Add(Assembly assembly)
+        public void Add(string assemblyName)
         {
-            this.List.Add(assembly);
+            this.List.Add(assemblyName);
         }
 
         ///<summary>
         /// Adds an item to the AssemblyCollection.
         ///</summary>
-        public void Add(Assembly[] assemblies)
+        public void Add(string[] assemblyNames)
         {
-            for (int x = 0; x < assemblies.Length; x++)
-                this.Add(assemblies[x]);
+            for (int x = 0; x < assemblyNames.Length; x++)
+                this.Add(assemblyNames[x]);
         }
 
         ///<summary>
         /// Removes the first occurrence of a specific object from the AssemblyCollection.
         ///</summary>
-        public void Remove(Assembly value)
+        public void Remove(string assemblyName)
         {
-            this.List.Remove(value);
+            this.List.Remove(assemblyName);
         }
 
         ///<summary>
@@ -96,25 +98,25 @@ namespace PMS.Metadata
         ///<summary>
         /// Inserts an item to the AssemblyCollection at the specified index.
         ///</summary>
-        public void Insert(int index, Assembly value)
+        public void Insert(int index, string assemblyName)
         {
-            this.List.Insert(index, value);
+            this.List.Insert(index, assemblyName);
         }
 
         ///<summary>
         /// Determines the index of a specific item in the AssemblyCollection.
         ///</summary>
-        public int IndexOf(Assembly value)
+        public int IndexOf(string assemblyName)
         {
-            return this.List.IndexOf(value);
+            return this.List.IndexOf(assemblyName);
         }
 
         ///<summary>
         /// Determines whether the AssemblyCollection contains a specific value.
         ///</summary>
-        public bool Contains(Assembly value)
+        public bool Contains(string assemblyName)
         {
-            return this.List.Contains(value);
+            return this.List.Contains(assemblyName);
         }
 
         ///<summary>
@@ -136,6 +138,7 @@ namespace PMS.Metadata
 
         public void ReadXml(XmlReader reader)
         {
+            Assembly assembly;
             string sAssembly;
 
             while (reader.Read()) {
@@ -146,10 +149,13 @@ namespace PMS.Metadata
                     if (sAssembly != null && sAssembly != String.Empty) {
                         if (!IsLoaded(sAssembly)) {
                             try {
-                                Assembly.Load(sAssembly);
+                                assembly = Assembly.Load(sAssembly);
+                                log.Debug("Loaded: " + assembly.FullName);
                             } catch (Exception e) {
                                 log.Error("Assembly.Load: " + e.Message);
                             }
+                        } else {
+                            log.Debug("Loaded: " + sAssembly);
                         }
                     }
                 }
@@ -170,11 +176,7 @@ namespace PMS.Metadata
 
         public void WriteXml(XmlWriter writer)
         {
-            string ass = null;
-
-            foreach (Assembly a in this.List) {
-                ass = (a.GlobalAssemblyCache) ? a.GetName().Name : a.Location;
-
+            foreach (string ass in this.List) {
                 writer.WriteStartElement("add");
                 writer.WriteAttributeString("assembly", ass);
                 writer.WriteEndElement();

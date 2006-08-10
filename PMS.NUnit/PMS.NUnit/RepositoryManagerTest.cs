@@ -23,8 +23,7 @@ namespace PMS.NUnit
             Assert.IsNotNull(PMS.Broker.PersistenceBrokerFactory.CreateBroker());
 
             r1 = new Repository();
-
-            r1.Assemblies.Add(Assembly.LoadFrom("PMS.NUnit.Model.dll"));
+            r1.Assemblies.Add("Npgsql, Version=0.99.2.0, Culture=neutral, PublicKeyToken=5D8B90D52F46FDA7");
 
             string sConn = "Server=10.5.4.20;Database=jupiter;User ID=granny;Password=all_your_base;Pooling=false";
 

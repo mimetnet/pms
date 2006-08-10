@@ -107,7 +107,7 @@ namespace PMS.Data
         public override string ToString()
         {
             string stype = ((ex != null)? ex.GetType().ToString() : String.Empty);
-            return String.Format("SQL = {0} | Records = {1} | Ex = {2}", records, sql, stype);
+            return String.Format("SQL = {0} | Records = {1} | Ex = {2}", sql, records, stype);
         }
         
         /// <summary>

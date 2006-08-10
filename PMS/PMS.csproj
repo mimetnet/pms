@@ -44,6 +44,7 @@
     <Compile Include="PMS.Broker\IPersistenceBroker.cs" />
     <Compile Include="PMS.Broker\PersistenceBroker.cs" />
     <Compile Include="PMS.Broker\PersistenceBrokerFactory.cs" />
+    <Compile Include="PMS.Collections.Pool\PrincipalObjectPool.cs" />
     <Compile Include="PMS.Collections.Pool\IObjectPool.cs" />
     <Compile Include="PMS.DataAccess\DbEngineNotStartedException.cs" />
     <Compile Include="PMS.Data\DbConnectionProxy.cs">

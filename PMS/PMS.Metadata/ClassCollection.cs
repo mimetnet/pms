@@ -12,6 +12,9 @@ namespace PMS.Metadata
     [XmlRoot("classes")]
     public class ClassCollection : CollectionBase, IXmlSerializable
     {
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger("PMS.Metadata.ClassCollection");
+
         ///<summary>
         /// Default constructor.
         ///</summary>
@@ -118,9 +121,12 @@ namespace PMS.Metadata
             while (reader.Read()) {
                 reader.MoveToElement();
 
-                if (reader.LocalName == "class")
-                    if ((klass = (Class)xml.Deserialize(reader)) != null)
-                        this.List.Add(klass);
+                if (reader.LocalName == "class") {
+                    try {
+                        if ((klass = (Class)xml.Deserialize(reader)) != null)
+                            this.List.Add(klass);
+                    } catch (Exception) {}
+                }
 
                 if (reader.LocalName == "classes")
                     return;

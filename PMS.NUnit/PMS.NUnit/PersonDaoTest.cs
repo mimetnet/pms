@@ -8,6 +8,7 @@ using PMS.Data;
 using PMS.DataAccess;
 using PMS.Broker;
 using PMS.Query;
+using PMS.Query;
 
 using NUnit.Framework;
 using PMS.NUnit.Model;
@@ -29,39 +30,35 @@ namespace PMS.NUnit
         {
             // obtain instance of PersistenceBroker
             broker = PersistenceBrokerFactory.CreateBroker();
-            Assert.AreEqual(true, broker.Load()); // load the repository.xml found in "." directory
-            Assert.AreEqual(true, broker.Open()); // open database connection pool
+            // load the repository.xml found in "." directory
+            Assert.AreEqual(true, broker.Load(), "broker.Load() failure");
+            // open database connection pool
+            Assert.AreEqual(true, broker.Open(), "broker.Open() failure");
 
-            //broker.BeginTransaction();
 
             dao = new PersonDao();
+
+            person = new Person();
+            person.FirstName = "Matthew";
+            person.LastName = "Metnetsky";
+            person.Email = "blah@blah.com";
+
+            Thread.CurrentPrincipal = BuildPrincipal(new GenericIdentity("USER-NUnit", "generic"));
+        }
+
+        private IPrincipal BuildPrincipal(IIdentity identity)
+        {
+            string[] roles = {"rA", "rB"};
+            return new GenericPrincipal(identity, roles);
         }
 
         [TestFixtureTearDown]
         public virtual void Destructor()
         {
-            //broker.RollbackTransaction();
-            //broker.CommitTransaction();
-
-            if (broker != null)
-                broker.Close(); // close pool
+            if (broker != null) broker.Close(); // close pool
         }
 
-        [SetUp]
-        public void SetUp()
-        {
-            person = new Person();
-            person.FirstName = "Matthew";
-            person.LastName = "Metnetsky";
-            person.Email = "blah@blah.com";
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            person = null;
-        } 
-	#endregion
+	    #endregion
 
         [Test]
         public void B_Insert_WithIdSequence()
@@ -80,6 +77,23 @@ namespace PMS.NUnit
             this.person.ID = pid;
 
             Assert.AreEqual(1, broker.Insert(this.person).Count);
+        }
+
+        [Test]
+        public void B_Update()
+        {
+            this.person.ID = 137;
+            this.person.Email = "updated@aol.com";
+
+            if (this.person.ID == 0) {
+                Console.WriteLine("Relies on B_Insert_WithIdSequence(), run in full sequence");
+                return;
+            }
+
+            DbResult result = broker.Update(this.person);
+
+            Assert.IsNotNull(result, "result is null");
+            Assert.Greater(result.Count, (double)0, "Result.Count: " + result.Count + " !> 0");
         }
 
         [Test]
@@ -114,7 +128,7 @@ namespace PMS.NUnit
         }
 
 
-        //[Test]
+        [Test]
         public void C_GetObject_QueryByObjectFields()
         {
             Object obj = broker.GetObject(new QueryByObject(this.person));
@@ -127,7 +141,7 @@ namespace PMS.NUnit
             Assert.Greater(p.ID, 0, "Person.ID !> 0");
         }
 
-        //[Test]
+        [Test]
         public void C_GetObject_QueryByType()
         {
             Object obj = broker.GetObject(new QueryByType(typeof(Person)));
@@ -136,7 +150,7 @@ namespace PMS.NUnit
             Assert.IsInstanceOfType(typeof(Person), obj, "Object is not Person");
         }
 
-        //[Test]
+        [Test]
         public void C_GetObject_QueryByCriteriaPK_0_SQL()
         {
             Criteria criteria = new Criteria(typeof(Person));
@@ -151,7 +165,7 @@ namespace PMS.NUnit
                             "Generated SQL does not match");
         }
 
-        //[Test]
+        [Test]
         public void C_GetObjectList()
         {
             IList pc = broker.GetObjectList(new QueryByType(typeof(Person)));
@@ -160,7 +174,7 @@ namespace PMS.NUnit
             Assert.IsInstanceOfType(typeof(PersonCollection), pc);
         }
 
-        //[Test]
+        [Test]
         public void C_GetObjectArray()
         {
             object[] pc = broker.GetObjectArray(new QueryByType(typeof(Person)));
@@ -170,37 +184,24 @@ namespace PMS.NUnit
             Assert.Greater(pc.Length, 0);
         }
 
-        //[Test]
-        //public void E_DeleteByIdEtc()
-        //{
-        //    person.Email = null; // don't delete by old email address
-        //    Assert.AreEqual(1, broker.Delete(person).Count);
-        //}
-
-        //[Test]
+        [Test]
         public void F_QueryByCriteriaEqualAndBetween()
         {
-            DateTime nowPlusFour = DateTime.Now.AddDays(4);
-            DateTime nowMinusThree = nowPlusFour.Subtract(new TimeSpan(72, 0, 0));
-
+            DateTime nowMinusThree = DateTime.Now.Subtract(new TimeSpan(72, 0, 0));
+            DateTime nowPlusFour = nowMinusThree.Add(new TimeSpan(144, 0, 0));
 
             Criteria crit = new Criteria(typeof(Person));
-            crit.AndEqualTo("first_name", person.FirstName);
-            crit.AndEqualTo("first_name", person.FirstName);
-            crit.Between("creation_date", nowMinusThree, nowPlusFour);
+            crit.EqualTo("first_name", "Matthew");
+            crit.AndBetween("creation_date", nowMinusThree, nowPlusFour);
 
             PersonCollection persons =
                     (PersonCollection)broker.GetObjectList(new QueryByCriteria(crit));
 
             Assert.IsNotNull(persons, "persons is null");
             Assert.IsInstanceOfType(typeof(PersonCollection), persons, "persons type mismatch");
-
-            foreach (Person p in persons) {
-                Console.WriteLine(p);
-            }
         }
 
-        //[Test]
+        [Test]
         public void F_QueryByCriteriaColumns()
         {
             DateTime now = DateTime.Now;
@@ -222,11 +223,11 @@ namespace PMS.NUnit
                 Assert.AreEqual(0, p.ID);
                 Assert.AreEqual(0, p.CompanyId);
                 Assert.AreEqual(new DateTime(), p.CreationDate);
-                Console.WriteLine(p);
+                //Console.WriteLine(p);
             }
         }
 
-        //[Test]
+        [Test]
         public void G_GetObjectList_Bad()
         {
             Criteria crit = new Criteria(typeof(Person));
@@ -235,7 +236,7 @@ namespace PMS.NUnit
             Assert.AreEqual(broker.GetObjectList(new QueryByCriteria(crit)), null);
         }
 
-        //[Test]
+        [Test]
         public void G_GetOblistArray_Bad()
         {
             Criteria crit = new Criteria(typeof(Person));
@@ -244,23 +245,134 @@ namespace PMS.NUnit
             Assert.AreEqual(broker.GetObjectArray(new QueryByCriteria(crit)), null);
         }
 
-        //[Test]
-        public void T_Thread()
+        [Test]
+        public void H_QueryBySql_Object()
         {
-            Console.WriteLine("Before " + Thread.CurrentThread.ManagedThreadId);
-            Thread t = new Thread(new ThreadStart(F_QueryByCriteriaEqualAndBetween));
-            Console.WriteLine("Start " + t.ManagedThreadId);
-            t.Start();
-            Console.WriteLine("Stop " + t.ManagedThreadId);
+            IQuery query = new QueryBySql(typeof(Person), "SELECT * FROM person");
+
+            Person person = (Person) broker.GetObject(query);
+
+            Assert.IsNotNull(person, "person is null");
+            Assert.Greater(person.ID, 0);
         }
 
-        //[Test]
-        public void Blah()
-        {
-            Person p = new Person();
-            p.FirstName = "hahhahahahahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh";
+        private int threadCnt = 0;
+        private object threadLock = new object();
 
-            broker.Insert(p);
+        public void T_Thread_X_Private_Query()
+        {
+            Thread.Sleep(1000);
+
+            lock (threadLock) {
+                Thread.CurrentPrincipal = 
+                    BuildPrincipal(new GenericIdentity("USER-" + (++threadCnt), "generic"));
+            }
+
+            Object objs = broker.GetObjectList(new QueryByType(typeof(Person)));
+
+            Thread.Sleep(0);
+
+            Assert.IsNotNull(objs, "Object is null");
+            Assert.IsInstanceOfType(typeof(PersonCollection), objs, "Not PersonCollection");
+        }
+
+        [Test]
+        public void T_Thread_10_Private()
+        {
+            #region ThreadStarters
+            Thread[] threads = {
+                new Thread(new ThreadStart(T_Thread_X_Private_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Private_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Private_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Private_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Private_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Private_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Private_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Private_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Private_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Private_Query))
+            }; 
+            #endregion
+
+            #region Start and Join
+            for (int x = 0; x < threads.Length; x++) {
+                threads[x].Start();
+            }
+
+            Console.WriteLine();
+
+            Thread.Sleep(new TimeSpan(0, 0, 4));
+
+            for (int x = 0; x < threads.Length; x++) {
+                threads[x].Join();
+            }
+
+            Console.WriteLine(); 
+            #endregion
+        }
+
+        public void T_Thread_X_Shared_Query()
+        {
+            Thread.Sleep(1000);
+
+            lock (threadLock) {
+                if (((++threadCnt) % 2) == 1) {
+                    Thread.CurrentPrincipal = 
+                        BuildPrincipal(new GenericIdentity("USER-Shared", "generic"));
+                }
+            }
+
+            Object objs = broker.GetObjectList(new QueryByType(typeof(Person)));
+
+            Thread.Sleep(0);
+
+            Assert.IsNotNull(objs, "Object is null");
+            Assert.IsInstanceOfType(typeof(PersonCollection), objs, "Not PersonCollection");
+        }
+
+        [Test]
+        public void T_Thread_20_Shared()
+        {
+            #region ThreadStarters
+            Thread[] threads = {
+                new Thread(new ThreadStart(T_Thread_X_Shared_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Shared_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Shared_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Shared_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Shared_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Shared_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Shared_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Shared_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Shared_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Shared_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Shared_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Shared_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Shared_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Shared_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Shared_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Shared_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Shared_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Shared_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Shared_Query)),
+                new Thread(new ThreadStart(T_Thread_X_Shared_Query))
+            };
+            #endregion
+
+            #region Start and Join
+            for (int x = 0; x < threads.Length; x++) {
+                threads[x].Start();
+            }
+
+            Console.WriteLine();
+
+            Thread.Sleep(new TimeSpan(0, 0, 4));
+
+            for (int x = 0; x < threads.Length; x++) {
+                threads[x].Join();
+            }
+
+            Console.WriteLine(); 
+            #endregion
         }
     }
 }

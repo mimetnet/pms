@@ -26,7 +26,7 @@ namespace PMS.Query
         /// <returns>SQL representing Range</returns>
         public override string ToString()
         {
-            return (field + " " + oper + " " + val1 + " " + comparison + " " + val2);
+            return ("(" + field + " " + oper + " " + val1 + " " + comparison + " " + val2 + ")");
         }
     }
 }

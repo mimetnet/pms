@@ -26,35 +26,32 @@ namespace PMS.DataAccess
         /// <summary>
         /// Begin transaction with Dbmanager
         /// </summary>
-        /// <returns>status</returns>
-        public static bool BeginTransaction(IPrincipal principal)
+        public static void BeginTransaction()
         {
-            return dbManager.BeginTransaction(principal);
+            dbManager.BeginTransaction();
         }
 
         /// <summary>
         /// Rollback transaction with Dbmanager
         /// </summary>
-        /// <returns>status</returns>
-        public static bool RollbackTransaction(IPrincipal principal)
+        public static void RollbackTransaction()
         {
-            return dbManager.RollbackTransaction(principal);
+            dbManager.RollbackTransaction();
         }
 
         /// <summary>
         /// Commit transaction with Dbmanager
         /// </summary>
-        /// <returns>status</returns>
-        public static bool CommitTransaction(IPrincipal principal)
+        public static void CommitTransaction()
         {
-            return dbManager.CommitTransaction(principal);
+            dbManager.CommitTransaction();
         } 
         #endregion
-
         
         /// <summary>
         /// Execute SQL built by IQuery and return instantiated class
         /// </summary>
+        /// <remarks>Selecting a single object implies LIMIT 1, feel free to change offset</remarks>
         /// <param name="query">Query to perform</param>
         /// <returns>Instantiated class or null</returns>
         public static object ExecuteSelectObject(IQuery query)
@@ -63,24 +60,28 @@ namespace PMS.DataAccess
             IDbCommand cmd = null;
             MetaObject mobj = null;
             Object obj = null;
+            DbResult result = null;
 
             if (query == null) throw new ArgumentNullException("Parameter cannot be null");
 
             try {
                 mobj = new MetaObject(query.Type);
                 if (mobj.Exists) {
-                    cmd = dbManager.GetCommand(query.Select(), AccessMode.Read);
+                    query.Criteria.Limit = 1;
+                    cmd = dbManager.GetCommand(query.Select());
                     reader = cmd.ExecuteReader();
                     obj = mobj.Materialize(reader);
+                    result = new DbResult(1, query.Select());
                 } else if (log.IsErrorEnabled) {
                     log.Error("ExecuteSelectObject", new ClassNotFoundException(query.Type));
                 }
             } catch (InvalidOperationException e) {
                 log.Error("ExecuteSelectObject", e);
+                result = new DbResult(query.Select(), e);
             } finally {
                 if (cmd != null) {
                     if (log.IsDebugEnabled)
-                        log.Debug("SQL = " + cmd.CommandText);
+                        log.Debug(result);
                     dbManager.ReturnCommand(cmd);
                 }
 
@@ -106,6 +107,7 @@ namespace PMS.DataAccess
             IDataReader reader = null;
             IDbCommand cmd = null;
             MetaObject mobj = null;
+            DbResult result = null;
             object[] list = null;
 
             if (query == null) throw new ArgumentNullException("Parameter cannot be null");
@@ -113,19 +115,20 @@ namespace PMS.DataAccess
             try {
                 mobj = new MetaObject(query.Type);
                 if (mobj.Exists) {
-                    cmd = dbManager.GetCommand(query.Select(),
-                                               AccessMode.Read);
+                    cmd = dbManager.GetCommand(query.Select());
                     reader = cmd.ExecuteReader();
                     list = mobj.MaterializeArray(reader);
+                    result = new DbResult(list.Length, query.Select());
                 } else if (log.IsErrorEnabled) {
                     log.Error("ExecuteSelectObject", new ClassNotFoundException(query.Type));
                 }
             } catch (Exception e) {
                 log.Error("ExecuteSelectArray", e);
+                result = new DbResult(query.Select(), e);
             } finally {
                 if (cmd != null) {
                     if (log.IsDebugEnabled)
-                        log.Debug("SQL = " + cmd.CommandText);
+                        log.Debug(result);
                     dbManager.ReturnCommand(cmd);
                 }
                 if (reader != null) {
@@ -139,7 +142,7 @@ namespace PMS.DataAccess
         }
 
         /// <summary>
-        /// Execute SQL built by IQuery and return instantiated classes inside CollectionBase
+        /// Execute SQL built by IQuery and return instantiated classes inside IList
         /// </summary>
         /// <param name="query">Query to perform</param>
         /// <returns>CollectionBase of instantiated classes</returns>
@@ -149,24 +152,27 @@ namespace PMS.DataAccess
             IDbCommand cmd = null;
             MetaObject mobj = null;
             IList list = null;
+            DbResult result = null;
 
             if (query == null) throw new ArgumentNullException("Parameter cannot be null");
 
             try {
                 mobj = new MetaObject(query.Type);
                 if (mobj.Exists) {
-                    cmd = dbManager.GetCommand(query.Select(), AccessMode.Read);
+                    cmd = dbManager.GetCommand(query.Select());
                     reader = cmd.ExecuteReader();
                     list = mobj.MaterializeList(reader);
+                    result = new DbResult(list.Count, query.Select());
                 } else if (log.IsErrorEnabled) {
                     log.Error("ExecuteSelectObject", new ClassNotFoundException(query.Type));
+                    result = new DbResult(new ClassNotFoundException(query.Type));
                 }
             } catch (Exception e) {
                 log.Error("ExecuteSelectList", e);
             } finally {
                 if (cmd != null) {
                     if (log.IsDebugEnabled)
-                        log.Debug("SQL = " + cmd.CommandText);
+                        log.Debug(result);
                     dbManager.ReturnCommand(cmd);
                 }
                 if (reader != null) {
@@ -274,7 +280,7 @@ namespace PMS.DataAccess
             IQuery query = new QueryByObject(obj);
 
             return (query.IsValid) ?
-                ExecuteScalar(query.Update()) : new DbResult(query.ValidationException);
+                ExecuteNonQuery(query.Update()) : new DbResult(query.ValidationException);
         }
 
         /// <summary>
@@ -322,7 +328,7 @@ namespace PMS.DataAccess
                 throw new ArgumentNullException("Parameter cannot be String.Empty");
 
             try {
-                cmd = dbManager.GetCommand(sql, AccessMode.Write);
+                cmd = dbManager.GetCommand(sql);
                 result = new DbResult(cmd.ExecuteNonQuery(), sql);
             } catch (Exception ex) {
                 result = new DbResult(sql, ex);
@@ -354,18 +360,21 @@ namespace PMS.DataAccess
                 throw new ArgumentNullException("Parameter cannot be String.Empty");
 
             try {
-                cmd = dbManager.GetCommand(sql, AccessMode.Read);
+                cmd = dbManager.GetCommand(sql);
                 object count = cmd.ExecuteScalar();
-                result = new DbResult(Convert.ToInt32(count), sql);
-            } catch (InvalidOperationException ex) {
-                result = new DbResult(sql, ex);
+                result = new DbResult(Convert.ToInt64(count), sql);
+            } catch (Exception ex) {
+                result = new DbResult(0, sql, ex);
             } finally {
-                if (log.IsDebugEnabled)
+                if (log.IsDebugEnabled) {
                     log.Debug(result);
-                if (log.IsErrorEnabled && result.Exception != null)
+                }
+                if (log.IsErrorEnabled) {
                     log.Error("ExecuteNonQuery", result.Exception);
-                if (cmd != null)
+                }
+                if (cmd != null) {
                     dbManager.ReturnCommand(cmd);
+                }
             }
 
             return result;
@@ -382,7 +391,7 @@ namespace PMS.DataAccess
                 throw new ArgumentNullException("Parameter cannot be String.Empty");
 
             try {
-                cmd = dbManager.GetCommand(sql, AccessMode.Read);
+                cmd = dbManager.GetCommand(sql);
                 reader = cmd.ExecuteReader();
             } catch (Exception ex) {
                 log.Error("ExecuteReader(): " + new DbResult(sql, ex).ToString());

@@ -9,7 +9,7 @@ namespace PMS.Metadata
     {
         #region Public Properties
         [XmlIgnore]
-        public const int DEFAULT_POOL_SIZE = 5;
+        public const int DEFAULT_POOL_SIZE = 1;
 
         [XmlIgnore]
         private Type type;
@@ -19,9 +19,6 @@ namespace PMS.Metadata
 
         [XmlAttribute("type")]
         public string sType;
-
-        [XmlAttribute("assembly")]
-        public string sAssembly;
 
         [XmlAttribute("id")]
         public string Id;
@@ -35,22 +32,14 @@ namespace PMS.Metadata
         [XmlIgnore]
         public Type Type
         {
-            get
-            {
+            get {
                 if (type == null) {
-
-                    try {
-                        type = Assembly.Load(this.sAssembly).GetType(this.sType, true);
-                    } catch (System.TypeLoadException) {
-                        Console.WriteLine("Connection.Type attribute from repository.xml file cannot be loaded.  Please check that '" + sType + "' is REAL and lies within .NET\'s reaches.");
-                        System.Environment.Exit(1);
-                    }
+                    type = MetaObject.LoadType(sType);
                 }
 
                 return type;
             }
-            set
-            {
+            set {
                 type = value;
                 sType = type.ToString();
             }
@@ -76,7 +65,6 @@ namespace PMS.Metadata
         {
             Id = id;
             sType = type.FullName;
-            sAssembly = type.Assembly.FullName;
             Value = conn;
             IsDefault = isDefault;
             PoolSize = pool;
@@ -96,7 +84,6 @@ namespace PMS.Metadata
 
             if (obj1.Id != obj2.Id) return false;
             if (obj1.sType != obj2.sType) return false;
-            if (obj1.sAssembly != obj2.sAssembly) return false;
             if (obj1.Value != obj2.Value) return false;
             if (obj1.IsDefault != obj2.IsDefault) return false;
             if (obj1.PoolSize != obj2.PoolSize) return false;
@@ -127,7 +114,7 @@ namespace PMS.Metadata
         ///</summary> 
         public override string ToString()
         {
-            return String.Format("[ Connection (Id={0}) (sType={1}) (sAssembly={2}) (Value={3}) (IsDefault={4}) (PoolSize={5} ]", Id, sType, sAssembly, Value, IsDefault, PoolSize);
+            return String.Format("[ Connection (Id={0}) (sType={1}) (Value={2}) (IsDefault={3}) (PoolSize={4} ]", Id, sType, Value, IsDefault, PoolSize);
         }
 
         ///<summary>

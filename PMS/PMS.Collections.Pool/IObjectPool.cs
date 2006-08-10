@@ -5,10 +5,12 @@ namespace PMS.Collections.Pool
     interface IObjectPool
     {
         object Borrow();
-        bool Remove(object obj);
+
         bool Return(object obj);
 
+        bool Remove(object obj);
         void CleanObject(ref object obj);
+
         bool Open();
         void Close();
 

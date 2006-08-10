@@ -6,22 +6,23 @@ using System.Threading;
 
 namespace PMS.Collections.Pool
 {
-    public class ManagedObjectPool : MarshalByRefObject, IObjectPool
+    public class PrincipalObjectPool : MarshalByRefObject, IObjectPool
     {
         protected static readonly log4net.ILog log =
-            log4net.LogManager.GetLogger("PMS.Collections.Pool.ManagedObjectPool");
+            log4net.LogManager.GetLogger("PMS.Collections.Pool.PrincipalObjectPool");
+
+        protected object ilock = 0;
 
         private int min = 0;
         private int max = 0;
-        private int index = -1;
         private string cleanup;
         private IList pool;
-        private object ilock = 0;
         private Type type = null;
+        private object[] typeParams;
 
         #region Constructors
         
-        public ManagedObjectPool(Type type, int min, int max, string sFree)
+        public PrincipalObjectPool(Type type, int min, int max, string sFree)
         {
             this.type = type;
             this.min = min;
@@ -30,16 +31,27 @@ namespace PMS.Collections.Pool
             this.pool = new ArrayList();
         }
 
+        public PrincipalObjectPool(Type type, object[] typeParams, int min, int max, string sFree)
+        {
+            this.type = type;
+            this.min = min;
+            this.max = max;
+            this.cleanup = sFree;
+            this.pool = new ArrayList();
+            this.typeParams = typeParams;
+        }
+
         /// <summary>
         /// Destructor
         /// </summary>
-        ~ManagedObjectPool()
+        ~PrincipalObjectPool()
         {
             Close();
         } 
         #endregion
 
         #region Abstract
+
         /// <summary>
         /// Add new instance of Type to pool
         /// </summary>
@@ -49,7 +61,7 @@ namespace PMS.Collections.Pool
             Item obj = null;
 
             lock (ilock) {
-                pool.Add((obj = new Item(Activator.CreateInstance(type))));
+                pool.Add((obj = new Item(Activator.CreateInstance(type, typeParams))));
             }
 
             if (log.IsDebugEnabled)
@@ -65,16 +77,18 @@ namespace PMS.Collections.Pool
         public virtual object Borrow()
         {
             lock (ilock) {
-                index = (index != (this.Actual - 1)) ? index + 1 : 0;
+                
+                for (int x = 0; x < this.pool.Count ; x++) {
 
-                if (((Item)pool[index]).Available == true) {
+                    if (((Item)pool[x]).Principal.Identity.Name == Thread.CurrentPrincipal.Identity.Name) {
 
-                    if (log.IsDebugEnabled)
-                        log.DebugFormat("ManagedObjectPool.Borrow(OID={0} TID={1})",
-                                        pool[index].GetHashCode(),
-                                        Thread.CurrentThread.ManagedThreadId);
+                        if (log.IsDebugEnabled)
+                            log.DebugFormat("ManagedObjectPool.Borrow(OID={0} IDN={1})",
+                                            ((Item)pool[x]).Object.GetHashCode(),
+                                            Thread.CurrentPrincipal.Identity.Name);
 
-                    return ((Item)pool[index]).Object;
+                        return ((Item)pool[x]).Object;
+                    }
                 }
 
                 // nothing left, so add one more and recurse
@@ -92,17 +106,16 @@ namespace PMS.Collections.Pool
         /// <returns>status</returns>
         public virtual bool Return(object obj)
         {
-            int code = obj.GetHashCode();
-
             lock (ilock) {
                 for (int x = 0; x < pool.Count; x++) {
-                    if (((Item)pool[x]).Object.GetHashCode() == code) {
-                        ((Item)pool[x]).Available = true;
+
+                    if (((Item)pool[x]).Principal.Identity.Name ==
+                        Thread.CurrentPrincipal.Identity.Name) {
 
                         if (log.IsDebugEnabled)
-                            log.DebugFormat("ManagedObjectPool.Return(OID={0} TID={1})",
-                                            pool[index].GetHashCode(),
-                                            Thread.CurrentThread.ManagedThreadId);
+                            log.DebugFormat("ManagedObjectPool.Return(OID={0} IDN={1})",
+                                            ((Item)pool[x]).Object.GetHashCode(),
+                                            Thread.CurrentPrincipal.Identity.Name);
 
                         return true;
                     }
@@ -126,10 +139,6 @@ namespace PMS.Collections.Pool
                     if (((Item)pool[x]).Object.GetHashCode() == code) {
                         CleanObject(ref ((Item)pool[x]).Object);
                         pool.RemoveAt(x);
-
-                        if (log.IsDebugEnabled)
-                            log.Debug("ManagedObjectPool.Remove(" + pool[index].GetHashCode() + ")");
-
                         return true;
                     }
                 }
@@ -183,7 +192,7 @@ namespace PMS.Collections.Pool
                     methInfo.Invoke(obj, null);
 
                     if (log.IsDebugEnabled)
-                        log.Debug(objType + "." + this.cleanup + "()");
+                        log.DebugFormat("{0}.{1}()", objType, cleanup);
                 }
             } finally {
                 obj = null;
@@ -192,6 +201,7 @@ namespace PMS.Collections.Pool
             }
         }
 
+        #region Properties
         /// <summary>
         /// Returns the number of elements within the pool
         /// </summary>
@@ -231,24 +241,18 @@ namespace PMS.Collections.Pool
         /// </summary>
         public int Available
         {
-            get {
+            get
+            {
                 int y = 0;
                 for (int x = 0; x < pool.Count; x++)
-                    if (((Item)pool[x]).Available == true)
+                    if (((Item)pool[x]).Principal == null)
                         y++;
 
                 return y;
             }
-        }
+        } 
+        #endregion
 
-        public void Debug()
-        {
-            Console.WriteLine("<ManagedObjectPool>");
-            foreach (Item item in pool) {
-                Console.WriteLine("\t<Item Avail={0} Hash={1} TID={2} />", item.Available, item.GetHashCode(), System.Threading.Thread.CurrentThread.ManagedThreadId);
-            }
-            Console.WriteLine("</ManagedObjectPool>");
-        }
         #endregion // Abstract
 
         /// <summary>
@@ -262,15 +266,15 @@ namespace PMS.Collections.Pool
             public object Object = null;
 
             /// <summary>
-            /// Is the element available
+            /// Identity of the wrapped object
             /// </summary>
-            public bool Available = false;
+            public IPrincipal Principal = null;
 
             /// <summary>
             /// Create Item to wrap obj (Available by default)
             /// </summary>
             /// <param name="obj">Element to wrap</param>
-            public Item(Object obj) : this(obj, true)
+            public Item(Object obj) : this(obj, Thread.CurrentPrincipal)
             {
             }
 
@@ -278,11 +282,11 @@ namespace PMS.Collections.Pool
             /// Create Item to wrap with availability settings
             /// </summary>
             /// <param name="obj">Element to Wrap</param>
-            /// <param name="avail">Is it available</param>
-            public Item(Object obj, bool avail)
+            /// <param name="principal">Principal owner of object</param>
+            public Item(Object obj, IPrincipal principal)
             {
                 Object = obj;
-                Available = avail;
+                Principal = principal;
             }
         } 
     }

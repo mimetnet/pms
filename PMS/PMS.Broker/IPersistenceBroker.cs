@@ -148,20 +148,17 @@ namespace PMS.Broker
         /// <summary>
         /// Begin transaction
         /// </summary>
-        /// <returns>success status</returns>
-        bool BeginTransaction(IPrincipal principal);
+        void BeginTransaction();
 
         /// <summary>
         /// Rollback transaction
         /// </summary>
-        /// <returns>success status</returns>
-        bool RollbackTransaction(IPrincipal principal);
+        void RollbackTransaction();
 
         /// <summary>
         /// Commit transaction
         /// </summary>
-        /// <returns>success status</returns>
-        bool CommitTransaction(IPrincipal principal); 
+        void CommitTransaction(); 
 
         #endregion
 
