@@ -215,5 +215,16 @@ namespace PMS.NUnit
                 Console.WriteLine(m);
             }
         }
+
+        [Test]
+        public void Authenticate()
+        {
+            IQuery query = new QueryBySql(typeof(Member),
+              "SELECT * FROM authenticate('Customer', 'mimetnet', 'W6ph5Mm5Pz8GgiULbPgzG37mj9g=')");
+
+            Member member = (Member) broker.GetObject(query);
+
+            Console.WriteLine(member);
+        }
     }
 }

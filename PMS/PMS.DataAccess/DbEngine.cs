@@ -71,7 +71,7 @@ namespace PMS.DataAccess
                     cmd = dbManager.GetCommand(query.Select());
                     reader = cmd.ExecuteReader();
                     obj = mobj.Materialize(reader);
-                    result = new DbResult(1, query.Select());
+                    result = new DbResult(((obj == null)? 0 : 1), query.Select());
                 } else if (log.IsErrorEnabled) {
                     log.Error("ExecuteSelectObject", new ClassNotFoundException(query.Type));
                 }
