@@ -51,73 +51,69 @@ namespace PMS.Query
 
         #region GreaterOrEqual
         /// <summary>
-        /// Add GreatorEqualClause()
+        /// AND + GreaterOrEqualToClause()
+        /// </summary>
+        /// <param name="field">database field</param>
+        /// <param name="value">value of field</param>
+        public void GreaterOrEqual(string field, object value)
+        {
+            AndGreaterOrEqual(field, value);
+        }
+
+        /// <summary>
+        /// AND + GreaterOrEqualToClause()
         /// </summary>
         /// <param name="field">database field</param>
         /// <param name="value">value of field</param>
         public void AndGreaterOrEqual(string field, object value)
         {
             AndClause();
-            clause.Add(new GreaterOrEqualToClause(field,
-                                                  PrepareValue(field, value)));
+            clause.Add(new GreaterOrEqualToClause(field, PrepareValue(field, value)));
         }
 
         /// <summary>
-        /// Add OrClause() then GreatorEqualClause()
+        /// Or + GreaterOrEqualToClause()
         /// </summary>
         /// <param name="field">database field</param>
         /// <param name="value">value of field</param>
         public void OrGreaterOrEqual(string field, object value)
         {
             OrClause();
-            clause.Add(new GreaterOrEqualToClause(field,
-                                                  PrepareValue(field, value)));
+            clause.Add(new GreaterOrEqualToClause(field, PrepareValue(field, value)));
         }
-
-        /// <summary>
-        /// Add GreatorEqualClause()
-        /// </summary>
-        /// <param name="field">database field</param>
-        /// <param name="value">value of field</param>
-        public void GreaterOrEqual(string field, object value)
-        {
-            AndClause();
-            clause.Add(new GreaterOrEqualToClause(field,
-                                                  PrepareValue(field, value)));
-        } 
         #endregion
 
         #region LessOrEqual
         /// <summary>
-        /// Add LessOrEqualToClause()
+        /// AND + LessOrEqualToClause()
         /// </summary>
         /// <param name="field">database field</param>
-        /// <param name="value">field value</param>
+        /// <param name="value">value of field</param>
         public void LessOrEqual(string field, object value)
         {
             AndLessOrEqual(field, value);
-        } 
-
-        /// <summary>
-        /// Add LessOrEqualToClause()
-        /// </summary>
-        /// <param name="field">database field</param>
-        /// <param name="value">field value</param>
-        public void AndLessOrEqual(string field, object value)
-        {
-            AndClause();
-            LessOrEqual(field, value);
         }
 
         /// <summary>
-        /// Add OrClause() then LessOrEqualToClause()
+        /// AND + LessOrEqualToClause()
         /// </summary>
         /// <param name="field">database field</param>
-        /// <param name="value">field value</param>
+        /// <param name="value">value of field</param>
+        public void AndLessOrEqual(string field, object value)
+        {
+            AndClause();
+            clause.Add(new LessOrEqualToClause(field, PrepareValue(field, value)));
+        }
+
+        /// <summary>
+        /// Or + LessOrEqualToClause()
+        /// </summary>
+        /// <param name="field">database field</param>
+        /// <param name="value">value of field</param>
         public void OrLessOrEqual(string field, object value)
         {
             OrClause();
-            LessOrEqual(field, value);
+            clause.Add(new LessOrEqualToClause(field, PrepareValue(field, value)));
         }
         #endregion
 

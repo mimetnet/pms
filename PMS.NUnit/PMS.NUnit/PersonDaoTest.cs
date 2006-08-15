@@ -202,6 +202,23 @@ namespace PMS.NUnit
         }
 
         [Test]
+        public void F_QueryByCriteria_GreaterOrEqual_AndLessOrEqual()
+        {
+            DateTime nowMinusThree = DateTime.Now.Subtract(new TimeSpan(72, 0, 0));
+            DateTime nowPlusFour = nowMinusThree.Add(new TimeSpan(144, 0, 0));
+
+            Criteria crit = new Criteria(typeof(Person));
+            crit.GreaterOrEqual("creation_date", nowMinusThree);
+            crit.AndLessOrEqual("creation_date", nowPlusFour);
+
+            PersonCollection persons =
+                    (PersonCollection)broker.GetObjectList(new QueryByCriteria(crit));
+
+            Assert.IsNotNull(persons, "persons is null");
+            Assert.IsInstanceOfType(typeof(PersonCollection), persons, "persons type mismatch");
+        }
+
+        [Test]
         public void F_QueryByCriteriaColumns()
         {
             DateTime now = DateTime.Now;

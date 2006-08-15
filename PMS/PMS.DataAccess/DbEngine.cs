@@ -76,8 +76,8 @@ namespace PMS.DataAccess
                     log.Error("ExecuteSelectObject", new ClassNotFoundException(query.Type));
                 }
             } catch (InvalidOperationException e) {
-                log.Error("ExecuteSelectObject", e);
                 result = new DbResult(query.Select(), e);
+                log.Error("ExecuteSelectObject: " + result);
             } finally {
                 if (cmd != null) {
                     if (log.IsDebugEnabled)
@@ -123,8 +123,8 @@ namespace PMS.DataAccess
                     log.Error("ExecuteSelectObject", new ClassNotFoundException(query.Type));
                 }
             } catch (Exception e) {
-                log.Error("ExecuteSelectArray", e);
                 result = new DbResult(query.Select(), e);
+                log.Error("ExecuteSelectArray: " + result);
             } finally {
                 if (cmd != null) {
                     if (log.IsDebugEnabled)
@@ -168,7 +168,8 @@ namespace PMS.DataAccess
                     result = new DbResult(new ClassNotFoundException(query.Type));
                 }
             } catch (Exception e) {
-                log.Error("ExecuteSelectList", e);
+                result = new DbResult(query.Select(), e);
+                log.Error("ExecuteSelectList: " + result);
             } finally {
                 if (cmd != null) {
                     if (log.IsDebugEnabled)
