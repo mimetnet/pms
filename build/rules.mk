@@ -30,13 +30,16 @@ ifdef TARGET
 	target = $(TARGET)
 endif
 
+ifdef KEYFILE
+	keyfile = -keyfile:$(KEYFILE)
+endif
 
 ##############################################################################
 # Begin Rules
 ##############
 
 $(ass.bin): $(build) $(ass.sources)
-	$(CSC) -d:NET_2_0 /target:$(target) /out:$@ $(LIBRARIES) @$(ass.sources)
+	$(CSC) $(keyfile) -d:NET_2_0 /target:$(target) /out:$@ $(LIBRARIES) @$(ass.sources)
 
 # Build ass.sources
 ifneq ($(ass.sources),$(ass.stamp))

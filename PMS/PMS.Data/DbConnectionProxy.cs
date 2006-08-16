@@ -84,10 +84,12 @@ namespace PMS.Data
             return proxy;
         }
 
+        /*
         private void CommandProxyExecuted(IDbConnection connection)
         {
             Console.WriteLine("HOLY SHIT");
         }
+        */
 
         public string Database
         {

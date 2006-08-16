@@ -136,11 +136,6 @@ namespace PMS.Metadata
             return IsLoaded;
         }
 
-        private static void RepositoryChanged(object sender, FileSystemEventArgs e)
-        {
-            Console.WriteLine("Repo Event " + e.ChangeType);
-        }
-
         public static void Close()
         {
             if (isLoaded) {

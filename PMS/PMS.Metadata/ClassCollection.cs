@@ -12,8 +12,10 @@ namespace PMS.Metadata
     [XmlRoot("classes")]
     public class ClassCollection : CollectionBase, IXmlSerializable
     {
+        /*
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger("PMS.Metadata.ClassCollection");
+        */
 
         ///<summary>
         /// Default constructor.

@@ -1,5 +1,7 @@
 ass = PMS.dll
 
+KEYFILE = ../PMS.snk
+
 LIBRARIES =  \
 		-pkg:printgroove-log4net2.0 \
 		-r:Npgsql \
