@@ -119,7 +119,7 @@ namespace PMS.Metadata
 
         public System.Xml.Schema.XmlSchema GetSchema()
         {
-            throw new NotImplementedException();
+			return null;
         }
 
         public void ReadXml(XmlReader reader)
