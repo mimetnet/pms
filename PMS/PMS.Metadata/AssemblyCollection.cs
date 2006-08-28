@@ -149,13 +149,13 @@ namespace PMS.Metadata
                     if (sAssembly != null && sAssembly != String.Empty) {
                         if (!IsLoaded(sAssembly)) {
                             try {
-                                assembly = Assembly.Load(sAssembly);
-                                log.Debug("Loaded: " + assembly.FullName);
+								assembly = Assembly.LoadWithPartialName(sAssembly);
+								log.Debug("Assembly.Load: " + assembly.FullName);
                             } catch (Exception e) {
                                 log.Error("Assembly.Load: " + e.Message);
                             }
                         } else {
-                            log.Debug("Loaded: " + sAssembly);
+							log.Debug("Already.Loaded: " + sAssembly);
                         }
                     }
                 }

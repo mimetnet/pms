@@ -8,7 +8,6 @@ using PMS.Data;
 using PMS.DataAccess;
 using PMS.Broker;
 using PMS.Query;
-using PMS.Query;
 
 using NUnit.Framework;
 using PMS.NUnit.Model;
@@ -82,7 +81,11 @@ namespace PMS.NUnit
         [Test]
         public void B_Update()
         {
-            this.person.ID = 137;
+			if (this.pid == 0) {
+				return;
+			}
+
+			this.person.ID = this.pid;
             this.person.Email = "updated@aol.com";
 
             if (this.person.ID == 0) {

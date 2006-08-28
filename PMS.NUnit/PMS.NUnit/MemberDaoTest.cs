@@ -13,7 +13,7 @@ using PMS.NUnit.Model;
 namespace PMS.NUnit
 {
 
-    [TestFixture]
+    //[TestFixture]
     public class C_MemberDaoTest
     {
         protected IPersistenceBroker broker = null;

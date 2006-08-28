@@ -15,7 +15,7 @@ using PMS.NUnit.Model;
 
 namespace PMS.NUnit
 {
-    [TestFixture]
+    //[TestFixture]
     public class D_RemotingTest
     {
         IPersistenceBroker broker = null;
