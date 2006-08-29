@@ -67,8 +67,10 @@ namespace PMS.NUnit
             Assert.IsNotNull(r1);
             Assert.IsNotNull(r2);
 
+#if MONO
             Assert.IsInstanceOfType(typeof(Repository), r1);
             Assert.IsInstanceOfType(typeof(Repository), r2);
+#endif
 
             Assert.AreEqual(r1, r2);
         }

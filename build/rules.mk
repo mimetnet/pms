@@ -39,7 +39,7 @@ endif
 ##############
 
 $(ass.bin): $(build) $(ass.sources)
-	$(CSC) $(keyfile) -d:NET_2_0 /target:$(target) /out:$@ $(LIBRARIES) @$(ass.sources)
+	$(CSC) $(keyfile) -d:NET_2_0=MONO /target:$(target) /out:$@ $(LIBRARIES) @$(ass.sources)
 
 # Build ass.sources
 ifneq ($(ass.sources),$(ass.stamp))

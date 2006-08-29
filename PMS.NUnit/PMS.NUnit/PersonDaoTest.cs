@@ -65,13 +65,17 @@ namespace PMS.NUnit
             DbResult result = DbEngine.ExecuteScalar("SELECT nextval('person_id_seq')");
 
             Assert.IsNotNull(result, "Object is null");
+#if NET_2_0 != MONO
             Assert.IsInstanceOfType(typeof(DbResult), result);
+#endif
 
             Int64 id = (Int64) result.Count;
 
             this.pid = Convert.ToInt32(id);
 
+#if NET_2_0 != MONO
             Assert.Greater(this.pid, 0);
+#endif
 
             this.person.ID = pid;
 
@@ -96,7 +100,9 @@ namespace PMS.NUnit
             DbResult result = broker.Update(this.person);
 
             Assert.IsNotNull(result, "result is null");
+#if NET_2_0 != MONO
             Assert.Greater(result.Count, (double)0, "Result.Count: " + result.Count + " !> 0");
+#endif
         }
 
         [Test]
@@ -108,11 +114,14 @@ namespace PMS.NUnit
             Object obj = broker.GetObject(new QueryByObject(ps));
 
             Assert.IsNotNull(obj, "Person is null");
+#if NET_2_0 != MONO
             Assert.IsInstanceOfType(typeof(Person), obj, "Object is not Person");
+#endif
 
+#if NET_2_0 != MONO
             Person p = obj as Person;
-
             Assert.Greater(p.ID, 0, "Person.ID !> 0");
+#endif
         }
 
         [Test]
@@ -137,11 +146,14 @@ namespace PMS.NUnit
             Object obj = broker.GetObject(new QueryByObject(this.person));
 
             Assert.IsNotNull(obj, "Person is null");
+#if NET_2_0 != MONO
             Assert.IsInstanceOfType(typeof(Person), obj, "Object is not Person");
+#endif
 
+#if NET_2_0 != MONO
             Person p = obj as Person;
-
             Assert.Greater(p.ID, 0, "Person.ID !> 0");
+#endif	
         }
 
         [Test]
@@ -150,7 +162,9 @@ namespace PMS.NUnit
             Object obj = broker.GetObject(new QueryByType(typeof(Person)));
 
             Assert.IsNotNull(obj, "Person is null");
+#if NET_2_0 != MONO
             Assert.IsInstanceOfType(typeof(Person), obj, "Object is not Person");
+#endif
         }
 
         [Test]
@@ -174,7 +188,9 @@ namespace PMS.NUnit
             IList pc = broker.GetObjectList(new QueryByType(typeof(Person)));
 
             Assert.IsNotNull(pc, "PersonCollection is null");
+#if NET_2_0 != MONO
             Assert.IsInstanceOfType(typeof(PersonCollection), pc);
+#endif
         }
 
         [Test]
@@ -183,8 +199,10 @@ namespace PMS.NUnit
             object[] pc = broker.GetObjectArray(new QueryByType(typeof(Person)));
 
             Assert.IsNotNull(pc, "Person[] is null");
+#if NET_2_0 != MONO
             Assert.IsInstanceOfType(typeof(Person[]), pc);
             Assert.Greater(pc.Length, 0);
+#endif
         }
 
         [Test]
@@ -201,7 +219,9 @@ namespace PMS.NUnit
                     (PersonCollection)broker.GetObjectList(new QueryByCriteria(crit));
 
             Assert.IsNotNull(persons, "persons is null");
+#if NET_2_0 != MONO
             Assert.IsInstanceOfType(typeof(PersonCollection), persons, "persons type mismatch");
+#endif
         }
 
         [Test]
@@ -218,14 +238,14 @@ namespace PMS.NUnit
                     (PersonCollection)broker.GetObjectList(new QueryByCriteria(crit));
 
             Assert.IsNotNull(persons, "persons is null");
+#if NET_2_0 != MONO
             Assert.IsInstanceOfType(typeof(PersonCollection), persons, "persons type mismatch");
+#endif
         }
 
         [Test]
         public void F_QueryByCriteriaColumns()
         {
-            DateTime now = DateTime.Now;
-            DateTime three = now.Subtract(new TimeSpan(72, 0, 0));
             Criteria crit = new Criteria(typeof(Person));
             IQuery query = new QueryByCriteria(crit);
             query.Selection = "first_name, last_name";
@@ -236,7 +256,9 @@ namespace PMS.NUnit
                     (PersonCollection)broker.GetObjectList(query);
 
             Assert.IsNotNull(persons, "persons is null");
+#if NET_2_0 != MONO
             Assert.IsInstanceOfType(typeof(PersonCollection), persons, "persons type mismatch");
+#endif
 
             foreach (Person p in persons) {
                 Assert.IsNull(p.Email);
@@ -273,7 +295,9 @@ namespace PMS.NUnit
             Person person = (Person) broker.GetObject(query);
 
             Assert.IsNotNull(person, "person is null");
+#if NET_2_0 != MONO
             Assert.Greater(person.ID, 0);
+#endif
         }
 
         private int threadCnt = 0;
@@ -293,7 +317,9 @@ namespace PMS.NUnit
             Thread.Sleep(0);
 
             Assert.IsNotNull(objs, "Object is null");
+#if NET_2_0 != MONO
             Assert.IsInstanceOfType(typeof(PersonCollection), objs, "Not PersonCollection");
+#endif
         }
 
         [Test]
@@ -347,7 +373,9 @@ namespace PMS.NUnit
             Thread.Sleep(0);
 
             Assert.IsNotNull(objs, "Object is null");
+#if NET_2_0 != MONO
             Assert.IsInstanceOfType(typeof(PersonCollection), objs, "Not PersonCollection");
+#endif
         }
 
         [Test]

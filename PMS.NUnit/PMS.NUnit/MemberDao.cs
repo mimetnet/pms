@@ -23,8 +23,6 @@ namespace PMS.NUnit
 
         public bool Insert(Member member)
         {
-            IQuery query = new QueryByObject(member);
-
             return (broker.Insert(member).Count > 0) ? true : false;
         }
 

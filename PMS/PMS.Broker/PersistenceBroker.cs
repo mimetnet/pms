@@ -17,12 +17,10 @@ namespace PMS.Broker
     {
         #region variables
         private bool isOpen = false;
-        private string R_FILE = "repository.xml";
-        private const string R_KEY = "PMS.Repository";
-        
         private static readonly log4net.ILog log = 
             log4net.LogManager.GetLogger("PMS.Broker.PersistenceBroker");
         
+        public const string REPOSITORY_FILE = "repository.xml";
         #endregion
 
         #region Construct/Destruct
@@ -330,16 +328,7 @@ namespace PMS.Broker
         /// <returns>success status</returns>
         public bool Load()
         {
-            string fileName = null;
-
-#if NET_2_0
-            if ((fileName = ConfigurationManager.AppSettings[R_KEY]) != null)
-#else
-            if ((fileName = ConfigurationSettings.AppSettings[R_KEY]) != null)
-#endif
-                R_FILE = fileName;
-
-            return Load(R_FILE);
+            return Load(REPOSITORY_FILE);
         }
 
         /// <summary>

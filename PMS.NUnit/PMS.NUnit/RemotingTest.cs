@@ -18,9 +18,9 @@ namespace PMS.NUnit
     //[TestFixture]
     public class D_RemotingTest
     {
-        IPersistenceBroker broker = null;
-        PersonDao dao = null;
-        Person person = null;
+        private IPersistenceBroker broker = null;
+		private PersonDao dao = null;
+        private Person person = null;
 
         [TestFixtureSetUp]
         public void Constructor()

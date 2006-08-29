@@ -14,14 +14,14 @@ namespace PMS.NUnit
     public class F_DbEngineTest
     {
         [Test]
-        [ExpectedException("System.ArgumentNullException")]
+        [ExpectedException(typeof(System.ArgumentNullException))]
         public void ExecuteCount()
         {
             DbEngine.ExecuteCount(null);
         }
 
         [Test]
-        [ExpectedException("System.ArgumentNullException")]
+        [ExpectedException(typeof(System.ArgumentNullException))]
         public void ExecuteDelete_Object()
         {
             Object query = null;
@@ -30,7 +30,7 @@ namespace PMS.NUnit
         }
 
         [Test]
-        [ExpectedException("System.ArgumentNullException")]
+        [ExpectedException(typeof(System.ArgumentNullException))]
         public void ExecuteDelete_Query()
         {
             PMS.Query.IQuery obj = null;
@@ -39,7 +39,7 @@ namespace PMS.NUnit
         }
 
         [Test]
-        [ExpectedException("System.ArgumentNullException")]
+        [ExpectedException(typeof(System.ArgumentNullException))]
         public void ExecuteDelete_Type()
         {
             Type obj = null;
@@ -48,56 +48,56 @@ namespace PMS.NUnit
         }
 
         [Test]
-        [ExpectedException("System.ArgumentNullException")]
+        [ExpectedException(typeof(System.ArgumentNullException))]
         public void ExecuteInsert()
         {
             DbEngine.ExecuteInsert(null);
         }
 
         [Test]
-        [ExpectedException("System.ArgumentNullException")]
+        [ExpectedException(typeof(System.ArgumentNullException))]
         public void ExecuteNonQuery()
         {
             DbEngine.ExecuteNonQuery(null);
         }
 
         [Test]
-        [ExpectedException("System.ArgumentNullException")]
+        [ExpectedException(typeof(System.ArgumentNullException))]
         public void ExecutePersist()
         {
             DbEngine.ExecutePersist(null);
         }
 
         [Test]
-        [ExpectedException("System.ArgumentNullException")]
+        [ExpectedException(typeof(System.ArgumentNullException))]
         public void ExecuteScalar()
         {
             DbEngine.ExecuteScalar(null);
         }
 
         [Test]
-        [ExpectedException("System.ArgumentNullException")]
+        [ExpectedException(typeof(System.ArgumentNullException))]
         public void ExecuteSelectArray()
         {
             DbEngine.ExecuteSelectArray(null);
         }
 
         [Test]
-        [ExpectedException("System.ArgumentNullException")]
+		[ExpectedException(typeof(System.ArgumentNullException))]
         public void ExecuteSelectList()
         {
             DbEngine.ExecuteSelectList(null);
         }
 
         [Test]
-        [ExpectedException("System.ArgumentNullException")]
+        [ExpectedException(typeof(System.ArgumentNullException))]
         public void ExecuteSelectObject()
         {
             DbEngine.ExecuteSelectObject(null);
         }
 
         [Test]
-        [ExpectedException("System.ArgumentNullException")]
+        [ExpectedException(typeof(System.ArgumentNullException))]
         public void ExecuteUpdate()
         {
             DbEngine.ExecuteUpdate(null);
@@ -109,9 +109,6 @@ namespace PMS.NUnit
             IQuery query = new QueryByObject(new Int16());
 
             Assert.AreEqual(query.IsValid, false, "query.IsValid should be false!");
-            Assert.IsInstanceOfType(typeof(ClassNotFoundException), 
-                query.ValidationException, 
-                "query.ValidationException is not of type ClassNotFoundException");
 
             Assert.IsNull(DbEngine.ExecuteSelectArray(query));
             Assert.IsNull(DbEngine.ExecuteSelectList(query));
