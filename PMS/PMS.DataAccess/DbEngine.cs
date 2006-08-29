@@ -284,11 +284,7 @@ namespace PMS.DataAccess
                 ExecuteNonQuery(query.Update()) : new DbResult(query.ValidationException);
         }
 
-        /// <summary>
-        /// Update object
-        /// </summary>
-        /// <param name="obj">Object to update</param>
-        /// <returns>Result of query</returns>
+		/*
         public static DbResult ExecuteUpdate(object oldObj, object newObj)
         {
             if (oldObj == null) throw new ArgumentNullException("Parameter 1 cannot be null");
@@ -296,6 +292,7 @@ namespace PMS.DataAccess
 
             return ExecuteNonQuery((new QueryByObjectDiff(oldObj, newObj)).Update());
         }
+		*/
 
         /// <summary>
         /// Perform SQL "SELECT * FROM obj;"

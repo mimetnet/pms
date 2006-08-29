@@ -255,12 +255,6 @@ namespace PMS.Broker
             return DbEngine.ExecuteUpdate(obj);
         }
 
-        /// <summary>
-        /// Update object based on difference between oldObj and newObj
-        /// </summary>
-        /// <param name="oldObj">Original class</param>
-        /// <param name="newObj">Modified class</param>
-        /// <returns>Result holding Count and executed SQL</returns>
         //public DbResult Update(object oldObj, object newObj)
         //{
         //    if (!IsOpen) {
@@ -345,7 +339,7 @@ namespace PMS.Broker
         /// <summary>
         /// Load configuration file at specified location
         /// </summary>
-        /// <param name="fileName">Repository file to load</param>
+        /// <param name="file">Repository file to load</param>
         /// <returns>success status</returns>
         public bool Load(System.IO.FileInfo file)
         {

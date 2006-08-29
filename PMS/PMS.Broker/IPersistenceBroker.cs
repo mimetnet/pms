@@ -23,7 +23,7 @@ namespace PMS.Broker
         /// <summary>
         /// Retrieve multiple instances of a class based on type, which maps to a table
         /// </summary>
-        /// <param name="type">Type that maps to a database table</param>
+        /// <param name="query">Query to search for one or more objects</param>
         /// <returns>List of instantiated classes</returns>
         IList GetObjectList(IQuery query);
 
@@ -82,12 +82,6 @@ namespace PMS.Broker
         /// <returns>Result holding Count and executed SQL</returns>
         DbResult Update(object obj);
 
-        /// <summary>
-        /// Update object based on difference between oldObj and newObj
-        /// </summary>
-        /// <param name="oldObj">Original class</param>
-        /// <param name="newObj">Modified class</param>
-        /// <returns>Result holding Count and executed SQL</returns>
         //DbResult Update(object oldObj, object newObj);
 
         /// <summary>
@@ -115,14 +109,14 @@ namespace PMS.Broker
         /// <summary>
         /// Load configuration file at specified location
         /// </summary>
-        /// <param name="fileName">Path to the repository to load</param>
+        /// <param name="repositoryFile">Path to the repository to load</param>
         /// <returns>success status</returns>
         bool Load(string repositoryFile);
 
         /// <summary>
         /// Load configuration file at specified location
         /// </summary>
-        /// <param name="fileName">Repository file to load</param>
+        /// <param name="file">Repository file to load</param>
         /// <returns>success status</returns>
         bool Load(System.IO.FileInfo file);
 
