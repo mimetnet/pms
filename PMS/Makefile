@@ -1,4 +1,5 @@
-ass = PMS.dll
+ASSEMBLY = PMS.dll
+TARGET = library
 
 KEYFILE = ../PMS.snk
 

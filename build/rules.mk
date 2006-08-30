@@ -17,29 +17,38 @@ endif
 # Variables
 ############
 
-build = bin
-deps = $(build)/deps
-
-ass.bin = $(build)/$(ass)
-ass.sources = $(deps)/$(ass).sources
-ass.make = $(deps)/$(ass).make
-
 # override for distribution compilation (no console logging in a release!!)
 target = library
 ifdef TARGET
 	target = $(TARGET)
 endif
 
+ifdef RELEASE
+	mode = Release
+	debug = /debug-
+else
+	mode = Debug
+	debug = /debug+
+endif
+
 ifdef KEYFILE
 	keyfile = -keyfile:$(KEYFILE)
 endif
+
+build = bin/$(mode)
+deps = $(build)/deps
+
+ass.bin = $(build)/$(ASSEMBLY)
+ass.sources = $(deps)/$(ASSEMBLY).sources
+ass.make = $(deps)/$(ASSEMBLY).make
+
 
 ##############################################################################
 # Begin Rules
 ##############
 
 $(ass.bin): $(build) $(ass.sources)
-	$(CSC) $(keyfile) -d:NET_2_0=MONO /target:$(target) /out:$@ $(LIBRARIES) @$(ass.sources)
+	$(CSC) $(debug) $(keyfile) -d:NET_2_0=MONO /target:$(target) /out:$@ $(LIBRARIES) @$(ass.sources)
 
 # Build ass.sources
 ifneq ($(ass.sources),$(ass.stamp))
@@ -58,7 +67,7 @@ $(build):
 	@mkdir -p $@
 
 $(deps):
-	@if test ! -d $@; then mkdir $@; fi;
+	@mkdir -p $@
 
 # record out latest build
 $(ass.stamp):
@@ -68,6 +77,13 @@ clean:
 	rm -rf $(ass.bin) $(deps)
 
 distclean: clean
+
+all: $(ass.bin)
+
+default: all
+
+release:
+	make default RELEASE=true
 
 .PHONY: run dist clean distclean
 

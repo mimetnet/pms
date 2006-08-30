@@ -93,7 +93,7 @@ namespace PMS.Metadata
         /// Convert IDataReader to IList of Objects
         /// </summary>
         /// <param name="reader">List of Results to create objects from</param>
-        /// <returns>IList is null if list/@type is invalid, otherwise its always an IList</returns>
+        /// <returns>IList is null if list-type attribute is invalid, otherwise its always an IList</returns>
         public IList MaterializeList(IDataReader reader)
         {
             Type listType = null;
