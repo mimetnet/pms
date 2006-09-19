@@ -284,6 +284,19 @@ namespace PMS.DataAccess
                 ExecuteNonQuery(query.Update()) : new DbResult(query.ValidationException);
         }
 
+        /// <summary>
+        /// Update record based on IQuery
+        /// </summary>
+        /// <param name="obj">IQuery Update to perform</param>
+        /// <returns>Result of query</returns>
+        public static DbResult ExecuteUpdate(IQuery query)
+        {
+            if (query == null) throw new ArgumentNullException("Parameter cannot be null");
+
+            return (query.IsValid) ?
+                ExecuteNonQuery(query.Update()) : new DbResult(query.ValidationException);
+        }
+
 		/*
         public static DbResult ExecuteUpdate(object oldObj, object newObj)
         {

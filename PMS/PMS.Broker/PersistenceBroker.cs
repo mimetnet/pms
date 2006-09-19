@@ -244,16 +244,32 @@ namespace PMS.Broker
         {
             if (!IsOpen) {
                 log.Warn("Update(obj) called before .Open()");
-                throw new RepositoryNotFoundException("GetObject(query) called before .Open()");
+                throw new RepositoryNotFoundException("Update(obj) called before .Open()");
             }
 
             if (!IsLoaded) {
                 log.Warn("Update(obj) called before .Load()");
-                throw new DbEngineNotStartedException("GetObject(query) called before .Load()");
+                throw new DbEngineNotStartedException("Update(obj) called before .Load()");
             }
 
             return DbEngine.ExecuteUpdate(obj);
         }
+
+
+		public DbResult Update(IQuery query)
+		{
+			if (!IsOpen) {
+				log.Warn("Update(obj) called before .Open()");
+				throw new RepositoryNotFoundException("Update(query) called before .Open()");
+			}
+
+			if (!IsLoaded) {
+				log.Warn("Update(obj) called before .Load()");
+				throw new DbEngineNotStartedException("Update(query) called before .Load()");
+			}
+
+			return DbEngine.ExecuteUpdate(query);
+		}
 
         //public DbResult Update(object oldObj, object newObj)
         //{

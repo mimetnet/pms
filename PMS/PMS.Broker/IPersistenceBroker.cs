@@ -82,6 +82,13 @@ namespace PMS.Broker
         /// <returns>Result holding Count and executed SQL</returns>
         DbResult Update(object obj);
 
+        /// <summary>
+        /// Update object based on IQuery object
+        /// </summary>
+        /// <param name="query">Description of update to occur</param>
+        /// <returns>Result holding Count and executed SQL</returns>
+        DbResult Update(IQuery query);
+
         //DbResult Update(object oldObj, object newObj);
 
         /// <summary>
