@@ -98,7 +98,7 @@ namespace PMS.Metadata
         {
             Type listType = null;
             IList list = null;
-
+			
             try {
                 listType = RepositoryManager.GetClassListType(this.type);
 
@@ -129,7 +129,7 @@ namespace PMS.Metadata
 
         private object CreateObject()
         {
-            return Activator.CreateInstance(type);
+			return Activator.CreateInstance(type);
         }
 
         private object PopulateObject(object obj, IDataReader reader)
@@ -140,6 +140,7 @@ namespace PMS.Metadata
             Field field;
             object dbColumn;
             string column;
+			bool verb = (log.IsDebugEnabled && Environment.GetEnvironmentVariable("PMS_MAPPING") == null) ? false : true;
 
             DataTable table = reader.GetSchemaTable();
 
@@ -153,15 +154,31 @@ namespace PMS.Metadata
                                           BindingFlags.Instance |
                                           BindingFlags.Public);
 
+					if (finfo == null) {
+						log.ErrorFormat("Field '{0}' not found for Column '{1}'", 
+										field.Name, field.Column);
+						continue;
+					}
+
                     try {
                         dbColumn = Provider.ConvertToType(field.DbType, reader[column]);
                         finfo.SetValue(obj, dbColumn);
+
+						if (verb) {
+							log.DebugFormat("{0} - {1} = {2}", cdesc.Type, finfo.Name, dbColumn);
+						}
                     } catch (Exception) {
                         log.ErrorFormat("Column '{0}' failed to convert from '{1}' to '{2}'",
                                         column, field.DbType, finfo.FieldType.ToString());
                     }
-                }
+                } else {
+					log.WarnFormat("{0} - column '{1}' not found in repo", cdesc.Type, column);
+				}
             }
+
+			if (verb) {
+				log.Debug("");
+			}
 
             //foreach (Field f in cdesc.Fields) {
             //    if (f.HasReference) {
