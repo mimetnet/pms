@@ -10,6 +10,7 @@ namespace PMS.DataAccess
         void ReturnCommand(IDbCommand command);
 
         void Start();
+        void Start(Type type, string connectionString);
         void Stop();
 
         void BeginTransaction();

@@ -69,6 +69,15 @@ namespace PMS.DataAccess
             isInit = pool.Open();
         }
 
+		public void Start(Type type, string connectionString)
+		{
+			if (isInit)
+				Stop();
+
+			pool = new ConnectionPool(type, connectionString);
+			isInit = pool.Open();
+		}
+
         /// <summary>
         /// Closes the database pool if it has been Start()ed
         /// </summary>

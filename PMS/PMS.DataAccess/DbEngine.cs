@@ -344,10 +344,12 @@ namespace PMS.DataAccess
             } catch (Exception ex) {
                 result = new DbResult(sql, ex);
             } finally {
-                if (log.IsErrorEnabled && result.Exception != null)
-                    log.Error("ExecuteNonQuery", result.Exception);
-                else if (log.IsDebugEnabled)
+                if (result.Exception != null) {
+                    log.Error("ExecuteNonQuery");
+					log.Error(result);
+				} else if (log.IsDebugEnabled) {
                     log.Debug(result);
+				}
 
                 if (cmd != null)
                     dbManager.ReturnCommand(cmd);
@@ -378,11 +380,12 @@ namespace PMS.DataAccess
             } catch (Exception ex) {
                 result = new DbResult(0, sql, ex);
             } finally {
-                if (log.IsErrorEnabled) {
-                    log.Error("ExecuteScaler", result.Exception);
-                } else if (log.IsDebugEnabled) {
+                if (result.Exception != null) {
+                    log.Error("ExecuteScalar");
+					log.Error(result);
+				} else if (log.IsDebugEnabled) {
                     log.Debug(result);
-                }
+				}
 
                 if (cmd != null) {
                     dbManager.ReturnCommand(cmd);
