@@ -27,13 +27,13 @@ namespace PMS.Broker
         internal PersistenceBroker()
         {
             System.IO.FileInfo file = new System.IO.FileInfo("PMS.dll.config");
-            if (file.Exists)
+            if (file.Exists) {
                 log4net.Config.XmlConfigurator.Configure(file);
-            else
-                Console.WriteLine("PMS NoConfig: " + file.FullName);
+			}
 
-            if (log.IsInfoEnabled)
+            if (log.IsInfoEnabled) {
                 log.Info("Version " + this.Version);
+			}
         }
 
         ~PersistenceBroker()

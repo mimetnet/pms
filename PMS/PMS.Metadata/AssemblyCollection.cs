@@ -144,21 +144,19 @@ namespace PMS.Metadata
             while (reader.Read()) {
                 reader.MoveToElement();
 
-                if (reader.LocalName == "add") {
-                    sAssembly = reader["assembly"];
-                    if (sAssembly != null && sAssembly != String.Empty) {
-                        if (!IsLoaded(sAssembly)) {
-                            try {
+				if (reader.LocalName == "add") {
+					sAssembly = reader["assembly"];
+					if (sAssembly != null && sAssembly != String.Empty) {
+						if (!IsLoaded(sAssembly)) {
+							try {
 								assembly = Assembly.LoadWithPartialName(sAssembly);
 								log.Debug("Assembly.Load: " + assembly.FullName);
-                            } catch (Exception e) {
-                                log.Error("Assembly.Load: " + e.Message);
-                            }
-                        } else {
-							log.Debug("Already.Loaded: " + sAssembly);
-                        }
-                    }
-                }
+							} catch (Exception e) {
+								log.Error("Assembly.Load: " + e.Message);
+							}
+						}
+					}
+				}
 
                 if (reader.LocalName == "assemblies")
                     break;
@@ -167,9 +165,13 @@ namespace PMS.Metadata
 
         private bool IsLoaded(string sAssembly)
         {
-            foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
-                if (a.GetName().Name == sAssembly)
+            foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies()) {
+                if (a.GetName().Name == sAssembly) {
+					if (log.IsDebugEnabled)
+						log.Debug("Already.Loaded: " + a.GetName());
                     return true;
+				}
+			}
 
             return false;
         }
