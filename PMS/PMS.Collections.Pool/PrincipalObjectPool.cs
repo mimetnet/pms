@@ -3,6 +3,7 @@ using System.Collections;
 using System.Security.Principal;
 using System.Reflection;
 using System.Threading;
+using System.Timers;
 
 namespace PMS.Collections.Pool
 {
@@ -12,23 +13,22 @@ namespace PMS.Collections.Pool
             log4net.LogManager.GetLogger("PMS.Collections.Pool.PrincipalObjectPool");
 
         protected object ilock = 0;
-
+		const int THRESHOLD = 400;
         private int min = 0;
         private int max = 0;
         private string cleanup;
-        private IList pool;
+        private ItemCollection pool = null;
         private Type type = null;
         private object[] typeParams;
+		private event EventHandler ZombieHandler;
+		private System.Timers.Timer zTimer = null;
+
 
         #region Constructors
         
-        public PrincipalObjectPool(Type type, int min, int max, string sFree)
+        public PrincipalObjectPool(Type type, int min, int max, string sFree) :
+			this(type, null, min, max, sFree)
         {
-            this.type = type;
-            this.min = min;
-            this.max = max;
-            this.cleanup = sFree;
-            this.pool = new ArrayList();
         }
 
         public PrincipalObjectPool(Type type, object[] typeParams, int min, int max, string sFree)
@@ -37,8 +37,15 @@ namespace PMS.Collections.Pool
             this.min = min;
             this.max = max;
             this.cleanup = sFree;
-            this.pool = new ArrayList();
+            this.pool = new ItemCollection();
             this.typeParams = typeParams;
+			this.ZombieHandler += new EventHandler(ZombieMaster);
+
+			this.zTimer = new System.Timers.Timer();
+			this.zTimer.Enabled = true;
+			this.zTimer.Interval = 60000;
+			this.zTimer.AutoReset = true;
+			this.zTimer.Elapsed += new ElapsedEventHandler(ZombieMaster);
         }
 
         /// <summary>
@@ -56,7 +63,7 @@ namespace PMS.Collections.Pool
         /// Add new instance of Type to pool
         /// </summary>
         /// <returns>status</returns>
-        protected virtual bool Add()
+        protected virtual long Add()
         {
             Item obj = null;
 
@@ -67,7 +74,7 @@ namespace PMS.Collections.Pool
             if (log.IsDebugEnabled)
                 log.DebugFormat("ManagedObjectPool.Add(new {0}())", obj.Object.GetType());
 
-            return true;
+			return pool.Count;
         }
 
         /// <summary>
@@ -80,24 +87,53 @@ namespace PMS.Collections.Pool
                 
                 for (int x = 0; x < this.pool.Count ; x++) {
 
-                    if (((Item)pool[x]).Principal.Identity.Name == Thread.CurrentPrincipal.Identity.Name) {
+                    if (pool[x].Principal.Identity.Name == Thread.CurrentPrincipal.Identity.Name) {
 
-                        if (log.IsDebugEnabled)
+                        if (log.IsDebugEnabled) {
                             log.DebugFormat("ManagedObjectPool.Borrow(OID={0} IDN={1})",
-                                            ((Item)pool[x]).Object.GetHashCode(),
+                                            pool[x].Object.GetHashCode(),
                                             Thread.CurrentPrincipal.Identity.Name);
+						}
 
-                        return ((Item)pool[x]).Object;
+                        return pool[x].Checkout();
                     }
                 }
 
                 // nothing left, so add one more and recurse
-                this.Add();
+                if (this.Add() > THRESHOLD) {
+					this.ZombieHandler(this, EventArgs.Empty);
+				}
+
                 return this.Borrow();
             }
 
             //throw new PoolEmptyException("Max Reached and No Objects Left");
         }
+
+		protected void ZombieMaster(object sender, EventArgs e)
+		{
+			ZombieKiller(30);
+		}
+
+		protected void ZombieMaster(object sender, ElapsedEventArgs e)
+		{
+			ZombieKiller(30);
+		}
+
+		protected void ZombieKiller(int minutes)
+		{
+			lock (ilock) {
+				for (int x = 0; x < this.pool.Count ; x++) {
+					if (pool[x].LastUsed.AddMinutes(minutes) <= DateTime.Now) {
+						if (log.IsInfoEnabled) {
+							log.InfoFormat("ManagedObjectPool.ZombieMaster(OID={0} D={1}) CNT={2}", pool[x].Object.GetHashCode(), pool[x].LastUsed, pool.Count);
+						}
+						CleanObject(ref pool[x].Object);
+						pool.RemoveAt(x);
+					}
+				}
+			}
+		}
 
         /// <summary>
         /// Return object to beginning of pool
@@ -109,13 +145,13 @@ namespace PMS.Collections.Pool
             lock (ilock) {
                 for (int x = 0; x < pool.Count; x++) {
 
-                    if (((Item)pool[x]).Principal.Identity.Name ==
-                        Thread.CurrentPrincipal.Identity.Name) {
+                    if (pool[x].Principal.Identity.Name == Thread.CurrentPrincipal.Identity.Name) {
 
-                        if (log.IsDebugEnabled)
+                        if (log.IsDebugEnabled) {
                             log.DebugFormat("ManagedObjectPool.Return(OID={0} IDN={1})",
-                                            ((Item)pool[x]).Object.GetHashCode(),
+                                            pool[x].Object.GetHashCode(),
                                             Thread.CurrentPrincipal.Identity.Name);
+						}
 
                         return true;
                     }
@@ -136,8 +172,8 @@ namespace PMS.Collections.Pool
 
             lock (ilock) {
                 for (int x = 0; x < pool.Count; x++) {
-                    if (((Item)pool[x]).Object.GetHashCode() == code) {
-                        CleanObject(ref ((Item)pool[x]).Object);
+                    if (pool[x].Object.GetHashCode() == code) {
+                        CleanObject(ref pool[x].Object);
                         pool.RemoveAt(x);
                         return true;
                     }
@@ -191,8 +227,9 @@ namespace PMS.Collections.Pool
                     methInfo = objType.GetMethod(cleanup);
                     methInfo.Invoke(obj, null);
 
-                    if (log.IsDebugEnabled)
-                        log.DebugFormat("{0}.{1}()", objType, cleanup);
+                    if (log.IsDebugEnabled) {
+                        log.DebugFormat("{0}.{1}(OID={2})", objType, cleanup, obj.GetHashCode());
+					}
                 }
             } finally {
                 obj = null;
@@ -241,12 +278,13 @@ namespace PMS.Collections.Pool
         /// </summary>
         public int Available
         {
-            get
-            {
+            get {
                 int y = 0;
-                for (int x = 0; x < pool.Count; x++)
-                    if (((Item)pool[x]).Principal == null)
+                for (int x = 0; x < pool.Count; x++) {
+                    if (pool[x].Principal == null) {
                         y++;
+					}
+				}
 
                 return y;
             }
@@ -254,40 +292,5 @@ namespace PMS.Collections.Pool
         #endregion
 
         #endregion // Abstract
-
-        /// <summary>
-        /// Wraps an object in the Pool
-        /// </summary>
-        protected class Item
-        {
-            /// <summary>
-            /// Contains the element in the pool
-            /// </summary>
-            public object Object = null;
-
-            /// <summary>
-            /// Identity of the wrapped object
-            /// </summary>
-            public IPrincipal Principal = null;
-
-            /// <summary>
-            /// Create Item to wrap obj (Available by default)
-            /// </summary>
-            /// <param name="obj">Element to wrap</param>
-            public Item(Object obj) : this(obj, Thread.CurrentPrincipal)
-            {
-            }
-
-            /// <summary>
-            /// Create Item to wrap with availability settings
-            /// </summary>
-            /// <param name="obj">Element to Wrap</param>
-            /// <param name="principal">Principal owner of object</param>
-            public Item(Object obj, IPrincipal principal)
-            {
-                Object = obj;
-                Principal = principal;
-            }
-        } 
     }
 }

@@ -78,8 +78,9 @@ namespace PMS.Data
         {
             DbCommandProxy proxy = new DbCommandProxy(this.conn.CreateCommand());
             //proxy.Executed += new DbCommandExecuted(CommandProxyExecuted);
-            if (trans != null)
+            if (trans != null) {
                 proxy.Transaction = trans;
+			}
 
             return proxy;
         }
