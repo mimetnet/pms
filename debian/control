@@ -1,0 +1,15 @@
+Source: libpms
+Section: universe/libs
+Priority: optional
+Maintainer: Matthew Metnetsky <matthew@cowarthill.com>
+Build-Depends: debhelper (>= 4.0.0), mono-gac, cli-common (>= 0.2.0)
+Standards-Version: 3.6.2
+
+Package: libpms
+Architecture: any
+Depends: ${cli:Depends}
+Description: PMS - Phil & Matt Spaces for .NET
+ PMS is an object relation mapping library for .NET/mono.
+ .
+ This version is packaged for Mono 2.0 for use with Konica Minolta's
+ Printgroove server.

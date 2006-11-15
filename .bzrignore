@@ -14,3 +14,17 @@ obj
 PMS.Server/bin
 PMS.Server/obj
 PMS/PMS.csproj.user
+Makefile.in
+Makefile
+configure
+config.guess
+install-sh
+PMS/PMS.dll
+build/PMS.pc
+Makefile
+PMS/Makefile
+ltmain.sh
+.wapi
+build-stamp
+configure-stamp
+build/libpms.pc

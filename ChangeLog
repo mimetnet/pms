@@ -1,0 +1,17 @@
+printgroove-libpms2.0 (0.6.36-0) unstable; urgency=low
+
+  * fixed error logs for sql execution
+
+ -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Thu,  5 Oct 2006 10:53:20 -0400
+
+printgroove-libpms2.0 (0.6.35-0) unstable; urgency=low
+
+  * new release
+
+ -- Tyler Willingham <willow@dapper-breeze.sep.net>  Tue, 29 Aug 2006 12:08:55 -0400
+
+printgroove-libpms2.0 (0.6.34-0) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Tyler Willingham <tylerw@kmbs.konicaminolta.us>  Tue, 15 Aug 2006 11:43:51 -0400

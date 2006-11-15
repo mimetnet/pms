@@ -1,0 +1,13 @@
+PMS: Phil & Matt Spaces for .NET
+
+Inspired by ObjectSpaces, OJB, OJB.NET, Hibernate, NHibernate, 
+and other ORM tools that are too heavy for small projects.
+
+To increment a package version:
+	debchange -i -p
+
+To build a package:
+	fakeroot debian/rules binary
+
+To clean a package:
+	fakeroot debian/rules clean

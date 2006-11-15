@@ -1,0 +1,27 @@
+* Compiling and installing loco-lingo
+-------------------------------
+
+    We will assume you want to install loco-lingo in /opt/KonicaMinolta.
+
+    To compile loco-lingo type and install it to /opt/KonicaMinolta:
+
+	./configure --prefix=/opt/KonicaMinolta
+	make 
+	make install
+
+    If you don't specify --prefix, it will default to /opt/KonicaMinolta
+
+    If ./configure finds a working 'gmcs' it will automatically build a
+    2.0 profile version of xsp, named xsp2.
+
+* Running loco-lingo 
+------------------------------------
+
+	mono /opt/KonicaMinolta/bin/loco-lingo-cli.exe 
+
+
+Notes for MS runtime users
+----------------------------
+In windows, if you want to build xsp using csc, do:
+
+    MCS=csc make
