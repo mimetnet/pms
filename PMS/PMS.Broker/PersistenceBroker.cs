@@ -28,7 +28,7 @@ namespace PMS.Broker
         {
             System.IO.FileInfo file = new System.IO.FileInfo("PMS.dll.config");
             if (file.Exists) {
-                log4net.Config.XmlConfigurator.Configure(file);
+                log4net.Config.XmlConfigurator.ConfigureAndWatch(file);
 			}
 
             if (log.IsInfoEnabled) {

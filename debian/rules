@@ -77,7 +77,7 @@ binary-arch: build install
 #	dh_makeshlibs
 	dh_installdeb
 	dh_shlibdeps
-	dh_makeclilibs -m 0.6.36 -l 0.6.37
+	dh_makeclilibs -m 0.6.37 -l 0.6.38
 	dh_clideps -d
 	dh_gencontrol
 	dh_md5sums

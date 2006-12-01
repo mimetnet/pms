@@ -28,3 +28,6 @@ ltmain.sh
 build-stamp
 configure-stamp
 build/libpms.pc
+config.sub
+debian/libpms
+debian/libpms.substvars
