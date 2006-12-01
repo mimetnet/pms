@@ -1,3 +1,9 @@
+libpms (0.6.37-2) unstable; urgency=low
+
+  * rewrote rules to follow standards
+
+ -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Fri,  1 Dec 2006 18:26:36 -0500
+
 libpms (0.6.37-1) unstable; urgency=low
 
   * Added a zombie killer to ensure connections don't stay around too long
