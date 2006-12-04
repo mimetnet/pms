@@ -31,3 +31,9 @@ build/libpms.pc
 config.sub
 debian/libpms
 debian/libpms.substvars
+PMS-*.tar.gz
+aclocal.m4
+config.log
+config.status
+build-arch-stamp
+missing
