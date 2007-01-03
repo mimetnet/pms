@@ -37,3 +37,4 @@ config.log
 config.status
 build-arch-stamp
 missing
+autom4te.cache

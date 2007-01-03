@@ -1,3 +1,9 @@
+libpms (0.6.37-3) unstable; urgency=low
+
+  * Removed lots of annoying log statements (zombie, checkin, checkout)
+
+ -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Wed,  3 Jan 2007 10:12:56 -0500
+
 libpms (0.6.37-2) unstable; urgency=low
 
   * rewrote rules to follow standards

@@ -89,11 +89,11 @@ namespace PMS.Collections.Pool
 
                     if (pool[x].Principal.Identity.Name == Thread.CurrentPrincipal.Identity.Name) {
 
-                        if (log.IsDebugEnabled) {
-                            log.DebugFormat("ManagedObjectPool.Borrow(OID={0} IDN={1})",
-                                            pool[x].Object.GetHashCode(),
-                                            Thread.CurrentPrincipal.Identity.Name);
-						}
+                        //if (log.IsDebugEnabled) {
+                            //log.DebugFormat("ManagedObjectPool.Borrow(OID={0} IDN={1})",
+                                            //pool[x].Object.GetHashCode(),
+                                            //Thread.CurrentPrincipal.Identity.Name);
+						//}
 
                         return pool[x].Checkout();
                     }
@@ -125,9 +125,9 @@ namespace PMS.Collections.Pool
 			lock (ilock) {
 				for (int x = 0; x < this.pool.Count ; x++) {
 					if (pool[x].LastUsed.AddMinutes(minutes) <= DateTime.Now) {
-						if (log.IsInfoEnabled) {
-							log.InfoFormat("ManagedObjectPool.ZombieMaster(OID={0} D={1}) CNT={2}", pool[x].Object.GetHashCode(), pool[x].LastUsed, pool.Count);
-						}
+						//if (log.IsInfoEnabled) {
+							//log.InfoFormat("ManagedObjectPool.ZombieMaster(OID={0} D={1}) CNT={2}", pool[x].Object.GetHashCode(), pool[x].LastUsed, pool.Count);
+						//}
 						CleanObject(ref pool[x].Object);
 						pool.RemoveAt(x);
 					}
@@ -147,11 +147,11 @@ namespace PMS.Collections.Pool
 
                     if (pool[x].Principal.Identity.Name == Thread.CurrentPrincipal.Identity.Name) {
 
-                        if (log.IsDebugEnabled) {
-                            log.DebugFormat("ManagedObjectPool.Return(OID={0} IDN={1})",
-                                            pool[x].Object.GetHashCode(),
-                                            Thread.CurrentPrincipal.Identity.Name);
-						}
+                        //if (log.IsDebugEnabled) {
+                            //log.DebugFormat("ManagedObjectPool.Return(OID={0} IDN={1})",
+                                            //pool[x].Object.GetHashCode(),
+                                            //Thread.CurrentPrincipal.Identity.Name);
+						//}
 
                         return true;
                     }

@@ -74,11 +74,8 @@ automake --add-missing --gnu $am_opt ||
 echo "Running autoconf ..."
 autoconf || { echo "**Error**: autoconf failed."; exit 1; }
 
-#conf_flags="--prefix=/opt/KonicaMinolta"
-conf_flags=""
-
 echo
-echo Run \`$srcdir/configure $conf_flags\` ...
+$srcdir/configure
 echo
 echo Then run \`make\' to compile $PKG_NAME
 echo
