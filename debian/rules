@@ -79,7 +79,7 @@ binary-common:
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
-	dh_makeclilibs -m 0.6.37 -l 0.6.38
+	dh_makeclilibs -m 0.6.38 -l 0.6.39
 
 # Build architecture dependant packages using the common target.
 binary-arch: build-arch install-arch

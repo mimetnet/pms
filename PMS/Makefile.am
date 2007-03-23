@@ -14,6 +14,7 @@ SOURCES = \
 	 ./PMS.Broker/PersistenceBrokerFactory.cs \
 	 ./PMS.Collections.Pool/ForeignObjectException.cs \
 	 ./PMS.Collections.Pool/IObjectPool.cs \
+	 ./PMS.Collections.Pool/ObjectPool.cs \
 	 ./PMS.Collections.Pool/ManagedObjectPool.cs \
 	 ./PMS.Collections.Pool/ObjectNotCheckedOutException.cs \
 	 ./PMS.Collections.Pool/ObjectNotInPoolException.cs \

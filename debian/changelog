@@ -1,3 +1,10 @@
+libpms (0.6.38-0) unstable; urgency=low
+
+  * Abstract most of PrincipalObjectPool into an abstract ObjectPool
+  * ManagedObjectPool now inherits from ObjectPool too (ZombieKiller)
+
+ -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Thu, 22 Mar 2007 19:06:13 -0400
+
 libpms (0.6.37-3) unstable; urgency=low
 
   * Removed lots of annoying log statements (zombie, checkin, checkout)

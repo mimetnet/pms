@@ -9,12 +9,12 @@ namespace PMS.Collections.Pool
         bool Return(object obj);
 
         bool Remove(object obj);
+
         void CleanObject(ref object obj);
 
         bool Open();
         void Close();
 
-        int Available { get; }
         int Count { get; }
         int Max { get; set; }
     }

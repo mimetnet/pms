@@ -8,7 +8,7 @@ namespace PMS.Collections.Pool
     /// <summary>
     /// ItemCollection Class
     /// </summary>
-    internal class ItemCollection : CollectionBase
+    public class ItemCollection : CollectionBase
     {
         ///<summary>
         /// Default constructor.
@@ -112,7 +112,7 @@ namespace PMS.Collections.Pool
 	/// <summary>
 	/// Wraps an object in the Pool
 	/// </summary>
-	internal class Item
+	public class Item
 	{
 		/// <summary>
 		/// Contains the element in the pool
@@ -128,6 +128,8 @@ namespace PMS.Collections.Pool
 		/// When was this last used ?
 		/// </summary>
 		public DateTime LastUsed = DateTime.Now;
+
+		public bool Available = true;
 
 		/// <summary>
 		/// Create Item to wrap obj (Available by default)
@@ -151,6 +153,7 @@ namespace PMS.Collections.Pool
 		public object Checkout()
 		{
 			LastUsed = DateTime.Now;
+			Available = false;
 			return this.Object;
 		}
 	} 

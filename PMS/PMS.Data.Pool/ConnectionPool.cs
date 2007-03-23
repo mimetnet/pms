@@ -9,24 +9,12 @@ namespace PMS.Data.Pool
 {
     internal sealed class ConnectionPool : PrincipalObjectPool
     {
-        public const Int32 DEFAULT_MAX = 30;
-        public const Int32 DEFAULT_MIN = 0;
         private String sConn;
 
         #region Constructors
 
         public ConnectionPool(Type type, string sConn) :
-            this(type, sConn, ConnectionPool.DEFAULT_MIN, ConnectionPool.DEFAULT_MAX)
-        {
-        }
-
-        public ConnectionPool(Type type, string sConn, int min) :
-            this(type, sConn, min, DEFAULT_MAX)
-        {
-        }
-
-        public ConnectionPool(Type type, string sConn, int min, int max) :
-            base(typeof(DbConnectionProxy), new object[]{type}, min, max, "Close")
+            base(typeof(DbConnectionProxy), new object[]{type}, "Close")
         {
             this.sConn = sConn;
         }

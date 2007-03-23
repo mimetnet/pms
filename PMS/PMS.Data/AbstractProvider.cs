@@ -34,7 +34,7 @@ namespace PMS.Data
 
         public virtual string PrepareSqlString(object value)
         {
-            return "'" + value.ToString().Replace("\'", "\\'") + "'";
+			return "'" + value.ToString().Replace("\\", "\\\\").Replace("'", "''") + "'";
         }
 
         public virtual string PrepareSqlBoolean(object value)
@@ -134,7 +134,7 @@ namespace PMS.Data
                 return GetTypeInit(dbType);
             
             if (dbType == "varchar" || dbType == "text") {
-                return Convert.ToString(obj).Replace("\'", "'");
+                return Convert.ToString(obj);
             } else if ((dbType == "boolean") || (dbType == "bool")) {
                 return Convert.ToBoolean(obj);
             } else if ((dbType == "int") || (dbType == "int4") || 
