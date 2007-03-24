@@ -31,21 +31,27 @@ namespace PMS.Collections.Pool
 
         #region Constructors
 		public ObjectPool(Type type, string sFree) :
-			this(type, null, MINIMUM, THRESHOLD, sFree)
+			this(type, null, MINIMUM, THRESHOLD, sFree, true)
 		{
 		}
         
+
         public ObjectPool(Type type, int min, int max, string sFree) :
-			this(type, null, min, max, sFree)
+			this(type, null, min, max, sFree, true)
         {
         }
 
-        public ObjectPool(Type type, object[] typeParams, string sFree) :
-			this(type, typeParams, MINIMUM, THRESHOLD, sFree)
+        public ObjectPool(Type type, int min, int max, string sFree, bool zombie) :
+			this(type, null, min, max, sFree, zombie)
 		{
 		}
 
-        public ObjectPool(Type type, object[] typeParams, int min, int max, string sFree)
+        public ObjectPool(Type type, object[] typeParams, string sFree) :
+			this(type, typeParams, MINIMUM, THRESHOLD, sFree, true)
+		{
+		}
+
+        public ObjectPool(Type type, object[] typeParams, int min, int max, string sFree, bool zombie)
         {
             this.type = type;
             this.min = min;
@@ -56,7 +62,7 @@ namespace PMS.Collections.Pool
 			this.ZombieHandler += new EventHandler(ZombieMaster);
 
 			this.zTimer = new System.Timers.Timer();
-			this.zTimer.Enabled = true;
+			this.zTimer.Enabled = zombie;
 			this.zTimer.Interval = 120000;
 			this.zTimer.AutoReset = true;
 			this.zTimer.Elapsed += new ElapsedEventHandler(ZombieMaster);
@@ -93,8 +99,10 @@ namespace PMS.Collections.Pool
 			return pool.Count;
         }
 
+		[MethodImpl(MethodImplOptions.Synchronized)]
         public abstract object Borrow();
 
+		[MethodImpl(MethodImplOptions.Synchronized)]
         public abstract bool Return(object obj);
 
 		[MethodImpl(MethodImplOptions.Synchronized)]
@@ -125,6 +133,7 @@ namespace PMS.Collections.Pool
             return true;
         }
 
+		[MethodImpl(MethodImplOptions.Synchronized)]
         public virtual void Close()
         {
             if (log.IsDebugEnabled)
@@ -137,6 +146,7 @@ namespace PMS.Collections.Pool
             pool.Clear();
         }
 
+		[MethodImpl(MethodImplOptions.Synchronized)]
         public virtual void CleanObject(ref Object obj)
         {
             Type objType = null;
@@ -159,16 +169,19 @@ namespace PMS.Collections.Pool
             }
         }
 
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		protected void ZombieMaster(object sender, EventArgs e)
 		{
 			ZombieKiller(30);
 		}
 
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		protected void ZombieMaster(object sender, ElapsedEventArgs e)
 		{
 			ZombieKiller(30);
 		}
 
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		protected void ZombieKiller(int minutes)
 		{
 			lock (ilock) {

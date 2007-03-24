@@ -1,3 +1,10 @@
+libpms (0.6.38-1) unstable; urgency=low
+
+  * Bug fix for ManagedObjectPool Borrow() to not exceed pool.Count
+  * Bug fix for ManagedObjectPool to NOT USE ZOMBIE MASTER ON POOL
+
+ -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Fri, 23 Mar 2007 20:04:07 -0400
+
 libpms (0.6.38-0) unstable; urgency=low
 
   * Abstract most of PrincipalObjectPool into an abstract ObjectPool

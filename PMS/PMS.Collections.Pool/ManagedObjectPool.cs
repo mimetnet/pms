@@ -12,7 +12,7 @@ namespace PMS.Collections.Pool
 		private int index = -1;
 
         public ManagedObjectPool(Type type, int min, int max, string sFree) :
-			base(type, min, max, sFree)
+			base(type, min, max, sFree, false)
         {
         }
 
