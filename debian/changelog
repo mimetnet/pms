@@ -1,3 +1,10 @@
+libpms (0.6.38-2) unstable; urgency=low
+
+  * Fixed decimal support
+  * Fixed reconnection ability for connections
+
+ -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Tue,  3 Apr 2007 16:59:11 -0400
+
 libpms (0.6.38-1) unstable; urgency=low
 
   * Bug fix for ManagedObjectPool Borrow() to not exceed pool.Count

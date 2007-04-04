@@ -19,7 +19,7 @@ namespace PMS.Data
                 return PrepareSqlBoolean(value);
             } else if (dbType.StartsWith("serial")) {
                 return PrepareSqlAutoIncrement(value);
-            } else if (dbType == "timestamp") {
+            } else if (dbType == "timestamp" || dbType == "timestampz") {
                 return PrepareSqlTimestamp(value);
             } else if (dbType == "date") {
                 return PrepareSqlDate(value);
@@ -92,10 +92,12 @@ namespace PMS.Data
                 return false;
             } else if ((type == "smallint") || (type == "int2")) {
                 return new Int16();
-            } else if ((type == "date") || (type == "timestamp")) {
+            } else if ((type == "date") || (type == "timestamp") || (type == "timestampz")) {
                 return new DateTime();
             } else if (type == "bit") {
                 return new BitArray(0);
+            } else if (type == "numeric") {
+                return new Decimal();
             } else {
                 return null;
             }
@@ -123,6 +125,8 @@ namespace PMS.Data
                 return System.Type.GetType("System.Boolean");
             } else if ((type == "date") || (type == "timestamp")) {
                 return System.Type.GetType("System.DateTime");
+            } else if ((type == "numeric")) {
+                return System.Type.GetType("System.Decimal");
             } else {
                 return System.Type.GetType("System.String");
             }
@@ -143,8 +147,10 @@ namespace PMS.Data
                 return Convert.ToInt32(obj);
             } else if ((dbType == "smallint") || (dbType == "int2")) {
                 return Convert.ToInt16(obj);
-            } else if ((dbType == "timestamp") || (dbType == "date")) {
+            } else if ((dbType == "timestamp") || (dbType == "date") || (dbType == "timestampz")) {
                 return Convert.ToDateTime(obj);
+            } else if ((dbType == "numeric")) {
+                return Convert.ToDecimal(obj);
             } else if (dbType == "bit" || dbType == "varbit") {
                 string strObj = obj as string;
                 BitArray bit = new BitArray(strObj.Length);
@@ -170,6 +176,8 @@ namespace PMS.Data
                 return Convert.ToInt16(obj);
             else if (type == typeof(bool))
                 return Convert.ToBoolean(obj);
+            else if (type == typeof(Decimal))
+                return Convert.ToDecimal(obj);
             else if (type.BaseType == typeof(Enum)) {
                 return Enum.Parse(type, obj.ToString());
             }

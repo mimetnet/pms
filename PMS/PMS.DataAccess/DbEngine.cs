@@ -69,9 +69,10 @@ namespace PMS.DataAccess
                 if (mobj.Exists) {
                     query.Criteria.Limit = 1;
                     cmd = dbManager.GetCommand(query.Select());
-                    reader = cmd.ExecuteReader();
-                    obj = mobj.Materialize(reader);
-                    result = new DbResult(((obj == null)? 0 : 1), query.Select());
+					if ((reader = cmd.ExecuteReader()) != null) {
+						obj = mobj.Materialize(reader);
+						result = new DbResult(((obj == null)? 0 : 1), query.Select());
+					}
                 } else if (log.IsErrorEnabled) {
                     log.Error("ExecuteSelectObject", new ClassNotFoundException(query.Type));
                 }
@@ -116,9 +117,10 @@ namespace PMS.DataAccess
                 mobj = new MetaObject(query.Type);
                 if (mobj.Exists) {
                     cmd = dbManager.GetCommand(query.Select());
-                    reader = cmd.ExecuteReader();
-                    list = mobj.MaterializeArray(reader);
-                    result = new DbResult(list.Length, query.Select());
+					if ((reader = cmd.ExecuteReader()) != null) {
+						list = mobj.MaterializeArray(reader);
+						result = new DbResult(list.Length, query.Select());
+					}
                 } else if (log.IsErrorEnabled) {
                     log.Error("ExecuteSelectObject", new ClassNotFoundException(query.Type));
                 }
@@ -160,9 +162,10 @@ namespace PMS.DataAccess
                 mobj = new MetaObject(query.Type);
                 if (mobj.Exists) {
                     cmd = dbManager.GetCommand(query.Select());
-                    reader = cmd.ExecuteReader();
-                    list = mobj.MaterializeList(reader);
-                    result = new DbResult(list.Count, query.Select());
+                    if ((reader = cmd.ExecuteReader()) != null) {
+						list = mobj.MaterializeList(reader);
+						result = new DbResult(list.Count, query.Select());
+					}
                 } else if (log.IsErrorEnabled) {
                     log.Error("ExecuteSelectObject", new ClassNotFoundException(query.Type));
                     result = new DbResult(new ClassNotFoundException(query.Type));
@@ -432,10 +435,10 @@ namespace PMS.DataAccess
             if (DbManagerMode.Single == mode) {
                 if (log.IsDebugEnabled)
                     log.Debug("DBEngine.Start(" + mode + ")");
-                dbManager = new SingleDbManager();
-                dbManager.Start();
 
-                return true;
+                dbManager = new SingleDbManager();
+
+                return dbManager.Start();
             }
 
             throw new ApplicationException("DbManagerMode Not Currently Support: " + mode);

@@ -377,8 +377,7 @@ namespace PMS.Broker
         public bool Open()
         {
             if (IsLoaded == true && IsOpen == false) {
-                DbEngine.Start(RepositoryManager.Repository.DbManagerMode);
-                isOpen = true;
+                isOpen = DbEngine.Start(RepositoryManager.Repository.DbManagerMode);
             }
 
             return IsOpen;

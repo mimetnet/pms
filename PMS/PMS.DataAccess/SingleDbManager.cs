@@ -9,6 +9,7 @@ namespace PMS.DataAccess
 {
     internal sealed class SingleDbManager : MarshalByRefObject, IDbManager
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private ConnectionPool pool = null;
         private bool isInit = false;
 
@@ -59,23 +60,31 @@ namespace PMS.DataAccess
         /// Pull default connection information from repository and initialize
         /// the database pool.
         /// </summary>
-        public void Start()
+        public bool Start()
         {
             if (isInit)
                 Stop();
 
             Connection conn = RepositoryManager.DefaultConnection;
             pool = new ConnectionPool(conn.Type, conn.Value);
-            isInit = pool.Open();
+
+            if ((isInit = pool.Open()))
+				return CanSendHello();
+
+			return false;
         }
 
-		public void Start(Type type, string connectionString)
+		public bool Start(Type type, string connectionString)
 		{
 			if (isInit)
 				Stop();
 
 			pool = new ConnectionPool(type, connectionString);
-			isInit = pool.Open();
+
+            if ((isInit = pool.Open()))
+				return CanSendHello();
+
+			return false;
 		}
 
         /// <summary>
@@ -88,6 +97,18 @@ namespace PMS.DataAccess
 
             isInit = false;
         } 
+
+		private bool CanSendHello()
+		{
+			try {
+				pool.ReturnConnection(pool.GetConnection());
+			} catch (Exception e) {
+				log.Error("CanSendHello: " + e.Message);
+				return false;
+			}
+
+			return true;
+		}
         #endregion
 
         public bool IsInitialized {

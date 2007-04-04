@@ -87,7 +87,7 @@ namespace PMS.Query
         public virtual string Delete()
         {
             StringBuilder sql = new StringBuilder("DELETE FROM ");
-            sql.Append(this.Table);
+            sql.Append(GetTable());
             sql.Append(this.Condition);
 
             return sql.ToString();
@@ -98,7 +98,7 @@ namespace PMS.Query
         public virtual string Insert()
         {
             StringBuilder sql = new StringBuilder("INSERT INTO ");
-            sql.Append(this.Table);
+            sql.Append(GetTable());
             sql.Append(this.InsertClause);
             
             return sql.ToString();
@@ -110,7 +110,7 @@ namespace PMS.Query
         public virtual string Update()
         {
             StringBuilder sql = new StringBuilder("UPDATE ");
-            sql.Append(this.Table);
+            sql.Append(GetTable());
             sql.Append(this.UpdateClause);
             sql.Append(this.Condition);
 
@@ -124,7 +124,7 @@ namespace PMS.Query
             StringBuilder sql = new StringBuilder("SELECT ");
             sql.Append(this.Selection);
             sql.Append(" FROM ");
-            sql.Append(this.Table);
+            sql.Append(GetTable());
             sql.Append(this.Condition);
             sql.Append(this.OrderBy);
             sql.Append(this.Limit);
@@ -137,11 +137,16 @@ namespace PMS.Query
         public virtual string Count()
         {
             StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ");
-            sql.Append(this.Table);
+            sql.Append(GetTable());
             sql.Append(this.Condition);
 
             return sql.ToString();
         }
+
+		private string GetTable()
+		{
+			return (metaObject.Table[0] != 'o' && metaObject.Table != "order")? metaObject.Table : ("\"" + metaObject.Table + "\"");
+		}
 
         public virtual bool IsValid {
             get { 

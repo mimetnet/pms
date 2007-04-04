@@ -8,6 +8,7 @@ namespace PMS.Data
 
     public sealed class DbCommandProxy : Component, IDbCommand
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         object hold = new object();
         IDbCommand cmd = null;
         internal event DbCommandExecuted Executed;
@@ -77,7 +78,18 @@ namespace PMS.Data
             if (this.Executed != null)
                 this.Executed(this.cmd.Connection);
 
-            return this.cmd.ExecuteNonQuery();
+			int x = 0;
+
+			lock (hold) {
+				try {
+					x = this.cmd.ExecuteNonQuery();
+				} catch (NotSupportedException) {
+					if (this.CanReopenConnection())
+						x = this.cmd.ExecuteNonQuery();
+				}
+			}
+
+			return x;
         }
 
         public IDataReader ExecuteReader(CommandBehavior behavior)
@@ -88,7 +100,12 @@ namespace PMS.Data
                 this.Executed(this.cmd.Connection);
 
             lock (hold) {
-                reader = this.cmd.ExecuteReader(behavior);
+				try {
+					reader = this.cmd.ExecuteReader(behavior);
+				} catch (NotSupportedException) {
+					if (this.CanReopenConnection())
+						reader = this.cmd.ExecuteReader();
+				}
             }
 
             return reader;
@@ -102,13 +119,18 @@ namespace PMS.Data
                 this.Executed(this.cmd.Connection);
 
             lock (hold) {
-                reader = this.cmd.ExecuteReader();
+				try {
+					reader = this.cmd.ExecuteReader();
+				} catch (NotSupportedException) {
+					if (this.CanReopenConnection())
+						reader = this.cmd.ExecuteReader();
+				}
             }
 
             return reader;
         }
 
-        public object ExecuteScalar()
+		public object ExecuteScalar()
         {
             Object obj = null;
 
@@ -116,7 +138,12 @@ namespace PMS.Data
                 this.Executed(this.cmd.Connection);
 
             lock (hold) {
-                obj = this.cmd.ExecuteScalar();
+				try {
+					obj = this.cmd.ExecuteScalar();
+				} catch (NotSupportedException) {
+					if (this.CanReopenConnection())
+						obj = this.cmd.ExecuteScalar();
+				}
             }
 
             return obj;
@@ -164,5 +191,26 @@ namespace PMS.Data
         }
 
         #endregion
-    }
+
+		private bool CanReopenConnection()
+		{
+			try {
+				this.cmd.Connection.Close();
+			} catch (Exception) {
+				log.Error("CanReopenConnection: Failed to Close in order to reopen it");
+				return false;
+			}
+
+			try {
+				this.cmd.Connection.Open();
+			} catch (Exception) {
+				log.Error("CanReopenConnection: Failed to Open connection, it appears dead!");
+				return false;
+			}
+
+			log.Info("Connection was lost but is once again found");
+
+			return true;
+		}
+	}
 }
