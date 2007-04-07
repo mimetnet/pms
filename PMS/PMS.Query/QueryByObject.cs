@@ -13,15 +13,15 @@ namespace PMS.Query
     /// </summary>
     public class QueryByObject : AbstractQuery
     {
-        internal QueryByObject()
-        {
-        }
+		//internal QueryByObject()
+		//{
+		//}
 
         /// <summary>
         /// Construct with object
         /// </summary>
         /// <param name="obj">Object used to create SQL from</param>
-        public QueryByObject(Object obj) : this (obj, null)
+        public QueryByObject(Object obj) : base (obj, null)
         {
         }
 
@@ -30,9 +30,8 @@ namespace PMS.Query
         /// </summary>
         /// <param name="obj">Object used to create SQL from</param>
         /// <param name="crit">Criteria to append object properties with</param>
-        public QueryByObject(Object obj, Criteria crit)
+        public QueryByObject(Object obj, Criteria crit) : base(obj, crit)
         {
-              this.LoadMetaObject(obj, crit);
         }
 
         #region Overrides
@@ -73,33 +72,32 @@ namespace PMS.Query
         /// </summary>
         public override string InsertClause
         {
-            get
-            {
+            get {
                 bool keyClause = false;
                 bool clause = false;
                 StringBuilder sql1 = new StringBuilder();
                 StringBuilder sql2 = new StringBuilder();
 
                 for (int i = 0; i < this.keys.Count; i++) {
-                    if (metaObject.IsFieldSet(this.keys[i])) {
+                    if (IsFieldSet(this.keys[i])) {
                         if (i > 0 && keyClause) {
                             sql1.Append(", ");
                             sql2.Append(", ");
                         }
                         sql1.Append(this.keys[i].Column);
-                        sql2.Append(metaObject.GetSqlValue(this.keys[i]));
+                        sql2.Append(GetSqlValue(this.keys[i]));
                         keyClause = true;
                     }
                 }
 
                 for (int i = 0; i < this.columns.Count; i++) {
-                    if (metaObject.IsFieldSet(columns[i])) {
+                    if (IsFieldSet(columns[i])) {
                         if (keyClause == true || i > 0 && clause) {
                             sql1.Append(", ");
                             sql2.Append(", ");
                         }
                         sql1.Append(columns[i].Column);
-                        sql2.Append(metaObject.GetSqlValue(columns[i]));
+                        sql2.Append(GetSqlValue(columns[i]));
                         clause = true;
                     }
                 }
@@ -114,8 +112,7 @@ namespace PMS.Query
         /// </summary>
         public override string UpdateClause
         {
-            get
-            {
+            get {
                 StringBuilder sql = new StringBuilder(" SET ");
 
                 BuildList(this.columns, ", ", ref sql);
@@ -129,8 +126,7 @@ namespace PMS.Query
         /// </summary>
         public override string OrderBy
         {
-            get
-            {
+            get {
                 if (criteria.OrderCount > 0)
                     return criteria.GetOrderByClause();
 
@@ -144,14 +140,14 @@ namespace PMS.Query
             bool result = false;
 
             for (int i = 0; i < list.Count; i++) {
-                if (metaObject.IsFieldSet(list[i])) {
+                if (IsFieldSet(list[i])) {
                     if (i > 0 && result) {
                         sql.Append(seperator);
                     }
 
                     sql.Append(list[i].Column);
                     sql.Append("=");
-                    sql.Append(metaObject.GetSqlValue(list[i]));
+                    sql.Append(GetSqlValue(list[i]));
                     result = true;
                 }
             }

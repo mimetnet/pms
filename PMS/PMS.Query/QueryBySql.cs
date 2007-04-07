@@ -13,7 +13,6 @@ namespace PMS.Query
     {
         private Type mtype;
         private String sql;
-        private Object obj;
 
         /// <summary>
         /// Construct with raw SQL and Type

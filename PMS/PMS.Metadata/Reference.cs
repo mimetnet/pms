@@ -8,6 +8,7 @@ using PMS.Metadata;
 namespace PMS.Metadata
 {
     [XmlRoot("reference")]
+	[Serializable]
     public sealed class Reference : IXmlSerializable
     {
         public string Field;

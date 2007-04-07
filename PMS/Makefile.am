@@ -9,6 +9,7 @@ REFERENCES =  \
 	-pkg:printgroove-liblog4net2.0
 
 SOURCES = \
+	 ./PMS.IO/FileLock.cs \
 	 ./PMS.Broker/IPersistenceBroker.cs \
 	 ./PMS.Broker/PersistenceBroker.cs \
 	 ./PMS.Broker/PersistenceBrokerFactory.cs \
@@ -74,10 +75,8 @@ SOURCES = \
 	 ./PMS.Query/OrClause.cs \
 	 ./PMS.Query/QueryByCriteria.cs \
 	 ./PMS.Query/QueryByObject.cs \
-	 ./PMS.Query/QueryByObjectDiff.cs \
 	 ./PMS.Query/QueryBySql.cs \
 	 ./PMS.Query/QueryByType.cs \
-	 ./PMS.Query/QueryFactory.cs \
 	 ./PMS.Query/RangeClause.cs \
 	 ./PMS.Query/SqlCommand.cs \
 	 ./PMS.Query/ValueClause.cs \

@@ -17,10 +17,9 @@ namespace PMS.Query
         /// Construct with criteria
         /// </summary>
         /// <param name="criteria">Criteria to use for SQL</param>
-        public QueryByCriteria(Criteria criteria)
+        public QueryByCriteria(Criteria criteria) : base(criteria.cdesc)
         {
             this.criteria = criteria;
-            this.metaObject = criteria.metaObject;
         }
 
         /// <summary>

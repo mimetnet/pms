@@ -9,6 +9,7 @@ using PMS.Metadata;
 namespace PMS.Metadata
 {
     [XmlRoot("class")]
+	[Serializable]
     public sealed class Class : IXmlSerializable
     {
         public Type Type;
@@ -61,12 +62,26 @@ namespace PMS.Metadata
             return null;
         }
 
-        public Field this[int index] {
+		public object GetValue(Field field, Object obj)
+		{
+			//FieldInfo[] _fields = type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+
+			FieldInfo finfo = Type.GetField(field.Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (finfo != null) {
+				return finfo.GetValue(obj);
+			}
+
+			return null;
+		}
+
+        public Field this[int index] 
+		{
             get { return Fields[index]; }
             set { Fields[index] = value; }
         }
 
-        public Field this[string fieldName] {
+        public Field this[string fieldName] 
+		{
             get { return Fields[fieldName]; }
         }
 

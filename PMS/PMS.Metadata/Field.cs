@@ -5,6 +5,7 @@ using System.Xml.Serialization;
 namespace PMS.Metadata
 {
     [XmlRoot("field")]
+	[Serializable]
     public sealed class Field : IXmlSerializable
     {
         private static readonly log4net.ILog log =
@@ -13,6 +14,7 @@ namespace PMS.Metadata
         public string Name;
         public string Column;
         public string DbType;
+        public bool Unique = false;
         public bool PrimaryKey = false;
         public bool IgnoreDefault = false;
         public Reference Reference = null;
@@ -154,6 +156,7 @@ namespace PMS.Metadata
             this.Column = reader.GetAttribute("column");
             this.DbType = reader.GetAttribute("db_type");
             this.PrimaryKey = Convert.ToBoolean(reader.GetAttribute("primarykey"));
+            this.Unique = Convert.ToBoolean(reader.GetAttribute("unique"));
             this.IgnoreDefault = Convert.ToBoolean(reader.GetAttribute("ignore_default"));
 
             if (reader.IsEmptyElement == false) {
@@ -171,13 +174,14 @@ namespace PMS.Metadata
             writer.WriteAttributeString("column", this.Column);
             writer.WriteAttributeString("db_type", this.DbType);
 
-            if (this.IgnoreDefault)
-                writer.WriteAttributeString("ignore_default", 
-                                            this.IgnoreDefault.ToString().ToLower());
+            if (IgnoreDefault)
+                writer.WriteAttributeString("ignore_default", "true");
         
-            if (this.PrimaryKey)
-                writer.WriteAttributeString("primarykey", 
-                                            this.PrimaryKey.ToString().ToLower());
+            if (PrimaryKey)
+                writer.WriteAttributeString("primarykey", "true");
+
+            if (Unique)
+                writer.WriteAttributeString("unique", "true");
 
             if (this.Reference != null) {
                 XmlSerializer xml = new XmlSerializer(typeof(Reference));

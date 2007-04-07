@@ -1,3 +1,11 @@
+libpms (0.6.38-6) unstable; urgency=low
+
+  * Rewrote storage of Class objects in memory for Type comparision
+  * RepositoryManager now stores xml files in /etc/libpms/[package]
+  * Untangled MetaObject a bit and it's interaction with AbstractQuery
+
+ -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Sat,  7 Apr 2007 12:01:39 -0400
+
 libpms (0.6.38-5) unstable; urgency=low
 
   * Can't forget the .pc

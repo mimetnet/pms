@@ -1,7 +1,11 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
+
+using PMS.IO;
 
 namespace PMS.Metadata
 {
@@ -15,6 +19,8 @@ namespace PMS.Metadata
         private static Connection cConn = null;
         private static bool isLoaded = false;
         #endregion
+
+		public static string Package = String.Empty;
 
         #region Properties
         public static Repository Repository
@@ -32,7 +38,10 @@ namespace PMS.Metadata
                         return conn;
                 }
 
-                return (Connection)Repository.Connections[0];
+				if (Repository.Connections.Count > 0)
+					return Repository.Connections[0];
+
+				return null;
             }
             set
             {
@@ -60,16 +69,26 @@ namespace PMS.Metadata
         #region Methods
         public static Class GetClass(Type type)
         {
-            foreach (Class cdesc in Repository.Classes) {
-                if (cdesc.Type == type) {
-                    return cdesc;
-                }
-            }
+			Class klass = Repository.Classes[type];
 
-            if (log.IsErrorEnabled)
-                log.Error("Type '" + type.FullName + ", " + type.Assembly + "' Not Found in Repository");
+			if (klass == null) {
+				if (Load(type)) {
+					return GetClass(type);
+				} else {
+					log.Error("Type '" + type.FullName + ", " + type.Assembly + "' Not Found in Repository");
+				}
+			}
 
-            return null;
+			//Console.WriteLine(new System.Diagnostics.StackTrace());
+
+			/*
+			log.Info("Type asked: " + type);
+			log.Info("Class gotten: " + klass.Table);
+			log.Info("Class gotten: " + klass.Type);
+			log.Info("-");
+			*/
+
+			return klass;
         }
 
         public static Type GetClassListType(Type type)
@@ -78,9 +97,6 @@ namespace PMS.Metadata
 
             if (cdesc != null)
                 return cdesc.ListType;
-
-            if (log.IsErrorEnabled)
-                log.Error("ListType '" + type + "' Not Found in Repository");
 
             return null;
         }
@@ -111,9 +127,83 @@ namespace PMS.Metadata
             return true;
         }
 
+		public static bool Save(string package)
+		{
+			return Save(repository, package);
+		}
+
+		public static bool Save(Repository repo, string package)
+		{
+			DirectoryInfo dir = new DirectoryInfo(GetPath(package));
+
+			if (dir.Exists == false) {
+				dir.Create();
+			}
+
+			String path = null;
+			FileStream fs = null;
+			XmlSerializer xml = null;
+
+			xml = new XmlSerializer(typeof(Class));
+			foreach (Class klass in repo.Classes) {
+				path = Path.Combine(dir.FullName, (klass.Type.FullName + ".pmc"));
+				fs = new FileStream(path, FileMode.Create);
+				
+				try {
+					xml.Serialize(fs, klass);
+				} catch (Exception se) {
+					log.Error("Save ", se);
+				} finally {
+					fs.Close();
+				}
+			}
+
+			xml = new XmlSerializer(typeof(Connection));
+			foreach (Connection conn in repo.Connections) {
+				path = Path.Combine(dir.FullName, (conn.Id + ".pmx"));
+				fs = new FileStream(path, FileMode.Create);
+
+				try {
+					xml.Serialize(fs, conn);
+				} catch (Exception se2) {
+					log.Error("Save ", se2);
+				} finally {
+					fs.Close();
+				}
+			}
+
+			Package = package;
+
+			return true;
+		}
+
         public static bool Load(string file)
         {
-            return Load(new FileInfo(Path.GetFullPath(file)));
+			FileInfo f = new FileInfo(Path.GetFullPath(file));
+
+			if (f.Exists) {
+				return Load(f);
+			}
+
+			DirectoryInfo dir = new DirectoryInfo(GetPath(file));
+			if (!dir.Exists) {
+				return false;
+			}
+
+			Connection conn = null;
+			XmlSerializer xml = null;
+
+			xml = new XmlSerializer(typeof(Connection));
+			foreach (FileInfo pmsFile in dir.GetFiles("*.pmx")) {
+				conn = (Connection)xml.Deserialize(pmsFile.OpenRead());
+				if (conn != null) {
+					repository.Connections.Add(conn);
+				}
+			}
+
+			Package = file;
+
+			return (isLoaded = true);
         }
 
         public static bool Load(FileInfo file)
@@ -121,7 +211,6 @@ namespace PMS.Metadata
             try {
                 using (FileStream fs = file.OpenRead()) {
                     repository += (Repository)serializer.Deserialize(fs);
-
                     fs.Close();
                     isLoaded = true;
                 }
@@ -133,19 +222,59 @@ namespace PMS.Metadata
                     log.Error("Unkown failure", e);
             }
 
-            return IsLoaded;
+            return isLoaded;
         }
+
+		public static bool Load(Type type)
+		{
+			Class klass = null;
+			XmlSerializer xml = new XmlSerializer(typeof(Class));
+			FileInfo f = new FileInfo(Path.Combine(GetPath(Package), type.FullName + ".pmc"));
+
+			if (f.Exists == false) {
+				log.Error("Load Does not exist: " + f);
+				return false;
+			}
+
+			try {
+				using (FileLock flock = new FileLock(f.FullName)) {
+					if (flock.AcquireWriteLock()) {
+						klass = (Class) xml.Deserialize(new FileStream(f.FullName, FileMode.Open, FileAccess.Read, FileShare.Read));
+						if (klass != null && klass.Type != null) {
+							repository.Classes.Add(klass);
+							log.Info("Load: " + klass.Type.Name);
+							return true;
+						}
+					}
+				}
+			} catch (Exception e) {
+				log.Error("Load(Type): ", e);
+			}
+
+			log.Info("LFAILURE: " + klass.Type.Name);
+			return false;
+		}
 
         public static void Close()
         {
-            if (isLoaded) {
-                repository = null;
-            }
+			isLoaded = false;
+			repository = new Repository();
         }
 
         public static bool IsLoaded {
             get { return isLoaded; }
-        } 
+        }
+
+		private static string GetPath()
+		{
+			return (Environment.OSVersion.Platform == PlatformID.Unix) ?
+				("/etc/libpms") : ("c:\\Program Files\\Common Files\\PMS");
+		}
+
+		private static string GetPath(string package)
+		{
+			return Path.Combine(GetPath(), package);
+		}
         #endregion
     }
 }

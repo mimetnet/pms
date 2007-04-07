@@ -3,6 +3,7 @@ using System.Collections;
 using System.Data;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace PMS.Metadata
 {
@@ -10,12 +11,12 @@ namespace PMS.Metadata
     /// ClassCollection Class
     /// </summary>
     [XmlRoot("classes")]
-    public class ClassCollection : CollectionBase, IXmlSerializable
+	public class ClassCollection : ICollection<Class>, IList<Class>, IEnumerable<Class>, IXmlSerializable
     {
-        /*
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger("PMS.Metadata.ClassCollection");
-        */
+
+		private SortedList<Type, Class> list = new SortedList<Type, Class>(new TypeComparer());
 
         ///<summary>
         /// Default constructor.
@@ -24,89 +25,20 @@ namespace PMS.Metadata
         {
         }
 
-        #region CollectionBase Members
-        ///<summary>
-        /// The zero-based index of the element to get or set.
-        ///</summary>
-        public Class this[int index]
-        {
-            get { return (Class)this.List[index]; }
-            set { this.List[index] = value; }
-        }
+		public Class this[Type type]
+		{
+			get {
+				Class klass = null;
 
-        ///<summary>
-        /// Gets the number of elements contained in the ClassCollection.
-        ///</summary>
-        public new int Count
-        {
-            get { return this.List.Count; }
-        }
+				if (this.list.TryGetValue(type, out klass))
+					return klass;
 
-        ///<summary>
-        /// Removes all items from the ClassCollection.
-        ///</summary>
-        public new void Clear()
-        {
-            this.List.Clear();
-        }
-
-        ///<summary>
-        /// Adds an item to the ClassCollection.
-        ///</summary>
-        public void Add(Class value)
-        {
-            this.List.Add(value);
-        }
-
-        ///<summary>
-        /// Removes the first occurrence of a specific object from the ClassCollection.
-        ///</summary>
-        public void Remove(Class value)
-        {
-            this.List.Remove(value);
-        }
-
-        ///<summary>
-        /// Removes the Class item at the specified index.
-        ///</summary>
-        public new void RemoveAt(int index)
-        {
-            this.List.RemoveAt(index);
-        }
-
-        ///<summary>
-        /// Inserts an item to the ClassCollection at the specified index.
-        ///</summary>
-        public void Insert(int index, Class value)
-        {
-            this.List.Insert(index, value);
-        }
-
-        ///<summary>
-        /// Determines the index of a specific item in the ClassCollection.
-        ///</summary>
-        public int IndexOf(Class value)
-        {
-            return this.List.IndexOf(value);
-        }
-
-        ///<summary>
-        /// Determines whether the ClassCollection contains a specific value.
-        ///</summary>
-        public bool Contains(Class value)
-        {
-            return this.List.Contains(value);
-        }
-
-        ///<summary>
-        /// Copies elements of the ClassCollection to a System.Array, 
-        /// starting at a particular System.Array index.
-        ///</summary>
-        public void CopyTo(Array array, int index)
-        {
-            this.List.CopyTo(array, index);
-        } 
-        #endregion
+				return null;
+			}
+			set {
+				throw new NotSupportedException();
+			}
+		}
 
         #region IXmlSerializable Members
 
@@ -125,13 +57,17 @@ namespace PMS.Metadata
 
                 if (reader.LocalName == "class") {
                     try {
-                        if ((klass = (Class)xml.Deserialize(reader)) != null)
-                            this.List.Add(klass);
+                        if ((klass = (Class)xml.Deserialize(reader)) != null) {
+							if (klass.Type == null) {
+								log.WarnFormat("Class.table {0}'s Type failed to load", klass.Table);
+							} else {
+								this.list.Add(klass.Type, klass);
+							}
+						}
                     } catch (Exception) {}
-                }
-
-                if (reader.LocalName == "classes")
-                    return;
+                } else if (reader.LocalName == "classes") {
+                    break;
+				}
             }
         }
 
@@ -139,11 +75,128 @@ namespace PMS.Metadata
         {
             XmlSerializer xml = new XmlSerializer(typeof(Class));
 
-            foreach (Class c in this.List)
-                xml.Serialize(writer, c);
+            foreach (KeyValuePair<Type, Class> kv in this.list)
+                xml.Serialize(writer, kv.Value);
         }
 
         #endregion
-    }
- 
+
+		#region ICollection<Class> Members
+
+		public void Add(Class item)
+		{
+			if (this.list.ContainsKey(item.Type) == false)
+				this.list.Add(item.Type, item);
+		}
+
+		public void Clear()
+		{
+			this.list.Clear();
+		}
+
+		public bool Contains(Class item)
+		{
+			return this.list.ContainsKey(item.Type);
+		}
+
+		public void CopyTo(Class[] array, int arrayIndex)
+		{
+			throw new Exception("The method or operation is not implemented.");
+		}
+
+		public int Count
+		{
+			get { return this.list.Count; }
+		}
+
+		public bool IsReadOnly
+		{
+			get { return false; }
+		}
+
+		public bool Remove(Class item)
+		{
+			return this.list.Remove(item.Type);
+		}
+
+		#endregion
+
+		#region IEnumerable<Class> Members
+
+		public IEnumerator<Class> GetEnumerator()
+		{
+			foreach (KeyValuePair<Type, Class> kv in this.list) {
+				yield return kv.Value;
+			}
+		}
+
+		#endregion
+
+		#region IEnumerable Members
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			foreach (KeyValuePair<Type, Class> kv in this.list) {
+				yield return kv.Value;
+			}
+		}
+
+		#endregion
+
+		#region IList<Class> Members
+
+		public int IndexOf(Class item)
+		{
+			return this.list.IndexOfKey(item.Type);
+		}
+
+		public void Insert(int index, Class item)
+		{
+			throw new NotSupportedException();
+		}
+
+		public void RemoveAt(int index)
+		{
+			this.list.RemoveAt(index);
+		}
+
+		public Class this[int index]
+		{
+			get
+			{
+				return this.list.Values[index];
+			}
+			set
+			{
+				Class tmp = this.list.Values[index];
+				if (tmp != null) {
+					throw new IndexOutOfRangeException("Index retrieved no Class, this can be used for updates, not insertions!");
+				}
+
+				if (tmp.Type != value.Type) {
+					throw new Exception("Class.Type must equal value.Type in order to update");
+				}
+
+				this.list[value.Type] = value;
+			}
+		}
+
+		#endregion
+
+		class TypeComparer : IComparer<Type>
+		{
+			#region IComparer<Type> Members
+
+			public int Compare(Type x, Type y)
+			{
+				if (x == null || y == null) {
+					throw new NullReferenceException();
+				}
+
+				return x.ToString().CompareTo(y.ToString());
+			}
+
+			#endregion
+		}
+	}
 }

@@ -10,6 +10,7 @@ namespace PMS.Metadata
     /// FieldCollection Class
     /// </summary>
     [XmlRoot("fields")]
+	[Serializable]
     public class FieldCollection : CollectionBase, IXmlSerializable
     {
         #region CollectionBase Members

@@ -38,6 +38,8 @@ config.status
 build-arch-stamp
 missing
 autom4te.cache
+PMS.Config/pms-config.exe
 PMS/PMS.dll.mdb
 debian/tmp
 debian/libpms-dbg
+files

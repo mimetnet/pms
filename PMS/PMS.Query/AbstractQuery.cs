@@ -1,34 +1,94 @@
 using System;
 using System.Text;
 
+using PMS.Data;
 using PMS.Metadata;
 
 namespace PMS.Query
 {
-    public abstract class AbstractQuery : MarshalByRefObject, IQuery
+    public abstract class AbstractQuery : IQuery
     {
-        internal MetaObject metaObject = null;
+		protected static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Query.AQuery");
+
         protected SqlCommand command;
         protected Criteria criteria = null;
-        protected FieldCollection columns;
+		protected FieldCollection columns;
         protected FieldCollection keys;
         protected string _selection = "*";
-        protected Exception vExe = null;
+		protected Object obj = null;
+		protected Class cdesc = null;
+		protected IProvider provider = null;
 
-        public void LoadMetaObject(object obj)
+		protected AbstractQuery()
+		{
+			this.keys = new FieldCollection();
+			this.columns = new FieldCollection();
+
+			if (this.provider == null)
+				this.provider = ProviderFactory.Factory(RepositoryManager.CurrentConnection.Type);
+		}
+
+		protected AbstractQuery(Class classDescription)
+		{
+			this.cdesc = classDescription;
+		}
+
+		protected AbstractQuery(object obj)
+			: this(obj, null)
         {
-            this.LoadMetaObject(obj, null);
         }
 
-        public void LoadMetaObject(object obj, Criteria crit)
+		protected AbstractQuery(object obj, Criteria crit) : this()
         {
-            this.metaObject = new MetaObject(obj);
-            if (this.metaObject.Exists) {
-                this.criteria = (crit == null) ? new Criteria(obj.GetType()) : crit;
-                this.columns = metaObject.Columns;
-                this.keys = metaObject.PrimaryKeys;
-            }
+			this.obj = obj;
+			this.cdesc = RepositoryManager.GetClass(obj.GetType());
+
+			if (this.cdesc == null)
+				throw new ClassNotFoundException(obj.GetType());
+
+			foreach (Field field in this.cdesc.Fields) {
+				if (!field.PrimaryKey)
+					this.columns.Add(field);
+				else
+					this.keys.Add(field);
+			}
+
+			this.criteria = (crit == null) ? new Criteria(obj.GetType()) : crit;
         }
+
+		protected string GetSqlValue(Field field)
+		{
+			return provider.PrepareSqlValue(field.DbType, cdesc.GetValue(field, this.obj));
+		}
+
+		protected bool IsFieldSet(Field field)
+		{
+			return IsFieldSet(field, cdesc.GetValue(field, this.obj));
+		}
+
+		protected bool IsFieldSet(Field field, object value)
+		{
+			object init = null;
+			//Console.WriteLine("   Column: '{0}'", field.Column);
+			//Console.WriteLine("    Value: '{0}'", value);
+
+			if (value != null) {
+				init = provider.GetTypeInit(field.DbType);
+				//Console.WriteLine("   DbType: " + field.DbType);
+				//Console.WriteLine("  Default: '{0}'", init);
+				//Console.WriteLine("   Ignore: " + field.IgnoreDefault);
+
+				if (init == null) {
+					//Console.WriteLine("IsIgnored: " + init.Equals(value));
+					log.Error("IsFieldSet: Type(" + field.DbType + ") return null");
+				} 
+				//Console.WriteLine();
+
+				return !(init != null && field.IgnoreDefault && init.Equals(value));
+			}
+
+			return false;
+		}
 
         public SqlCommand Command {
             get { return command; }
@@ -41,11 +101,11 @@ namespace PMS.Query
         }
 
         public virtual string Table {
-            get { return metaObject.Table; }
+            get { return cdesc.Table; }
         }
 
         public virtual Type Type {
-            get { return metaObject.Type; }
+            get { return cdesc.Type; }
         }
 
         public virtual string Limit {
@@ -145,24 +205,8 @@ namespace PMS.Query
 
 		private string GetTable()
 		{
-			return (metaObject.Table[0] != 'o' && metaObject.Table != "order")? metaObject.Table : ("\"" + metaObject.Table + "\"");
+			return (cdesc.Table[0] != 'o' && cdesc.Table != "order")? cdesc.Table : ("\"" + cdesc.Table + "\"");
 		}
-
-        public virtual bool IsValid {
-            get { 
-                bool exists = metaObject.Exists;
-
-                if (!exists) {
-                    this.vExe = new ClassNotFoundException(this.Type);
-                }
-
-                return exists;
-            }
-        }
-
-        public virtual Exception ValidationException {
-            get { return vExe; }
-        }
 
         public override string ToString()
         {

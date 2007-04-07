@@ -10,43 +10,41 @@ namespace PMS.Query
     [Serializable]
     public sealed class Criteria
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog log = 
+			log4net.LogManager.GetLogger("PMS.Query.Criteria");
         private ArrayList clause = null;
         private ArrayList order = null;
-        private int limit = -1;
+		private int limit = -1;
         private uint offset = 0;
 
-        internal MetaObject metaObject = null;
-
-        /// <summary>
-        /// Instance criteria object based on type
-        /// </summary>
-        /// <param name="type">Type of object to perform SQL on</param>
+		internal IProvider provider = null;
+		internal Class cdesc = null;
+		
         public Criteria(Type type)
         {
-            clause     = new ArrayList();
-            order      = new ArrayList();
-            metaObject = new MetaObject(type);
+            clause = new ArrayList();
+            order = new ArrayList();
+			cdesc = RepositoryManager.GetClass(type);
+			provider = ProviderFactory.Factory(RepositoryManager.CurrentConnection.Type);
         }
 
         private string PrepareValue(string field, object value)
         {
-            string dbType;
-            FieldCollection fs = RepositoryManager.GetClass(metaObject.Type).Fields;
-
-            for (int i = 0; i < fs.Count; i++) {
-                if (field == fs[i].Name || field == fs[i].Column) {
-                    dbType = fs[i].DbType;
-                    if (dbType.StartsWith("serial"))
-                        dbType = dbType.Replace("serial", "int");
-                    return metaObject.Provider.PrepareSqlValue(dbType, value);
-                }
-            }
+			if (cdesc != null) {
+				foreach (Field fs in cdesc.Fields) {
+					if (field == fs.Name || field == fs.Column) {
+						if (fs.DbType.StartsWith("serial") == false)
+							return provider.PrepareSqlValue(fs.DbType, value);
+						else
+							return provider.PrepareSqlValue("int", value);
+					}
+				}
+			}
 
             if (log.IsDebugEnabled)
                 log.Debug("PrepareValue " + field + " not found, defaulting to varchar dbType");
 
-            return metaObject.Provider.PrepareSqlValue("varchar", value);
+            return provider.PrepareSqlValue("varchar", value);
         }
 
         #region GreaterOrEqual

@@ -28,9 +28,6 @@ namespace PMS.Query
         string Select();
         string Count();
 
-        bool IsValid { get; }
-        Exception ValidationException { get; }
-
         Criteria Criteria { get; set;}
     }
 }

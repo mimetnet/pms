@@ -4,11 +4,12 @@ using System.Collections;
 
 namespace PMS.Metadata
 {
+	[Serializable]
     public enum DbManagerMode : short
     { 
         [XmlEnum("single")] Single = 0,
         [XmlEnum("replication")] Replication = 1
-    };
+    }
 
     [XmlRoot("repository")]
     public sealed class Repository : IXmlSerializable

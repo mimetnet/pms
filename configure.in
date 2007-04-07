@@ -43,6 +43,7 @@ AC_SUBST(GACUTIL_FLAGS)
 AC_OUTPUT([
 			  Makefile
 			  PMS/Makefile
+			  PMS.Config/Makefile
 			  build/libpms.pc
 			  build/Makefile
 			  debian/Makefile

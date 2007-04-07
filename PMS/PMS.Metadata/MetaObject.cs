@@ -14,41 +14,31 @@ namespace PMS.Metadata
         private static readonly log4net.ILog log = 
             log4net.LogManager.GetLogger("PMS.Metadata.MetaObject");
 
-        private static Hashtable fieldCache = new Hashtable();
+        //private static Hashtable fieldCache = new Hashtable();
         private IProvider provider = null;
-        private Object obj = null;
         private Type type = null;
+		private Class cdesc = null;
 
         public MetaObject(Type type)
         {
             this.type = type;
+			this.cdesc = RepositoryManager.GetClass(type);
+			this.provider = ProviderFactory.Factory(RepositoryManager.CurrentConnection.Type);
         }
 
         public MetaObject(object obj)
         {
-            
-            if ((this.obj = obj) == null) {
+            if (obj == null) {
                 throw new NoNullAllowedException("Parameter obj cannot be null");
             }
 
             this.type = obj.GetType();
+			this.cdesc = RepositoryManager.GetClass(type);
+			this.provider = ProviderFactory.Factory(RepositoryManager.CurrentConnection.Type);
         }
 
         public bool Exists {
-            get { return RepositoryManager.Exists(this.type); }
-        }
-
-        public IProvider Provider {
-            get {
-                if (provider == null)
-                    provider = ProviderFactory.Factory(RepositoryManager.CurrentConnection.Type);
-
-                return provider;
-            }
-        }
-
-        public object BaseObject {
-            get { return this.obj; }
+			get { return (cdesc != null) ? true : false; }
         }
 
         public Type Type {
@@ -96,19 +86,16 @@ namespace PMS.Metadata
         /// <returns>IList is null if list-type attribute is invalid, otherwise its always an IList</returns>
         public IList MaterializeList(IDataReader reader)
         {
-            Type listType = null;
             IList list = null;
 			
             try {
-                listType = RepositoryManager.GetClassListType(this.type);
-
-                if (listType == null) {
+				if (cdesc.ListType == null) {
                     if (log.IsErrorEnabled)
                         log.Error("MaterializeList:GetClassListType(" + type + ") == NULL");
                     return list;
                 }
 
-                list = (IList)Activator.CreateInstance(listType);
+				list = (IList)Activator.CreateInstance(cdesc.ListType);
             } catch (Exception e) {
                 if (log.IsErrorEnabled)
                     log.Error("MaterializeList:GetClassListType", e);
@@ -134,13 +121,15 @@ namespace PMS.Metadata
 
         private object PopulateObject(object obj, IDataReader reader)
         {
-            Type type = obj.GetType();
-            Class cdesc = RepositoryManager.GetClass(type);
             FieldInfo finfo;
             Field field;
             object dbColumn;
             string column;
-			bool verb = (log.IsDebugEnabled && Environment.GetEnvironmentVariable("PMS_MAPPING") == null) ? false : true;
+			//bool verb = (log.IsDebugEnabled && Environment.GetEnvironmentVariable("PMS_MAPPING") == null) ? false : true;
+
+			if (cdesc == null) {
+				throw new ClassNotFoundException(type);
+			}
 
             DataTable table = reader.GetSchemaTable();
 
@@ -161,12 +150,12 @@ namespace PMS.Metadata
 					}
 
                     try {
-                        dbColumn = Provider.ConvertToType(field.DbType, reader[column]);
+                        dbColumn = provider.ConvertToType(field.DbType, reader[column]);
                         finfo.SetValue(obj, dbColumn);
 
-						if (verb) {
-							log.DebugFormat("{0} - {1} = {2}", cdesc.Type, finfo.Name, dbColumn);
-						}
+						//if (verb) {
+						//    log.DebugFormat("{0} - {1} = {2}", cdesc.Type, finfo.Name, dbColumn);
+						//}
                     } catch (Exception) {
                         log.ErrorFormat("Column '{0}' failed to convert from '{1}' to '{2}'",
                                         column, field.DbType, finfo.FieldType.ToString());
@@ -176,9 +165,9 @@ namespace PMS.Metadata
 				}
             }
 
-			if (verb) {
-				log.Debug("");
-			}
+			//if (verb) {
+			//    log.Debug("");
+			//}
 
             //foreach (Field f in cdesc.Fields) {
             //    if (f.HasReference) {
@@ -193,93 +182,6 @@ namespace PMS.Metadata
             //}
 
             return obj;
-        }
-
-        private FieldInfo[] TypeFields {
-            get {
-                if (fieldCache.ContainsKey(type.ToString()))
-                    return (FieldInfo[])fieldCache[type.ToString()];
-
-                FieldInfo[] _fields = type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-                fieldCache[type.ToString()] = _fields;
-
-                return _fields;
-            }
-        }
-
-        public string Table  {
-            get {
-                return RepositoryManager.GetClass(type).Table;
-            }
-        }
-
-        public FieldCollection Columns  {
-            get {
-                FieldCollection list = new FieldCollection();
-
-                foreach (Field field in RepositoryManager.GetClass(type).Fields) {
-                    if (field.PrimaryKey == false) {
-                        list.Add(field);
-                    }
-                }
-
-                return list;
-            }
-        }
-
-        public FieldCollection PrimaryKeys {
-            get {
-                FieldCollection keys = new FieldCollection();
-
-                foreach (Field field in RepositoryManager.GetClass(type).Fields) {
-                    if (field.PrimaryKey == true) {
-                        keys.Add(field);
-                    }
-                }
-
-                return keys;
-            }
-        }
-
-        public object GetColumnValue(Field field)
-        {
-            foreach (FieldInfo fi in this.TypeFields)
-                if (fi.Name == field.Name)
-                    return fi.GetValue(obj);
-
-            return null;
-        }
-
-        public string GetSqlValue(Field field)
-        {
-            return Provider.PrepareSqlValue(field.DbType, this.GetColumnValue(field));
-        }
-
-        public bool IsFieldSet(Field field)
-        {
-            return IsFieldSet(field, GetColumnValue(field));
-        }
-
-        public bool IsFieldSet(Field field, object value)
-        {
-            //Console.WriteLine("   Column: " + field.Column);
-            //Console.WriteLine("    Value: " + value);
-
-            if (value != null) {
-
-                //Console.WriteLine("   DbType: " + field.DbType);
-                //Console.WriteLine("  Default: " + init);
-                //Console.WriteLine("   Ignore: " + field.IgnoreDefault);
-                //Console.WriteLine("IsIgnored: " + value.Equals(init));
-                //Console.WriteLine();
-
-                if (field.IgnoreDefault && value.Equals(Provider.GetTypeInit(field.DbType)))
-                    return false;
-
-                return true;
-            }
-
-            return false;
         }
 
         public static Type LoadType(string fullTypeName)
@@ -299,8 +201,8 @@ namespace PMS.Metadata
 
             Type type = null;
             Assembly ass = null;
-            string sType = null;
-            string sAssembly = null; ;
+            String sType = null;
+            String sAssembly = null; ;
 
             if (match.Groups["T"].Success) {
                 sType = match.Groups["T"].Value;
@@ -310,13 +212,17 @@ namespace PMS.Metadata
                 sAssembly = match.Groups["A"].Value;
             }
 
-            if (sAssembly != null && sAssembly != String.Empty) {
-                if ((ass = Assembly.Load(sAssembly)) != null) {
-                    if ((type = ass.GetType(sType, false)) != null) {
-                        return type;
-                    }
-                }
-            }
+			try {
+				if (!String.IsNullOrEmpty(sAssembly)) {
+					if ((ass = Assembly.Load(sAssembly)) != null) {
+						if ((type = ass.GetType(sType, false)) != null) {
+							return type;
+						}
+					}
+				}
+			} catch (Exception) {
+				return null;
+			}
 
             foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies()) {
                 //Console.WriteLine("a = " + a.GetName().Name);

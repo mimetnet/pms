@@ -1,49 +1,24 @@
 using System;
 using System.Reflection;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace PMS.Metadata
 {
     [XmlRoot("connection")]
-    public sealed class Connection
+	[Serializable]
+    public sealed class Connection : IXmlSerializable
     {
+		private static readonly log4net.ILog log =
+			log4net.LogManager.GetLogger("PMS.Metadata.Connection");
+
         #region Public Properties
-        [XmlIgnore]
         public const int DEFAULT_POOL_SIZE = 1;
-
-        [XmlIgnore]
-        private Type type;
-
-        [XmlText]
+		public Type Type;
         public string Value;
-
-        [XmlAttribute("type")]
-        public string sType;
-
-        [XmlAttribute("id")]
         public string Id;
-
-        [XmlAttribute("default")]
         public bool IsDefault;
-
-        [XmlAttribute("pool-size")]
         public int PoolSize = DEFAULT_POOL_SIZE;
-
-        [XmlIgnore]
-        public Type Type
-        {
-            get {
-                if (type == null) {
-                    type = MetaObject.LoadType(sType);
-                }
-
-                return type;
-            }
-            set {
-                type = value;
-                sType = type.ToString();
-            }
-        }
         #endregion
 
         #region Constructors
@@ -64,7 +39,7 @@ namespace PMS.Metadata
         public Connection(string id, string conn, Type type, bool isDefault, int pool)
         {
             Id = id;
-            sType = type.FullName;
+            Type = type;
             Value = conn;
             IsDefault = isDefault;
             PoolSize = pool;
@@ -82,11 +57,25 @@ namespace PMS.Metadata
             if (Object.ReferenceEquals(obj1, null)) return false;
             if (Object.ReferenceEquals(obj2, null)) return false;
 
-            if (obj1.Id != obj2.Id) return false;
-            if (obj1.sType != obj2.sType) return false;
-            if (obj1.Value != obj2.Value) return false;
-            if (obj1.IsDefault != obj2.IsDefault) return false;
-            if (obj1.PoolSize != obj2.PoolSize) return false;
+            if (obj1.Id != obj2.Id) {
+				return false;
+			}
+
+            if (obj1.Type != obj2.Type) {
+				return false;
+			}
+
+            if (obj1.Value != obj2.Value) {
+				return false;
+			}
+
+            if (obj1.IsDefault != obj2.IsDefault) {
+				return false;
+			}
+
+            if (obj1.PoolSize != obj2.PoolSize) {
+				return false;
+			}
 
             return true;
         }
@@ -114,7 +103,7 @@ namespace PMS.Metadata
         ///</summary> 
         public override string ToString()
         {
-            return String.Format("[ Connection (Id={0}) (sType={1}) (Value={2}) (IsDefault={3}) (PoolSize={4} ]", Id, sType, Value, IsDefault, PoolSize);
+            return String.Format("[ Connection (Id={0}) (sType={1}) (Value={2}) (IsDefault={3}) (PoolSize={4} ]", Id, Type.Name, Value, IsDefault, PoolSize);
         }
 
         ///<summary>
@@ -126,5 +115,64 @@ namespace PMS.Metadata
         }
 
         #endregion
-    }
+
+		#region IXmlSerializable Members
+
+		public System.Xml.Schema.XmlSchema GetSchema()
+		{
+			return null;
+		}
+
+		public void ReadXml(System.Xml.XmlReader reader)
+		{
+			if (reader.LocalName != "connection")
+				return;
+
+			this.Id = reader.GetAttribute("id");
+
+			string stype = reader.GetAttribute("type");
+
+			if (String.IsNullOrEmpty(stype) == false) {
+				try {
+					Type = MetaObject.LoadType(stype);
+				} catch (TypeLoadException e) {
+					log.Error("ReadXml MetaObject.LoadType ", e);
+				}
+			}
+			
+			Int32.TryParse(reader.GetAttribute("pool-size"), out this.PoolSize);
+			Boolean.TryParse(reader.GetAttribute("default"), out this.IsDefault);
+
+			if (reader.IsEmptyElement == false) {
+				this.Value = reader.ReadElementContentAsString();
+			} else {
+				reader.Read();
+			}
+		}
+
+		public void WriteXml(System.Xml.XmlWriter writer)
+		{
+			if (String.IsNullOrEmpty(this.Id) == false) {
+				writer.WriteAttributeString("id", this.Id);
+			}
+
+			if (this.PoolSize > 0) {
+				writer.WriteAttributeString("pool-size", this.PoolSize.ToString());
+			}
+
+			if (this.IsDefault) {
+				writer.WriteAttributeString("default", "true");
+			}
+
+			if (this.Type != null) {
+				writer.WriteAttributeString("type", this.Type.FullName);
+			}
+
+			if (String.IsNullOrEmpty(this.Value) == false) {
+				writer.WriteString(this.Value);
+			}
+		}
+
+		#endregion
+	}
 }
