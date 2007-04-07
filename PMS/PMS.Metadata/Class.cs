@@ -88,7 +88,15 @@ namespace PMS.Metadata
 
             this.Type = MetaObject.LoadType(reader.GetAttribute("type"));
             this.Table = reader.GetAttribute("table");
-            this.ListType = MetaObject.LoadType(reader.GetAttribute("list-type"));
+
+            string ltype = reader.GetAttribute("list-type");
+			if (!String.IsNullOrEmpty(ltype)) {
+				try {
+					this.ListType = MetaObject.LoadType(ltype);
+				} catch (Exception e) {
+					log.Error("ReadXml: " + e.Message);
+				}
+			}
 
             XmlSerializer xml = new XmlSerializer(typeof(FieldCollection));
 

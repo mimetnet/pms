@@ -1,0 +1,3 @@
+usr/lib/mono/2.0/PMS.dll
+usr/lib/mono/gac/PMS/*
+usr/lib/pkgconfig/libpms.pc

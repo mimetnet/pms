@@ -4,4 +4,6 @@ EXTRA_DIST = control \
 				 changelog \
 				 copyright \
 				 docs \
-				 rules
+				 rules \
+				 libpms.install \
+				 libpms-dbg.install

@@ -1,4 +1,4 @@
-MFLAGS = -nologo -d:NET_2_0=MONO -keyfile:../PMS.snk
+MFLAGS = -debug+ -nologo -d:NET_2_0=MONO -keyfile:../PMS.snk
 
 ASSEMBLY = PMS.dll
 

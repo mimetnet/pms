@@ -13,3 +13,10 @@ Description: PMS - Phil & Matt Spaces for .NET
  .
  This version is packaged for Mono 2.0 for use with Konica Minolta's
  Printgroove server.
+
+Package: libpms-dbg
+Architecture: any
+Depends: libpms (= ${Source-Version})
+Description: PMS - Phil & Matt Spaces for .NET (DEBUG)
+ Adds debug symbols for libpms
+
