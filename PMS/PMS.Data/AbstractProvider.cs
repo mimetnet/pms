@@ -79,7 +79,7 @@ namespace PMS.Data
         {
             type = type.ToLower();
 
-            if ((type == "varchar") || (type == "char")) {
+            if ((type == "varchar") || (type == "char") || (type == "text")) {
                 return String.Empty;
             } else if ((type == "int") || (type == "integer") || 
                        (type == "int4") || (type == "serial") || 
