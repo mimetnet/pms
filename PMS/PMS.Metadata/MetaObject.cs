@@ -16,12 +16,10 @@ namespace PMS.Metadata
 
         //private static Hashtable fieldCache = new Hashtable();
         private IProvider provider = null;
-        private Type type = null;
 		private Class cdesc = null;
 
         public MetaObject(Type type)
         {
-            this.type = type;
 			this.cdesc = RepositoryManager.GetClass(type);
 			this.provider = ProviderFactory.Factory(RepositoryManager.CurrentConnection.Type);
         }
@@ -32,8 +30,7 @@ namespace PMS.Metadata
                 throw new NoNullAllowedException("Parameter obj cannot be null");
             }
 
-            this.type = obj.GetType();
-			this.cdesc = RepositoryManager.GetClass(type);
+			this.cdesc = RepositoryManager.GetClass(obj.GetType());
 			this.provider = ProviderFactory.Factory(RepositoryManager.CurrentConnection.Type);
         }
 
@@ -42,7 +39,7 @@ namespace PMS.Metadata
         }
 
         public Type Type {
-            get { return this.type; }
+            get { return this.cdesc.Type; }
         }
 
         /// <summary>
@@ -76,7 +73,7 @@ namespace PMS.Metadata
                     log.Error("MaterializeList", e);
             }
 
-            return (object[])list.ToArray(type);
+            return (object[])list.ToArray(cdesc.Type);
         }
 
         /// <summary>
@@ -91,7 +88,7 @@ namespace PMS.Metadata
             try {
 				if (cdesc.ListType == null) {
                     if (log.IsErrorEnabled)
-                        log.Error("MaterializeList:GetClassListType(" + type + ") == NULL");
+                        log.Error("MaterializeList:GetClassListType(" + cdesc.Type + ") == NULL");
                     return list;
                 }
 
@@ -116,20 +113,47 @@ namespace PMS.Metadata
 
         private object CreateObject()
         {
-			return Activator.CreateInstance(type);
+			return Activator.CreateInstance(cdesc.Type);
         }
 
         private object PopulateObject(object obj, IDataReader reader)
         {
-            FieldInfo finfo;
-            Field field;
-            object dbColumn;
-            string column;
+			FieldInfo finfo;
+			object dbColumn;
 			//bool verb = (log.IsDebugEnabled && Environment.GetEnvironmentVariable("PMS_MAPPING") == null) ? false : true;
+			//DateTime now = DateTime.Now;
 
-			if (cdesc == null) {
-				throw new ClassNotFoundException(type);
+			foreach (Field f in cdesc.Fields) {
+
+				//Console.WriteLine("----------");
+				//Console.WriteLine(f);
+	
+				finfo = cdesc.Type.GetField(f.Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+				if (finfo == null) {
+					log.ErrorFormat("Field '{0}' not found for Column '{1}'", f.Name, f.Column);
+					continue;
+				}
+		
+				try {
+					dbColumn = reader[f.Column];
+				} catch (Exception) {
+					continue;
+				}
+
+				if (dbColumn == null)
+					continue;
+
+				try {
+					finfo.SetValue(obj, provider.ConvertToType(f.DbType, dbColumn));
+				} catch (Exception e) {
+					log.Warn("PopulateObject: Assignment >> ", e);
+				}
+
 			}
+
+			/**
+            Field field;
+            string column;
 
             DataTable table = reader.GetSchemaTable();
 
@@ -138,14 +162,10 @@ namespace PMS.Metadata
                 field = cdesc.GetFieldByColumn(column);
 
                 if (field != null) {
-                    finfo = type.GetField(field.Name,
-                                          BindingFlags.NonPublic |
-                                          BindingFlags.Instance |
-                                          BindingFlags.Public);
+                    finfo = cdesc.Type.GetField(field.Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
 
 					if (finfo == null) {
-						log.ErrorFormat("Field '{0}' not found for Column '{1}'", 
-										field.Name, field.Column);
+						log.ErrorFormat("Field '{0}' not found for Column '{1}'", field.Name, field.Column);
 						continue;
 					}
 
@@ -161,9 +181,10 @@ namespace PMS.Metadata
                                         column, field.DbType, finfo.FieldType.ToString());
                     }
                 } else {
-					log.WarnFormat("{0} - column '{1}' not found in repo", cdesc.Type, column);
+					log.WarnFormat("Obj({0}) Type({1}) - Column '{2}' not in repo ({3})", obj.GetType(), cdesc.Type, column, this.mode);
 				}
             }
+			**/
 
 			//if (verb) {
 			//    log.Debug("");
@@ -180,6 +201,8 @@ namespace PMS.Metadata
             //        }
             //    }
             //}
+			
+			//Console.WriteLine("CREATE TIME = " + (DateTime.Now - now));
 
             return obj;
         }

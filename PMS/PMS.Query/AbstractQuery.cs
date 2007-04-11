@@ -9,6 +9,7 @@ namespace PMS.Query
     public abstract class AbstractQuery : IQuery
     {
 		protected static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Query.AQuery");
+		protected static readonly bool verbose = (Environment.GetEnvironmentVariable("PMS_VERBOSE") != null)? true : false;
 
         protected SqlCommand command;
         protected Criteria criteria = null;
@@ -69,20 +70,27 @@ namespace PMS.Query
 		protected bool IsFieldSet(Field field, object value)
 		{
 			object init = null;
-			//Console.WriteLine("   Column: '{0}'", field.Column);
-			//Console.WriteLine("    Value: '{0}'", value);
+
+			if (verbose) {
+				Console.WriteLine("   Column: '{0}'", field.Column);
+				Console.WriteLine("    Value: '{0}'", value);
+			}
 
 			if (value != null) {
 				init = provider.GetTypeInit(field.DbType);
-				//Console.WriteLine("   DbType: " + field.DbType);
-				//Console.WriteLine("  Default: '{0}'", init);
-				//Console.WriteLine("   Ignore: " + field.IgnoreDefault);
+
+				if (verbose) {
+					Console.WriteLine("   DbType: " + field.DbType);
+					Console.WriteLine("  Default: '{0}'", init);
+					Console.WriteLine("   Ignore: " + field.IgnoreDefault);
+				}
 
 				if (init == null) {
-					//Console.WriteLine("IsIgnored: " + init.Equals(value));
+					if (verbose) Console.WriteLine("IsIgnored: " + init.Equals(value));
 					log.Error("IsFieldSet: Type(" + field.DbType + ") return null");
 				} 
-				//Console.WriteLine();
+
+				if (verbose) Console.WriteLine();
 
 				return !(init != null && field.IgnoreDefault && init.Equals(value));
 			}

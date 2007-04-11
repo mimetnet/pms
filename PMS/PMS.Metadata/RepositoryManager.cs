@@ -81,12 +81,12 @@ namespace PMS.Metadata
 
 			//Console.WriteLine(new System.Diagnostics.StackTrace());
 
-			/*
+			/**
 			log.Info("Type asked: " + type);
 			log.Info("Class gotten: " + klass.Table);
 			log.Info("Class gotten: " + klass.Type);
 			log.Info("-");
-			*/
+			**/
 
 			return klass;
         }
