@@ -22,6 +22,10 @@ namespace PMS.Metadata
         {
 			this.cdesc = RepositoryManager.GetClass(type);
 			this.provider = ProviderFactory.Factory(RepositoryManager.CurrentConnection.Type);
+
+			if (this.cdesc == null) {
+				throw new Exception("type not found in repository");
+			}
         }
 
         public MetaObject(object obj)
@@ -32,6 +36,10 @@ namespace PMS.Metadata
 
 			this.cdesc = RepositoryManager.GetClass(obj.GetType());
 			this.provider = ProviderFactory.Factory(RepositoryManager.CurrentConnection.Type);
+
+			if (this.cdesc == null) {
+				throw new Exception("obj.GetType() not found in repository");
+			}
         }
 
         public bool Exists {
@@ -146,7 +154,7 @@ namespace PMS.Metadata
 				try {
 					finfo.SetValue(obj, provider.ConvertToType(f.DbType, dbColumn));
 				} catch (Exception e) {
-					log.Warn("PopulateObject: Assignment >> ", e);
+					log.Warn("PopulateObject: Assignment " + f.Name + " >> " + dbColumn + " >> " + f.DbType + " || " + e.Message);
 				}
 
 			}
