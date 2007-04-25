@@ -44,6 +44,8 @@
     <Compile Include="PMS.Broker\IPersistenceBroker.cs" />
     <Compile Include="PMS.Broker\PersistenceBroker.cs" />
     <Compile Include="PMS.Broker\PersistenceBrokerFactory.cs" />
+    <Compile Include="PMS.Collections.Pool\ItemCollection.cs" />
+    <Compile Include="PMS.Collections.Pool\ObjectPool.cs" />
     <Compile Include="PMS.Collections.Pool\PrincipalObjectPool.cs" />
     <Compile Include="PMS.Collections.Pool\IObjectPool.cs" />
     <Compile Include="PMS.DataAccess\DbEngineNotStartedException.cs" />
@@ -53,6 +55,7 @@
     <Compile Include="PMS.Data\DbCommandProxy.cs">
       <SubType>Component</SubType>
     </Compile>
+	<Compile Include="PMS.IO\FileLock.cs" />
     <Compile Include="PMS.Metadata\Auto.cs" />
     <Compile Include="PMS.Metadata\Class.cs" />
     <Compile Include="PMS.Metadata\ClassCollection.cs" />
@@ -108,12 +111,10 @@
     <Compile Include="PMS.Query\NotEqualToClause.cs" />
     <Compile Include="PMS.Query\NotLikeClause.cs" />
     <Compile Include="PMS.Query\OrClause.cs" />
-    <Compile Include="PMS.Query\QueryFactory.cs" />
     <Compile Include="PMS.Query\QueryByCriteria.cs" />
     <Compile Include="PMS.Query\QueryByObject.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PMS.Query\QueryByObjectDiff.cs" />
     <Compile Include="PMS.Query\QueryBySql.cs" />
     <Compile Include="PMS.Query\QueryByType.cs" />
     <Compile Include="PMS.Query\RangeClause.cs" />
