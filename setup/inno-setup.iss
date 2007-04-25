@@ -40,7 +40,7 @@ Name: DBG; Description: Debug; Types: custom
 UseAbsolutePaths=false
 
 [Run]
-Filename: C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0\Bin\gacutil; Parameters: "/i ""{app}\PMS.dll"""; Components: PMS; Flags: runhidden
+Filename: C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0\Bin\gacutil; Parameters: "/i ""C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\PMS.dll"""; Components: PMS; Flags: runhidden
 
 [Registry]
 
