@@ -24,7 +24,7 @@ namespace PMS.Metadata
 			this.provider = ProviderFactory.Factory(RepositoryManager.CurrentConnection.Type);
 
 			if (this.cdesc == null) {
-				throw new Exception("type not found in repository");
+				throw new Exception("type '" + type + "' not found in repository");
 			}
         }
 
@@ -38,7 +38,7 @@ namespace PMS.Metadata
 			this.provider = ProviderFactory.Factory(RepositoryManager.CurrentConnection.Type);
 
 			if (this.cdesc == null) {
-				throw new Exception("obj.GetType() not found in repository");
+				throw new Exception("obj.GetType(" + obj.GetType() + ") not found in repository");
 			}
         }
 
@@ -124,11 +124,11 @@ namespace PMS.Metadata
 			return Activator.CreateInstance(cdesc.Type);
         }
 
-        private object PopulateObject(object obj, IDataReader reader)
+        private Object PopulateObject(Object obj, IDataReader reader)
         {
 			FieldInfo finfo;
-			object dbColumn;
-			//bool verb = (log.IsDebugEnabled && Environment.GetEnvironmentVariable("PMS_MAPPING") == null) ? false : true;
+			Object dbColumn;
+
 			//DateTime now = DateTime.Now;
 
 			foreach (Field f in cdesc.Fields) {
@@ -148,55 +148,17 @@ namespace PMS.Metadata
 					continue;
 				}
 
-				if (dbColumn == null)
+				if (dbColumn == null || dbColumn.GetType() == typeof(DBNull))
 					continue;
+
+				//Console.WriteLine("Field '{0}' ({1}) => {2}", f.Name, dbColumn.GetType().ToString(), dbColumn);
 
 				try {
 					finfo.SetValue(obj, provider.ConvertToType(f.DbType, dbColumn));
 				} catch (Exception e) {
-					log.Warn("PopulateObject: Assignment " + f.Name + " >> " + dbColumn + " >> " + f.DbType + " || " + e.Message);
+					log.Warn("PopulateObject: Assignment " + cdesc.Table + "." + f.Name + " >> " + dbColumn + " >> " + f.DbType + " || " + e.Message);
 				}
-
 			}
-
-			/**
-            Field field;
-            string column;
-
-            DataTable table = reader.GetSchemaTable();
-
-            foreach (DataRow row in table.Rows) {
-                column = (string)row["ColumnName"];
-                field = cdesc.GetFieldByColumn(column);
-
-                if (field != null) {
-                    finfo = cdesc.Type.GetField(field.Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-
-					if (finfo == null) {
-						log.ErrorFormat("Field '{0}' not found for Column '{1}'", field.Name, field.Column);
-						continue;
-					}
-
-                    try {
-                        dbColumn = provider.ConvertToType(field.DbType, reader[column]);
-                        finfo.SetValue(obj, dbColumn);
-
-						//if (verb) {
-						//    log.DebugFormat("{0} - {1} = {2}", cdesc.Type, finfo.Name, dbColumn);
-						//}
-                    } catch (Exception) {
-                        log.ErrorFormat("Column '{0}' failed to convert from '{1}' to '{2}'",
-                                        column, field.DbType, finfo.FieldType.ToString());
-                    }
-                } else {
-					log.WarnFormat("Obj({0}) Type({1}) - Column '{2}' not in repo ({3})", obj.GetType(), cdesc.Type, column, this.mode);
-				}
-            }
-			**/
-
-			//if (verb) {
-			//    log.Debug("");
-			//}
 
             //foreach (Field f in cdesc.Fields) {
             //    if (f.HasReference) {
@@ -256,9 +218,7 @@ namespace PMS.Metadata
 			}
 
             foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies()) {
-                //Console.WriteLine("a = " + a.GetName().Name);
                 if (a.GetName().Name.StartsWith(sType.Split('.')[0])) {
-                    //Console.WriteLine("checking " + a.FullName);
                     foreach (Type t in a.GetTypes()) {
                         if (t.FullName == sType) {
                             return t;

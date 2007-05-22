@@ -5,54 +5,50 @@ namespace PMS.Data
     [Serializable]
     public sealed class DbResult
     {
+		private object obj;
         private Int64 records;
         private string sql;
         private Exception ex;
 
-        /// <summary>
-        /// Construct with records, SQL, and Exception
-        /// </summary>
-        /// <param name="records">Records Affected/Returned</param>
-        /// <param name="sql">SQL Executed</param>
-        /// <param name="ex">Exception from database</param>
-        public DbResult(Int64 records, string sql, Exception ex)
+        public DbResult(Int64 records, Object obj, string sql, Exception ex)
         {
             this.records = records;
+			this.obj = obj;
             this.sql = sql;
             this.ex = ex;
         }
 
-        /// <summary>
-        /// Construct with records, and SQL
-        /// </summary>
-        /// <param name="records">Records Affected/Returned</param>
-        /// <param name="sql">SQL Executed</param>
-        public DbResult(Int64 records, string sql) : this(records, sql, null)
+        public DbResult(Object obj, string sql)
+        {
+			Int64 x=0;
+
+			if (obj != null) {
+				this.records = Int64.TryParse(obj.ToString(), out x)? x : 1;
+			} else {
+				this.records = -1;
+			}
+
+			this.obj = obj;
+			this.sql = sql;
+        }
+
+        public DbResult(Int64 records, string sql, Exception ex) : this(records, null, sql, ex)
         {
         }
 
-        /// <summary>
-        /// Construct with SQL
-        /// </summary>
-        /// <param name="sql">SQL Executed</param>
-        public DbResult(string sql) : this(0, sql, null)
+        public DbResult(Int64 records, string sql) : this(records, null, sql, null)
         {
         }
 
-        /// <summary>
-        /// Construct with SQL and Exception
-        /// </summary>
-        /// <param name="sql">SQL Executed</param>
-        /// <param name="ex">Exception fromd database</param>
-        public DbResult(string sql, Exception ex): this(0, sql, ex)
+        public DbResult(string sql) : this(0, null, sql, null)
         {
         }
 
-        /// <summary>
-        /// Construct with records result
-        /// </summary>
-        /// <param name="records">Records Affected/Returned</param>
-        public DbResult(Int64 records) : this(records, String.Empty, null)
+        public DbResult(string sql, Exception ex): this(0, null, sql, ex)
+        {
+        }
+
+        public DbResult(Int64 records) : this(records, null, String.Empty, null)
         {
         }
 
@@ -61,13 +57,11 @@ namespace PMS.Data
         /// </summary>
         /// <param name="records">Records Affected/Returned</param>
         /// <param name="ex">Exception fromd database</param>
-        public DbResult(Int64 records, Exception ex)
-            : this(records, String.Empty, ex)
+        public DbResult(Int64 records, Exception ex) : this(records, String.Empty, ex)
         {
         }
 
-        public DbResult(Exception exception)
-            : this(0, String.Empty, exception)
+        public DbResult(Exception exception) : this(0, String.Empty, exception)
         {
         }
 
@@ -80,6 +74,13 @@ namespace PMS.Data
         }
         
         /// <summary>
+        /// Records Retrieved/Affected
+        /// </summary>
+        public object Object {
+            get { return obj; }
+        }
+		
+		/// <summary>
         /// Records Retrieved/Affected
         /// </summary>
         public Int64 Count {

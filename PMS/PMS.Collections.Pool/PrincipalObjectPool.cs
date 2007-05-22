@@ -61,6 +61,7 @@ namespace PMS.Collections.Pool
 								Thread.CurrentPrincipal.Identity.Name);
 					}
 
+					pool[x].Checkin();
 					return true;
 				}
 			}

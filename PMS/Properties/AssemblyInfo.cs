@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("PMS")]
-[assembly: AssemblyDescription("Object Relational Mapping Tool")]
+[assembly: AssemblyDescription("Phil and Matt Spaces for Object Mapping")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("PMS")]
@@ -31,7 +31,7 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("0.6.39.0")]
-[assembly: AssemblyFileVersion("0.6.39.0")]
+[assembly: AssemblyVersion("0.6.40.0")]
+[assembly: AssemblyFileVersion("0.6.40.0")]
 
 //[assembly: log4net.Config.Repository(Name="PMS")]

@@ -1,38 +1,45 @@
 using System;
 using System.Data;
 using System.ComponentModel;
+using System.Threading;
 
 namespace PMS.Data
 {
     public sealed class DbConnectionProxy : Component, IDbConnection
     {
-        IDbConnection conn = null;
-        IDbTransaction trans = null;
+		private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Data.DbConnectionProxy");
+        internal IDbConnection _Connection = null;
+        private IDbTransaction trans = null;
+		private bool hasLock = false;
+		private DateTime lockStamp;
+		private int lockCnt = 0;
+
+		public const int LockTimeout = 20000;
 
         internal DbConnectionProxy(IDbConnection connection)
         {
-            this.conn = connection;
+            this._Connection = connection;
         }
 
         public DbConnectionProxy(Type typeOfConnection)
         {
-            this.conn = (IDbConnection) Activator.CreateInstance(typeOfConnection);
+            this._Connection = (IDbConnection) Activator.CreateInstance(typeOfConnection);
         }
 
         internal IDbConnection RealConnection {
-            get { return this.conn; }
+            get { return this._Connection; }
         }
 
         #region IDbConnection Members
 
         public IDbTransaction BeginTransaction(IsolationLevel il)
         {
-            return (trans = this.conn.BeginTransaction(il));
+            return (trans = this._Connection.BeginTransaction(il));
         }
 
         public IDbTransaction BeginTransaction()
         {
-            return (trans = this.conn.BeginTransaction());
+            return (trans = this._Connection.BeginTransaction());
         }
 
         internal void CommitTransation()
@@ -51,33 +58,21 @@ namespace PMS.Data
 
         public void ChangeDatabase(string databaseName)
         {
-            this.conn.ChangeDatabase(databaseName);
+            this._Connection.ChangeDatabase(databaseName);
         }
 
-        public void Close()
-        {
-            this.conn.Close();
+        public string ConnectionString {
+            get { return this._Connection.ConnectionString; }
+            set { this._Connection.ConnectionString = value; }
         }
 
-        public string ConnectionString
-        {
-            get {
-                return this.conn.ConnectionString;
-            }
-            set {
-                this.conn.ConnectionString = value;
-            }
-        }
-
-        public int ConnectionTimeout
-        {
-            get { return this.conn.ConnectionTimeout; }
+        public int ConnectionTimeout {
+            get { return this._Connection.ConnectionTimeout; }
         }
 
         public IDbCommand CreateCommand()
         {
-            DbCommandProxy proxy = new DbCommandProxy(this.conn.CreateCommand());
-            //proxy.Executed += new DbCommandExecuted(CommandProxyExecuted);
+            DbCommandProxy proxy = new DbCommandProxy(this);
             if (trans != null) {
                 proxy.Transaction = trans;
 			}
@@ -85,37 +80,63 @@ namespace PMS.Data
             return proxy;
         }
 
-        /*
-        private void CommandProxyExecuted(IDbConnection connection)
-        {
-            Console.WriteLine("HOLY SHIT");
-        }
-        */
-
-        public string Database
-        {
-            get { return this.conn.Database; }
+        public string Database {
+            get { return this._Connection.Database; }
         }
 
         public void Open()
         {
-            this.conn.Open();
+            this._Connection.Open();
         }
+
+        public void Close()
+        {
+			try {
+				this._Connection.Close();
+			} finally {
+				ReleaseLock();
+			}
+		}
 
         public ConnectionState State
         {
-            get { return this.conn.State; }
+            get { return this._Connection.State; }
         }
-
         #endregion
 
         #region IDisposable Members
-
         public new void Dispose()
         {
-            this.conn.Dispose();
+			try {
+				this._Connection.Dispose();
+			} finally {
+				ReleaseLock();
+			}
         }
-
         #endregion
-    }
+
+		internal bool AcquireLock()
+		{
+			if (Monitor.TryEnter(this._Connection, LockTimeout)) {
+				lockStamp = DateTime.Now;
+				lockCnt++;
+				return (hasLock = true);
+			}
+
+			log.WarnFormat("DbConnectionProxy: Failed to obtain lock within {0} seconds", LockTimeout / 1000);
+			log.WarnFormat("DbConnectionProxy: Connection locked @ " + lockStamp + " : Cnt=" + lockCnt);
+
+			return false;
+		}
+
+		internal void ReleaseLock()
+		{
+			if (hasLock) {
+				hasLock = false;
+				lockCnt--;
+				lockStamp = DateTime.MinValue;
+				Monitor.Exit(this._Connection);
+			}   
+		}   
+	}
 }

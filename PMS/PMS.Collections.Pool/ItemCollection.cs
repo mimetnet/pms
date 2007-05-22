@@ -156,6 +156,11 @@ namespace PMS.Collections.Pool
 			Available = false;
 			return this.Object;
 		}
+
+		public void Checkin()
+		{
+			Available = true;
+		}
 	} 
 
 

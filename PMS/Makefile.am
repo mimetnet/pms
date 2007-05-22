@@ -26,6 +26,7 @@ SOURCES = \
 	 ./PMS.Data/AbstractProvider.cs \
 	 ./PMS.Data/DbCommandProxy.cs \
 	 ./PMS.Data/DbConnectionProxy.cs \
+	 ./PMS.Data/DbDataReaderProxy.cs \
 	 ./PMS.Data/DbResult.cs \
 	 ./PMS.Data/IDbInspector.cs \
 	 ./PMS.Data/IProvider.cs \

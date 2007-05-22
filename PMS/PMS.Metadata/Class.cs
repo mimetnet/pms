@@ -64,9 +64,8 @@ namespace PMS.Metadata
 
 		public object GetValue(Field field, Object obj)
 		{
-			//FieldInfo[] _fields = type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-
 			FieldInfo finfo = Type.GetField(field.Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+
 			if (finfo != null) {
 				return finfo.GetValue(obj);
 			}

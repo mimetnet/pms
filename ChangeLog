@@ -1,3 +1,21 @@
+libpms (0.6.38-12) unstable; urgency=low
+
+  * Fixed int conversions to obey <class db_type=""/> if different than current
+
+ -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Thu, 17 May 2007 11:26:37 -0400
+
+libpms (0.6.38-11) unstable; urgency=low
+
+  * DateTime fixes for storage (insert UTC, read as UTC) 
+
+ -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Wed, 16 May 2007 12:01:32 -0400
+
+libpms (0.6.38-10) unstable; urgency=low
+
+  * AssemblyInfo.cs fixes
+
+ -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Wed, 25 Apr 2007 11:20:59 -0400
+
 libpms (0.6.38-9) unstable; urgency=low
 
   * Damnit! No need to try assigning null so just leave early

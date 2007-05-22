@@ -4,68 +4,51 @@ using System.ComponentModel;
 
 namespace PMS.Data
 {
-    public delegate void DbCommandExecuted(IDbConnection command);
-
     public sealed class DbCommandProxy : Component, IDbCommand
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        object hold = new object();
-        IDbCommand cmd = null;
-        internal event DbCommandExecuted Executed;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Data.DbCommandProxy");
+		private DbConnectionProxy conn = null;
+        private IDbCommand cmd = null;
 
-        internal DbCommandProxy(IDbCommand command)
+        internal DbCommandProxy(DbConnectionProxy conn)
         {
-            this.cmd = command;
+			this.conn = conn;
+            this.cmd = this.conn._Connection.CreateCommand();
         }
 
         #region IDbCommand Members
 
-        public void Cancel()
-        {
-            this.cmd.Cancel();
+        public string CommandText {
+            get { return this.cmd.CommandText; }
+            set { this.cmd.CommandText = value; }
         }
 
-        public string CommandText
-        {
-            get {
-                return this.cmd.CommandText;
-            }
-            set {
-                this.cmd.CommandText = value;
-            }
+        public int CommandTimeout {
+            get { return this.cmd.CommandTimeout; }
+            set { this.cmd.CommandTimeout = value; }
         }
 
-        public int CommandTimeout
-        {
-            get {
-                return this.cmd.CommandTimeout;
-            }
-            set {
-                this.cmd.CommandTimeout = value;
-            }
+        public CommandType CommandType {
+            get { return this.cmd.CommandType; }
+            set  { this.cmd.CommandType = value; }
         }
 
-        public CommandType CommandType
-        {
-            get {
-                return this.cmd.CommandType;
-            }
-            set  {
-                this.cmd.CommandType = value;
-            }
+        public IDbConnection Connection {
+            get { return this.conn; }
+            set { throw new NotImplementedException("Assignment of DbCommandProxy.Connection is prohibted"); }
         }
 
-        public IDbConnection Connection
-        {
-            get {
-                if (this.cmd.Connection is DbConnectionProxy)
-                    return this.cmd.Connection;
+        public IDbTransaction Transaction {
+            get { return this.cmd.Transaction; }
+            set { this.cmd.Transaction = value; }
+        }
 
-                return new DbConnectionProxy(this.cmd.Connection);
-            }
-            set {
-                this.cmd.Connection = value;
-            }
+        public UpdateRowSource UpdatedRowSource {
+            get { return this.cmd.UpdatedRowSource; }
+            set { this.cmd.UpdatedRowSource = value; }
+        }
+        public IDataParameterCollection Parameters {
+            get { return this.cmd.Parameters; }
         }
 
         public IDbDataParameter CreateParameter()
@@ -75,18 +58,18 @@ namespace PMS.Data
 
         public int ExecuteNonQuery()
         {
-            if (this.Executed != null)
-                this.Executed(this.cmd.Connection);
-
 			int x = 0;
 
-			lock (hold) {
-				try {
+			if (!this.conn.AcquireLock())
+				throw new ApplicationException("ExecuteNonQuery: Failed to lock connection");
+
+			try {
+				x = this.cmd.ExecuteNonQuery();
+			} catch (NotSupportedException) {
+				if (this.CanReopenConnection())
 					x = this.cmd.ExecuteNonQuery();
-				} catch (NotSupportedException) {
-					if (this.CanReopenConnection())
-						x = this.cmd.ExecuteNonQuery();
-				}
+			} finally {
+				this.conn.ReleaseLock();
 			}
 
 			return x;
@@ -96,62 +79,53 @@ namespace PMS.Data
         {
             IDataReader reader = null;
 
-            if (this.Executed != null)
-                this.Executed(this.cmd.Connection);
+			if (!this.conn.AcquireLock())
+				throw new ApplicationException("ExecuteReader(CommandBehavior): Failed to lock connection");
 
-            lock (hold) {
-				try {
-					reader = this.cmd.ExecuteReader(behavior);
-				} catch (NotSupportedException) {
-					if (this.CanReopenConnection())
-						reader = this.cmd.ExecuteReader();
-				}
-            }
+			try {
+				reader = this.cmd.ExecuteReader(behavior);
+			} catch (NotSupportedException) {
+				if (this.CanReopenConnection())
+					reader = this.cmd.ExecuteReader();
+			}
 
-            return reader;
+            return new DbDataReaderProxy(reader, this.conn);
         }
 
         public IDataReader ExecuteReader()
         {
             IDataReader reader = null;
 
-            if (this.Executed != null)
-                this.Executed(this.cmd.Connection);
+			if (!this.conn.AcquireLock())
+				throw new ApplicationException("ExecuteReader: Failed to lock connection");
 
-            lock (hold) {
-				try {
+			try {
+				reader = this.cmd.ExecuteReader();
+			} catch (NotSupportedException) {
+				if (this.CanReopenConnection())
 					reader = this.cmd.ExecuteReader();
-				} catch (NotSupportedException) {
-					if (this.CanReopenConnection())
-						reader = this.cmd.ExecuteReader();
-				}
-            }
+			}
 
-            return reader;
+            return new DbDataReaderProxy(reader, this.conn);
         }
 
 		public object ExecuteScalar()
         {
             Object obj = null;
 
-            if (this.Executed != null)
-                this.Executed(this.cmd.Connection);
+			if (!this.conn.AcquireLock())
+				throw new ApplicationException("ExecuteScalar: Failed to lock connection");
 
-            lock (hold) {
-				try {
+			try {
+				obj = this.cmd.ExecuteScalar();
+			} catch (NotSupportedException) {
+				if (this.CanReopenConnection())
 					obj = this.cmd.ExecuteScalar();
-				} catch (NotSupportedException) {
-					if (this.CanReopenConnection())
-						obj = this.cmd.ExecuteScalar();
-				}
-            }
+			} finally {
+				this.conn.ReleaseLock();
+			}
 
             return obj;
-        }
-
-        public IDataParameterCollection Parameters
-        {
-            get { return this.cmd.Parameters; }
         }
 
         public void Prepare()
@@ -159,26 +133,10 @@ namespace PMS.Data
             this.cmd.Prepare();
         }
 
-        public IDbTransaction Transaction
-        {
-            get {
-                return this.cmd.Transaction;
-            }
-            set {
-                lock (hold) {
-                    this.cmd.Transaction = value;
-                }
-            }
-        }
 
-        public UpdateRowSource UpdatedRowSource
+        public void Cancel()
         {
-            get {
-                return this.cmd.UpdatedRowSource;
-            }
-            set {
-                this.cmd.UpdatedRowSource = value;
-            }
+            this.cmd.Cancel();
         }
 
         #endregion

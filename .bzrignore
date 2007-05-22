@@ -29,6 +29,7 @@ build-stamp
 configure-stamp
 build/libpms.pc
 config.sub
+debian/files
 debian/libpms
 debian/libpms.substvars
 PMS-*.tar.gz

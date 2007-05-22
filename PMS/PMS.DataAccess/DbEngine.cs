@@ -376,8 +376,7 @@ namespace PMS.DataAccess
 
             try {
                 cmd = dbManager.GetCommand(sql);
-                object count = cmd.ExecuteScalar();
-                result = new DbResult(Convert.ToInt64(count), sql);
+                result = new DbResult(cmd.ExecuteScalar(), sql);
             } catch (Exception ex) {
                 result = new DbResult(0, sql, ex);
             } finally {
