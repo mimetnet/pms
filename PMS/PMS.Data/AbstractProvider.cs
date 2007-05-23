@@ -54,7 +54,12 @@ namespace PMS.Data
 
         public virtual string PrepareSqlTimestamp(object value, bool tz)
         {
-			return "'" + Convert.ToDateTime(value).ToString("yyyy-MM-dd HH:mm:sszz") + "'";
+			DateTime t = Convert.ToDateTime(value);
+
+			if (t.Kind != DateTimeKind.Unspecified)
+				t = t.ToLocalTime();
+
+			return "'" + t.ToString("yyyy-MM-dd HH:mm:sszz") + "'";
         }
 
         public virtual string PrepareSqlDate(object value)
@@ -84,7 +89,7 @@ namespace PMS.Data
         {
             type = type.ToLower();
 
-            if ((type == "varchar") || (type == "char") || (type == "text")) {
+            if (type == "varchar" || type == "text") {
                 return String.Empty;
             } else if ((type == "int") || (type == "integer") || 
                        (type == "int4") || (type == "serial") || 
@@ -99,6 +104,8 @@ namespace PMS.Data
                 return new Int16();
             } else if ((type == "date") || (type == "timestamp") || (type == "timestampz")) {
                 return new DateTime();
+            } else if (type == "char") {
+                return new Char();
             } else if (type == "bit") {
                 return new BitArray(0);
             } else if (type == "numeric" || type == "money") {
