@@ -16,6 +16,12 @@ namespace PMS.Collections.Pool
         {
         }
 
+		public ManagedObjectPool(Type type, object[] typeParams, int min, int max, string sFree) :
+			base(type, typeParams, min, max, sFree, true)
+		{
+		}
+
+
         /// <summary>
         /// Destructor
         /// </summary>
@@ -54,7 +60,7 @@ namespace PMS.Collections.Pool
 
 			for (int x = 0; x < pool.Count; x++) {
 				if (pool[x].Object.GetHashCode() == code) {
-					pool[x].Available = true;
+					pool[x].Checkin();
 
 					if (verbose && log.IsDebugEnabled)
 						log.DebugFormat("ManagedObjectPool.Return(OID={0} TID={1})",

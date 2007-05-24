@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Collections.Generic;
+using System.Threading;
 
 namespace PMS.Metadata
 {
@@ -17,6 +18,7 @@ namespace PMS.Metadata
             log4net.LogManager.GetLogger("PMS.Metadata.ClassCollection");
 
 		private SortedList<Type, Class> list = new SortedList<Type, Class>(new TypeComparer());
+		private static ReaderWriterLock listLock = new ReaderWriterLock();
 
         ///<summary>
         /// Default constructor.
@@ -30,14 +32,13 @@ namespace PMS.Metadata
 			get {
 				Class klass = null;
 
-				if (this.list.TryGetValue(type, out klass))
-					return klass;
+				listLock.AcquireReaderLock(1000);
+				this.list.TryGetValue(type, out klass);
+				listLock.ReleaseReaderLock();
 
-				return null;
+				return klass;
 			}
-			set {
-				throw new NotSupportedException();
-			}
+			set { throw new NotSupportedException(); }
 		}
 
         #region IXmlSerializable Members
@@ -52,23 +53,31 @@ namespace PMS.Metadata
             Class klass = null;
             XmlSerializer xml = new XmlSerializer(typeof(Class));
 
-            while (reader.Read()) {
-                reader.MoveToElement();
+			try {
+				listLock.AcquireWriterLock(1000);
 
-                if (reader.LocalName == "class") {
-                    try {
-                        if ((klass = (Class)xml.Deserialize(reader)) != null) {
-							if (klass.Type == null) {
-								log.WarnFormat("Class.table {0}'s Type failed to load", klass.Table);
-							} else {
-								this.list.Add(klass.Type, klass);
+				while (reader.Read()) {
+					reader.MoveToElement();
+
+					if (reader.LocalName == "class") {
+						try {
+							if ((klass = (Class)xml.Deserialize(reader)) != null) {
+								if (klass.Type != null) {
+									this.list.Add(klass.Type, klass);
+								} else {
+									log.WarnFormat("Class.table {0}'s Type failed to load", klass.Table);
+								}
 							}
-						}
-                    } catch (Exception) {}
-                } else if (reader.LocalName == "classes") {
-                    break;
+						} catch (Exception) {}
+					} else if (reader.LocalName == "classes") {
+						break;
+					}
 				}
-            }
+			} catch (Exception e) {
+				log.Error("ReadXml: ", e);
+			} finally {
+				listLock.ReleaseWriterLock();
+			}
         }
 
         public void WriteXml(XmlWriter writer)
@@ -85,8 +94,13 @@ namespace PMS.Metadata
 
 		public void Add(Class item)
 		{
-			if (this.list.ContainsKey(item.Type) == false)
+			listLock.AcquireWriterLock(1000);
+
+			if (this.list.ContainsKey(item.Type) == false) {
 				this.list.Add(item.Type, item);
+			}
+
+			listLock.ReleaseWriterLock();
 		}
 
 		public void Clear()

@@ -25,8 +25,9 @@ namespace PMS.Query
 			this.keys = new FieldCollection();
 			this.columns = new FieldCollection();
 
-			if (this.provider == null)
+			if (this.provider == null) {
 				this.provider = ProviderFactory.Factory(RepositoryManager.CurrentConnection.Type);
+			}
 		}
 
 		protected AbstractQuery(Class classDescription)

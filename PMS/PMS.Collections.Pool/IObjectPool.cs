@@ -16,6 +16,7 @@ namespace PMS.Collections.Pool
         void Close();
 
         int Count { get; }
-        int Max { get; set; }
+        int Max { get; }
+        int Min { get; }
     }
 }

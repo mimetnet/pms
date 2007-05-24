@@ -126,7 +126,7 @@ namespace PMS.Collections.Pool
 		[MethodImpl(MethodImplOptions.Synchronized)]
         public virtual bool Open()
         {
-			for (int i = 0; i < this.Min; i++) {
+			for (int i = pool.Count; i < this.Min; i++) {
 				this.Add();
 			}
 
@@ -209,7 +209,6 @@ namespace PMS.Collections.Pool
         public int Min
         {
             get { return min; }
-            set { min = value; }
         }
 
         /// <summary>
@@ -218,7 +217,6 @@ namespace PMS.Collections.Pool
         public int Max
         {
             get { return max; }
-            set { max = value; }
         }
         #endregion
 

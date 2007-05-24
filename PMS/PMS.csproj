@@ -49,12 +49,9 @@
     <Compile Include="PMS.Collections.Pool\PrincipalObjectPool.cs" />
     <Compile Include="PMS.Collections.Pool\IObjectPool.cs" />
     <Compile Include="PMS.DataAccess\DbEngineNotStartedException.cs" />
-    <Compile Include="PMS.Data\DbConnectionProxy.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="PMS.Data\DbCommandProxy.cs">
-      <SubType>Component</SubType>
-    </Compile>
+	 <Compile Include="PMS.Data\DbConnectionProxy.cs" />
+	 <Compile Include="PMS.Data\DbCommandProxy.cs" />
+	 <Compile Include="PMS.Data\DbDataReaderProxy.cs" />
 	<Compile Include="PMS.IO\FileLock.cs" />
     <Compile Include="PMS.Metadata\Auto.cs" />
     <Compile Include="PMS.Metadata\Class.cs" />

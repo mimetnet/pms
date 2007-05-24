@@ -10,11 +10,10 @@ namespace PMS.Data
 		private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Data.DbConnectionProxy");
         internal IDbConnection _Connection = null;
         private IDbTransaction trans = null;
-		private bool hasLock = false;
-		private DateTime lockStamp;
-		private int lockCnt = 0;
+		private Thread hasLock = null;
+		private Object myLock = new Object();
 
-		public const int LockTimeout = 20000;
+		public const int LockTimeout = 30000;
 
         internal DbConnectionProxy(IDbConnection connection)
         {
@@ -118,25 +117,27 @@ namespace PMS.Data
 		internal bool AcquireLock()
 		{
 			if (Monitor.TryEnter(this._Connection, LockTimeout)) {
-				lockStamp = DateTime.Now;
-				lockCnt++;
-				return (hasLock = true);
+				lock (myLock) {
+					hasLock = Thread.CurrentThread;
+				}
+
+				//log.InfoFormat("({0}): AcquireLock", GetHashCode());
+				return true;
 			}
 
-			log.WarnFormat("DbConnectionProxy: Failed to obtain lock within {0} seconds", LockTimeout / 1000);
-			log.WarnFormat("DbConnectionProxy: Connection locked @ " + lockStamp + " : Cnt=" + lockCnt);
+			log.WarnFormat("({0}): Failed to obtain lock within {1} seconds", GetHashCode(), LockTimeout / 1000);
 
 			return false;
 		}
 
 		internal void ReleaseLock()
 		{
-			if (hasLock) {
-				hasLock = false;
-				lockCnt--;
-				lockStamp = DateTime.MinValue;
+			lock (myLock) {
+				if (hasLock != Thread.CurrentThread) return;
 				Monitor.Exit(this._Connection);
-			}   
-		}   
+				//log.InfoFormat("({0}): ReleaseLock", GetHashCode());
+				hasLock = null;
+			}
+		}
 	}
 }

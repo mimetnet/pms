@@ -1,6 +1,12 @@
+libpms (0.6.40-1) unstable; urgency=low
+
+  * Fixed race condition around DbConnectionProxy Acquire/Release
+
+ -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Thu, 24 May 2007 12:39:45 -0400
+
 libpms (0.6.40-0) unstable; urgency=low
 
-  * Rewrote database locking so that IDataReaders play nice until closed
+  * Rewrote database locking so that IDataReaders plays nice until closed
   * Thank you Noah Massey & Tyler Willingham
 
  -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Mon, 21 May 2007 16:01:41 -0400

@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading;
 using System.Xml.Serialization;
 
 using PMS.IO;
@@ -56,10 +57,10 @@ namespace PMS.Metadata
 
         public static Connection CurrentConnection
         {
-            get
-            {
+            get {
                 if (cConn == null)
                     cConn = DefaultConnection;
+
                 return cConn;
             }
             set { cConn = value; }
@@ -232,13 +233,13 @@ namespace PMS.Metadata
 			FileInfo f = new FileInfo(Path.Combine(GetPath(Package), type.FullName + ".pmc"));
 
 			if (f.Exists == false) {
-				log.Error("Load Does not exist: " + f);
+				log.Error("Load("+type+") File does not exist: " + f);
 				return false;
 			}
 
 			try {
 				using (FileLock flock = new FileLock(f.FullName)) {
-					if (flock.AcquireWriteLock()) {
+					if (flock.AcquireReadLock()) {
 						klass = (Class) xml.Deserialize(new FileStream(f.FullName, FileMode.Open, FileAccess.Read, FileShare.Read));
 						if (klass != null && klass.Type != null) {
 							repository.Classes.Add(klass);

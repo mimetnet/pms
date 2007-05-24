@@ -13,8 +13,7 @@ namespace PMS.Data.Pool
 
         #region Constructors
 
-        public ConnectionPool(Type type, string sConn) :
-            base(typeof(DbConnectionProxy), new object[]{type}, "Close")
+        public ConnectionPool(Type type, string sConn) : base(typeof(DbConnectionProxy), new object[]{type}, "Close")
         {
             this.sConn = sConn;
         }
@@ -29,29 +28,25 @@ namespace PMS.Data.Pool
 
         public DbConnectionProxy GetConnection()
         {
-            DbConnectionProxy conn = null;
+            DbConnectionProxy conn = (DbConnectionProxy)this.Borrow();
 
-            lock (ilock) {
-                conn = (DbConnectionProxy)this.Borrow();
+			switch (conn.State) {
+				case ConnectionState.Open:
+					return conn;
 
-                switch (conn.State) {
-                    case ConnectionState.Open:
-                        return conn;
+				case ConnectionState.Closed:
+					conn.ConnectionString = this.sConn;
+					conn.Open();
+					return conn;
 
-                    case ConnectionState.Closed:
-                        conn.ConnectionString = this.sConn;
-                        conn.Open();
-                        return conn;
+				case ConnectionState.Broken:
+					conn.Close(); conn.Open();
+					return conn;
 
-                    case ConnectionState.Broken:
-                        DestroyConnection(conn);
-                        break;
-
-                    default:
-                        ReturnConnection(conn);
-                        break;
-                }
-            }
+				default:
+					ReturnConnection(conn);
+					break;
+			}
 
             return GetConnection();
         }
@@ -59,21 +54,6 @@ namespace PMS.Data.Pool
         public void ReturnConnection(IDbConnection conn)
         {
             this.Return(conn);
-        }
-
-        public void DestroyConnection(IDbConnection conn)
-        {
-            if (conn != null) {
-                lock (ilock) {
-                    Console.WriteLine("\n\n\nDestroyConnection");
-                    conn.Close();
-                    this.Remove(conn);
-                    if (this.Count < this.Min) {
-                        Console.WriteLine("Adding new to replace");
-                        this.Add();
-                    }
-                }
-            }
         }
 
         #endregion

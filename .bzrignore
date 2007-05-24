@@ -44,3 +44,4 @@ PMS/PMS.dll.mdb
 debian/tmp
 debian/libpms-dbg
 files
+setup/pms-setup.exe
