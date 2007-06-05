@@ -32,6 +32,9 @@ namespace PMS.Query
         /// <param name="obj">Object's Fields are used to substitute SQL variables</param>
         public QueryBySql(Type type, String sql, Object obj)
         {
+			if (type == null) throw new ArgumentNullException("type");
+			if (String.IsNullOrEmpty(sql)) throw new ArgumentNullException("sql");
+
             this.obj = obj;
             this.mtype = type;
             this.sql = (this.obj != null) ? PrepareSql(sql) : sql;

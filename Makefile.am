@@ -1,4 +1,4 @@
-SUBDIRS = PMS build debian
+SUBDIRS = PMS extra build debian
 
 EXTRA_DIST = PMS.snk
 

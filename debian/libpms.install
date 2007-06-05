@@ -1,3 +1,4 @@
 usr/lib/mono/2.0/PMS.dll
 usr/lib/mono/gac/PMS/*
+usr/lib/mono/gac/policy.*.PMS/*
 usr/lib/pkgconfig/libpms.pc

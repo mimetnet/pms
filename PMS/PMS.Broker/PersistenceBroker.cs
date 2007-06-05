@@ -17,8 +17,7 @@ namespace PMS.Broker
     {
         #region variables
         private bool isOpen = false;
-        private static readonly log4net.ILog log = 
-            log4net.LogManager.GetLogger("PMS.Broker.PersistenceBroker");
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Broker.PersistenceBroker");
         
         public const string REPOSITORY_FILE = "repository.xml";
         #endregion

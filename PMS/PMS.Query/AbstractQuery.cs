@@ -73,27 +73,32 @@ namespace PMS.Query
 			object init = null;
 
 			if (verbose) {
-				Console.WriteLine("   Column: '{0}'", field.Column);
-				Console.WriteLine("    Value: '{0}'", value);
+				log.InfoFormat("   Column: '{0}'", field.Column);
+				if (value != null)
+					log.InfoFormat("    Value: '{0}'", value);
+				else
+					log.InfoFormat("    Value: NULL");
 			}
 
 			if (value != null) {
 				init = provider.GetTypeInit(field.DbType);
 
 				if (verbose) {
-					Console.WriteLine("   DbType: " + field.DbType);
-					Console.WriteLine("  Default: '{0}'", init);
-					Console.WriteLine("   Ignore: " + field.IgnoreDefault);
+					log.InfoFormat("   DbType: " + field.DbType);
+					log.InfoFormat("  Default: '{0}'", init);
+					log.InfoFormat("   Ignore: " + field.IgnoreDefault);
 				}
 
 				if (init == null) {
-					if (verbose) Console.WriteLine("IsIgnored: " + init.Equals(value));
-					log.Error("IsFieldSet: Type(" + field.DbType + ") return null");
+					if (verbose) log.InfoFormat("IsIgnored: " + init.Equals(value));
+					log.ErrorFormat("IsFieldSet: Type(" + field.DbType + ") return null");
 				} 
 
-				if (verbose) Console.WriteLine();
+				if (verbose) log.InfoFormat("--");
 
 				return !(init != null && field.IgnoreDefault && init.Equals(value));
+			} else if (verbose) {
+				log.InfoFormat("--");
 			}
 
 			return false;

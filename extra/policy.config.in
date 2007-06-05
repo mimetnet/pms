@@ -1,0 +1,10 @@
+<configuration>
+   <runtime>
+      <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+       <dependentAssembly>
+         <assemblyIdentity name="PMS" publicKeyToken="9efcb6b828991de4" />
+         <bindingRedirect oldVersion="0.6.40.1" newVersion="0.6.40.2"/>
+       </dependentAssembly>
+      </assemblyBinding>
+   </runtime>
+</configuration>

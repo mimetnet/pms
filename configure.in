@@ -14,6 +14,7 @@ if test "x$PKG_CONFIG" = "xno"; then
 fi
 
 dnl C# compiler
+AC_PATH_PROG(AL, al, no)
 AC_PATH_PROG(CSC, csc, no)
 AC_PATH_PROG(MCS, gmcs, no)
 AC_PATH_PROG(MONO, mono, no)
@@ -34,16 +35,22 @@ if test "x$MONO" = "xno"; then
 fi
 
 GACUTIL_FLAGS='-root $(DESTDIR)/usr/lib'
+CONFIG_DATE="`date`"
 
+AC_SUBST(AL)
 AC_SUBST(MCS)
 AC_SUBST(MONO)
 AC_SUBST(GACUTIL)
 AC_SUBST(GACUTIL_FLAGS)
+AC_SUBST(CONFIG_DATE)
 
 AC_OUTPUT([
 			  Makefile
 			  PMS/Makefile
+			  PMS/Properties/AssemblyInfo.cs
 			  build/libpms.pc
 			  build/Makefile
 			  debian/Makefile
+			  extra/Makefile
+			  extra/policy.config
 ])

@@ -11,10 +11,6 @@ namespace PMS.Data
 		private IDataReader reader = null;
 		private DbConnectionProxy conn = null;
 
-		internal DbDataReaderProxy()
-		{
-		}
-
         internal DbDataReaderProxy(IDataReader reader, DbConnectionProxy conn)
         {
 			this.conn = conn;
@@ -51,20 +47,19 @@ namespace PMS.Data
 
 		public void Close()
 		{
-			try {
-				this.reader.Close();
-			} finally {
-				this.conn.ReleaseLock();
-			}
+			Dispose();
 		}
 		/*}}}*/
 
 		public new void Dispose()
 		{    
 			try {
-				this.reader.Dispose();
+				if (this.reader != null)
+					this.reader.Close();
 			} finally {
-				this.conn.ReleaseLock();
+				if (this.reader != null && this.conn != null)
+					this.conn.ReleaseLock();
+				this.reader = null;
 			}
 		}
 

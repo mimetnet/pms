@@ -257,7 +257,9 @@ namespace PMS.Data
 		{
 			if (dbType.EndsWith("z")) { 
 				// timez, timestampz
+				//Console.WriteLine("ConvertToType: B4: " + obj);
 				obj = new DateTime(obj.ToUniversalTime().Ticks, DateTimeKind.Utc);
+				//Console.WriteLine("ConvertToType: AF: " + obj);
 			} else {
 				// time, timestamp, date
 				obj = new DateTime(obj.Ticks, DateTimeKind.Local);

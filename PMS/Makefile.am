@@ -9,6 +9,7 @@ REFERENCES =  \
 	-pkg:printgroove-liblog4net2.0
 
 SOURCES = \
+	 ./PMS/Logger.cs \
 	 ./PMS.IO/FileLock.cs \
 	 ./PMS.Broker/IPersistenceBroker.cs \
 	 ./PMS.Broker/PersistenceBroker.cs \

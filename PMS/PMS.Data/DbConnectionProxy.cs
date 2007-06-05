@@ -8,10 +8,10 @@ namespace PMS.Data
     public sealed class DbConnectionProxy : Component, IDbConnection
     {
 		private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Data.DbConnectionProxy");
-        internal IDbConnection _Connection = null;
         private IDbTransaction trans = null;
-		private Thread hasLock = null;
-		private Object myLock = new Object();
+		private Semaphore sema = new Semaphore(1, 1);
+
+        internal IDbConnection _Connection = null;
 
 		public const int LockTimeout = 30000;
 
@@ -90,11 +90,8 @@ namespace PMS.Data
 
         public void Close()
         {
-			try {
-				this._Connection.Close();
-			} finally {
-				ReleaseLock();
-			}
+			this._Connection.Close();
+			//log.Info("Conn.Close");
 		}
 
         public ConnectionState State
@@ -106,22 +103,16 @@ namespace PMS.Data
         #region IDisposable Members
         public new void Dispose()
         {
-			try {
-				this._Connection.Dispose();
-			} finally {
-				ReleaseLock();
-			}
+			this._Connection.Dispose();
+			//log.Info("Conn.Dispose");
         }
         #endregion
 
 		internal bool AcquireLock()
 		{
-			if (Monitor.TryEnter(this._Connection, LockTimeout)) {
-				lock (myLock) {
-					hasLock = Thread.CurrentThread;
-				}
-
-				//log.InfoFormat("({0}): AcquireLock", GetHashCode());
+			//log.Info("Try to get lock");
+			if (sema.WaitOne(LockTimeout, false)) {
+				//log.Info("Got Lock");
 				return true;
 			}
 
@@ -132,11 +123,12 @@ namespace PMS.Data
 
 		internal void ReleaseLock()
 		{
-			lock (myLock) {
-				if (hasLock != Thread.CurrentThread) return;
-				Monitor.Exit(this._Connection);
-				//log.InfoFormat("({0}): ReleaseLock", GetHashCode());
-				hasLock = null;
+			try {
+				//log.Info("Try release");
+				sema.Release();
+				//log.Info("Released");
+			} catch (SemaphoreFullException) {
+				log.Info("ReleaseLock: SemaphoreFullException");
 			}
 		}
 	}
