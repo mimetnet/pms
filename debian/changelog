@@ -1,3 +1,9 @@
+libpms (0.6.40-3) unstable; urgency=low
+
+  * Decimals are now always written to the DB with periods
+
+ -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Mon, 11 Jun 2007 17:55:40 -0400
+
 libpms (0.6.40-2) unstable; urgency=low
 
   * Changed database locking to semaphores to avoid thread-id hangups

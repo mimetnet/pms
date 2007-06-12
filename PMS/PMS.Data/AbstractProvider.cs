@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Data;
+using System.Globalization;
 
 namespace PMS.Data
 {
@@ -27,9 +28,16 @@ namespace PMS.Data
                 return PrepareSqlBit(value);
             } else if (dbType == "inet") {
                 return PrepareSqlInetAddr(value);
-            }
+            } else if (dbType == "numeric") {
+				return PrepareSqlDecimal(Convert.ToDecimal(value));
+			}
 
             return value.ToString();
+        }
+
+        public virtual string PrepareSqlDecimal(Decimal obj)
+        {
+			return obj.ToString(CultureInfo.InvariantCulture);
         }
 
         public virtual string PrepareSqlString(object value)

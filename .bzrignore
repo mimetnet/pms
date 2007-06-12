@@ -45,3 +45,7 @@ debian/tmp
 debian/libpms-dbg
 files
 setup/pms-setup.exe
+PMS/Properties/AssemblyInfo.cs
+extra/policy.config
+extra/policy.0.6.PMS.config
+extra/policy.0.6.PMS.dll

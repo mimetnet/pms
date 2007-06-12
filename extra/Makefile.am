@@ -1,7 +1,7 @@
 POLICY=policy.0.6.PMS.config
 POLICY_DLL=policy.0.6.PMS.dll
 
-CLEANFILES = $(POLICY)
+CLEANFILES = $(POLICY) $(POLICY_DLL)
 EXTRA_DIST = policy.config.in $(POLICY)
 
 noinst_SCRIPTS = $(POLICY_DLL)
