@@ -1,6 +1,6 @@
 MFLAGS = -nologo -d:NET_2_0=MONO -keyfile:../PMS.snk
 
-ASSEMBLY = pms-config.exe
+ASSEMBLY = pms-repo.exe
 
 REFERENCES =  \
 	-r:System.dll \
@@ -12,18 +12,11 @@ SOURCES = \
 	 ./Program.cs \
 	 ./Properties/AssemblyInfo.cs
 
-noinst_SCRIPTS = $(ASSEMBLY)
+pms_DATA = $(ASSEMBLY)
 
 CLEANFILES = $(ASSEMBLY)
 
+EXTRA_DIST = $(ASSEMBLY)
+
 $(ASSEMBLY): $(SOURCES)
 	$(MCS) $(MFLAGS) -target:exe -out:$@ $(REFERENCES) $(SOURCES)
-
-install-data-local:
-	$(GACUTIL) $(GACUTIL_FLAGS) -check_refs -i $(ASSEMBLY)
-	$(install_sh) -d $(DESTDIR)$(pmsdir)
-	$(install_sh_DATA) -t $(DESTDIR)$(pmsdir)/ $(ASSEMBLY)
-
-uninstall-local:
-	$(GACUTIL) $(GACUTIL_FLAGS) -u $(subst .dll,,$(ASSEMBLY))
-	rm $(DESTDIR)$(pmsdir)/$(ASSEMBLY)

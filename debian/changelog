@@ -1,3 +1,12 @@
+libpms (0.6.40-4) unstable; urgency=low
+
+  * Fixed FileLock to use /tmp for lock files
+  * Fixed FileLock internals for better safety
+  * Added /etc/libpms/README to install
+  * Added pms-repo to make and install
+
+ -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Wed, 27 Jun 2007 09:47:35 -0400
+
 libpms (0.6.40-3) unstable; urgency=low
 
   * Decimals are now always written to the DB with periods

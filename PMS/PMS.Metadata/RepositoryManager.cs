@@ -77,6 +77,10 @@ namespace PMS.Metadata
 					return GetClass(type);
 				} else {
 					log.Error("Type '" + type.FullName + ", " + type.Assembly + "' Not Found in Repository");
+
+					foreach (Class c in Repository.Classes) {
+						log.Info(c);
+					}
 				}
 			}
 
@@ -231,6 +235,7 @@ namespace PMS.Metadata
 			Class klass = null;
 			XmlSerializer xml = new XmlSerializer(typeof(Class));
 			FileInfo f = new FileInfo(Path.Combine(GetPath(Package), type.FullName + ".pmc"));
+			bool status = false;
 
 			if (f.Exists == false) {
 				log.Error("Load("+type+") File does not exist: " + f);
@@ -239,21 +244,17 @@ namespace PMS.Metadata
 
 			try {
 				using (FileLock flock = new FileLock(f.FullName)) {
-					if (flock.AcquireReadLock()) {
-						klass = (Class) xml.Deserialize(new FileStream(f.FullName, FileMode.Open, FileAccess.Read, FileShare.Read));
-						if (klass != null && klass.Type != null) {
-							repository.Classes.Add(klass);
-							log.Info("Load: " + klass.Type.Name);
-							return true;
-						}
+					klass = (Class) xml.Deserialize(new FileStream(f.FullName, FileMode.Open, FileAccess.Read, FileShare.Read));
+					if (klass != null && klass.Type != null) {
+						repository.Classes.Add(klass);
+						status = true;
 					}
 				}
 			} catch (Exception e) {
-				log.Error("Load(Type): ", e);
+				log.Error("Load(" + type.Name + "): ", e);
 			}
 
-			log.Info("LFAILURE: " + klass.Type.Name);
-			return false;
+			return status;
 		}
 
         public static void Close()
@@ -268,8 +269,15 @@ namespace PMS.Metadata
 
 		private static string GetPath()
 		{
-			return (Environment.OSVersion.Platform == PlatformID.Unix) ?
+			string foo = (Environment.OSVersion.Platform == PlatformID.Unix) ?
 				("/etc/libpms") : ("c:\\Program Files\\Common Files\\PMS");
+
+			string env = Environment.GetEnvironmentVariable("PMS_CONFIG_PATH");
+			if (env != null) {
+				foo = env;
+			}
+
+			return foo;
 		}
 
 		private static string GetPath(string package)

@@ -39,7 +39,7 @@ config.status
 build-arch-stamp
 missing
 autom4te.cache
-PMS.Config/pms-config.exe
+PMS.Config/pms-repo.exe
 PMS/PMS.dll.mdb
 debian/tmp
 debian/libpms-dbg
@@ -49,3 +49,8 @@ PMS/Properties/AssemblyInfo.cs
 extra/policy.config
 extra/policy.0.6.PMS.config
 extra/policy.0.6.PMS.dll
+policy/policy.0.6.PMS.config
+policy/policy.config
+policy/policy.0.6.PMS.dll
+PMS.Repo/pms-repo.exe
+scripts/pms-repo

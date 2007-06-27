@@ -48,9 +48,12 @@ AC_OUTPUT([
 			  Makefile
 			  PMS/Makefile
 			  PMS/Properties/AssemblyInfo.cs
+			  PMS.Repo/Makefile
 			  build/libpms.pc
 			  build/Makefile
+			  scripts/Makefile
+			  scripts/pms-repo
 			  debian/Makefile
-			  extra/Makefile
-			  extra/policy.config
+			  policy/Makefile
+			  policy/policy.config
 ])

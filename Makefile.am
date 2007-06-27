@@ -1,4 +1,4 @@
-SUBDIRS = PMS extra build debian
+SUBDIRS = PMS PMS.Repo scripts policy build debian
 
 EXTRA_DIST = PMS.snk
 

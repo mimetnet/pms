@@ -57,6 +57,8 @@ install-arch:
 	dh_clean -k -s 
 	dh_installdirs -s
 	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
+	install -d $(CURDIR)/debian/tmp/etc/libpms
+	echo "This directoy is used to put project specific configuration data" > $(CURDIR)/debian/tmp/etc/libpms/README
 	dh_install --sourcedir=$(CURDIR)/debian/tmp
 	find $(CURDIR)/debian/libpms -type f -name '*.mdb' | xargs rm
 

@@ -32,7 +32,7 @@ namespace PMS.Metadata
 			get {
 				Class klass = null;
 
-				listLock.AcquireReaderLock(1000);
+				listLock.AcquireReaderLock(2000);
 				this.list.TryGetValue(type, out klass);
 				listLock.ReleaseReaderLock();
 
@@ -54,7 +54,7 @@ namespace PMS.Metadata
             XmlSerializer xml = new XmlSerializer(typeof(Class));
 
 			try {
-				listLock.AcquireWriterLock(1000);
+				listLock.AcquireWriterLock(2000);
 
 				while (reader.Read()) {
 					reader.MoveToElement();
@@ -65,7 +65,8 @@ namespace PMS.Metadata
 								if (klass.Type != null) {
 									this.list.Add(klass.Type, klass);
 								} else {
-									log.WarnFormat("Class.table {0}'s Type failed to load", klass.Table);
+									Console.WriteLine("Failed to find type for Class.table {0}", klass.Table);
+									log.WarnFormat("Failed to find type for Class.table {0}", klass.Table);
 								}
 							}
 						} catch (Exception) {}
@@ -94,7 +95,7 @@ namespace PMS.Metadata
 
 		public void Add(Class item)
 		{
-			listLock.AcquireWriterLock(1000);
+			listLock.AcquireWriterLock(2000);
 
 			if (this.list.ContainsKey(item.Type) == false) {
 				this.list.Add(item.Type, item);
@@ -178,26 +179,39 @@ namespace PMS.Metadata
 		{
 			get
 			{
-				return this.list.Values[index];
+				Class klass = null;
+
+				listLock.AcquireReaderLock(2000);
+				klass = this.list.Values[index];
+				listLock.ReleaseReaderLock();
+
+				return klass;
 			}
 			set
 			{
+				listLock.AcquireWriterLock(2000);
+
 				Class tmp = this.list.Values[index];
+
 				if (tmp != null) {
+					listLock.ReleaseWriterLock();
 					throw new IndexOutOfRangeException("Index retrieved no Class, this can be used for updates, not insertions!");
 				}
 
 				if (tmp.Type != value.Type) {
+					listLock.ReleaseWriterLock();
 					throw new Exception("Class.Type must equal value.Type in order to update");
 				}
 
 				this.list[value.Type] = value;
+
+				listLock.ReleaseWriterLock();
 			}
 		}
 
 		#endregion
 
-		class TypeComparer : IComparer<Type>
+		private class TypeComparer : IComparer<Type>
 		{
 			#region IComparer<Type> Members
 
@@ -207,7 +221,7 @@ namespace PMS.Metadata
 					throw new NullReferenceException();
 				}
 
-				return x.ToString().CompareTo(y.ToString());
+				return String.CompareOrdinal(x.ToString(), y.ToString());
 			}
 
 			#endregion
