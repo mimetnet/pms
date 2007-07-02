@@ -52,8 +52,11 @@ namespace PMS.IO
 
 		void IDisposable.Dispose()
 		{
-			if (File.Exists(lockFile.FullName))
-				lockFile.Delete();
+			try {
+				if (File.Exists(lockFile.FullName))
+					File.Delete(lockFile.FullName);
+			} catch (Exception) {
+			}
 
 			lockFile = null;
 		}

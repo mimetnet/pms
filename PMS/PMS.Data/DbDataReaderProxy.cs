@@ -7,7 +7,7 @@ namespace PMS.Data
 {
     public sealed class DbDataReaderProxy : IDataReader, IEnumerable
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		private IDataReader reader = null;
 		private DbConnectionProxy conn = null;
 
