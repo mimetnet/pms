@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace PMS.IO
 {
-	internal sealed class FileLock : IDisposable
+	public sealed class FileLock : IDisposable
 	{
 		private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.IO");
 		private FileInfo lockFile;

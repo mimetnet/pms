@@ -51,7 +51,7 @@ namespace PMS.Data
 		}
 		/*}}}*/
 
-		public new void Dispose()
+		public void Dispose()
 		{    
 			try {
 				if (this.reader != null)

@@ -1,3 +1,10 @@
+libpms (0.6.40-5) unstable; urgency=low
+
+  * FileLock is now public
+  * Fixed clideps 
+
+ -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Fri, 10 Aug 2007 17:45:34 -0400
+
 libpms (0.6.40-4) unstable; urgency=low
 
   * Fixed FileLock to use /tmp for lock files
@@ -5,7 +12,7 @@ libpms (0.6.40-4) unstable; urgency=low
   * Added /etc/libpms/README to install
   * Added pms-repo to make and install
 
- -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Wed, 27 Jun 2007 09:47:35 -0400
+ -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Mon,  2 Jul 2007 09:06:33 -0400
 
 libpms (0.6.40-3) unstable; urgency=low
 
