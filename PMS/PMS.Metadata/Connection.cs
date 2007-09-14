@@ -3,6 +3,8 @@ using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
 
+using PMS.Data;
+
 namespace PMS.Metadata
 {
     [XmlRoot("connection")]
@@ -14,7 +16,7 @@ namespace PMS.Metadata
 
         #region Public Properties
         public const int DEFAULT_POOL_SIZE = 1;
-		public Type Type;
+		public IProvider Provider;
         public string Value;
         public string Id;
         public bool IsDefault;
@@ -26,20 +28,20 @@ namespace PMS.Metadata
         {
         }
 
-        public Connection(string id, string conn, Type type)
-            : this(id, conn, type, true, DEFAULT_POOL_SIZE)
+        public Connection(string id, string conn, IProvider provider)
+            : this(id, conn, provider, true, DEFAULT_POOL_SIZE)
         {
         }
 
-        public Connection(string id, string conn, Type type, bool isDefault)
-            : this(id, conn, type, isDefault, DEFAULT_POOL_SIZE)
+        public Connection(string id, string conn, IProvider provider, bool isDefault)
+            : this(id, conn, provider, isDefault, DEFAULT_POOL_SIZE)
         {
         }
 
-        public Connection(string id, string conn, Type type, bool isDefault, int pool)
+        public Connection(string id, string conn, IProvider provider, bool isDefault, int pool)
         {
             Id = id;
-            Type = type;
+            Provider = provider;
             Value = conn;
             IsDefault = isDefault;
             PoolSize = pool;
@@ -61,7 +63,7 @@ namespace PMS.Metadata
 				return false;
 			}
 
-            if (obj1.Type != obj2.Type) {
+            if (obj1.Provider != obj2.Provider) {
 				return false;
 			}
 
@@ -103,7 +105,7 @@ namespace PMS.Metadata
         ///</summary> 
         public override string ToString()
         {
-            return String.Format("[ Connection (Id={0}) (sType={1}) (Value={2}) (IsDefault={3}) (PoolSize={4} ]", Id, Type.Name, Value, IsDefault, PoolSize);
+            return String.Format("[ Connection (Id={0}) (Provider={1}) (Value={2}) (IsDefault={3}) (PoolSize={4} ]", Id, Provider, Value, IsDefault, PoolSize);
         }
 
         ///<summary>
@@ -130,16 +132,11 @@ namespace PMS.Metadata
 
 			this.Id = reader.GetAttribute("id");
 
-			string stype = reader.GetAttribute("type");
-
-			if (String.IsNullOrEmpty(stype) == false) {
-				try {
-					Type = MetaObject.LoadType(stype);
-				} catch (TypeLoadException e) {
-					log.Error("ReadXml MetaObject.LoadType ", e);
-				}
+			try {
+				this.Provider = PMS.Data.ProviderFactory.Create(reader.GetAttribute("provider"));
+			} catch (Exception) {
 			}
-			
+
 			Int32.TryParse(reader.GetAttribute("pool-size"), out this.PoolSize);
 			Boolean.TryParse(reader.GetAttribute("default"), out this.IsDefault);
 
@@ -152,24 +149,24 @@ namespace PMS.Metadata
 
 		public void WriteXml(System.Xml.XmlWriter writer)
 		{
-			if (String.IsNullOrEmpty(this.Id) == false) {
-				writer.WriteAttributeString("id", this.Id);
+			if (String.IsNullOrEmpty(Id) == false) {
+				writer.WriteAttributeString("id", Id);
 			}
 
-			if (this.PoolSize > 0) {
-				writer.WriteAttributeString("pool-size", this.PoolSize.ToString());
+			if (PoolSize > 0) {
+				writer.WriteAttributeString("pool-size", PoolSize.ToString());
 			}
 
-			if (this.IsDefault) {
+			if (IsDefault) {
 				writer.WriteAttributeString("default", "true");
 			}
 
-			if (this.Type != null) {
-				writer.WriteAttributeString("type", this.Type.FullName);
+			if (Provider != null) {
+				writer.WriteAttributeString("provider", Provider.Name);
 			}
 
-			if (String.IsNullOrEmpty(this.Value) == false) {
-				writer.WriteString(this.Value);
+			if (String.IsNullOrEmpty(Value) == false) {
+				writer.WriteString(Value);
 			}
 		}
 

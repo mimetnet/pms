@@ -10,16 +10,15 @@ namespace PMS.IO
 		private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.IO");
 		private FileInfo lockFile;
 
-		public FileLock(string filePath)
+		public FileLock(FileInfo file) : this(file.FullName)
 		{
-			lockFile = new FileInfo(Path.Combine(Path.GetTempPath(), (filePath.Replace(Path.DirectorySeparatorChar, '.') + ".lock")));
-
-			this.AcquireLock();
 		}
 
-		private void AcquireLock()
+		public FileLock(string filePath)
 		{
 			int steps = 0;
+
+			lockFile = new FileInfo(Path.Combine(Path.GetTempPath(), (filePath.Replace(Path.DirectorySeparatorChar, '.') + ".lock")));
 
 			try {
 				// try for 5 seconds to obtain lock
@@ -47,7 +46,7 @@ namespace PMS.IO
 
 		public override String ToString()
 		{
-			return "FileLock@" + lockFile.FullName;
+			return "FLock@" + lockFile.FullName;
 		}
 
 		void IDisposable.Dispose()

@@ -100,13 +100,17 @@ namespace PMS.Metadata
                 return;
             }
 
-            this.Type = MetaObject.LoadType(reader.GetAttribute("type"));
+			try {
+				this.Type = PMS.Util.TypeLoader.Load(reader.GetAttribute("type"));
+			} catch (Exception) {
+			}
+
             this.Table = reader.GetAttribute("table");
 
             string ltype = reader.GetAttribute("list-type");
 			if (!String.IsNullOrEmpty(ltype)) {
 				try {
-					this.ListType = MetaObject.LoadType(ltype);
+					this.ListType = PMS.Util.TypeLoader.Load(ltype);
 				} catch (Exception e) {
 					log.Error("ReadXml: " + e.Message);
 				}
@@ -134,18 +138,14 @@ namespace PMS.Metadata
         /// <param name="writer">XmlWriter</param>
         public void WriteXml(System.Xml.XmlWriter writer)
         {
-            string stype;
+			if (this.Type != null) {
+				writer.WriteAttributeString("type", this.Type.FullName + ", " + this.Type.Assembly.GetName().ToString());
+			}
 
-            stype = this.Type.FullName + ", ";
-            stype += this.Type.Assembly.GetName().Name;
-
-            writer.WriteAttributeString("type", stype);
             writer.WriteAttributeString("table", this.Table);
 
             if (this.ListType != null) {
-                stype = this.ListType.FullName + ", ";
-                stype += this.ListType.Assembly.GetName().Name;
-                writer.WriteAttributeString("list-type", stype);
+                writer.WriteAttributeString("list-type", this.ListType.FullName + ", " + this.ListType.Assembly.GetName().ToString());
             }
 
             XmlSerializer xml = new XmlSerializer(typeof(Field));

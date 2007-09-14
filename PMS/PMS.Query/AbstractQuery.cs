@@ -26,7 +26,7 @@ namespace PMS.Query
 			this.columns = new FieldCollection();
 
 			if (this.provider == null) {
-				this.provider = ProviderFactory.Factory(RepositoryManager.CurrentConnection.Type);
+				this.provider = RepositoryManager.CurrentConnection.Provider;
 			}
 		}
 
@@ -219,21 +219,26 @@ namespace PMS.Query
 
 		private string GetTable()
 		{
-			return (cdesc.Table[0] != 'o' && cdesc.Table != "order")? cdesc.Table : ("\"" + cdesc.Table + "\"");
+			return (cdesc.Table != "order")? cdesc.Table : ("\"" + cdesc.Table + "\"");
 		}
 
         public override string ToString()
         {
-            if (Command == SqlCommand.Select)
-                return Select();
-            else if (Command == SqlCommand.Update)
-                return Update();
-            else if (Command == SqlCommand.Insert)
-                return Insert();
-            else if (Command == SqlCommand.Delete)
-                return Delete();
+			switch (Command) {
+				case SqlCommand.Select:
+					return Select();
 
-            return Select();
+				case SqlCommand.Insert:
+					return Insert();
+
+				case SqlCommand.Update:
+					return Update();
+
+				case SqlCommand.Delete:
+					return Delete();
+			}
+
+			return Select();
         }
     }
 }

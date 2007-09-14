@@ -146,14 +146,12 @@ namespace PMS.Metadata
 
 				if (reader.LocalName == "add") {
 					sAssembly = reader["assembly"];
-					if (sAssembly != null && sAssembly != String.Empty) {
-						if (!IsLoaded(sAssembly)) {
-							try {
-								assembly = Assembly.LoadWithPartialName(sAssembly);
-								log.Debug("Assembly.Load: " + assembly.FullName);
-							} catch (Exception e) {
-								log.Error("Assembly.Load: " + e.Message);
-							}
+					if (!String.IsNullOrEmpty(sAssembly)) {
+						try {
+							assembly = Assembly.Load(sAssembly);
+							Console.WriteLine("Assembly.Load: " + assembly.FullName);
+						} catch (Exception e) {
+							log.Error("Assembly.Load: " + e.Message);
 						}
 					}
 				}
@@ -161,19 +159,6 @@ namespace PMS.Metadata
                 if (reader.LocalName == "assemblies")
                     break;
             }
-        }
-
-        private bool IsLoaded(string sAssembly)
-        {
-            foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies()) {
-                if (a.GetName().Name == sAssembly) {
-					if (log.IsDebugEnabled)
-						log.Debug("Already.Loaded: " + a.GetName());
-                    return true;
-				}
-			}
-
-            return false;
         }
 
         public void WriteXml(XmlWriter writer)

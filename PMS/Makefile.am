@@ -5,11 +5,11 @@ ASSEMBLY = PMS.dll
 REFERENCES =  \
 	-r:System.dll \
 	-r:System.Data.dll \
-	-r:Npgsql.dll \
 	-pkg:printgroove-liblog4net2.0
 
 SOURCES = \
 	 ./PMS/Logger.cs \
+	 ./PMS/Config.cs \
 	 ./PMS.IO/FileLock.cs \
 	 ./PMS.Broker/IPersistenceBroker.cs \
 	 ./PMS.Broker/PersistenceBroker.cs \
@@ -34,8 +34,6 @@ SOURCES = \
 	 ./PMS.Data/ProviderDefaultException.cs \
 	 ./PMS.Data/ProviderFactory.cs \
 	 ./PMS.Data/ProviderNotFoundException.cs \
-	 ./PMS.Data.Pgsql/PostgreSqlInspector.cs \
-	 ./PMS.Data.Pgsql/PostgreSqlProvider.cs \
 	 ./PMS.Data.Pool/ConnectionPool.cs \
 	 ./PMS.DataAccess/AccessMode.cs \
 	 ./PMS.DataAccess/DbEngine.cs \
@@ -82,6 +80,8 @@ SOURCES = \
 	 ./PMS.Query/RangeClause.cs \
 	 ./PMS.Query/SqlCommand.cs \
 	 ./PMS.Query/ValueClause.cs \
+	 ./PMS.Util/TypeLoader.cs \
+	 ./PMS.Util/TypeComparer.cs \
 	 ./Properties/AssemblyInfo.cs
 
 noinst_SCRIPTS = $(ASSEMBLY)

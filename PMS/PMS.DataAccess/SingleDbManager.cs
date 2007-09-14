@@ -66,26 +66,13 @@ namespace PMS.DataAccess
                 Stop();
 
             Connection conn = RepositoryManager.DefaultConnection;
-            pool = new ConnectionPool(conn.Type, conn.Value);
+            pool = new ConnectionPool(conn.Provider.Type, conn.Value);
 
             if ((isInit = pool.Open()))
 				return CanSendHello();
 
 			return false;
         }
-
-		public bool Start(Type type, string connectionString)
-		{
-			if (isInit)
-				Stop();
-
-			pool = new ConnectionPool(type, connectionString);
-
-            if ((isInit = pool.Open()))
-				return CanSendHello();
-
-			return false;
-		}
 
         /// <summary>
         /// Closes the database pool if it has been Start()ed

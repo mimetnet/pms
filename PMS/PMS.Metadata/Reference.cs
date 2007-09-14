@@ -57,7 +57,11 @@ namespace PMS.Metadata
             }
 
             this.Field = reader.GetAttribute("field");
-            this.Type = MetaObject.LoadType(reader.GetAttribute("type"));
+
+			try {
+				this.Type = PMS.Util.TypeLoader.Load(reader.GetAttribute("type"));
+			} catch (Exception) {
+			}
 
             string auto = reader.GetAttribute("auto");
             if (auto != null && auto != String.Empty) {
@@ -85,11 +89,11 @@ namespace PMS.Metadata
         /// <param name="writer">XmlWriter</param>
         public void WriteXml(System.Xml.XmlWriter writer)
         {
-            string stype = this.Type.FullName + ", ";
-            stype += this.Type.Assembly.GetName().Name;
-
             writer.WriteAttributeString("field", this.Field);
-            writer.WriteAttributeString("type", stype);
+
+			if (this.Type != null) {
+				writer.WriteAttributeString("type", this.Type.FullName + ", " + this.Type.Assembly.GetName().ToString());
+			}
 
             if (this.Auto != 0) {
                 writer.WriteAttributeString("auto", this.AutoCrud);

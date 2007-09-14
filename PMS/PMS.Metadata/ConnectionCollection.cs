@@ -117,8 +117,8 @@ namespace PMS.Metadata
                 reader.MoveToElement();
 
                 if (reader.LocalName == "connection")
-                    if ((conn = (Connection)xml.Deserialize(reader)) != null)
-                        this.List.Add(conn);
+                    if ((conn = (Connection)xml.Deserialize(reader)) != null && conn.Provider != null)
+						this.List.Add(conn);
 
                 if (reader.LocalName == "connections")
                     return;

@@ -10,8 +10,10 @@ namespace PMS.Data
     /// Should be changed to work with events
     /// </summary>
     [Serializable]
-    internal abstract class AbstractProvider : IProvider
+    public abstract class AbstractProvider : IProvider
     {
+		private string name;
+
         public virtual string PrepareSqlValue(string dbType, object value)
         {
             if (dbType == "varchar" || dbType == "text" || dbType == "char") {
@@ -356,6 +358,15 @@ namespace PMS.Data
 		public virtual IDbInspector GetInspector(IDbConnection conn)
 		{
 			throw new NotImplementedException("AbstractProvider");
+		}
+
+		public virtual Type Type {
+			get { return GetConnection().GetType(); }
+		}
+
+		public string Name {
+			get { return this.name; }
+			set { this.name = value; }
 		}
 	}
 }

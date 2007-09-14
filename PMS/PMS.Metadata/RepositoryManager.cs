@@ -1,8 +1,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Xml.Serialization;
 
@@ -13,8 +11,7 @@ namespace PMS.Metadata
     public sealed class RepositoryManager : MarshalByRefObject
     {
         #region Private Fields
-        private static readonly log4net.ILog log =
-            log4net.LogManager.GetLogger("PMS.Metadata.RepositoryManager");
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Metadata.RepositoryManager");
         private static XmlSerializer serializer = new XmlSerializer(typeof(Repository));
         private static Repository repository = new Repository();
         private static Connection cConn = null;
@@ -32,8 +29,7 @@ namespace PMS.Metadata
 
         public static Connection DefaultConnection
         {
-            get
-            {
+            get {
                 foreach (Connection conn in Repository.Connections) {
                     if (conn.IsDefault == true)
                         return conn;
@@ -44,8 +40,7 @@ namespace PMS.Metadata
 
 				return null;
             }
-            set
-            {
+            set {
                 value.IsDefault = true;
                 foreach (Connection conn in Repository.Connections) {
                     conn.IsDefault = false;
@@ -186,24 +181,32 @@ namespace PMS.Metadata
         {
 			FileInfo f = new FileInfo(Path.GetFullPath(file));
 
+			// repository.xml style
 			if (f.Exists) {
 				return Load(f);
 			}
+
+			// /etc/libpms/[package] style
 
 			DirectoryInfo dir = new DirectoryInfo(GetPath(file));
 			if (!dir.Exists) {
 				return false;
 			}
 
-			Connection conn = null;
-			XmlSerializer xml = null;
+			XmlSerializer xml = new XmlSerializer(typeof(Connection));
 
-			xml = new XmlSerializer(typeof(Connection));
 			foreach (FileInfo pmsFile in dir.GetFiles("*.pmx")) {
-				conn = (Connection)xml.Deserialize(pmsFile.OpenRead());
-				if (conn != null) {
-					repository.Connections.Add(conn);
+				using (FileLock flock = new FileLock(f.FullName)) {
+					Connection conn = (Connection) xml.Deserialize(new FileStream(pmsFile.FullName, FileMode.Open, FileAccess.Read, FileShare.Read));
+					if (conn != null && conn.Provider != null) {
+						repository.Connections.Add(conn);
+					}
 				}
+			}
+
+			if (repository.Connections.Count == 0) {
+				Console.WriteLine("no connections loaded");
+				return false;
 			}
 
 			Package = file;
@@ -213,26 +216,26 @@ namespace PMS.Metadata
 
         public static bool Load(FileInfo file)
         {
-            try {
-                using (FileStream fs = file.OpenRead()) {
-                    repository += (Repository)serializer.Deserialize(fs);
-                    fs.Close();
-                    isLoaded = true;
-                }
-            } catch (FileNotFoundException) {
-                if (log.IsErrorEnabled)
-                    log.Error("Load(" + file + ") failed");
-            } catch (Exception e) {
-                if (log.IsErrorEnabled)
-                    log.Error("Unkown failure", e);
-            }
+			bool isLoaded = false;
+
+			using (FileStream fs = file.OpenRead()) {
+				try {
+					repository += (Repository)serializer.Deserialize(fs);
+					isLoaded = (repository.Connections.Count > 0);
+				} catch (FileNotFoundException) {
+					if (log.IsErrorEnabled)
+						log.Error("Load(" + file + ") failed");
+				} catch (Exception e) {
+					if (log.IsErrorEnabled)
+						log.Error("Unkown failure", e);
+				}
+			}
 
             return isLoaded;
         }
 
 		public static bool Load(Type type)
 		{
-			Class klass = null;
 			XmlSerializer xml = new XmlSerializer(typeof(Class));
 			FileInfo f = new FileInfo(Path.Combine(GetPath(Package), type.FullName + ".pmc"));
 			bool status = false;
@@ -244,7 +247,7 @@ namespace PMS.Metadata
 
 			try {
 				using (FileLock flock = new FileLock(f.FullName)) {
-					klass = (Class) xml.Deserialize(new FileStream(f.FullName, FileMode.Open, FileAccess.Read, FileShare.Read));
+					Class klass = (Class) xml.Deserialize(new FileStream(f.FullName, FileMode.Open, FileAccess.Read, FileShare.Read));
 					if (klass != null && klass.Type != null) {
 						repository.Classes.Add(klass);
 						status = true;
@@ -267,22 +270,9 @@ namespace PMS.Metadata
             get { return isLoaded; }
         }
 
-		private static string GetPath()
-		{
-			string foo = (Environment.OSVersion.Platform == PlatformID.Unix) ?
-				("/etc/libpms") : ("c:\\Program Files\\Common Files\\PMS");
-
-			string env = Environment.GetEnvironmentVariable("PMS_CONFIG_PATH");
-			if (env != null) {
-				foo = env;
-			}
-
-			return foo;
-		}
-
 		private static string GetPath(string package)
 		{
-			return Path.Combine(GetPath(), package);
+			return Path.Combine(PMS.Config.Path, package);
 		}
         #endregion
     }

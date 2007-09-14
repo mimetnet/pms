@@ -25,7 +25,7 @@ namespace PMS.Query
             clause = new ArrayList();
             order = new ArrayList();
 			cdesc = RepositoryManager.GetClass(type);
-			provider = ProviderFactory.Factory(RepositoryManager.CurrentConnection.Type);
+			provider = RepositoryManager.CurrentConnection.Provider;
         }
 
         private string PrepareValue(string field, object value)

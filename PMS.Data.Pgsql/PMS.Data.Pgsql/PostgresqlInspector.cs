@@ -3,12 +3,12 @@ using System.Data;
 
 using PMS.Data;
 
-namespace PMS.Data.PostgreSql
+namespace PMS.Data.Postgresql
 {
-    public sealed class PostgreSqlInspector : IDbInspector
+    public sealed class PostgresqlInspector : IDbInspector
     {
         private DataSet database = new DataSet();
-        private IProvider provider = PostgreSqlProvider.Instance;
+        private IProvider provider = new PostgresqlProvider();
         private IDbConnection connection;
 
         private const string sqlTables = "SELECT oid as id, relname as name, relnatts as column_count FROM pg_class WHERE relkind = 'r' AND relname NOT LIKE 'pg_%'";
@@ -21,7 +21,7 @@ namespace PMS.Data.PostgreSql
         /// <summary>
         /// Construct
         /// </summary>
-        public PostgreSqlInspector()
+        public PostgresqlInspector()
         {
 
         }
@@ -30,7 +30,7 @@ namespace PMS.Data.PostgreSql
         /// Construct and set connection
         /// </summary>
         /// <param name="conn">Connection to inspect</param>
-        public PostgreSqlInspector(IDbConnection conn)
+        public PostgresqlInspector(IDbConnection conn)
         {
             connection = conn;
         }

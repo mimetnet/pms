@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Data;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 using PMS.Data;
 
@@ -21,7 +20,7 @@ namespace PMS.Metadata
         public MetaObject(Type type)
         {
 			this.cdesc = RepositoryManager.GetClass(type);
-			this.provider = ProviderFactory.Factory(RepositoryManager.CurrentConnection.Type);
+			this.provider = RepositoryManager.CurrentConnection.Provider;
 
 			if (this.cdesc == null) {
 				throw new Exception("type '" + type + "' not found in repository");
@@ -35,7 +34,7 @@ namespace PMS.Metadata
             }
 
 			this.cdesc = RepositoryManager.GetClass(obj.GetType());
-			this.provider = ProviderFactory.Factory(RepositoryManager.CurrentConnection.Type);
+			this.provider = RepositoryManager.CurrentConnection.Provider;
 
 			if (this.cdesc == null) {
 				throw new Exception("obj.GetType(" + obj.GetType() + ") not found in repository");
@@ -175,64 +174,6 @@ namespace PMS.Metadata
 			//Console.WriteLine("CREATE TIME = " + (DateTime.Now - now));
 
             return obj;
-        }
-
-        public static Type LoadType(string fullTypeName)
-        {
-            // Type
-            // Type, Assembly
-            // Type, Assembly, Version, Info
-            Regex reg = new Regex("^(?<T>[\\d\\w.]+)(,\\s*(?<A>[\\d\\w.]+))?");
-            Match match = reg.Match(fullTypeName);
-
-            if (!match.Success) {
-                if (log.IsWarnEnabled)
-                    log.Warn("LoadType: failed to match regex");
-
-                throw new TypeLoadException("LoadType: failed to match regex - " + fullTypeName);
-            }
-
-            Type type = null;
-            Assembly ass = null;
-            String sType = null;
-            String sAssembly = null; ;
-
-            if (match.Groups["T"].Success) {
-                sType = match.Groups["T"].Value;
-            }
-
-            if (match.Groups["A"].Success) {
-                sAssembly = match.Groups["A"].Value;
-            }
-
-			try {
-				if (!String.IsNullOrEmpty(sAssembly)) {
-					if ((ass = Assembly.Load(sAssembly)) != null) {
-						if ((type = ass.GetType(sType, false)) != null) {
-							return type;
-						}
-					}
-				}
-			} catch (Exception) {
-				return null;
-			}
-
-            foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies()) {
-                if (a.GetName().Name.StartsWith(sType.Split('.')[0])) {
-                    foreach (Type t in a.GetTypes()) {
-                        if (t.FullName == sType) {
-                            return t;
-                        }
-                    }
-                }
-            }
-            
-            string msg = sType;
-            msg += " not found in AppDomain.CurrentDomain. ";
-            msg += "Please add a reference in /repository/assemblies/add/@assembly";
-            log.Error(msg);
-
-            throw new TypeLoadException(msg);
         }
     }
 }

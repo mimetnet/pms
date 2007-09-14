@@ -35,20 +35,18 @@ if test "x$MONO" = "xno"; then
 fi
 
 GACUTIL_FLAGS='-root $(DESTDIR)/usr/lib'
-CONFIG_DATE="`date`"
 
 AC_SUBST(AL)
 AC_SUBST(MCS)
 AC_SUBST(MONO)
 AC_SUBST(GACUTIL)
 AC_SUBST(GACUTIL_FLAGS)
-AC_SUBST(CONFIG_DATE)
 
 AC_OUTPUT([
 			  Makefile
 			  PMS/Makefile
-			  PMS/Properties/AssemblyInfo.cs
 			  PMS.Repo/Makefile
+			  PMS.Data.Pgsql/Makefile
 			  build/libpms.pc
 			  build/Makefile
 			  scripts/Makefile

@@ -1,46 +1,29 @@
 using System;
-using System.Configuration;
+using System.Collections.Generic;
 using System.Data;
 
-using PMS.Data.PostgreSql;
+using PMS.Metadata;
 
 namespace PMS.Data
 {
     [Serializable]
     internal sealed class ProviderFactory
     {
-        private static string PROVIDER_KEY = "PMS.Data.Provider";
+		private static readonly log4net.ILog log =
+			log4net.LogManager.GetLogger("PMS.Data.ProviderFactory");
 
-        public static IProvider Factory(Type type)
+        public static IProvider Create(string name)
         {
-            if (type == typeof(Npgsql.NpgsqlConnection))
-                return PostgreSqlProvider.Instance;
-            //else if (type == typeof(ByteFX.Data.MySqlClient.MySqlConnection))
-            //    return MySqlProvider.Instance;
-            
-            throw new ProviderNotFoundException("'" + type + "' does not exist within AppDomain");
-        }
-            
-        public static IProvider Factory(string name)
-        {
-            if (name.Equals("npgsql"))
-                return PostgreSqlProvider.Instance;
-            
-            throw new ProviderNotFoundException("'" + name + "' does not exist within framework");
-        }
+			if (String.IsNullOrEmpty(name)) {
+				throw new ArgumentNullException("name");
+			}
 
-        public static IProvider Factory()
-        {
-#if NET_2_0
-            string key = ConfigurationManager.AppSettings[PROVIDER_KEY];
-#else
-            string key = ConfigurationSettings.AppSettings[PROVIDER_KEY];
-#endif
-            
-            if (key != null)
-                return Factory(key);
+			IProvider p = null;
 
-            throw new ProviderDefaultException("Please specificy a default provider in a .config file before trying to use it");
+			if (PMS.Config.Instance.Providers.TryGetValue(name, out p))
+				return p;
+
+            throw new ProviderNotFoundException("'" + name + "' does not exist within known providers");
         }
     }
 }

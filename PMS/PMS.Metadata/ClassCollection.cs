@@ -17,7 +17,7 @@ namespace PMS.Metadata
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger("PMS.Metadata.ClassCollection");
 
-		private SortedList<Type, Class> list = new SortedList<Type, Class>(new TypeComparer());
+		private SortedList<Type, Class> list = new SortedList<Type, Class>(new PMS.Util.TypeComparer());
 		private static ReaderWriterLock listLock = new ReaderWriterLock();
 
         ///<summary>
@@ -210,21 +210,5 @@ namespace PMS.Metadata
 		}
 
 		#endregion
-
-		private class TypeComparer : IComparer<Type>
-		{
-			#region IComparer<Type> Members
-
-			public int Compare(Type x, Type y)
-			{
-				if (x == null || y == null) {
-					throw new NullReferenceException();
-				}
-
-				return String.CompareOrdinal(x.ToString(), y.ToString());
-			}
-
-			#endregion
-		}
 	}
 }

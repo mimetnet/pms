@@ -5,6 +5,9 @@ namespace PMS.Data
 {
     public interface IProvider
     {
+		string Name { get; set; }
+		Type Type { get; }
+
         string PrepareSqlValue(string dbType, object value);
         string PrepareSqlString(object value);
         string PrepareSqlBoolean(object value);
