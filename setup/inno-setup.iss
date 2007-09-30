@@ -1,6 +1,8 @@
 [Files]
-Source: ..\PMS\bin\Release\PMS.dll; DestDir: C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727; Components: PMS
-Source: ..\PMS\bin\Release\PMS.pdb; DestDir: C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727; Components: DBG
+Source: ..\PMS\bin\Release\PMS.dll; DestDir: {app}; Components: PMS
+Source: C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\log4net.dll; DestDir: {app}; Components: PMS
+Source: C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\Npgsql.dll; DestDir: {app}; Components: PMS
+Source: ..\PMS\bin\Release\PMS.pdb; DestDir: {app}; Components: DBG
 
 [Setup]
 VersionInfoCompany=Matthew Metnetsky
@@ -9,20 +11,22 @@ DefaultDirName={pf}\Common Files\PMS
 UsePreviousAppDir=false
 DefaultGroupName=PMS
 ShowLanguageDialog=yes
-AppID={{E58630D8-2042-40B8-ABF2-B4AE9A45CEC6}
-UninstallDisplayName=PMS
-AppCopyright=Matthew Metnetsky
+AppID={{F1EC159F-1DCB-4E97-BF43-EC14D05ED4EC}
 AppName=PMS
+AppVerName=PMS 0.6.40
+AppVersion=0.6.40
+AppCopyright=Matthew Metnetsky
+AppPublisher=Matthew Metnetsky
+AppPublisherURL=http://cowarthill.com/
+AppSupportURL=http://cowarthill.com/PMS/
+AppUpdatesURL=http://cowarthill.com/PMS/
 AppMutex=pms-setup
-AppVerName=0.6.40
 OutputBaseFilename=pms-setup
 VersionInfoVersion=0.6.40
 VersionInfoDescription=PMS
 VersionInfoCopyright=Matthew Metnetsky
 Compression=lzma
 InternalCompressLevel=normal
-AppPublisher=PMS
-AppVersion=0.6.40
 OutputDir=.\
 SetupIconFile=setup.ico
 LicenseFile=..\debian\copyright
@@ -40,9 +44,21 @@ Name: DBG; Description: Debug; Types: custom
 UseAbsolutePaths=false
 
 [Run]
-Filename: C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0\Bin\gacutil; Parameters: "/i ""C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\PMS.dll"""; Components: PMS; Flags: runhidden
+Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/i ""{app}\PMS.dll"""; Components: PMS; Flags: runhidden
+Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/i ""{app}\log4net.dll"""; Components: PMS; Flags: runhidden
+Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/i ""{app}\Npgsql.dll"""; Components: PMS; Flags: runhidden
+
+[UninstallRun]
+Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/u ""PMS, Version=0.6.40.5, Culture=neutral, PublicKeyToken=1b9e664700a659b9, processorArchitecture=MSIL"""; Components: PMS; Flags: runhidden
+Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/u ""log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL"""; Components: PMS; Flags: runhidden
+Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/u ""Npgsql, Version=0.99.3.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL"""; Components: PMS; Flags: runhidden
 
 [Registry]
+Root: HKLM; Subkey: SOFTWARE\PMS; Flags: uninsdeletekeyifempty
+Root: HKLM; Subkey: SOFTWARE\PMS\0.6.40; Flags: uninsdeletekeyifempty
+Root: HKLM; Subkey: SOFTWARE\PMS\0.6.40; ValueType: string; ValueName: Path; ValueData: {app}; Flags: uninsdeletevalue
+Root: HKLM; Subkey: SOFTWARE\Microsoft\.NETFramework\AssemblyFolders\PMS; Flags: uninsdeletekeyifempty
+Root: HKLM; Subkey: SOFTWARE\Microsoft\.NETFramework\AssemblyFolders\PMS; ValueType: string; ValueData: {app}; Flags: uninsdeletevalue
 
 [UninstallDelete]
 
@@ -75,5 +91,4 @@ begin
 	end;
 end;
 
-[UninstallRun]
-Filename: C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0\Bin\gacutil; Parameters: /u PMS; Components: PMS; Flags: runhidden
+
