@@ -60,3 +60,13 @@ PMS.Data.Sqlite/PMS.Data.Sqlite.dll
 PMS.Data.Sqlite/PMS.Data.Sqlite.dll.mdb
 doc/Makefile.in
 doc/Makefile
+doc/api-html/index.html
+doc/api-html/PMS
+doc/api-html/PMS.Broker
+doc/api-html/PMS.Collections.Pool
+doc/api-html/PMS.Data
+doc/api-html/PMS.DataAccess
+doc/api-html/PMS.IO
+doc/api-html/PMS.Metadata
+doc/api-html/PMS.Query
+doc/api-html/PMS.Util
