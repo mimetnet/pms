@@ -15,14 +15,11 @@ SOURCES = \
 	 ./PMS.Broker/IPersistenceBroker.cs \
 	 ./PMS.Broker/PersistenceBroker.cs \
 	 ./PMS.Broker/PersistenceBrokerFactory.cs \
-	 ./PMS.Collections.Pool/ForeignObjectException.cs \
 	 ./PMS.Collections.Pool/IObjectPool.cs \
 	 ./PMS.Collections.Pool/ObjectPool.cs \
 	 ./PMS.Collections.Pool/ManagedObjectPool.cs \
 	 ./PMS.Collections.Pool/ObjectNotCheckedOutException.cs \
 	 ./PMS.Collections.Pool/ObjectNotInPoolException.cs \
-	 ./PMS.Collections.Pool/PoolEmptyException.cs \
-	 ./PMS.Collections.Pool/PoolFullException.cs \
 	 ./PMS.Collections.Pool/PrincipalObjectPool.cs \
 	 ./PMS.Collections.Pool/ItemCollection.cs \
 	 ./PMS.Data/AbstractProvider.cs \

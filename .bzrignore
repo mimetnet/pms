@@ -58,3 +58,5 @@ PMS.Data.Pgsql/PMS.Data.Pgsql.dll
 PMS.Data.Pgsql/PMS.Data.Pgsql.dll.mdb
 PMS.Data.Sqlite/PMS.Data.Sqlite.dll
 PMS.Data.Sqlite/PMS.Data.Sqlite.dll.mdb
+doc/Makefile.in
+doc/Makefile

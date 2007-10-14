@@ -1,4 +1,4 @@
-SUBDIRS = PMS PMS.Data.Pgsql PMS.Data.Sqlite PMS.Repo scripts policy build debian
+SUBDIRS = PMS PMS.Data.Pgsql PMS.Data.Sqlite PMS.Repo scripts policy build debian doc
 
 EXTRA_DIST = PMS.snk
 

@@ -1,0 +1,52 @@
+<Type Name="TypeComparer" FullName="PMS.Util.TypeComparer">
+  <TypeSignature Language="C#" Value="public class TypeComparer : System.Collections.Generic.IComparer&lt;Type&gt;" />
+  <AssemblyInfo>
+    <AssemblyName>PMS</AssemblyName>
+    <AssemblyVersion>0.6.40.6</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.Collections.Generic.IComparer&lt;System.Type&gt;</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TypeComparer ();" />
+      <MemberType>Constructor</MemberType>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Compare">
+      <MemberSignature Language="C#" Value="public int Compare (Type x, Type y);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Type" />
+        <Parameter Name="y" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="x">To be added.</param>
+        <param name="y">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+  <Docs>
+    <summary>
+      <para>Used within <see cref="T:PMS.Metadata.ClassCollection" /> and a SortedList to ensure types aren't duplicated and/or incorrectly returned.</para>
+    </summary>
+    <remarks>
+      <para>Sadly, before the introduction of this class there where lots of random Types being returned by SortedList and it's basic comparison class.</para>
+    </remarks>
+  </Docs>
+</Type>

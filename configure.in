@@ -55,4 +55,5 @@ AC_OUTPUT([
 			  debian/Makefile
 			  policy/Makefile
 			  policy/policy.config
+			  doc/Makefile
 ])

@@ -1,0 +1,128 @@
+<Overview>
+  <Assemblies>
+    <Assembly Name="PMS" Version="0.6.40.6">
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Runtime.CompilerServices.RuntimeCompatibility(WrapNonExceptionThrows=true)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Runtime.InteropServices.Guid("4800165f-6049-4d94-ac23-10275ea7e9c3")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Runtime.InteropServices.ComVisible(false)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Reflection.AssemblyTrademark("")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Reflection.AssemblyCopyright("Copyright © Matthew Metnetsky 2004-2007")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Reflection.AssemblyProduct("PMS")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Reflection.AssemblyCompany("")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Reflection.AssemblyConfiguration("")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Reflection.AssemblyDescription("Phil and Matt Spaces for Object Mapping")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Reflection.AssemblyTitle("PMS")</AttributeName>
+        </Attribute>
+      </Attributes>
+    </Assembly>
+  </Assemblies>
+  <Remarks>To be added.</Remarks>
+  <Copyright>To be added.</Copyright>
+  <Types>
+    <Namespace Name="PMS">
+      <Type Name="LogLevel" />
+      <Type Name="Log" />
+      <Type Name="Config" />
+    </Namespace>
+    <Namespace Name="PMS.IO">
+      <Type Name="FileLock" />
+    </Namespace>
+    <Namespace Name="PMS.Broker">
+      <Type Name="IPersistenceBroker" />
+      <Type Name="PersistenceBroker" />
+      <Type Name="PersistenceBrokerFactory" />
+    </Namespace>
+    <Namespace Name="PMS.Collections.Pool">
+      <Type Name="ObjectPool" />
+      <Type Name="ManagedObjectPool" />
+      <Type Name="ObjectNotCheckedOutException" />
+      <Type Name="ObjectNotInPoolException" />
+      <Type Name="PrincipalObjectPool" />
+      <Type Name="ItemCollection" />
+      <Type Name="Item" />
+    </Namespace>
+    <Namespace Name="PMS.Data">
+      <Type Name="AbstractProvider" />
+      <Type Name="DbCommandProxy" />
+      <Type Name="DbConnectionProxy" />
+      <Type Name="DbDataReaderProxy" />
+      <Type Name="DbResult" />
+      <Type Name="IDbInspector" />
+      <Type Name="IProvider" />
+      <Type Name="ProviderDefaultException" />
+      <Type Name="ProviderNotFoundException" />
+    </Namespace>
+    <Namespace Name="PMS.DataAccess">
+      <Type Name="AccessMode" />
+      <Type Name="DbEngine" />
+      <Type Name="DbEngineNotStartedException" />
+    </Namespace>
+    <Namespace Name="PMS.Metadata">
+      <Type Name="AssemblyCollection" />
+      <Type Name="Auto" />
+      <Type Name="Class" />
+      <Type Name="ClassCollection" />
+      <Type Name="ClassNotFoundException" />
+      <Type Name="Connection" />
+      <Type Name="ConnectionCollection" />
+      <Type Name="Field" />
+      <Type Name="FieldCollection" />
+      <Type Name="FieldNotFoundException" />
+      <Type Name="Reference" />
+      <Type Name="DbManagerMode" />
+      <Type Name="Repository" />
+      <Type Name="RepositoryManager" />
+      <Type Name="RepositoryNotFoundException" />
+    </Namespace>
+    <Namespace Name="PMS.Query">
+      <Type Name="AbstractQuery" />
+      <Type Name="AndClause" />
+      <Type Name="BetweenClause" />
+      <Type Name="Criteria" />
+      <Type Name="EqualToClause" />
+      <Type Name="GreaterOrEqualToClause" />
+      <Type Name="GreaterThanClause" />
+      <Type Name="IClause" />
+      <Type Name="IQuery" />
+      <Type Name="IsNotNullClause" />
+      <Type Name="IsNullClause" />
+      <Type Name="LessOrEqualToClause" />
+      <Type Name="LessThanClause" />
+      <Type Name="LikeClause" />
+      <Type Name="NotBetweenClause" />
+      <Type Name="NotEqualToClause" />
+      <Type Name="NotLikeClause" />
+      <Type Name="OrClause" />
+      <Type Name="QueryByCriteria" />
+      <Type Name="QueryByObject" />
+      <Type Name="QueryBySql" />
+      <Type Name="QueryByType" />
+      <Type Name="RangeClause" />
+      <Type Name="SqlCommand" />
+      <Type Name="ValueClause" />
+    </Namespace>
+    <Namespace Name="PMS.Util">
+      <Type Name="TypeComparer" />
+    </Namespace>
+  </Types>
+  <Title>PMS</Title>
+</Overview>

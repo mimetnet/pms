@@ -1,0 +1,29 @@
+<Type Name="QueryByCriteria" FullName="PMS.Query.QueryByCriteria">
+  <TypeSignature Language="C#" Value="public class QueryByCriteria : PMS.Query.AbstractQuery" />
+  <AssemblyInfo>
+    <AssemblyName>PMS</AssemblyName>
+    <AssemblyVersion>0.6.40.6</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>PMS.Query.AbstractQuery</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public QueryByCriteria (PMS.Query.Criteria criteria);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="criteria" Type="PMS.Query.Criteria" />
+      </Parameters>
+      <Docs>
+        <param name="criteria">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+  <Docs>
+    <summary>To be added.</summary>
+    <remarks>To be added.</remarks>
+  </Docs>
+</Type>

@@ -1,0 +1,218 @@
+<Type Name="DbResult" FullName="PMS.Data.DbResult">
+  <TypeSignature Language="C#" Value="public sealed class DbResult" />
+  <AssemblyInfo>
+    <AssemblyName>PMS</AssemblyName>
+    <AssemblyVersion>0.6.40.6</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DbResult ();" />
+      <MemberType>Constructor</MemberType>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DbResult (Exception exception);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="exception" Type="System.Exception" />
+      </Parameters>
+      <Docs>
+        <param name="exception">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DbResult (long records);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="records" Type="System.Int64" />
+      </Parameters>
+      <Docs>
+        <param name="records">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DbResult (long records, Exception ex);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="records" Type="System.Int64" />
+        <Parameter Name="ex" Type="System.Exception" />
+      </Parameters>
+      <Docs>
+        <param name="records">To be added.</param>
+        <param name="ex">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DbResult (long records, object obj, string sql, Exception ex);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="records" Type="System.Int64" />
+        <Parameter Name="obj" Type="System.Object" />
+        <Parameter Name="sql" Type="System.String" />
+        <Parameter Name="ex" Type="System.Exception" />
+      </Parameters>
+      <Docs>
+        <param name="records">To be added.</param>
+        <param name="obj">To be added.</param>
+        <param name="sql">To be added.</param>
+        <param name="ex">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DbResult (long records, string sql);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="records" Type="System.Int64" />
+        <Parameter Name="sql" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="records">To be added.</param>
+        <param name="sql">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DbResult (long records, string sql, Exception ex);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="records" Type="System.Int64" />
+        <Parameter Name="sql" Type="System.String" />
+        <Parameter Name="ex" Type="System.Exception" />
+      </Parameters>
+      <Docs>
+        <param name="records">To be added.</param>
+        <param name="sql">To be added.</param>
+        <param name="ex">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DbResult (object obj, string sql);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="obj" Type="System.Object" />
+        <Parameter Name="sql" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="obj">To be added.</param>
+        <param name="sql">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DbResult (string sql);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="sql" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="sql">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DbResult (string sql, Exception ex);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="sql" Type="System.String" />
+        <Parameter Name="ex" Type="System.Exception" />
+      </Parameters>
+      <Docs>
+        <param name="sql">To be added.</param>
+        <param name="ex">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Count">
+      <MemberSignature Language="C#" Value="public long Count { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int64</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Exception">
+      <MemberSignature Language="C#" Value="public Exception Exception { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Exception</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Object">
+      <MemberSignature Language="C#" Value="public object Object { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="op_Addition">
+      <MemberSignature Language="C#" Value="public static PMS.Data.DbResult op_Addition (PMS.Data.DbResult a, PMS.Data.DbResult b);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Data.DbResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="a" Type="PMS.Data.DbResult" />
+        <Parameter Name="b" Type="PMS.Data.DbResult" />
+      </Parameters>
+      <Docs>
+        <param name="a">To be added.</param>
+        <param name="b">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SQL">
+      <MemberSignature Language="C#" Value="public string SQL { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+  <Docs>
+    <summary>To be added.</summary>
+    <remarks>To be added.</remarks>
+  </Docs>
+</Type>

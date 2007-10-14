@@ -1,0 +1,20 @@
+<Type Name="ValueClause" FullName="PMS.Query.ValueClause">
+  <TypeSignature Language="C#" Value="public abstract class ValueClause : PMS.Query.IClause" />
+  <AssemblyInfo>
+    <AssemblyName>PMS</AssemblyName>
+    <AssemblyVersion>0.6.40.6</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>PMS.Query.IClause</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Members />
+  <Docs>
+    <summary>To be added.</summary>
+    <remarks>To be added.</remarks>
+  </Docs>
+</Type>
