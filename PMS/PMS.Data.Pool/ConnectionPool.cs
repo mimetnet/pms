@@ -13,7 +13,8 @@ namespace PMS.Data.Pool
 
         #region Constructors
 
-        public ConnectionPool(Type type, string sConn) : base(typeof(DbConnectionProxy), new object[]{type}, "Close")
+        public ConnectionPool(Type type, string sConn) : 
+			base(typeof(DbConnectionProxy), new object[]{type}, "Close")
         {
             this.sConn = sConn;
         }

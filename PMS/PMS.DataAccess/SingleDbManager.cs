@@ -45,7 +45,6 @@ namespace PMS.DataAccess
         {
             IDbCommand cmd = this.pool.GetConnection().CreateCommand();
             cmd.CommandText = sql;
-
             return cmd;
         }
 

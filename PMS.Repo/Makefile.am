@@ -1,4 +1,4 @@
-MFLAGS = -nologo -d:NET_2_0=MONO -keyfile:../PMS.snk
+MFLAGS = -nologo -d:MONO -keyfile:../PMS.snk
 
 ASSEMBLY = pms-repo.exe
 
@@ -6,7 +6,8 @@ REFERENCES =  \
 	-r:System.dll \
 	-r:System.Data.dll \
 	-r:../PMS/PMS.dll \
-	-pkg:printgroove-liblog4net2.0
+   -pkg:log4net-1.2
+#	-pkg:printgroove-liblog4net2.0
 
 SOURCES = \
 	 ./Program.cs \

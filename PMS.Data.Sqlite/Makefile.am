@@ -1,18 +1,18 @@
 MFLAGS = -debug+ -nologo -d:MONO -keyfile:$(top_srcdir)/PMS.snk
 
-ASSEMBLY = PMS.Data.Pgsql.dll
+ASSEMBLY = PMS.Data.Sqlite.dll
 
 REFERENCES =  \
 	-r:System.dll \
 	-r:System.Data.dll \
-	-r:Npgsql.dll \
+	-r:Mono.Data.Sqlite.dll \
 	-r:../PMS/PMS.dll \
 	-pkg:log4net-1.2
 #	-pkg:printgroove-liblog4net2.0
 
 SOURCES = \
-	 ./PMS.Data.Pgsql/PostgresqlInspector.cs \
-	 ./PMS.Data.Pgsql/PostgresqlProvider.cs \
+	 ./PMS.Data.Sqlite/SqliteInspector.cs \
+	 ./PMS.Data.Sqlite/SqliteProvider.cs \
 	 ./Properties/AssemblyInfo.cs
 
 noinst_SCRIPTS = $(ASSEMBLY)

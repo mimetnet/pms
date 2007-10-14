@@ -13,10 +13,6 @@ namespace PMS.Query
     /// </summary>
     public class QueryByObject : AbstractQuery
     {
-		//internal QueryByObject()
-		//{
-		//}
-
         /// <summary>
         /// Construct with object
         /// </summary>

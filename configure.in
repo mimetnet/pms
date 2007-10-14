@@ -47,6 +47,7 @@ AC_OUTPUT([
 			  PMS/Makefile
 			  PMS.Repo/Makefile
 			  PMS.Data.Pgsql/Makefile
+			  PMS.Data.Sqlite/Makefile
 			  build/libpms.pc
 			  build/Makefile
 			  scripts/Makefile

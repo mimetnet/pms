@@ -28,7 +28,7 @@ namespace PMS.Util
 				if (!String.IsNullOrEmpty(sAssembly)) {
 					if ((ass = Assembly.Load(sAssembly)) != null) {
 						if ((type = ass.GetType(sType, false)) != null) {
-							Console.WriteLine("loaded: " + type);
+							Console.WriteLine("loaded: '" + type + ", " + type.Assembly + "'");
 							return type;
 						}
 					} else {

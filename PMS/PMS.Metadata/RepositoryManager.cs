@@ -21,14 +21,12 @@ namespace PMS.Metadata
 		public static string Package = String.Empty;
 
         #region Properties
-        public static Repository Repository
-        {
+        public static Repository Repository {
             get { return repository; }
             set { repository = value; }
         }
 
-        public static Connection DefaultConnection
-        {
+        public static Connection DefaultConnection {
             get {
                 foreach (Connection conn in Repository.Connections) {
                     if (conn.IsDefault == true)
@@ -187,7 +185,6 @@ namespace PMS.Metadata
 			}
 
 			// /etc/libpms/[package] style
-
 			DirectoryInfo dir = new DirectoryInfo(GetPath(file));
 			if (!dir.Exists) {
 				return false;
@@ -216,12 +213,12 @@ namespace PMS.Metadata
 
         public static bool Load(FileInfo file)
         {
-			bool isLoaded = false;
+			bool res = false;
 
 			using (FileStream fs = file.OpenRead()) {
 				try {
 					repository += (Repository)serializer.Deserialize(fs);
-					isLoaded = (repository.Connections.Count > 0);
+					res = (repository.Connections.Count > 0);
 				} catch (FileNotFoundException) {
 					if (log.IsErrorEnabled)
 						log.Error("Load(" + file + ") failed");
@@ -231,7 +228,7 @@ namespace PMS.Metadata
 				}
 			}
 
-            return isLoaded;
+            return (isLoaded = res);
         }
 
 		public static bool Load(Type type)

@@ -60,22 +60,27 @@ namespace PMS.DataAccess
 			if (query == null) throw new ArgumentNullException("IQuery cannot be null");
 
             Object obj = null;
+			DbResult result = null;
 			MetaObject mobj = new MetaObject(query.Type);
 
-            try {
-                query.Criteria.Limit = 1;
-				using (IDbCommand cmd = dbManager.GetCommand(query.Select())) {
+			using (IDbCommand cmd = dbManager.GetCommand(query.Select())) {
+				try {
+					query.Criteria.Limit = 1;
 					using (IDataReader reader = cmd.ExecuteReader()) {
 						obj = mobj.Materialize(reader);
-						if (log.IsDebugEnabled) { 
-							log.Debug(new DbResult(((obj == null)? 0 : 1), query.Select()));
-						}
+						result = new DbResult(((obj == null)? 0 : 1), query.Select());
+					}
+				} catch (Exception e) {
+					result = new DbResult(query.Select(), e);
+				} finally {
+					if (result.Exception != null) {
+						log.Error("ExecuteSelectObject: " + result);
+					} else if (log.IsDebugEnabled) {
+						log.Debug(result);
 					}
 					dbManager.ReturnCommand(cmd);
 				}
-			} catch (Exception e) {
-                log.Error("ExecuteSelectObject: " + new DbResult(query.Select(), e));
-            }
+			}
 
             return obj;
         }
@@ -89,33 +94,27 @@ namespace PMS.DataAccess
         {
 			if (query == null) throw new ArgumentNullException("IQuery cannot be null");
 
-            IDataReader reader = null;
-            IDbCommand cmd = null;
-			MetaObject mobj = new MetaObject(query.Type);
-            DbResult result = null;
             object[] list = null;
+			DbResult result = null;
+			MetaObject mobj = new MetaObject(query.Type);
 
-            try {
-				cmd = dbManager.GetCommand(query.Select());
-				if ((reader = cmd.ExecuteReader()) != null) {
-					list = mobj.MaterializeArray(reader);
-					result = new DbResult(list.Length, query.Select());
+			using (IDbCommand cmd = dbManager.GetCommand(query.Select())) {
+				try {
+					using (IDataReader reader = cmd.ExecuteReader()) {
+						list = mobj.MaterializeArray(reader);
+						result = new DbResult(list.Length, query.Select());
+					}
+				} catch (Exception e) {
+					result = new DbResult(query.Select(), e);
+				} finally {
+					if (result.Exception != null) {
+						log.Error("ExecuteSelectArray: " + result);
+					} else if (log.IsDebugEnabled) {
+						log.Debug(result);
+					}
+					dbManager.ReturnCommand(cmd);
 				}
-            } catch (Exception e) {
-                result = new DbResult(query.Select(), e);
-                log.Error("ExecuteSelectArray: " + result);
-            } finally {
-                if (cmd != null) {
-                    if (log.IsDebugEnabled)
-                        log.Debug(result);
-                    dbManager.ReturnCommand(cmd);
-                }
-                if (reader != null) {
-                    reader.Close();
-                    reader = null;
-                }
-                query = null;
-            }
+			}
 
             return list;
         }
@@ -130,21 +129,26 @@ namespace PMS.DataAccess
 			if (query == null) throw new ArgumentNullException("IQuery cannot be null");
 
             IList list = null;
+			DbResult result = null;
 			MetaObject mobj = new MetaObject(query.Type);
 
-            try {
-				using (IDbCommand cmd = dbManager.GetCommand(query.Select())) {
+			using (IDbCommand cmd = dbManager.GetCommand(query.Select())) {
+				try {
 					using (IDataReader reader = cmd.ExecuteReader()) {
 						list = mobj.MaterializeList(reader);
-						if (log.IsDebugEnabled) {
-							log.Debug(new DbResult(list.Count, query.Select()));
-						}
+						result = new DbResult(list.Count, query.Select());
 					}
-                    dbManager.ReturnCommand(cmd);
+				} catch (Exception e) {
+					result = new DbResult(query.Select(), e);
+				} finally {
+					if (result.Exception != null) {
+						log.Error("ExecuteSelectList: " + result);
+					} else if (log.IsDebugEnabled) {
+						log.Debug(result);
+					}
+					dbManager.ReturnCommand(cmd);
 				}
-            } catch (Exception e) {
-                log.Error("ExecuteSelectList: " + new DbResult(query.Select(), e));
-            }
+			}
 
             return list;
         }

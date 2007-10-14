@@ -54,3 +54,5 @@ policy/policy.config
 policy/policy.0.6.PMS.dll
 PMS.Repo/pms-repo.exe
 scripts/pms-repo
+PMS.Data.Pgsql/PMS.Data.Pgsql.dll
+PMS.Data.Pgsql/PMS.Data.Pgsql.dll.mdb
