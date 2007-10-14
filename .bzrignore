@@ -56,3 +56,5 @@ PMS.Repo/pms-repo.exe
 scripts/pms-repo
 PMS.Data.Pgsql/PMS.Data.Pgsql.dll
 PMS.Data.Pgsql/PMS.Data.Pgsql.dll.mdb
+PMS.Data.Sqlite/PMS.Data.Sqlite.dll
+PMS.Data.Sqlite/PMS.Data.Sqlite.dll.mdb
