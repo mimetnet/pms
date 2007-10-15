@@ -131,10 +131,12 @@ namespace PMS.Metadata
 				return;
 
 			this.Id = reader.GetAttribute("id");
+			String prov = reader.GetAttribute("provider");
 
 			try {
-				this.Provider = PMS.Data.ProviderFactory.Create(reader.GetAttribute("provider"));
+				this.Provider = PMS.Data.ProviderFactory.Create(prov);
 			} catch (Exception) {
+				log.ErrorFormat("ReadXml: '{0}' not found in base config path '{1}'", prov, PMS.Config.Path);
 			}
 
 			Int32.TryParse(reader.GetAttribute("pool-size"), out this.PoolSize);
