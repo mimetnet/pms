@@ -1,6 +1,6 @@
 <Namespace Name="PMS.Util">
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary><para>Random classes that make PMS work</para></summary>
+    <remarks><para>Anything new and not easilly placed often gets tossed here. They often start out internal and sometimes become public.</para></remarks>
   </Docs>
 </Namespace>
