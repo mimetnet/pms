@@ -1,4 +1,4 @@
-MFLAGS = -debug+ -nologo -d:MONO -keyfile:$(top_srcdir)/PMS.snk
+MFLAGS = $(DEBUG_FLAGS) -nologo -d:MONO -keyfile:$(top_srcdir)/PMS.snk
 
 ASSEMBLY = PMS.Data.Pgsql.dll
 
@@ -7,8 +7,7 @@ REFERENCES =  \
 	-r:System.Data.dll \
 	-r:Npgsql.dll \
 	-r:../PMS/PMS.dll \
-	-pkg:log4net-1.2
-#	-pkg:printgroove-liblog4net2.0
+	-pkg:$(PKGLOG4NET)
 
 SOURCES = \
 	 ./PMS.Data.Pgsql/PostgresqlInspector.cs \

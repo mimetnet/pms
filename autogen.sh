@@ -75,7 +75,8 @@ echo "Running autoconf ..."
 autoconf || { echo "**Error**: autoconf failed."; exit 1; }
 
 echo
-$srcdir/configure --prefix=/usr
+echo $srcdir/configure --prefix=/usr $@
+$srcdir/configure --prefix=/usr $@
 echo
 echo Then run \`make\' to compile $PKG_NAME
 echo

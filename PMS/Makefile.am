@@ -1,12 +1,11 @@
-MFLAGS = -debug+ -nologo -d:MONO -keyfile:../PMS.snk
+MFLAGS = $(DEBUG_FLAGS) -nologo -d:MONO -keyfile:../PMS.snk
 
 ASSEMBLY = PMS.dll
 
 REFERENCES =  \
 	-r:System.dll \
 	-r:System.Data.dll \
-	-pkg:log4net-1.2
-#	-pkg:printgroove-liblog4net2.0
+	-pkg:$(PKGLOG4NET)
 
 SOURCES = \
 	 ./PMS/Logger.cs \
