@@ -1,0 +1,17 @@
+() rewrite repository & dbengine integration
+() transactions across multiple web requests (keys?)
+() add delegates
+   - connection load to allow encrypted connectionStrings
+() object caching
+   - iface to allow many types
+() generics
+() LINQ?
+() references
+() pagination assistance
+() add events
+	- object CRUD
+	  - one way
+	  - iface to allow remote connections
+() proxy result set to check for dirty properties
+() validation
+() events for life-cycle (CRUD)
