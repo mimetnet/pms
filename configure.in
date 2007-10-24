@@ -67,9 +67,9 @@ fi
 AC_OUTPUT([
 			  Makefile
 			  PMS/Makefile
-			  PMS.Repo/Makefile
 			  PMS.Data.Pgsql/Makefile
 			  PMS.Data.Sqlite/Makefile
+			  pms-repo/Makefile
 			  build/libpms.pc
 			  build/Makefile
 			  scripts/Makefile
