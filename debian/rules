@@ -61,6 +61,8 @@ install-arch:
 	echo "This directoy is used to put project specific configuration data" > $(CURDIR)/debian/tmp/etc/libpms/README
 	dh_install --sourcedir=$(CURDIR)/debian/tmp
 	find $(CURDIR)/debian/libpms -type f -name '*.mdb' | xargs rm
+	find $(CURDIR)/debian/libpms-pgsql -type f -name '*.mdb' | xargs rm
+	find $(CURDIR)/debian/libpms-sqlite3 -type f -name '*.mdb' | xargs rm
 
 # Must not depend on anything. This is to be called by binary-arch
 # in another 'make' thread.

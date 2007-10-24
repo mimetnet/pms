@@ -69,3 +69,7 @@ doc/api-html/PMS.IO
 doc/api-html/PMS.Metadata
 doc/api-html/PMS.Query
 doc/api-html/PMS.Util
+debian/libpms-pgsql
+debian/libpms-pgsql-dbg
+debian/libpms-sqlite3
+debian/libpms-sqlite3-dbg

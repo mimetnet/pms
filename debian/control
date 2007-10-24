@@ -11,12 +11,30 @@ Depends: ${cli:Depends}
 Description: PMS - Phil & Matt Spaces for .NET
  PMS is an object relation mapping library for .NET/mono.
  .
- This version is packaged for Mono 2.0 for use with Konica Minolta's
- Printgroove server.
+ This version is packaged for Mono 2.0. 
 
 Package: libpms-dbg
 Architecture: any
 Depends: libpms (= ${Source-Version})
-Description: PMS - Phil & Matt Spaces for .NET (DEBUG)
- Adds debug symbols for libpms
+Description: Debug symbols for libpms
+
+Package: libpms-pgsql
+Architecture: any
+Depends: libpms (= ${Source-Version}) ${cli:Depends}
+Description: PMS Postgresql Support
+
+Package: libpms-pgsql-dbg
+Architecture: any
+Depends: libpms (= ${Source-Version}) ${cli:Depends}
+Description: PMS Postgresql Debug Symbols
+
+Package: libpms-sqlite3
+Architecture: any
+Depends: libpms (= ${Source-Version}) ${cli:Depends}
+Description: PMS Sqlite3 Support
+
+Package: libpms-sqlite3-dbg
+Architecture: any
+Depends: libpms (= ${Source-Version}) ${cli:Depends}
+Description: PMS Sqlite3 Debug Symbols
 
