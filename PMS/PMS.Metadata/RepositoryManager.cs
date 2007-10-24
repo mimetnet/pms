@@ -269,7 +269,7 @@ namespace PMS.Metadata
 
 		private static string GetPath(string package)
 		{
-			return Path.Combine(PMS.Config.Path, package);
+			return Path.Combine(PMS.Config.SystemPath, package);
 		}
         #endregion
     }

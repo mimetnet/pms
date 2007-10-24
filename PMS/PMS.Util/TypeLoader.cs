@@ -28,7 +28,7 @@ namespace PMS.Util
 				if (!String.IsNullOrEmpty(sAssembly)) {
 					if ((ass = Assembly.Load(sAssembly)) != null) {
 						if ((type = ass.GetType(sType, false)) != null) {
-							Console.WriteLine("loaded: '" + type + ", " + type.Assembly + "'");
+							//Console.WriteLine("loaded: '" + type + ", " + type.Assembly + "'");
 							return type;
 						}
 					} else {
@@ -43,8 +43,6 @@ namespace PMS.Util
 			}
 
 			string bnsp = sType.Split('.')[0];
-
-			Console.WriteLine();
 
             foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies()) {
                 if (a.GetName().Name.StartsWith(bnsp)) {

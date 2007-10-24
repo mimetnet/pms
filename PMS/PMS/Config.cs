@@ -18,7 +18,7 @@ namespace PMS
 			get { return config; }
 		}
 
-		public static string Path {
+		public static string SystemPath {
 			get {
 				string foo = (Environment.OSVersion.Platform == PlatformID.Unix) ?
 					("/etc/libpms") : ("c:\\Program Files\\Common Files\\PMS");
@@ -32,20 +32,27 @@ namespace PMS
 			}
 		}
 
+		public static string UserPath {
+			get {
+				return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "libpms");
+			}
+		}
+
 		public SortedList<string, IProvider> Providers = new SortedList<string, IProvider>(StringComparer.Ordinal);
 
 		private Config()
 		{
-			string root = System.IO.Path.Combine(Config.Path, "pms.conf");
-			
-			if (File.Exists(root))
-				Load(new FileInfo(root));
+			FileInfo f = new FileInfo(Path.Combine(Config.SystemPath, "pms.conf"));
 
-			root = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-						System.IO.Path.Combine("pms", "pms.conf"));
+			if (f.Exists)
+				Load(f);
 
-			if (File.Exists(root))
-				Load(new FileInfo(root));
+			Console.WriteLine("Loading: " + f);
+			f = new FileInfo(Path.Combine(Config.UserPath, "pms.conf"));
+			Console.WriteLine("Loading: " + f);
+
+			if (f.Exists)
+				Load(f);
 		}
 
 		private void Load(FileInfo file)
