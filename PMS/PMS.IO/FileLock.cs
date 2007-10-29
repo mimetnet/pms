@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading;
+using System.Security.Cryptography;
 
 namespace PMS.IO
 {
@@ -18,7 +19,7 @@ namespace PMS.IO
 		{
 			int steps = 0;
 
-			lockFile = new FileInfo(Path.Combine(Path.GetTempPath(), (filePath.Replace(Path.DirectorySeparatorChar, '.') + ".lock")));
+			lockFile = new FileInfo(Path.Combine(Path.GetTempPath(), (this.GetLock(filePath) + ".lock")));
 
 			try {
 				// try for 5 seconds to obtain lock
@@ -41,12 +42,20 @@ namespace PMS.IO
 				log.Error("AcquireLock (B): ", e);
 			}
 
+			Console.WriteLine(this);
+
 			lockFile.Create().Close();
 		}
 
 		public override String ToString()
 		{
-			return "FLock@" + lockFile.FullName;
+			return "Flock://" + lockFile.FullName;
+		}
+
+		private string GetLock(string file)
+		{
+			MD5 md5 = new MD5CryptoServiceProvider();
+			return Convert.ToBase64String(md5.ComputeHash(System.Text.UTF8Encoding.Default.GetBytes(file)));
 		}
 
 		void IDisposable.Dispose()
