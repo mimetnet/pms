@@ -42,8 +42,6 @@ namespace PMS.IO
 				log.Error("AcquireLock (B): ", e);
 			}
 
-			Console.WriteLine(this);
-
 			lockFile.Create().Close();
 		}
 

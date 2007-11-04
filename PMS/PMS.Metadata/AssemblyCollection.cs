@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.IO;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
@@ -138,25 +139,32 @@ namespace PMS.Metadata
 
         public void ReadXml(XmlReader reader)
         {
-            Assembly assembly;
             string sAssembly;
 
             while (reader.Read()) {
                 reader.MoveToElement();
 
 				if (reader.LocalName == "add") {
-					sAssembly = reader["assembly"];
-					if (!String.IsNullOrEmpty(sAssembly)) {
-						try {
-							assembly = Assembly.Load(sAssembly);
-							Console.WriteLine("Assembly.Load: " + assembly.FullName);
-						} catch (Exception e) {
-							log.Error("Assembly.Load: " + e.Message);
+
+					if (!reader.IsEmptyElement) {
+						sAssembly = reader.ReadElementContentAsString();
+						if (!String.IsNullOrEmpty(sAssembly)) {
+							try {
+								if (File.Exists(sAssembly)) {
+									Assembly.LoadFile(sAssembly);
+								} else {
+									Assembly.Load(sAssembly);
+								}
+							} catch (Exception e) {
+								log.Error("Load: " + e.Message + Environment.NewLine);
+							}
 						}
+					} else {
+						reader.Read();
 					}
 				}
 
-                if (reader.LocalName == "assemblies")
+				if (reader.LocalName == "assemblies" && reader.NodeType == XmlNodeType.EndElement)
                     break;
             }
         }
@@ -164,9 +172,7 @@ namespace PMS.Metadata
         public void WriteXml(XmlWriter writer)
         {
             foreach (string ass in this.List) {
-                writer.WriteStartElement("add");
-                writer.WriteAttributeString("assembly", ass);
-                writer.WriteEndElement();
+                writer.WriteElementString("add", ass);
             }
         }
 

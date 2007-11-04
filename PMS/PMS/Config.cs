@@ -12,6 +12,7 @@ namespace PMS
 {
 	public sealed class Config
 	{
+		private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Config");
 		private static Config config = new Config();
 
 		public static Config Instance {
@@ -73,18 +74,23 @@ namespace PMS
 
 		private void LoadProviders(XmlReader reader)
 		{
+			string name = null;
+			string stype = null;
+
 			while (reader.Read()) {
 				reader.MoveToElement();
 
 				if (reader.LocalName == "add") {
-					string name = reader.GetAttribute("name");
+					name = reader.GetAttribute("name");
 					IProvider p = null;
 
 					if (!reader.IsEmptyElement) {
 						try {
-							p = (IProvider) Activator.CreateInstance(TypeLoader.Load(reader.ReadElementContentAsString()));
-						} catch (Exception e) {
-							Console.WriteLine("LoadProviders: " + e);
+							stype = reader.ReadElementContentAsString();
+							p = (IProvider) Activator.CreateInstance(TypeLoader.Load(stype));
+						} catch (Exception) {
+							Console.WriteLine("LoadProviders Failed to load '{0}' ({1})", name, stype);
+							log.ErrorFormat("LoadProviders Failed to load '{0}' ({1})", name, stype);
 						}
 
 						if (!String.IsNullOrEmpty(name) && p != null) {
@@ -94,7 +100,7 @@ namespace PMS
 						reader.Read();
 					}
 				} else if (reader.LocalName == "remove") {
-					string name = reader.GetAttribute("name");
+					name = reader.GetAttribute("name");
 					if (Providers.ContainsKey(name)) {
 						Providers.Remove(name);
 					}
@@ -103,8 +109,9 @@ namespace PMS
 				} else if (reader.LocalName == "providers" && reader.NodeType == XmlNodeType.EndElement) {
 					break;
 				}
-			}
 
+				name = stype = null;
+			}
 		}
 	}
 }

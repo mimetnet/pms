@@ -38,28 +38,12 @@ namespace PMS.Util
 					log.Error("no assembly for : " + fullTypeName);
 				}
 			} catch (Exception e) {
-				log.Warn("Load Exception: " + e);
-				return null;
+				log.Warn(e.Message + "\n");
 			}
 
-			string bnsp = sType.Split('.')[0];
+            log.Error(sType + " not found" + Environment.NewLine);
 
-            foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies()) {
-                if (a.GetName().Name.StartsWith(bnsp)) {
-                    foreach (Type t in a.GetTypes()) {
-                        if (t.FullName == sType) {
-                            return t;
-                        }
-                    }
-                }
-            }
-            
-            string msg = sType;
-            msg += " not found in AppDomain.CurrentDomain. ";
-            msg += "Please add a reference in /repository/assemblies/add/@assembly";
-            log.Error(msg);
-
-            throw new TypeLoadException(msg);
+            throw new TypeLoadException(sType + " not found" + Environment.NewLine);
         }
     }
 }
