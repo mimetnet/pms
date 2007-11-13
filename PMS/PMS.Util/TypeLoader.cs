@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace PMS.Util
 {
-    internal sealed class TypeLoader
+    public sealed class TypeLoader
     {
         private static readonly log4net.ILog log = 
             log4net.LogManager.GetLogger("PMS.Util.TypeLoader");

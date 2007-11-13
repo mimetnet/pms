@@ -48,8 +48,7 @@ namespace PMS.Metadata
             }
         }
 
-        public static Connection CurrentConnection
-        {
+        public static Connection CurrentConnection {
             get {
                 if (cConn == null)
                     cConn = DefaultConnection;
