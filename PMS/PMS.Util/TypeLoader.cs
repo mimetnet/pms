@@ -5,8 +5,8 @@ namespace PMS.Util
 {
 	public sealed class TypeLoader
 	{
-		private static readonly log4net.ILog log = 
-			log4net.LogManager.GetLogger("PMS.Util.TypeLoader");
+		//private static readonly log4net.ILog log = 
+		//	log4net.LogManager.GetLogger("PMS.Util.TypeLoader");
 
 		public static Type Load(string typeName)
 		{
