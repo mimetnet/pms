@@ -2,11 +2,11 @@ Source: libpms
 Section: universe/libs
 Priority: optional
 Maintainer: Matthew Metnetsky <matthew@cowarthill.com>
-Build-Depends: debhelper (>= 4.0.0), mono-gac, cli-common (>= 0.2.0)
+Build-Depends: debhelper (>= 4.0.0), mono-gac, cli-common (>= 0.2.0), cli-common-dev (>= 0.4.4)
 Standards-Version: 3.6.2
 
 Package: libpms
-Architecture: any
+Architecture: all
 Depends: ${cli:Depends}
 Description: PMS - Phil & Matt Spaces for .NET
  PMS is an object relation mapping library for .NET/mono.
@@ -14,27 +14,27 @@ Description: PMS - Phil & Matt Spaces for .NET
  This version is packaged for Mono 2.0. 
 
 Package: libpms-dbg
-Architecture: any
+Architecture: all
 Depends: libpms (= ${Source-Version})
 Description: Debug symbols for libpms
 
 Package: libpms-pgsql
-Architecture: any
+Architecture: all
 Depends: libpms (= ${Source-Version}) ${cli:Depends}
 Description: PMS Postgresql Support
 
 Package: libpms-pgsql-dbg
-Architecture: any
+Architecture: all
 Depends: libpms (= ${Source-Version}) ${cli:Depends}
 Description: PMS Postgresql Debug Symbols
 
 Package: libpms-sqlite3
-Architecture: any
+Architecture: all
 Depends: libpms (= ${Source-Version}) ${cli:Depends}
 Description: PMS Sqlite3 Support
 
 Package: libpms-sqlite3-dbg
-Architecture: any
+Architecture: all
 Depends: libpms (= ${Source-Version}) ${cli:Depends}
 Description: PMS Sqlite3 Debug Symbols
 

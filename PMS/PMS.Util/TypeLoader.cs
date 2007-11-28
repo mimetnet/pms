@@ -1,49 +1,42 @@
 using System;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 namespace PMS.Util
 {
-    public sealed class TypeLoader
-    {
-        private static readonly log4net.ILog log = 
-            log4net.LogManager.GetLogger("PMS.Util.TypeLoader");
+	public sealed class TypeLoader
+	{
+		private static readonly log4net.ILog log = 
+			log4net.LogManager.GetLogger("PMS.Util.TypeLoader");
 
-        public static Type Load(string fullTypeName)
-        {
-			if (String.IsNullOrEmpty(fullTypeName))
-				throw new ArgumentNullException("fullTypeName");
+		public static Type Load(string typeName)
+		{
+			if (String.IsNullOrEmpty(typeName))
+				throw new ArgumentNullException("typeName");
 
-			Type type = null;
-            Assembly ass = null;
-			String[] pieces = fullTypeName.Split(',');
-			String sType = pieces[0].Trim();
-			String sAssembly = null;
-			
-			if (pieces.Length > 1) {
-				sAssembly = String.Join(",", pieces, 1, pieces.Length - 1).Trim();
+			Int32 div;
+			Type type;
+			Assembly assembly;
+			String sType, sAssembly;
+
+			if ((div = typeName.IndexOf(',')) < 1) {
+				throw new ArgumentException("type is badly formated: " + typeName);
 			}
 
-			try {
-				if (!String.IsNullOrEmpty(sAssembly)) {
-					if ((ass = Assembly.Load(sAssembly)) != null) {
-						if ((type = ass.GetType(sType, false)) != null) {
-							//Console.WriteLine("loaded: '" + type + ", " + type.Assembly + "'");
-							return type;
-						}
-					} else {
-						log.Warn("failed to load: " + sAssembly);
-					}
-				} else {
-					log.Error("no assembly for : " + fullTypeName);
-				}
-			} catch (Exception e) {
-				log.Warn(e.Message + "\n");
+			if (String.IsNullOrEmpty((sType = typeName.Substring(0, div).Trim())))
+				throw new ArgumentException(String.Format("Failed to substring '{0}' to get type", typeName));
+
+			sAssembly = typeName.Substring(div+1).Trim();
+
+			if (!System.IO.File.Exists(sAssembly)) {
+				assembly = Assembly.Load(sAssembly);
+			} else {
+				assembly = Assembly.LoadFile(sAssembly);
 			}
 
-            log.Error(sType + " not found" + Environment.NewLine);
+			if ((type = assembly.GetType(sType)) == null)
+				throw new TypeLoadException(sType + " not found" + Environment.NewLine);
 
-            throw new TypeLoadException(sType + " not found" + Environment.NewLine);
-        }
-    }
+			return type;
+		}
+	}
 }

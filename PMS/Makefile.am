@@ -91,9 +91,10 @@ $(ASSEMBLY): $(SOURCES)
 	$(MCS) $(MFLAGS) -target:library -out:$@ $(REFERENCES) $(SOURCES)
 
 install-data-local:
-	$(GACUTIL) $(GACUTIL_FLAGS) -check_refs -i $(ASSEMBLY)
 	$(install_sh) -d $(DESTDIR)$(pmsdir)
 	$(install_sh_DATA) -t $(DESTDIR)$(pmsdir)/ $(ASSEMBLY)
+	$(GACUTIL) $(GACUTIL_FLAGS) -check_refs -i $(DESTDIR)$(pmsdir)/$(ASSEMBLY)
+#	$(GACUTIL) $(GACUTIL_FLAGS) -check_refs -i $(ASSEMBLY)
 
 uninstall-local:
 	$(GACUTIL) $(GACUTIL_FLAGS) -u $(subst .dll,,$(ASSEMBLY))
