@@ -5,4 +5,4 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 pmsdir=@pmsdir@
 
-LD_LIBRARY_PATH=$libdir @MONO@ $pmsdir/pms-repo.exe "$@"
+LD_LIBRARY_PATH=$libdir @MONO@ $pmsdir/pms-providers.exe "$@"

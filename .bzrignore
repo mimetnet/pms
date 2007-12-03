@@ -44,6 +44,7 @@ PMS/PMS.dll
 PMS/PMS.dll.mdb
 PMS/Properties/AssemblyInfo.cs
 pms-repo/pms-repo.exe
+pms-providers/pms-providers.exe
 PMS.Server/bin
 PMS.Server/obj
 PMS.Setup/bin
@@ -55,5 +56,6 @@ policy/policy.0.6.PMS.config
 policy/policy.0.6.PMS.dll
 policy/policy.config
 scripts/pms-repo
+scripts/pms-providers
 setup/pms-setup.exe
 .wapi

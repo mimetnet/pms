@@ -3,6 +3,7 @@ libpms (0.6.90-0) gutsy; urgency=low
   * Added in $HOME and /etc configuration support
   * Added Sqlite3 support
   * Split out packages for Postgresql and Sqlite support
+  * Added pms-providers to manage new assemblies
 
  -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Wed, 24 Oct 2007 13:28:21 -0400
 

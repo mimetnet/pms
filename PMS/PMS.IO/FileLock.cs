@@ -19,7 +19,7 @@ namespace PMS.IO
 		{
 			int steps = 0;
 
-			lockFile = new FileInfo(Path.Combine(Path.GetTempPath(), (this.GetLock(filePath) + ".lock")));
+			lockFile = new FileInfo(Path.Combine(Path.GetTempPath(), this.GetLock(filePath)));
 
 			try {
 				// try for 5 seconds to obtain lock
@@ -42,7 +42,9 @@ namespace PMS.IO
 				log.Error("AcquireLock (B): ", e);
 			}
 
-			lockFile.Create().Close();
+			using (FileStream fs = lockFile.Create()) {
+				fs.Close();
+			}
 		}
 
 		public override String ToString()
@@ -52,8 +54,7 @@ namespace PMS.IO
 
 		private string GetLock(string file)
 		{
-			MD5 md5 = new MD5CryptoServiceProvider();
-			return Convert.ToBase64String(md5.ComputeHash(System.Text.UTF8Encoding.Default.GetBytes(file)));
+			return Convert.ToBase64String(new MD5CryptoServiceProvider().ComputeHash(System.Text.UTF8Encoding.Default.GetBytes(file))).Replace("/", "");
 		}
 
 		void IDisposable.Dispose()
@@ -61,7 +62,7 @@ namespace PMS.IO
 			try {
 				if (File.Exists(lockFile.FullName))
 					File.Delete(lockFile.FullName);
-			} catch (Exception) {
+			} catch {
 			}
 
 			lockFile = null;

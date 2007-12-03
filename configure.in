@@ -69,10 +69,12 @@ AC_OUTPUT([
 			  PMS.Data.Pgsql/Makefile
 			  PMS.Data.Sqlite/Makefile
 			  pms-repo/Makefile
+			  pms-providers/Makefile
 			  build/libpms.pc
 			  build/Makefile
 			  scripts/Makefile
 			  scripts/pms-repo
+			  scripts/pms-providers
 			  debian/Makefile
 			  policy/Makefile
 			  policy/policy.config

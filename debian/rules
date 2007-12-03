@@ -6,7 +6,7 @@ export MONO_SHARED_DIR=$(CURDIR)
 
 config.status: configure
 	dh_testdir
-	CFLAGS="$(CFLAGS) -Wl,-z,defs" ./configure --prefix=/usr --enable-debug
+	CFLAGS="$(CFLAGS) -Wl,-z,defs" ./configure --prefix=/usr --enable-debug --with-log4net=log4net
 
 
 #Architecture 

@@ -1,7 +1,9 @@
+etc/libpms/providers
+usr/bin/pms-repo
+usr/bin/pms-providers
 usr/lib/cli/libpms-*/PMS.dll
 usr/lib/cli/libpms-*/pms-repo.exe
+usr/lib/cli/libpms-*/pms-providers.exe
 usr/lib/mono/gac/PMS/*
 usr/lib/mono/gac/policy.*.PMS/*
 usr/lib/pkgconfig/libpms.pc
-usr/bin/pms-repo
-etc/libpms/providers
