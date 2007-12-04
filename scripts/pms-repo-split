@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+
+import os
+import sys
+import traceback
+from optparse import OptionParser
+
+
+try:
+    import xml.etree.cElementTree as ET
+except:
+    try:
+        import cElementTree as ET
+    except:
+        try:
+            import elementtree.ElementTree as ET
+        except:
+            raise("Could not load element tree module. Please install python, python-celementtree, or python-elementtree")
+
+
+def help(name):
+    print 'usage:', name.split(os.sep).pop(), 'repository output:/etc/libpms/project'
+
+def save(file, node):
+    ET.ElementTree(node).write(file, 'utf-8')
+
+if __name__ == '__main__':
+    if len(sys.argv) != 3:
+        help(sys.argv[0])
+        sys.exit(0)
+
+    try:
+        root = ET.parse(sys.argv[1])
+    except:
+        print 'Failed to load', sys.argv[1]
+        traceback.print_exc()
+        sys.exit(1)
+
+    if not os.access(sys.argv[2], os.X_OK):
+        os.mkdir(sys.argv[2], 0755)
+
+    for node in root.getroot().findall('connections/connection'):
+        save(os.path.join(sys.argv[2], node.get('id') + '.pmx'), node)
+
+    for node in root.getroot().findall('classes/class'):
+        save(os.path.join(sys.argv[2], node.get('type').split(',')[0].rstrip() + '.pmc'), node)
