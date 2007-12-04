@@ -1,5 +1,6 @@
 etc/libpms/providers
 usr/bin/pms-repo
+usr/bin/pms-repo-upgrade
 usr/bin/pms-providers
 usr/lib/cli/libpms-*/PMS.dll
 usr/lib/cli/libpms-*/pms-repo.exe

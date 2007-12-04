@@ -1,5 +1,5 @@
-EXTRA_DIST = pms-repo.in pms-providers.in
+EXTRA_DIST = pms-repo.in pms-repo-upgrade pms-providers.in
 
-bin_SCRIPTS = pms-repo pms-providers
+bin_SCRIPTS = pms-repo pms-repo-upgrade pms-providers
 
-CLEANFILES = $(bin_SCRIPTS)
+CLEANFILES = pms-repo pms-providers
