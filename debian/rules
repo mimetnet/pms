@@ -38,7 +38,6 @@ install-indep:
 	dh_install --sourcedir=$(CURDIR)/debian/tmp
 	find . -type f -name '*.mdb' | grep -v '\-dbg' | grep -v '\/tmp' | xargs rm
 	find debian/ -type f -name "*.dll" -or -name "*.mdb" | xargs chmod -x
-	find debian/ -type f -name "*.exe" | xargs chmod +x
 
 
 # Must not depend on anything. This is to be called by binary-indep

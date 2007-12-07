@@ -19,7 +19,7 @@ set -e
 
 case "$1" in
     configure)
-        /usr/bin/pms-providers -f pgsql "PMS.Data.Postgresql.PostgresqlProvider, `gacutil /l PMS.Data.Pgsql | head -2 | tail -1`" || true
+        /usr/bin/pms-providers pgsql "PMS.Data.Postgresql.PostgresqlProvider, PMS.Data.Pgsql"
     ;;
     abort-remove)
     ;;

@@ -19,7 +19,7 @@ set -e
 
 case "$1" in
     configure)
-        /usr/bin/pms-providers -f sqlite "PMS.Data.Sqlite.SqliteProvider, `gacutil /l PMS.Data.Sqlite | head -2 | tail -1`" || true
+        /usr/bin/pms-providers sqlite "PMS.Data.Sqlite.SqliteProvider, PMS.Data.Sqlite"
     ;;
     abort-remove)
     ;;

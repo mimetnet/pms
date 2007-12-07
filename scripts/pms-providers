@@ -1,0 +1,100 @@
+#!/usr/bin/env python
+
+import os
+import sys
+import traceback
+import shutil
+import tempfile
+
+from optparse import OptionParser
+from commands import getoutput
+
+SYSTEM_PROVIDER = '/etc/libpms/providers'
+
+class Config():
+    def __init__(self):
+        self.config = {}
+        self.op = OptionParser(version='%prog N/A', conflict_handler='resolve')
+        self.op.disable_interspersed_args()
+        self.op.add_option('-l', dest='local', help='Modify $USER PMS providers', action='store_true')
+        self.op.add_option('-r', dest='remove', help='Remove provider', action='store_true')
+        self.config, self.remainder = self.op.parse_args()
+
+    def remove(self):
+        return self.config.remove
+
+    def local(self):
+        return self.config.local
+
+
+def get_type(val):
+    t = val.split(',')
+    p = getoutput('gacutil /l ' + t[1]).split("\n")
+
+    if p[len(p)-1].endswith("0"):
+        return None
+
+    return "%s, %s" % (t[0], str(p[len(p)-2]).strip())
+
+
+def add_provider(cfg):
+    if len(cfg.remainder) != 2:
+        print "Usage: %s name 'type, assembly'" % (cfg.op.get_prog_name())
+        sys.exit(1)
+
+    type = get_type(cfg.remainder[1])
+
+    if type is None:
+        print("Assembly '%s' not found in GAC" % (cfg.remainder[1]))
+        sys.exit(1)
+
+    if not os.access(SYSTEM_PROVIDER, os.F_OK):
+        print("system providers file doesn't exist: %s" % (SYSTEM_PROVIDER))
+        sys.exit(1)
+
+    f = open(SYSTEM_PROVIDER, 'r+')
+
+    for line in f:
+        line = line.strip()
+
+        if line.startswith(';') or line.startswith('#') or line == '':
+            pass
+
+        if line.startswith(cfg.remainder[0]):
+            print("provider already contains key '%s'" % (cfg.remainder[0]))
+            f.close()
+            sys.exit(1)
+
+    f.write("%s = %s\n" % (cfg.remainder[0], get_type(cfg.remainder[1])))
+    f.close()
+
+
+def remove_provider(cfg):
+    if len(cfg.remainder) != 1:
+        print "Usage: %s -r name" % (cfg.op.get_prog_name())
+        sys.exit(1)
+
+    tmp = tempfile.mkstemp()[1]
+
+    f = open(SYSTEM_PROVIDER, 'r')
+    n = open(tmp, 'w')
+
+    for line in f:
+        line = line.strip()
+
+        if not line.startswith(cfg.remainder[0]):
+            n.write(line + "\n")
+
+    n.close()
+    f.close()
+
+    shutil.move(tmp, SYSTEM_PROVIDER)
+
+
+if __name__ == '__main__':
+    cfg = Config()
+
+    if not cfg.remove():
+        add_provider(cfg)
+    else:
+        remove_provider(cfg)
