@@ -1,5 +1,6 @@
-libpms (0.6.90-0) gutsy; urgency=low
+libpms-cil (0.6.90-0) gutsy; urgency=low
 
+  * Renamed package from libpms to libpms-cil to follow new packaging policy
   * Added in $HOME and /etc configuration support
   * Added Sqlite3 support
   * Split out packages for Postgresql and Sqlite support
