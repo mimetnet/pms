@@ -1,6 +1,6 @@
 <Namespace Name="PMS.Broker">
   <Docs>
-    <summary>To be added.</summary>
+    <summary><para>Contains foundation classes a user should interact with to marshal data to and from the database</para></summary>
     <remarks>To be added.</remarks>
   </Docs>
 </Namespace>

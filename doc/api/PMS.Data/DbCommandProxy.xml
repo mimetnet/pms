@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public sealed class DbCommandProxy : System.ComponentModel.Component, System.Data.IDbCommand" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.6.40.6</AssemblyVersion>
+    <AssemblyVersion>0.6.90.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.ComponentModel.Component</BaseTypeName>

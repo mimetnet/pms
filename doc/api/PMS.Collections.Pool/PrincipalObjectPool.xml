@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public class PrincipalObjectPool : PMS.Collections.Pool.ObjectPool" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.6.40.6</AssemblyVersion>
+    <AssemblyVersion>0.6.90.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>PMS.Collections.Pool.ObjectPool</BaseTypeName>

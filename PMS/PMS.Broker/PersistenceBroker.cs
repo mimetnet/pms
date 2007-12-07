@@ -347,7 +347,6 @@ namespace PMS.Broker
         /// <returns>success status</returns>
         public bool Load(string fileName)
         {
-            
             return PMS.Metadata.RepositoryManager.Load(fileName);
         }
 

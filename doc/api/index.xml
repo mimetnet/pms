@@ -1,6 +1,6 @@
 <Overview>
   <Assemblies>
-    <Assembly Name="PMS" Version="0.6.40.6">
+    <Assembly Name="PMS" Version="0.6.90.0">
       <Attributes>
         <Attribute>
           <AttributeName>System.Runtime.CompilerServices.RuntimeCompatibility(WrapNonExceptionThrows=true)</AttributeName>
@@ -70,6 +70,7 @@
       <Type Name="IProvider" />
       <Type Name="ProviderDefaultException" />
       <Type Name="ProviderNotFoundException" />
+      <Type Name="ProviderFactory" />
     </Namespace>
     <Namespace Name="PMS.DataAccess">
       <Type Name="AccessMode" />
@@ -122,7 +123,8 @@
     </Namespace>
     <Namespace Name="PMS.Util">
       <Type Name="TypeComparer" />
+      <Type Name="TypeLoader" />
     </Namespace>
   </Types>
-  <Title>PMS</Title>
+  <Title>libpms</Title>
 </Overview>

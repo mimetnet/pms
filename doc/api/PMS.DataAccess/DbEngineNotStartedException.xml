@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public class DbEngineNotStartedException : Exception" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.6.40.6</AssemblyVersion>
+    <AssemblyVersion>0.6.90.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Exception</BaseTypeName>

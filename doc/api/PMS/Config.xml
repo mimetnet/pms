@@ -1,52 +1,42 @@
 <Type Name="Config" FullName="PMS.Config">
-  <TypeSignature Language="C#" Value="public sealed class Config" />
+  <TypeSignature Language="C#" Value="public static class Config" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.6.40.6</AssemblyVersion>
+    <AssemblyVersion>0.6.90.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
   </Base>
   <Interfaces />
   <Members>
-    <Member MemberName="Instance">
-      <MemberSignature Language="C#" Value="public static PMS.Config Instance { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>PMS.Config</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Path">
-      <MemberSignature Language="C#" Value="public static string Path { get; };" />
+    <Member MemberName="SystemPath">
+      <MemberSignature Language="C#" Value="public static string SystemPath { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary><para>Returns string path where PMS config files can be found.</para></summary>
+        <value><para>Unix = /etc/libpms</para>
+<para>Win32 = c:\Program Files\Common Files\PMS</para></value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="Providers">
-      <MemberSignature Language="C#" Value="public System.Collections.Generic.SortedList&lt;string,PMS.Data.IProvider&gt; Providers;" />
-      <MemberType>Field</MemberType>
+    <Member MemberName="UserPath">
+      <MemberSignature Language="C#" Value="public static string UserPath { get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Collections.Generic.SortedList&lt;System.String,PMS.Data.IProvider&gt;</ReturnType>
+        <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary><para>Returns string path where PMS config files can be found for the user.</para></summary>
+        <value><example>Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "libpms")</example></value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
   </Members>
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary><para>Contains static variables pointing to resources used during startup</para></summary>
+    <remarks><para>Most end-users will never need this</para></remarks>
   </Docs>
 </Type>
