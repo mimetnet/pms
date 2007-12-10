@@ -2,6 +2,7 @@
 
 import os
 import sys
+import stat
 import traceback
 import shutil
 import tempfile
@@ -77,18 +78,20 @@ def remove_provider(cfg):
     tmp = tempfile.mkstemp()[1]
 
     f = open(SYSTEM_PROVIDER, 'r')
-    n = open(tmp, 'w')
+    t = open(tmp, 'w')
 
     for line in f:
         line = line.strip()
 
         if not line.startswith(cfg.remainder[0]):
-            n.write(line + "\n")
+            t.write(line + "\n")
 
-    n.close()
     f.close()
+    t.close()
 
+    mode = stat.S_IMODE(os.stat(SYSTEM_PROVIDER)[stat.ST_MODE])
     shutil.move(tmp, SYSTEM_PROVIDER)
+    os.chmod(SYSTEM_PROVIDER, mode)
 
 
 if __name__ == '__main__':

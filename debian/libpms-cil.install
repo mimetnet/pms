@@ -1,7 +1,7 @@
 etc/libpms/providers
+usr/bin/pms-providers
 usr/bin/pms-repo-split
 usr/bin/pms-repo-upgrade
-usr/bin/pms-providers
 usr/lib/cli/libpms-*/PMS.dll
 usr/lib/cli/libpms-*/pms-providers.exe
 usr/lib/mono/gac/PMS/*

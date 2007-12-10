@@ -1,11 +1,11 @@
-EXTRA_DIST = pms-lib.zip pms-lib.tree pms-lib.sources
-CLEANFILES = pms-lib.zip pms-lib.tree pms-lib.stamp
+EXTRA_DIST = pms.zip pms.tree pms.source
+CLEANFILES = pms.zip pms.tree pms.stamp
 
-all: pms-lib.stamp
+all: pms.stamp
 
-pms-lib.stamp:
+pms.stamp:
 	touch $@
-	mdassembler --ecma api -o pms-lib
+	mdassembler --ecma api -o pms
 
 api: ../PMS/PMS.dll
 	monodocer -assembly:$< -name:$(PACKAGE) -path:api -pretty

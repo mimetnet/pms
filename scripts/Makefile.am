@@ -1,3 +1,3 @@
-EXTRA_DIST = pms-repo-split pms-repo-upgrade pms-providers.in
+EXTRA_DIST = pms-repo-split pms-repo-upgrade pms-providers pms-monodoc
 
-bin_SCRIPTS = pms-repo-split pms-repo-upgrade pms-providers
+bin_SCRIPTS = pms-repo-split pms-repo-upgrade pms-providers pms-monodoc

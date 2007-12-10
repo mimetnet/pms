@@ -1,0 +1,37 @@
+#!/bin/sh
+
+set -e
+
+#DEBHELPER#
+#! /bin/sh
+# postinst script for libpms-cil-doc
+#
+# see: dh_installdeb(1)
+
+set -e
+
+case "$1" in
+    configure)
+        if [ -x /usr/bin/pms-monodoc ]; then
+        	pms-monodoc `pkg-config monodoc --variable=sourcesdir`/../monodoc.xml install
+        fi
+        if [ -x /usr/lib/monodoc/browser.exe ]; then
+        	echo "generating monodoc search index..."
+        	monodoc --make-index --make-search-index > /dev/null
+        fi
+    ;;
+    abort-remove)
+    ;;
+    abort-upgrade|abort-deconfigure)
+    ;;
+
+    *)
+    echo "postinst called with unknown argument \`$1'" >&2
+    exit 1
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0
+# vim:tabstop=4:shiftwidth=4:expandtab:
