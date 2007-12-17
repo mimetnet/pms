@@ -8,10 +8,7 @@ config.status: configure
 	dh_testdir
 	CFLAGS="$(CFLAGS) -Wl,-z,defs" ./configure --prefix=/usr --enable-debug --with-log4net=log4net
 
-
-#Architecture 
 build: build-indep
-
 build-indep: build-indep-stamp
 build-indep-stamp:  config.status
 	$(MAKE) 
@@ -37,7 +34,7 @@ install-indep:
 	echo "# providers" > $(CURDIR)/debian/tmp/etc/libpms/providers
 	dh_install --sourcedir=$(CURDIR)/debian/tmp
 	find . -type f -name '*.mdb' | grep -v '\-dbg' | grep -v '\/tmp' | xargs rm
-	find debian/ -type f -name "*.dll" -or -name "*.mdb" | xargs chmod -x
+	find $(CURDIR)/debian/ -type f -name "*.dll" -or -name "*.mdb" | xargs chmod -x
 
 
 # Must not depend on anything. This is to be called by binary-indep

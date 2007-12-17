@@ -2,7 +2,7 @@ Source: libpms-cil
 Section: universe/libs
 Priority: optional
 Maintainer: Matthew Metnetsky <matthew@cowarthill.com>
-Build-Depends: debhelper (>= 4.0.0), mono-gac, cli-common (>= 0.2.0), cli-common-dev (>= 0.4.4), monodoc-base
+Build-Depends: autotools-dev, debhelper (>= 4.0.0), mono-gac, cli-common (>= 0.2.0), cli-common-dev (>= 0.4.4), monodoc-base
 Standards-Version: 3.6.2
 
 Package: libpms-cil

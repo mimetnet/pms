@@ -20,26 +20,33 @@ except:
 def help(name):
     print 'Usage:', name.split(os.sep).pop(), 'path-2-xml [install|uninstall]'
 
+def install_tag():
+    if len(sys.argv) == 4:
+        return sys.argv[3]
+    return "<node label='PMS' name='pms' />"
 
 def install(base):
     if base.get('name') != 'root:':
         print "'%s' doesn't contain expected root node\n    :: <node label='' name='root:'>" % (sys.argv[1])
         sys.exit(1)
+    base.append(ET.fromstring(install_tag()))
 
-    base.append(ET.fromstring("<node label='PMS' name='pms' />"))
-
+def uninstall_name():
+    if len(sys.argv) == 4:
+        return sys.argv[3]
+    return 'pms'
 
 def uninstall(base):
+    tag = uninstall_name()
     for node in base.findall("node"):
-        if 'pms' == node.get('name'):
+        if tag == node.get('name'):
             base.remove(node)
             break
 
-
 if __name__ == '__main__':
-    if len(sys.argv) != 3:
+    if len(sys.argv) < 3:
         help(sys.argv[0])
-        sys.exit(0)
+        sys.exit(1)
 
     try:
         root = ET.parse(sys.argv[1])
