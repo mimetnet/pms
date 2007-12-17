@@ -83,7 +83,7 @@ SOURCES = \
 
 noinst_SCRIPTS = $(ASSEMBLY)
 
-CLEANFILES = $(ASSEMBLY)
+CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb
 
 EXTRA_DIST = $(SOURCES) dll.config PMS.csproj PMS.pfx
 
@@ -92,10 +92,11 @@ $(ASSEMBLY): $(SOURCES)
 
 install-data-local:
 	$(install_sh) -d $(DESTDIR)$(pmsdir)
-	$(install_sh_DATA) -t $(DESTDIR)$(pmsdir)/ $(ASSEMBLY)
-	$(GACUTIL) $(GACUTIL_FLAGS) -check_refs -i $(DESTDIR)$(pmsdir)/$(ASSEMBLY)
-#	$(GACUTIL) $(GACUTIL_FLAGS) -check_refs -i $(ASSEMBLY)
+	$(install_sh_DATA) -t $(DESTDIR)$(pmsdir)/ $(ASSEMBLY) 
+	if test -n "$(DEBUG_FLAGS)"; then $(install_sh_DATA) -t $(DESTDIR)$(pmsdir)/ $(ASSEMBLY).mdb; fi;
+	$(GACUTIL) $(GACUTIL_FLAGS) -check_refs -f -i $(DESTDIR)$(pmsdir)/$(ASSEMBLY)
 
 uninstall-local:
-	$(GACUTIL) $(GACUTIL_FLAGS) -u $(subst .dll,,$(ASSEMBLY))
-	rm $(DESTDIR)$(pmsdir)/$(ASSEMBLY)
+	$(GACUTIL) $(GACUTIL_FLAGS) -us $(DESTDIR)$(pmsdir)/$(ASSEMBLY)
+	rm $(DESTDIR)$(pmsdir)/$(ASSEMBLY) 
+	if test -n "$(DEBUG_FLAGS)"; then $(DESTDIR)$(pmsdir)/$(ASSEMBLY).mdb; fi;

@@ -24,10 +24,12 @@ $(ASSEMBLY): $(SOURCES) ../PMS/PMS.dll
 	$(MCS) $(MFLAGS) -target:library -out:$@ $(REFERENCES) $(SOURCES)
 
 install-data-local:
-	$(GACUTIL) $(GACUTIL_FLAGS) -check_refs -i $(ASSEMBLY)
 	$(install_sh) -d $(DESTDIR)$(pmsdir)
-	$(install_sh_DATA) -t $(DESTDIR)$(pmsdir)/ $(ASSEMBLY)
+	$(install_sh_DATA) -t $(DESTDIR)$(pmsdir)/ $(ASSEMBLY) 
+	if test -n "$(DEBUG_FLAGS)"; then $(install_sh_DATA) -t $(DESTDIR)$(pmsdir)/ $(ASSEMBLY).mdb; fi;
+	$(GACUTIL) $(GACUTIL_FLAGS) -check_refs -f -i $(DESTDIR)$(pmsdir)/$(ASSEMBLY)
 
 uninstall-local:
-	$(GACUTIL) $(GACUTIL_FLAGS) -u $(subst .dll,,$(ASSEMBLY))
-	rm $(DESTDIR)$(pmsdir)/$(ASSEMBLY)
+	$(GACUTIL) $(GACUTIL_FLAGS) -us $(DESTDIR)$(pmsdir)/$(ASSEMBLY)
+	rm $(DESTDIR)$(pmsdir)/$(ASSEMBLY) 
+	if test -n "$(DEBUG_FLAGS)"; then $(DESTDIR)$(pmsdir)/$(ASSEMBLY).mdb; fi;
