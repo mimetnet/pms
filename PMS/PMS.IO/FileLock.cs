@@ -31,14 +31,10 @@ namespace PMS.IO
 					try {
 						Thread.Sleep(100);
 					} catch (Exception e) {
-						Console.WriteLine("AcquireLock (A)");
-						Console.WriteLine(e);
 						log.Error("AcquireLock (A): ", e);
 					}
 				}
 			} catch (Exception e) {
-				Console.WriteLine("AcquireLock (B)");
-				Console.WriteLine(e);
 				log.Error("AcquireLock (B): ", e);
 			}
 

@@ -106,8 +106,7 @@ namespace PMS.Query
         /// <summary>
         /// "SET key=value, column=value"
         /// </summary>
-        public override string UpdateClause
-        {
+        public override string UpdateClause {
             get {
                 StringBuilder sql = new StringBuilder(" SET ");
 
@@ -131,19 +130,19 @@ namespace PMS.Query
         } 
         #endregion
 
-        private bool BuildList(FieldCollection list, string seperator, ref StringBuilder sql)
+        private bool BuildList(FieldCollection fields, string seperator, ref StringBuilder sql)
         {
             bool result = false;
 
-            for (int i = 0; i < list.Count; i++) {
-                if (IsFieldSet(list[i])) {
+            for (int i = 0; i < fields.Count; i++) {
+                if (IsFieldSet(fields[i])) {
                     if (i > 0 && result) {
                         sql.Append(seperator);
                     }
 
-                    sql.Append(list[i].Column);
+                    sql.Append(fields[i].Column);
                     sql.Append("=");
-                    sql.Append(GetSqlValue(list[i]));
+                    sql.Append(GetSqlValue(fields[i]));
                     result = true;
                 }
             }

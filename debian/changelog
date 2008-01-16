@@ -1,4 +1,11 @@
-libpms-cil (0.6.90-0) gutsy; urgency=low
+libpms-cil (0.6.90-1) unstable; urgency=low
+
+  * Added field.default (override null as default value)
+  * Added field.default_db (override null as database default)
+
+ -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Wed, 16 Jan 2008 15:51:18 -0500
+
+libpms-cil (0.6.90-0) unstable; urgency=low
 
   * Renamed package from libpms to libpms-cil to follow new packaging policy
   * Added in $HOME and /etc configuration support

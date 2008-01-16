@@ -76,9 +76,9 @@ namespace PMS.Metadata
 				}
 			}
 
-			//Console.WriteLine(new System.Diagnostics.StackTrace());
 
 			/**
+			log.Debug(new System.Diagnostics.StackTrace());
 			log.Info("Type asked: " + type);
 			log.Info("Class gotten: " + klass.Table);
 			log.Info("Class gotten: " + klass.Type);
@@ -201,7 +201,6 @@ namespace PMS.Metadata
 			}
 
 			if (repository.Connections.Count == 0) {
-				Console.WriteLine("no connections loaded");
 				return false;
 			}
 

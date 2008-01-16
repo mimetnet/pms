@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -73,14 +74,12 @@ namespace PMS.Metadata
 			return null;
 		}
 
-        public Field this[int index] 
-		{
+        public Field this[int index] {
             get { return Fields[index]; }
             set { Fields[index] = value; }
         }
 
-        public Field this[string fieldName] 
-		{
+        public Field this[string fieldName] {
             get { return Fields[fieldName]; }
         }
 
@@ -127,10 +126,35 @@ namespace PMS.Metadata
                         break;
 
                     case "class":
-                        return;
+                        break;
                 }
             }
+
+			if (this.Type != null) {
+				LoadCTypes();
+			}
         }
+
+		private void LoadCTypes()
+		{
+			List<Int32> ids = new List<Int32>();
+
+			FieldInfo finfo = null;
+
+			for (int x=0; x<Fields.Count; x++) {
+				finfo = Type.GetField(Fields[x].Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+				if (finfo != null) {
+					Fields[x].LoadType(finfo.FieldType);
+				} else {
+					ids.Add(x);
+				}
+			}
+
+			foreach (Int32 f in ids) {
+				log.WarnFormat("Removing Field({0}) - not found in Type({1})", Fields[f].Name, Type.ToString());
+				Fields.RemoveAt(f);
+			}
+		}
 
         /// <summary>
         /// Write XML to stream
@@ -154,10 +178,8 @@ namespace PMS.Metadata
             foreach (Field f in this.Fields) {
                 xml.Serialize(writer, f);
             }
-
-            writer.WriteEndElement(); // end fields
+            writer.WriteEndElement();
         }
-
         #endregion
 
         #region Object Overloads
@@ -172,22 +194,18 @@ namespace PMS.Metadata
             if (Object.ReferenceEquals(obj2, null)) return false;
 
             if (obj1.Type != obj2.Type) {
-                Console.WriteLine("1");
                 return false;
             }
 
             if (obj1.Table != obj2.Table) {
-                Console.WriteLine("2");
                 return false;
             }
 
             if (obj1.ListType != obj2.ListType) {
-                Console.WriteLine("3");
                 return false;
             }
 
             if (obj1.Fields.Count != obj2.Fields.Count) {
-                Console.WriteLine("f1.Count {0} f2.Count {1}", obj1.Fields.Count, obj2.Fields.Count);
                 return false;
             }
 

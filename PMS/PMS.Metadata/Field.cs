@@ -14,10 +14,13 @@ namespace PMS.Metadata
         public string Name;
         public string Column;
         public string DbType;
+		public object Default;
+		public string DefaultDb;
         public bool Unique = false;
         public bool PrimaryKey = false;
         public bool IgnoreDefault = false;
         public Reference Reference = null;
+		public Type CType = null;
 
         public bool HasReference {
             get { return (Reference != null)? true : false; }
@@ -138,6 +141,22 @@ namespace PMS.Metadata
 
         #endregion
 
+		internal void LoadType(Type type)
+		{
+			if (type == null) 
+				throw new ArgumentNullException("type");
+
+			if (Default == null) {
+				if ((CType = type).IsPrimitive) {
+					Default = Activator.CreateInstance(type);
+				} else if (type == typeof(String)) {
+					Default = String.Empty;
+				} else {
+					Default = null;
+				}
+			}
+		}
+
         #region IXmlSerializable Members
 
         public System.Xml.Schema.XmlSchema GetSchema()
@@ -158,6 +177,10 @@ namespace PMS.Metadata
             this.PrimaryKey = Convert.ToBoolean(reader.GetAttribute("primarykey"));
             this.Unique = Convert.ToBoolean(reader.GetAttribute("unique"));
             this.IgnoreDefault = Convert.ToBoolean(reader.GetAttribute("ignore_default"));
+            this.Default = reader.GetAttribute("default");
+
+            if ((this.DefaultDb = reader.GetAttribute("default_db")) == null)
+				this.DefaultDb = "null";
 
             if (reader.IsEmptyElement == false) {
                 if (reader.Read()) {
@@ -176,6 +199,9 @@ namespace PMS.Metadata
 
             if (IgnoreDefault)
                 writer.WriteAttributeString("ignore_default", "true");
+
+			if (Default != null)
+				writer.WriteAttributeString("default", Default.ToString());
         
             if (PrimaryKey)
                 writer.WriteAttributeString("primarykey", "true");

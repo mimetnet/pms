@@ -68,10 +68,10 @@ namespace PMS.DataAccess
 					query.Criteria.Limit = 1;
 					using (IDataReader reader = cmd.ExecuteReader()) {
 						obj = mobj.Materialize(reader);
-						result = new DbResult(((obj == null)? 0 : 1), query.Select());
+						result = new DbResult(((obj == null)? 0 : 1), cmd.CommandText);
 					}
 				} catch (Exception e) {
-					result = new DbResult(query.Select(), e);
+					result = new DbResult(cmd.CommandText, e);
 				} finally {
 					if (result.Exception != null) {
 						log.Error("ExecuteSelectObject: " + result);
@@ -102,10 +102,10 @@ namespace PMS.DataAccess
 				try {
 					using (IDataReader reader = cmd.ExecuteReader()) {
 						list = mobj.MaterializeArray(reader);
-						result = new DbResult(list.Length, query.Select());
+						result = new DbResult(list.Length, cmd.CommandText);
 					}
 				} catch (Exception e) {
-					result = new DbResult(query.Select(), e);
+					result = new DbResult(cmd.CommandText, e);
 				} finally {
 					if (result.Exception != null) {
 						log.Error("ExecuteSelectArray: " + result);
@@ -136,10 +136,10 @@ namespace PMS.DataAccess
 				try {
 					using (IDataReader reader = cmd.ExecuteReader()) {
 						list = mobj.MaterializeList(reader);
-						result = new DbResult(list.Count, query.Select());
+						result = new DbResult(list.Count, cmd.CommandText);
 					}
 				} catch (Exception e) {
-					result = new DbResult(query.Select(), e);
+					result = new DbResult(cmd.CommandText, e);
 				} finally {
 					if (result.Exception != null) {
 						log.Error("ExecuteSelectList: " + result);
@@ -162,10 +162,13 @@ namespace PMS.DataAccess
         {
             if (query == null) throw new ArgumentNullException("IQuery cannot be null");
 
+			string sql = null;
+
             try {
-				return ExecuteNonQuery(query.Delete());
+				sql = query.Delete();
+				return ExecuteNonQuery(sql);
 			} catch (Exception e) {
-				return new DbResult(query.Delete(), e);
+				return new DbResult(sql, e);
 			}
         }
 
@@ -227,14 +230,16 @@ namespace PMS.DataAccess
         {
             if (obj == null) throw new ArgumentNullException("Object cannot be null");
 
+			String sql = null;
             IQuery query = null;
 			DbResult result = null;
 
 			try {
 				query = new QueryByObject(obj);
-				result = ExecuteNonQuery(query.Insert());
+				sql = query.Insert();
+				result = ExecuteNonQuery(sql);
 			} catch (Exception e) {
-				result = (query == null)? (new DbResult(e)) : (new DbResult(query.Insert(), e));
+				result = (query == null)? (new DbResult(e)) : (new DbResult(sql, e));
 			}
 
 			return result;

@@ -60,7 +60,13 @@ namespace PMS.Query
 
 		protected string GetSqlValue(Field field)
 		{
-			return provider.PrepareSqlValue(field.DbType, cdesc.GetValue(field, this.obj));
+			Object o = cdesc.GetValue(field, this.obj);
+
+			if ((o == null && field.Default == null) || (o != null && field.Default != null && field.Default.ToString() == o.ToString())) {
+				return field.DefaultDb;
+			}
+
+			return provider.PrepareSqlValue(field.DbType, o);
 		}
 
 		protected bool IsFieldSet(Field field)
@@ -77,31 +83,38 @@ namespace PMS.Query
 				if (value != null)
 					log.InfoFormat("    Value: '{0}'", value);
 				else
-					log.InfoFormat("    Value: NULL");
+					log.Info("    Value: NULL");
 			}
 
 			if (value != null) {
-				init = provider.GetTypeInit(field.DbType);
+				init = (field.Default == null)? 
+					provider.GetTypeInit(field.DbType) : provider.ConvertToType(field.DbType, field.Default);
 
 				if (verbose) {
-					log.InfoFormat("   DbType: " + field.DbType);
-					log.InfoFormat("  Default: '{0}'", init);
-					log.InfoFormat("   Ignore: " + field.IgnoreDefault);
+					log.Info("   DbType: " + field.DbType);
+					log.InfoFormat("     Init: '{0}'", init);
+					log.Info("   Ignore: " + field.IgnoreDefault);
 				}
 
 				if (init == null) {
-					if (verbose) log.InfoFormat("IsIgnored: " + init.Equals(value));
-					log.ErrorFormat("IsFieldSet: Type(" + field.DbType + ") return null");
+					if (verbose) {
+						log.InfoFormat("IsIgnored: " + init.Equals(value));
+					}
+					log.ErrorFormat("IsFieldSet: Provider.GetTypeInit(" + field.DbType + ") return null");
 				} 
 
 				if (verbose) log.InfoFormat("--");
 
 				return !(init != null && field.IgnoreDefault && init.Equals(value));
-			} else if (verbose) {
+			} 
+			
+			if (verbose) {
 				log.InfoFormat("--");
 			}
 
-			return false;
+			// VALUE IS NULL
+
+			return (field.IgnoreDefault && field.Default == null);
 		}
 
         public SqlCommand Command {

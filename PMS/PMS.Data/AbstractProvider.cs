@@ -125,14 +125,6 @@ namespace PMS.Data
             }
         }
 
-        public virtual object GetTypeInit(Type type)
-        {
-            if (type == typeof(string))
-                return String.Empty;
-
-            return Activator.CreateInstance(type);
-        }
-
         public virtual Type GetType(string type)
         {
             if ((type == "int") || (type == "integer") || (type == "int4") || 

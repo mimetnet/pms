@@ -20,7 +20,6 @@ namespace PMS.Data
         // ---------------------------------------------------------------
 
         object GetTypeInit(string dbType);
-        object GetTypeInit(Type type);
 
         // ---------------------------------------------------------------
 		
