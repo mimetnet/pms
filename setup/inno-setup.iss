@@ -1,8 +1,11 @@
 [Files]
-Source: ..\PMS\bin\Release\PMS.dll; DestDir: {app}; Components: PMS
-Source: C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\log4net.dll; DestDir: {app}; Components: PMS
-Source: C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\Npgsql.dll; DestDir: {app}; Components: PMS
-Source: ..\PMS\bin\Release\PMS.pdb; DestDir: {app}; Components: DBG
+Source: ..\PMS\bin\Release\PMS.dll; DestDir: {app}\bin; Components: PMS
+Source: ..\PMS\bin\Release\PMS.pdb; DestDir: {app}\bin; Components: DBG
+Source: ..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v2.0.50727\log4net.dll; DestDir: {app}\bin; Components: PMS
+Source: ..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v2.0.50727\Npgsql.dll; DestDir: {app}\bin; Components: PGSQL
+Source: ..\..\..\..\..\Program Files\SQLite.NET\bin\System.Data.SQLite.DLL; DestDir: {app}\bin; Components: SQLite
+Source: ..\PMS.Data.Pgsql\bin\Release\PMS.Data.Pgsql.dll; DestDir: {app}\bin; Components: PGSQL
+Source: ..\PMS.Data.Sqlite\bin\Release\PMS.Data.Sqlite.dll; DestDir: {app}\bin; Components: SQLite
 
 [Setup]
 VersionInfoCompany=Matthew Metnetsky
@@ -13,8 +16,8 @@ DefaultGroupName=PMS
 ShowLanguageDialog=yes
 AppID={{F1EC159F-1DCB-4E97-BF43-EC14D05ED4EC}
 AppName=PMS
-AppVerName=PMS 0.6.40
-AppVersion=0.6.40
+AppVerName=PMS 0.6.90
+AppVersion=0.6.90
 AppCopyright=Matthew Metnetsky
 AppPublisher=Matthew Metnetsky
 AppPublisherURL=http://cowarthill.com/
@@ -22,7 +25,7 @@ AppSupportURL=http://cowarthill.com/PMS/
 AppUpdatesURL=http://cowarthill.com/PMS/
 AppMutex=pms-setup
 OutputBaseFilename=pms-setup
-VersionInfoVersion=0.6.40
+VersionInfoVersion=0.6.90
 VersionInfoDescription=PMS
 VersionInfoCopyright=Matthew Metnetsky
 Compression=lzma
@@ -37,28 +40,37 @@ SolidCompression=true
 PrivilegesRequired=poweruser
 
 [Components]
-Name: PMS; Description: Library; Types: compact full custom
+Name: PMS; Description: Library; Types: full custom
+Name: PGSQL; Description: PMS Support for Postgresql 8.x; Types: full
+Name: SQLite; Description: PMS Support for SQLite 3.x; Types: full
 Name: DBG; Description: Debug; Types: custom
 
 [_ISTool]
 UseAbsolutePaths=false
 
 [Run]
-Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/i ""{app}\PMS.dll"""; Components: PMS; Flags: runhidden
-Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/i ""{app}\log4net.dll"""; Components: PMS; Flags: runhidden
-Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/i ""{app}\Npgsql.dll"""; Components: PMS; Flags: runhidden
+Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/i ""{app}\bin\PMS.dll"""; Components: PMS; Flags: runhidden
+Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/i ""{app}\bin\PMS.Data.Pgsql.dll"""; Components: PGSQL; Flags: runhidden
+Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/i ""{app}\bin\PMS.Data.Sqlite.dll"""; Components: SQLite; Flags: runhidden
+Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/i ""{app}\bin\log4net.dll"""; Components: PMS; Flags: runhidden
+Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/i ""{app}\bin\Npgsql.dll"""; Components: PGSQL; Flags: runhidden
+Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/i ""{app}\bin\System.Data.SQlite.dll"""; Components: SQLite; Flags: runhidden
 
 [UninstallRun]
-Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/u ""PMS, Version=0.6.40.5, Culture=neutral, PublicKeyToken=1b9e664700a659b9, processorArchitecture=MSIL"""; Components: PMS; Flags: runhidden
+Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/u ""PMS, Version=0.6.90.0, Culture=neutral, PublicKeyToken=1b9e664700a659b9, processorArchitecture=MSIL"""; Components: PMS; Flags: runhidden
+Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/u ""PMS.Data.Pgsql, Version=0.3.0.0, Culture=neutral, PublicKeyToken=1b9e664700a659b9, processorArchitecture=MSIL"""; Components: PGSQL; Flags: runhidden
+Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/u ""PMS.Data.Sqlite, Version=0.0.1.0, Culture=neutral, PublicKeyToken=1b9e664700a659b9, processorArchitecture=MSIL"""; Components: SQLite; Flags: runhidden
 Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/u ""log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL"""; Components: PMS; Flags: runhidden
-Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/u ""Npgsql, Version=0.99.3.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL"""; Components: PMS; Flags: runhidden
+Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/u ""Npgsql, Version=0.99.3.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL"""; Components: PGSQL; Flags: runhidden
+Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/u ""System.Data.SQLite, Version=1.0.48.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86"""; Components: SQLite; Flags: runhidden
+Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/u ""System.Data.SQLite, Version=1.0.48.0, Culture=neutral, PublicKeyToken=1fdb50b1b62b4c84, processorArchitecture=MSIL"""; Components: SQLite; Flags: runhidden
 
 [Registry]
 Root: HKLM; Subkey: SOFTWARE\PMS; Flags: uninsdeletekeyifempty
-Root: HKLM; Subkey: SOFTWARE\PMS\0.6.40; Flags: uninsdeletekeyifempty
-Root: HKLM; Subkey: SOFTWARE\PMS\0.6.40; ValueType: string; ValueName: Path; ValueData: {app}; Flags: uninsdeletevalue
+Root: HKLM; Subkey: SOFTWARE\PMS\0.6.90; Flags: uninsdeletekeyifempty
+Root: HKLM; Subkey: SOFTWARE\PMS\0.6.90; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletevalue
 Root: HKLM; Subkey: SOFTWARE\Microsoft\.NETFramework\AssemblyFolders\PMS; Flags: uninsdeletekeyifempty
-Root: HKLM; Subkey: SOFTWARE\Microsoft\.NETFramework\AssemblyFolders\PMS; ValueType: string; ValueData: {app}; Flags: uninsdeletevalue
+Root: HKLM; Subkey: SOFTWARE\Microsoft\.NETFramework\AssemblyFolders\PMS; ValueType: string; ValueData: {app}\bin; Flags: uninsdeletevalue
 
 [UninstallDelete]
 
@@ -90,5 +102,3 @@ begin
 		end
 	end;
 end;
-
-
