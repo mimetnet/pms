@@ -146,13 +146,41 @@ namespace PMS.Metadata
 			if (type == null) 
 				throw new ArgumentNullException("type");
 
+
 			if (Default == null) {
 				if ((CType = type).IsPrimitive) {
 					Default = Activator.CreateInstance(type);
-				} else if (type == typeof(String)) {
-					Default = String.Empty;
+				//} else if (type == typeof(String)) {
+				//	Default = String.Empty;
 				} else {
 					Default = null;
+				}
+			} else {
+				if ((CType = type).IsPrimitive) {
+					if (type == typeof(Boolean))
+						Default = Convert.ToBoolean(Default);
+					else if (type == typeof(Byte))
+						Default = Convert.ToByte(Default);
+					else if (type == typeof(SByte))
+						Default = Convert.ToSByte(Default);
+					else if (type == typeof(Int16))
+						Default = Convert.ToInt16(Default);
+					else if (type == typeof(UInt16))
+						Default = Convert.ToUInt16(Default);
+					else if (type == typeof(Int32))
+						Default = Convert.ToInt32(Default);
+					else if (type == typeof(UInt32))
+						Default = Convert.ToUInt32(Default);
+					else if (type == typeof(Int64))
+						Default = Convert.ToInt64(Default);
+					else if (type == typeof(UInt64))
+						Default = Convert.ToUInt64(Default);
+					else if (type == typeof(Char))
+						Default = Convert.ToChar(Default);
+					else if (type == typeof(Double))
+						Default = Convert.ToDouble(Default);
+					else if (type == typeof(Single))
+						Default = Convert.ToSingle(Default);
 				}
 			}
 		}

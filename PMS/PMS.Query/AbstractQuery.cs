@@ -84,6 +84,10 @@ namespace PMS.Query
 					log.InfoFormat("    Value: '{0}'", value);
 				else
 					log.Info("    Value: NULL");
+
+				log.Info("   DbType: " + field.DbType);
+				log.InfoFormat("  Default: '{0}' | {1}", field.Default, ((field.Default != null)? field.Default.GetType().ToString() : ""));
+				log.Info("   Ignore: " + field.IgnoreDefault);
 			}
 
 			if (value != null) {
@@ -91,19 +95,9 @@ namespace PMS.Query
 					provider.GetTypeInit(field.DbType) : provider.ConvertToType(field.DbType, field.Default);
 
 				if (verbose) {
-					log.Info("   DbType: " + field.DbType);
 					log.InfoFormat("     Init: '{0}'", init);
-					log.Info("   Ignore: " + field.IgnoreDefault);
+					log.InfoFormat("--");
 				}
-
-				if (init == null) {
-					if (verbose) {
-						log.InfoFormat("IsIgnored: " + init.Equals(value));
-					}
-					log.ErrorFormat("IsFieldSet: Provider.GetTypeInit(" + field.DbType + ") return null");
-				} 
-
-				if (verbose) log.InfoFormat("--");
 
 				return !(init != null && field.IgnoreDefault && init.Equals(value));
 			} 
@@ -113,7 +107,6 @@ namespace PMS.Query
 			}
 
 			// VALUE IS NULL
-
 			return (field.IgnoreDefault && field.Default == null);
 		}
 
