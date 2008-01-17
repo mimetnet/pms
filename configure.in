@@ -11,6 +11,10 @@ AC_PATH_PROG(MCS, gmcs, no)
 AC_PATH_PROG(MONO, mono, no)
 AC_PATH_PROG(GACUTIL, gacutil, no)
 AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
+AC_PATH_PROG(MDASSEMBLER, mdassembler, no)
+AC_PATH_PROG(MONODOC, monodoc, no)
+AC_PATH_PROG(MONODOCER, monodocer, no)
+AC_PATH_PROG(MONODOCS2HTML, monodocs2html, no)
 
 if test "x$PKG_CONFIG" = "xno"; then
 	AC_MSG_ERROR([You need to install pkg-config])
@@ -27,6 +31,12 @@ fi
 
 if test "x$MONO" = "xno"; then
 	AC_MSG_ERROR([No mono runtime found])
+fi
+
+if test "x$MONODOC" = "xno"; then
+	AM_CONDITIONAL(HAVE_MONODOC, test a = b)
+else
+	AM_CONDITIONAL(HAVE_MONODOC, test a = a)
 fi
 
 AC_ARG_WITH([log4net],
@@ -62,6 +72,14 @@ else
 	exit 1;
 fi
 
+AC_MSG_CHECKING(for Mono.Data.Sqlite)
+if test "`${GACUTIL} -l Mono.Data.Sqlite | tail -1 | awk '{print $5}'`" -gt "0"; then
+	AC_MSG_RESULT([yes])
+	AM_CONDITIONAL(HAVE_SQLITE, test a = a)
+else
+	AC_MSG_RESULT([no])
+	AM_CONDITIONAL(HAVE_SQLITE, test a = b)
+fi
 
 AC_OUTPUT([
 			  Makefile

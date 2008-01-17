@@ -6,20 +6,19 @@ export MONO_SHARED_DIR=$(CURDIR)
 
 config.status: configure
 	dh_testdir
-	CFLAGS="$(CFLAGS) -Wl,-z,defs" ./configure --prefix=/usr --enable-debug --with-log4net=log4net
 
 build: build-indep
 build-indep: build-indep-stamp
 build-indep-stamp:  config.status
 	$(MAKE) 
-	touch build-indep-stamp
+	touch $@
 
 clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-indep-stamp
 	rm -rf $$MONO_SHARED_DIR/.wapi
-	-$(MAKE) distclean
+	-$(MAKE) clean
 	dh_clean 
 
 install: install-indep
@@ -36,9 +35,6 @@ install-indep:
 	find . -type f -name '*.mdb' | grep -v '\-dbg' | grep -v '\/tmp' | xargs rm
 	find $(CURDIR)/debian/ -type f -name "*.dll" -or -name "*.mdb" | xargs chmod -x
 
-
-# Must not depend on anything. This is to be called by binary-indep
-# in another 'make' thread.
 binary-common:
 	dh_testdir
 	dh_testroot
@@ -57,7 +53,6 @@ binary-common:
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
-
 
 # Build architecture dependant packages using the common target.
 binary-indep: build-indep install-indep binary-common
