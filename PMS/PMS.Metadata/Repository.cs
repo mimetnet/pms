@@ -136,8 +136,6 @@ namespace PMS.Metadata
 
         public void ReadXml(System.Xml.XmlReader reader)
         {
-            XmlSerializer xml = null;
-
             while (reader.Read()) {
                 reader.MoveToElement();
 
@@ -148,18 +146,15 @@ namespace PMS.Metadata
                         break;
 
                     case "assemblies":
-                        xml = new XmlSerializer(typeof(AssemblyCollection));
-                        this.Assemblies = (AssemblyCollection)xml.Deserialize(reader);
+                        this.Assemblies.ReadXml(reader);
                         break;
 
                     case "connections":
-                        xml = new XmlSerializer(typeof(ConnectionCollection));
-                        this.Connections = (ConnectionCollection)xml.Deserialize(reader);
+                        this.Connections.ReadXml(reader);
                         break;
 
                     case "classes":
-                        xml = new XmlSerializer(typeof(ClassCollection));
-                        this.Classes = (ClassCollection)xml.Deserialize(reader);
+                        this.Classes.ReadXml(reader);
                         break;
                 }
             }

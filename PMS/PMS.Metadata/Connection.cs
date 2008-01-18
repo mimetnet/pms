@@ -136,7 +136,7 @@ namespace PMS.Metadata
 			try {
 				this.Provider = PMS.Data.ProviderFactory.Create(prov);
 			} catch (Exception) {
-				log.ErrorFormat("ReadXml: '{0}' not found in base config path", prov);
+				log.ErrorFormat("ReadXml: '{0}' not found in {0}", prov, Config.SystemPath);
 			}
 
 			Int32.TryParse(reader.GetAttribute("pool-size"), out this.PoolSize);

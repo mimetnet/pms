@@ -50,9 +50,6 @@ namespace PMS.Metadata
 
         public void ReadXml(XmlReader reader)
         {
-            Class klass = null;
-            XmlSerializer xml = new XmlSerializer(typeof(Class));
-
 			try {
 				listLock.AcquireWriterLock(2000);
 
@@ -61,13 +58,11 @@ namespace PMS.Metadata
 
 					if (reader.LocalName == "class") {
 						try {
-							if ((klass = (Class)xml.Deserialize(reader)) != null) {
-								if (klass.Type != null) {
-									this.list.Add(klass.Type, klass);
-								} else {
-									Console.WriteLine("Failed to find type for Class.table {0}", klass.Table);
-									log.WarnFormat("Failed to find type for Class.table {0}", klass.Table);
-								}
+							Class klass = new Class(reader);
+							if (klass.Type != null) {
+								this.list.Add(klass.Type, klass);
+							} else {
+								log.WarnFormat("Failed to find type for Class.table {0}", klass.Table);
 							}
 						} catch (Exception) {}
 					} else if (reader.LocalName == "classes") {

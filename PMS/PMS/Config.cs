@@ -10,7 +10,7 @@ namespace PMS
 		public static string SystemPath {
 			get {
 				string foo = (Environment.OSVersion.Platform == PlatformID.Unix) ?
-					("/etc/libpms") : ("c:\\Program Files\\Common Files\\PMS");
+					("/etc/libpms") : ("c:\\Program Files\\Common Files\\PMS\\etc");
 
 				string env = Environment.GetEnvironmentVariable("PMS_CONFIG_PATH");
 				if (env != null) {
