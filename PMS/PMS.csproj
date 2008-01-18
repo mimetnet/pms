@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PMS.Metadata\Generator.cs" />
     <Compile Include="PMS\Config.cs" />
     <Compile Include="PMS.Util\TypeComparer.cs" />
     <Compile Include="PMS.Util\TypeLoader.cs" />

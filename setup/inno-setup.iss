@@ -7,6 +7,8 @@ Source: ..\..\..\..\..\Program Files\SQLite.NET\bin\System.Data.SQLite.DLL; Dest
 Source: ..\PMS.Data.Pgsql\bin\Release\PMS.Data.Pgsql.dll; DestDir: {app}\bin; Components: PGSQL
 Source: ..\PMS.Data.Sqlite\bin\Release\PMS.Data.Sqlite.dll; DestDir: {app}\bin; Components: SQLite
 Source: ..\scripts\pms-providers; DestDir: {app}\scripts; Components: PMS; DestName: pms-providers.py
+Source: ..\scripts\pms-repo-split; DestDir: {app}\scripts; Components: PMS; DestName: pms-repo-split.py
+Source: ..\scripts\pms-repo-upgrade; DestDir: {app}\scripts; Components: PMS; DestName: pms-repo-upgrade.py
 
 [Setup]
 VersionInfoCompany=Matthew Metnetsky
