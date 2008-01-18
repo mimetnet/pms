@@ -37,6 +37,7 @@ SOURCES = \
 	 ./PMS.DataAccess/DbEngineNotStartedException.cs \
 	 ./PMS.DataAccess/IDbManager.cs \
 	 ./PMS.DataAccess/SingleDbManager.cs \
+	 ./PMS.Metadata/Generator.cs \
 	 ./PMS.Metadata/AssemblyCollection.cs \
 	 ./PMS.Metadata/Auto.cs \
 	 ./PMS.Metadata/Class.cs \

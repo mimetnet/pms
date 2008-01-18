@@ -14,6 +14,7 @@ namespace PMS.Metadata
     [XmlRoot("repository")]
     public sealed class Repository : IXmlSerializable
     {
+		public bool GenerateTypes = false;
         public DbManagerMode DbManagerMode = DbManagerMode.Single;
         public AssemblyCollection Assemblies = new AssemblyCollection();
         public ConnectionCollection Connections = new ConnectionCollection();
@@ -30,6 +31,8 @@ namespace PMS.Metadata
         public static Repository operator+(Repository a, Repository b)
         {
             Repository c = new Repository();
+
+			c.GenerateTypes = (a.GenerateTypes || b.GenerateTypes);
             
             if (a.Classes != null) {
                 foreach (Class classDesc in a.Classes) {
@@ -136,14 +139,23 @@ namespace PMS.Metadata
 
         public void ReadXml(System.Xml.XmlReader reader)
         {
+			string gt = null;
+
             while (reader.Read()) {
                 reader.MoveToElement();
 
                 switch (reader.LocalName) {
                     case "dbmanager-mode":
-                        if (reader.ReadString().ToLower() == "single")
+                        if (reader.ReadString().ToLower() == "single") {
                             this.DbManagerMode = DbManagerMode.Single;
+						}
                         break;
+
+					case "generate-types":
+						if ((gt = reader.ReadString()) != null && gt.Length > 0) {
+							this.GenerateTypes = Boolean.Parse(gt);
+						}
+						break;
 
                     case "assemblies":
                         this.Assemblies.ReadXml(reader);
@@ -162,9 +174,16 @@ namespace PMS.Metadata
 
         public void WriteXml(System.Xml.XmlWriter writer)
         {
+			if (this.GenerateTypes) {
+				writer.WriteStartElement("generate-types");
+				writer.WriteValue("true");
+				writer.WriteEndElement();
+			}
+
             writer.WriteStartElement("dbmanager-mode");
             writer.WriteValue(this.DbManagerMode.ToString());
             writer.WriteEndElement();
+
 
             XmlSerializer xml = null;
 

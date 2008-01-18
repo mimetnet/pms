@@ -44,6 +44,15 @@ namespace PMS.Metadata
             this.Fields = fields;
             this.ListType = listType;
         }
+
+		public Class(Type type)
+		{
+			this.Type = type;
+			this.Table = Generator.CamelToCString(type.Name);
+			this.Fields = Generator.GenerateFields(type);
+			this.ListType = Generator.GenerateListType(type);
+			this.LoadCTypes();
+		}
         #endregion
 
         public bool HasReferences {
@@ -128,9 +137,7 @@ namespace PMS.Metadata
                         break;
 
                     case "class":
-						if (this.Type != null) {
-							LoadCTypes();
-						}
+						LoadCTypes();
                         return;
                 }
             }
