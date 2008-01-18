@@ -29,8 +29,10 @@ namespace PMS.Data
 
 		public static void Load(FileInfo file)
 		{
-			if (!file.Exists)
+			if (!file.Exists) {
+				log.Debug("Not Found << " + file);
 				return;
+			}
 
 			log.Debug("Load << " + file);
 
@@ -69,56 +71,6 @@ namespace PMS.Data
 					}
 				}
 			}
-		}
-
-		public static void Add(string name, IProvider provider, bool local)
-		{
-			list[name] = provider;
-
-			Type type = provider.GetType();
-			FileInfo file = new FileInfo(Path.Combine((local? Config.UserPath : Config.SystemPath), FILE_NAME));
-
-			using (FileLock fl = new FileLock(file)) {
-				using (TextWriter w = new StreamWriter(new FileStream(file.FullName, (FileMode.OpenOrCreate | FileMode.Append), FileAccess.Write))) {
-					if (file.Length == 0) {
-						w.WriteLine();
-					}
-					w.WriteLine("{0} = {1}, {2}", name, type.FullName, type.Assembly);
-				}
-			}
-		}
-
-		public static bool Remove(string name, bool local)
-		{
-			String line = null;
-			Boolean status = true;
-			FileInfo file = new FileInfo(Path.Combine((local? Config.UserPath : Config.SystemPath), FILE_NAME));
-			FileInfo copy = new FileInfo(Path.GetTempFileName());
-
-			if (file.Exists == false)
-				return false;
-
-			using (FileLock fl = new FileLock(file)) {
-				using (TextReader reader = file.OpenText()) {
-					using (TextWriter writer = copy.CreateText()) {
-						while ((line = reader.ReadLine()) != null) {
-							if (line.StartsWith(name) == false) {
-								writer.WriteLine(line);
-							}
-						}
-					}
-				}
-
-				try {
-					File.Copy(copy.FullName, file.FullName, true);
-					File.Delete(copy.FullName);
-				} catch (Exception e) {
-					log.Error("Failed to move TMP providers over " + file.FullName + "\n : " + e);
-					status = false;
-				}
-			}
-
-			return status;
 		}
 
         public static IProvider Create(string name)

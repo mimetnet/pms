@@ -1,8 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Xml.Schema;
+using System.Xml;
 using System.Xml.Serialization;
 
 using PMS.Metadata;
@@ -25,6 +24,11 @@ namespace PMS.Metadata
         public Class()
         {
         }
+
+		public Class(System.Xml.XmlReader reader)
+		{
+			ReadXml(reader);
+		}
 
         public Class(Type type, string table, FieldCollection fields)
         {
@@ -92,7 +96,7 @@ namespace PMS.Metadata
 			return null;
         }
 
-        public void ReadXml(System.Xml.XmlReader reader)
+        public void ReadXml(XmlReader reader)
         {
             if (reader.Name != "class") {
                 log.Error("ReadXml did not find <class> tag, but <" + reader.Name + "> instead");
@@ -115,24 +119,21 @@ namespace PMS.Metadata
 				}
 			}
 
-            XmlSerializer xml = new XmlSerializer(typeof(FieldCollection));
-
             while (reader.Read()) {
                 reader.MoveToElement();
 
                 switch (reader.LocalName) {
                     case "fields":
-                        this.Fields = (FieldCollection)xml.Deserialize(reader);
+                        this.Fields.ReadXml(reader);
                         break;
 
                     case "class":
-                        break;
+						if (this.Type != null) {
+							LoadCTypes();
+						}
+                        return;
                 }
             }
-
-			if (this.Type != null) {
-				LoadCTypes();
-			}
         }
 
 		private void LoadCTypes()
@@ -160,7 +161,7 @@ namespace PMS.Metadata
         /// Write XML to stream
         /// </summary>
         /// <param name="writer">XmlWriter</param>
-        public void WriteXml(System.Xml.XmlWriter writer)
+        public void WriteXml(XmlWriter writer)
         {
 			if (this.Type != null) {
 				writer.WriteAttributeString("type", this.Type.FullName + ", " + this.Type.Assembly.GetName().ToString());

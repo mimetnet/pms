@@ -125,18 +125,16 @@ namespace PMS.Metadata
 
         public void ReadXml(XmlReader reader)
         {
-            Field field = null;
-            XmlSerializer xml = new XmlSerializer(typeof(Field));
-
             while (reader.Read()) {
                 reader.MoveToElement();
 
-                if (reader.LocalName == "field")
-                    if ((field = (Field)xml.Deserialize(reader)) != null)
-                        this.List.Add(field);
-
-                if (reader.LocalName == "fields")
-                    break;
+				switch (reader.LocalName) {
+					case "field":
+						this.List.Add(new Field(reader));
+						break;
+					case "fields":
+						return;
+				}
             }
         }
 

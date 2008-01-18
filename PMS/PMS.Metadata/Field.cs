@@ -31,6 +31,11 @@ namespace PMS.Metadata
         {
         }
 
+		public Field(System.Xml.XmlReader reader)
+		{
+			ReadXml(reader);
+		}
+
         public Field(string name, string column, string dbType)
             : this(name, column, dbType, false, false, null)
         {

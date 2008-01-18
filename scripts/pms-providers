@@ -6,11 +6,10 @@ import stat
 import traceback
 import shutil
 import tempfile
+import time
 
 from optparse import OptionParser
 from commands import getoutput
-
-SYSTEM_PROVIDER = '/etc/libpms/providers'
 
 class Config():
     def __init__(self):
@@ -20,17 +19,35 @@ class Config():
         self.op.add_option('-l', dest='local', help='Modify $USER PMS providers', action='store_true')
         self.op.add_option('-r', dest='remove', help='Remove provider', action='store_true')
         self.config, self.remainder = self.op.parse_args()
-
+        if os.name != 'nt':
+            self.provider = '/etc/libpms/providers'
+        else:
+            self.provider = 'c:\\Program Files\\Common Files\\PMS\\etc\\providers'
+    
     def remove(self):
         return self.config.remove
 
     def local(self):
         return self.config.local
 
+def exit(val):
+    sys.exit(val)
+
+def get_type_nt(val):
+    t = val.split(',')
+    ret = os.popen('c:\\GTK\\2.8\\bin\\gacco.exe -e ' + t[1])
+    p = ret.readlines()
+    ret.close()
+    
+    if 'not found in the Microsft Global' in p[0]:
+        return None
+    
+    return "%s, %s" % (t[0], str(p[0]).strip())
+
 
 def get_type(val):
     t = val.split(',')
-    p = getoutput('gacutil /l ' + t[1]).split("\n")
+    p = getoutput('gacutil /l ' + t).split("\n")
 
     if p[len(p)-1].endswith("0"):
         return None
@@ -41,19 +58,18 @@ def get_type(val):
 def add_provider(cfg):
     if len(cfg.remainder) != 2:
         print "Usage: %s name 'type, assembly'" % (cfg.op.get_prog_name())
-        sys.exit(1)
-
-    type = get_type(cfg.remainder[1])
+        exit(1)
+    
+    if os.name != 'nt':
+        type = get_type(cfg.remainder[1])
+    else:
+        type = get_type_nt(cfg.remainder[1])
 
     if type is None:
         print("Assembly '%s' not found in GAC" % (cfg.remainder[1]))
-        sys.exit(1)
+        exit(1)
 
-    if not os.access(SYSTEM_PROVIDER, os.F_OK):
-        print("system providers file doesn't exist: %s" % (SYSTEM_PROVIDER))
-        sys.exit(1)
-
-    f = open(SYSTEM_PROVIDER, 'r+')
+    f = open(cfg.provider, 'r+')
 
     for line in f:
         line = line.strip()
@@ -61,42 +77,59 @@ def add_provider(cfg):
         if line.startswith(';') or line.startswith('#') or line == '':
             pass
 
-        if line.startswith(cfg.remainder[0]):
+        if line.startswith(cfg.remainder[0] + ' = '):
             print("provider already contains key '%s'" % (cfg.remainder[0]))
             f.close()
-            sys.exit(1)
+            exit(1)
 
-    f.write("%s = %s\n" % (cfg.remainder[0], get_type(cfg.remainder[1])))
+    f.write("%s = %s\n" % (cfg.remainder[0], type))
     f.close()
 
 
 def remove_provider(cfg):
     if len(cfg.remainder) != 1:
         print "Usage: %s -r name" % (cfg.op.get_prog_name())
-        sys.exit(1)
+        exit(1)
 
-    tmp = tempfile.mkstemp()[1]
+    tmp = os.path.join(tempfile.gettempdir(), 'pms-providers')
 
-    f = open(SYSTEM_PROVIDER, 'r')
+    f = open(cfg.provider, 'r')
     t = open(tmp, 'w')
 
     for line in f:
         line = line.strip()
 
-        if not line.startswith(cfg.remainder[0]):
+        if not line.startswith(cfg.remainder[0] + ' = '):
             t.write(line + "\n")
 
     f.close()
     t.close()
-
-    mode = stat.S_IMODE(os.stat(SYSTEM_PROVIDER)[stat.ST_MODE])
-    shutil.move(tmp, SYSTEM_PROVIDER)
-    os.chmod(SYSTEM_PROVIDER, mode)
+	
+    if os.name != 'nt':
+        mode = stat.S_IMODE(os.stat(cfg.provider)[stat.ST_MODE])
+        shutil.move(tmp, cfg.provider)
+        os.chmod(cfg.provider, mode)
+    else:
+        shutil.move(tmp, cfg.provider)
 
 
 if __name__ == '__main__':
     cfg = Config()
+    
+    if not os.access(os.path.dirname(cfg.provider), os.F_OK):
+        try:
+            os.mkdir(os.path.dirname(cfg.provider))
+        except:
+            print("mkdir(%s) failed" % (os.path.dirname(cfg.provider)))
+            exit(1)
 
+    if not os.access(cfg.provider, os.F_OK):
+        try:
+            open(cfg.provider, 'w').close()
+        except:
+            print("touch(%s) failed" % (cfg.provider))
+            exit(1)
+    
     if not cfg.remove():
         add_provider(cfg)
     else:
