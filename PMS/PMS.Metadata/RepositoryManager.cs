@@ -229,7 +229,6 @@ namespace PMS.Metadata
 				try {
 					repository += (Repository)serializer.Deserialize(fs);
 					res = (repository.Connections.Count > 0);
-					log.InfoFormat("Load: {0} => {1} {2}", file, res, repository.Classes.Count);
 				} catch (FileNotFoundException) {
 					if (log.IsErrorEnabled)
 						log.Error("Load(" + file + ") failed");
