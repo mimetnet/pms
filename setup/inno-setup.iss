@@ -1,14 +1,14 @@
 [Files]
-Source: ..\PMS\bin\Release\PMS.dll; DestDir: {app}\bin; Components: PMS
-Source: ..\PMS\bin\Release\PMS.pdb; DestDir: {app}\bin; Components: DBG
-Source: ..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v2.0.50727\log4net.dll; DestDir: {app}\bin; Components: PMS
-Source: ..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v2.0.50727\Npgsql.dll; DestDir: {app}\bin; Components: PGSQL
-Source: ..\..\..\..\..\Program Files\SQLite.NET\bin\System.Data.SQLite.DLL; DestDir: {app}\bin; Components: SQLite
-Source: ..\PMS.Data.Pgsql\bin\Release\PMS.Data.Pgsql.dll; DestDir: {app}\bin; Components: PGSQL
-Source: ..\PMS.Data.Sqlite\bin\Release\PMS.Data.Sqlite.dll; DestDir: {app}\bin; Components: SQLite
-Source: ..\scripts\pms-providers; DestDir: {app}\scripts; Components: PMS; DestName: pms-providers.py
-Source: ..\scripts\pms-repo-split; DestDir: {app}\scripts; Components: PMS; DestName: pms-repo-split.py
-Source: ..\scripts\pms-repo-upgrade; DestDir: {app}\scripts; Components: PMS; DestName: pms-repo-upgrade.py
+Source: ..\PMS\bin\Release\PMS.dll; DestDir: {app}\bin; Components: PMS; Flags: replacesameversion
+Source: ..\PMS\bin\Release\PMS.pdb; DestDir: {app}\bin; Components: DBG; Flags: replacesameversion
+Source: ..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v2.0.50727\log4net.dll; DestDir: {app}\bin; Components: PMS; Flags: replacesameversion
+Source: ..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v2.0.50727\Npgsql.dll; DestDir: {app}\bin; Components: PGSQL; Flags: replacesameversion
+Source: ..\..\..\..\..\Program Files\SQLite.NET\bin\System.Data.SQLite.DLL; DestDir: {app}\bin; Components: SQLite; Flags: replacesameversion
+Source: ..\PMS.Data.Pgsql\bin\Release\PMS.Data.Pgsql.dll; DestDir: {app}\bin; Components: PGSQL; Flags: replacesameversion
+Source: ..\PMS.Data.Sqlite\bin\Release\PMS.Data.Sqlite.dll; DestDir: {app}\bin; Components: SQLite; Flags: replacesameversion
+Source: ..\scripts\pms-providers; DestDir: {app}\scripts; Components: PMS; DestName: pms-providers.py; Flags: replacesameversion
+Source: ..\scripts\pms-repo-split; DestDir: {app}\scripts; Components: PMS; DestName: pms-repo-split.py; Flags: replacesameversion
+Source: ..\scripts\pms-repo-upgrade; DestDir: {app}\scripts; Components: PMS; DestName: pms-repo-upgrade.py; Flags: replacesameversion
 
 [Setup]
 VersionInfoCompany=Matthew Metnetsky
@@ -85,8 +85,8 @@ var
 	Result1: Boolean;
 	PMS: Boolean;
 begin
-	PMS := RegKeyExists(HKLM, 'SOFTWARE\PMS\0.6.91');
-
+	//PMS := RegKeyExists(HKLM, 'SOFTWARE\PMS\0.6.91');
+	PMS := false
 	if PMS =true then
 	begin
 		MsgBox('Already installed', mbInformation, MB_OK);
