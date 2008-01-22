@@ -33,8 +33,11 @@ namespace PMS.Util
 				assembly = Assembly.LoadFile(sAssembly);
 			}
 
+			if (assembly == null)
+				throw new TypeLoadException("Failed to load assembly '" + sAssembly + "'");
+
 			if ((type = assembly.GetType(sType)) == null)
-				throw new TypeLoadException(sType + " not found" + Environment.NewLine);
+				throw new TypeLoadException(sType + " not found in assembly '" + sAssembly + "'");
 
 			return type;
 		}

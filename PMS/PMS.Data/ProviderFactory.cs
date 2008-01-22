@@ -40,36 +40,40 @@ namespace PMS.Data
 			Type type;
 			String line, key;
 
-			using (TextReader reader = file.OpenText()) {
-				while ((line = reader.ReadLine()) != null) {
-					try {
-						if (line.Length == 0 || line[0] == '#')
-							continue;
+			try {
+				using (TextReader reader = file.OpenText()) {
+					while ((line = reader.ReadLine()) != null) {
+						try {
+							if (line.Length == 0 || line[0] == '#')
+								continue;
 
-						if ((div = line.IndexOf('=')) < 1)
-							continue;
+							if ((div = line.IndexOf('=')) < 1)
+								continue;
 
-						if (String.IsNullOrEmpty(key = line.Substring(0, div)))
-							continue;
+							if (String.IsNullOrEmpty(key = line.Substring(0, div)))
+								continue;
 
-						key = key.Trim();
+							key = key.Trim();
 
-						if (list.ContainsKey(key)) {
-							log.WarnFormat("Duplicate IProvider key found << '{0}'", key);
-							continue;
+							if (list.ContainsKey(key)) {
+								log.WarnFormat("Duplicate IProvider key found << '{0}'", key);
+								continue;
+							}
+
+							type = PMS.Util.TypeLoader.Load(line.Substring(div+1).Trim());
+
+							if (Array.IndexOf(type.GetInterfaces(), typeof(IProvider)) == -1)
+								continue;
+
+							list[key] = (IProvider)Activator.CreateInstance(type);
+
+						} catch (Exception e2) {
+							log.Error("Load.Line << ", e2);
 						}
-
-						type = PMS.Util.TypeLoader.Load(line.Substring(div+1).Trim());
-
-						if (Array.IndexOf(type.GetInterfaces(), typeof(IProvider)) == -1)
-							continue;
-
-						list[key] = (IProvider)Activator.CreateInstance(type);
-
-					} catch (Exception e) {
-						log.Error("Load << " + e.Message.Trim());
 					}
 				}
+			} catch (Exception e1) {
+				log.Error("Load << ", e1);
 			}
 		}
 

@@ -59,7 +59,7 @@ policy/policy.0.6.PMS.config
 policy/policy.0.6.PMS.dll
 policy/policy.config
 scripts/pms-repo
-setup/pms-setup.exe
+setup/*.exe
 .wapi
 PMS.Data.Pgsql/obj
 PMS.Data.Sqlite/obj
