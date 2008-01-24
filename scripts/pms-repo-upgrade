@@ -16,17 +16,27 @@ except:
         except:
             raise("Could not load element tree module. Please install python, python-celementtree, or python-elementtree")
 
+def _convert_type_to_provider(conn):
+    if 'type' in conn.attrib:
+       type = conn.get('type')
+
+       if 'Npgsql' in type:
+           conn.set('provider', 'pgsql')
+       elif 'Sqlite' in type:
+           conn.set('provider', 'sqlite')
+
+       del conn.attrib['type']
+
+
 def convert_type_to_provider(root):
-    for conn in root.getroot().findall('connections/connection'):
-        if 'type' in conn.attrib:
-            type = conn.get('type')
+    dr = root.getroot()
 
-            if 'Npgsql' in type:
-                conn.set('provider', 'pgsql')
-            elif 'Sqlite' in type:
-                conn.set('provider', 'sqlite')
+    if dr.tag == 'connection':
+        _convert_type_to_provider(dr)
+    else:
+        for conn in dr.findall('connections/connection'):
+            _convert_type_to_provider(conn)
 
-            del conn.attrib['type']
 
 def help(name):
     print 'usage:', name.split(os.sep).pop(), 'repository [output]'
