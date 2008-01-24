@@ -63,3 +63,4 @@ setup/*.exe
 .wapi
 PMS.Data.Pgsql/obj
 PMS.Data.Sqlite/obj
+debian

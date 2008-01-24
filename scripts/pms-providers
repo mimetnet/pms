@@ -11,7 +11,7 @@ import time
 from optparse import OptionParser
 from commands import getoutput
 
-class Config():
+class Config:
     def __init__(self):
         self.config = {}
         self.op = OptionParser(version='%prog N/A', conflict_handler='resolve')
@@ -47,7 +47,7 @@ def get_type_nt(val):
 
 def get_type(val):
     t = val.split(',')
-    p = getoutput('gacutil /l ' + t).split("\n")
+    p = getoutput('gacutil /l ' + t[1]).split("\n")
 
     if p[len(p)-1].endswith("0"):
         return None

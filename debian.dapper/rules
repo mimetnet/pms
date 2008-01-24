@@ -3,6 +3,7 @@
 #export DH_VERBOSE=1
 export DH_OPTIONS
 export MONO_SHARED_DIR=$(CURDIR)
+DEBDIR=$(CURDIR)/debian
 
 config.status: configure
 	dh_testdir
@@ -26,14 +27,14 @@ install: install-indep
 install-indep:
 	dh_testdir
 	dh_testroot
-	dh_clean -k -s 
-	dh_installdirs -s
-	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
-	install -d $(CURDIR)/debian/tmp/etc/libpms
-	echo "# providers" > $(CURDIR)/debian/tmp/etc/libpms/providers
-	dh_install --sourcedir=$(CURDIR)/debian/tmp
-	find . -type f -name '*.mdb' | grep -v '\-dbg' | grep -v '\/tmp' | xargs rm
-	find $(CURDIR)/debian/ -type f -name "*.dll" -or -name "*.mdb" | xargs chmod -x
+	dh_clean -k -i 
+	dh_installdirs -i
+	$(MAKE) install DESTDIR=$(DEBDIR)/tmp
+	install -d $(DEBDIR)/tmp/etc/libpms
+	echo "# providers" > $(DEBDIR)/tmp/etc/libpms/providers
+	dh_install -i --sourcedir=$(DEBDIR)/tmp
+	for i in libpms-cil libpms-pgsql-cil ; do find $(DEBDIR)/$$i -type f -name '*.mdb' -prune -exec rm '{}' \; ; done
+	find $(DEBDIR)/tmp -type f -name "*.dll" -or -name "*.mdb" | xargs chmod -x
 
 binary-common:
 	dh_testdir

@@ -1,0 +1,62 @@
+#!/usr/bin/make -f
+
+#export DH_VERBOSE=1
+export DH_OPTIONS
+export MONO_SHARED_DIR=$(CURDIR)
+
+config.status: configure
+	dh_testdir
+
+build: build-indep
+build-indep: build-indep-stamp
+build-indep-stamp:  config.status
+	$(MAKE) 
+	touch $@
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-indep-stamp
+	rm -rf $$MONO_SHARED_DIR/.wapi
+	-$(MAKE) clean
+	dh_clean 
+
+install: install-indep
+
+install-indep:
+	dh_testdir
+	dh_testroot
+	dh_clean -k -i 
+	dh_installdirs -i
+	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
+	install -d $(CURDIR)/debian/tmp/etc/libpms
+	echo "# providers" > $(CURDIR)/debian/tmp/etc/libpms/providers
+	dh_install -i --sourcedir=$(CURDIR)/debian/tmp
+	for i in libpms-cil libpms-pgsql-cil libpms-sqlite3-cil; do find $(DEBDIR)/$$i -type f -name '*.mdb' -prune -exec rm '{}' \; ; done
+	find $(CURDIR)/debian/ -type f -name "*.dll" -or -name "*.mdb" | xargs chmod -x
+
+binary-common:
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs ChangeLog
+	dh_installdocs
+	dh_installexamples
+	dh_installman
+	dh_link
+	dh_strip
+	dh_compress 
+	dh_fixperms
+	dh_makeshlibs
+	dh_installdeb
+	dh_makeclilibs -m 0.6.90 -l 0.7
+	dh_clideps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+# Build architecture dependant packages using the common target.
+binary-indep: build-indep install-indep binary-common
+
+binary: binary-indep
+
+.PHONY: build clean binary-indep binary install install-indep 

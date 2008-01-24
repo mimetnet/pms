@@ -30,7 +30,7 @@ Description: PMS Postgresql Support
 
 Package: libpms-pgsql-cil-dbg
 Architecture: all
-Depends: libpms-cil (= ${Source-Version}), ${cli:Depends}
+Depends: libpms-cil (= ${Source-Version})
 Description: PMS Postgresql Debug Symbols
 
 Package: libpms-sqlite3-cil
@@ -40,5 +40,5 @@ Description: PMS Sqlite3 Support
 
 Package: libpms-sqlite3-cil-dbg
 Architecture: all
-Depends: libpms-cil (= ${Source-Version}), ${cli:Depends}
+Depends: libpms-cil (= ${Source-Version})
 Description: PMS Sqlite3 Debug Symbols
