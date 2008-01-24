@@ -4,7 +4,7 @@ if HAVE_SQLITE
 	SUBDIRS += PMS.Data.Sqlite 
 endif
 
-SUBDIRS += scripts policy build debian
+SUBDIRS += scripts policy build
 
 if HAVE_MONODOC
 	SUBDIRS += doc

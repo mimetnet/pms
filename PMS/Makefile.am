@@ -95,7 +95,7 @@ install-data-local:
 	$(install_sh) -d $(DESTDIR)$(pmsdir)
 	$(install_sh_DATA) -t $(DESTDIR)$(pmsdir)/ $(ASSEMBLY) 
 	if test -n "$(DEBUG_FLAGS)"; then $(install_sh_DATA) -t $(DESTDIR)$(pmsdir)/ $(ASSEMBLY).mdb; fi;
-	$(GACUTIL) $(GACUTIL_FLAGS) -check_refs -f -i $(DESTDIR)$(pmsdir)/$(ASSEMBLY)
+	$(GACUTIL) -i "$(DESTDIR)$(pmsdir)/$(ASSEMBLY)" $(GACUTIL_FLAGS) -check_refs -f
 
 uninstall-local:
 	$(GACUTIL) $(GACUTIL_FLAGS) -us $(DESTDIR)$(pmsdir)/$(ASSEMBLY)

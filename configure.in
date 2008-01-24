@@ -89,7 +89,6 @@ AC_OUTPUT([
 			  build/libpms.pc
 			  build/Makefile
 			  scripts/Makefile
-			  debian/Makefile
 			  policy/Makefile
 			  policy/policy.config
 			  doc/Makefile
