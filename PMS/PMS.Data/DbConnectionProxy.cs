@@ -13,7 +13,7 @@ namespace PMS.Data
 
         internal IDbConnection _Connection = null;
 
-		public const int LockTimeout = 30000;
+		public const int LockTimeout = 10000;
 
         internal DbConnectionProxy(IDbConnection connection)
         {
@@ -25,11 +25,23 @@ namespace PMS.Data
             this._Connection = (IDbConnection) Activator.CreateInstance(typeOfConnection);
         }
 
-        internal IDbConnection RealConnection {
-            get { return this._Connection; }
+        #region IDbConnection Members
+
+        public string ConnectionString {
+            get { return this._Connection.ConnectionString; }
+            set { this._Connection.ConnectionString = value; }
         }
 
-        #region IDbConnection Members
+        public int ConnectionTimeout {
+            get { return this._Connection.ConnectionTimeout; }
+        }
+        public string Database {
+            get { return this._Connection.Database; }
+        }
+
+        public ConnectionState State {
+            get { return this._Connection.State; }
+        }
 
         public IDbTransaction BeginTransaction(IsolationLevel il)
         {
@@ -41,10 +53,11 @@ namespace PMS.Data
             return (trans = this._Connection.BeginTransaction());
         }
 
-        internal void CommitTransation()
+        internal void CommitTransaction()
         {
             if (trans != null) {
                 trans.Commit();
+				trans = null;
             }
         }
 
@@ -52,6 +65,7 @@ namespace PMS.Data
         {
             if (trans != null) {
                 trans.Rollback();
+				trans = null;
             }
         }
 
@@ -60,27 +74,15 @@ namespace PMS.Data
             this._Connection.ChangeDatabase(databaseName);
         }
 
-        public string ConnectionString {
-            get { return this._Connection.ConnectionString; }
-            set { this._Connection.ConnectionString = value; }
-        }
-
-        public int ConnectionTimeout {
-            get { return this._Connection.ConnectionTimeout; }
-        }
-
         public IDbCommand CreateCommand()
         {
             DbCommandProxy proxy = new DbCommandProxy(this);
+
             if (trans != null) {
                 proxy.Transaction = trans;
 			}
 
             return proxy;
-        }
-
-        public string Database {
-            get { return this._Connection.Database; }
         }
 
         public void Open()
@@ -90,21 +92,29 @@ namespace PMS.Data
 
         public void Close()
         {
-			this._Connection.Close();
+			try {
+				this.RollbackTransaction();
+			} catch {}
+
+			try {
+				this._Connection.Close();
+			} catch {}
+
 			//log.Info("Conn.Close");
 		}
-
-        public ConnectionState State
-        {
-            get { return this._Connection.State; }
-        }
         #endregion
 
         #region IDisposable Members
         public new void Dispose()
         {
-			this._Connection.Dispose();
-			//log.Info("Conn.Dispose");
+			try {
+				Close();
+
+				if (this._Connection != null)
+					this._Connection.Dispose();
+
+				base.Dispose();
+			} catch {}
         }
         #endregion
 

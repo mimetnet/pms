@@ -31,7 +31,7 @@ namespace PMS.Collections.Pool
 				if (pool[x].Principal.Identity.Name == Thread.CurrentPrincipal.Identity.Name) {
 
 					if (verbose && log.IsDebugEnabled) {
-						log.DebugFormat("ManagedObjectPool.Borrow(OID={0} IDN={1})",
+						log.DebugFormat("PrincipalObjectPool.Borrow(OID={0} IDN={1})",
 								pool[x].Object.GetHashCode(),
 								Thread.CurrentPrincipal.Identity.Name);
 					}
@@ -56,7 +56,7 @@ namespace PMS.Collections.Pool
 				if (pool[x].Principal.Identity.Name == Thread.CurrentPrincipal.Identity.Name) {
 
 					if (verbose && log.IsDebugEnabled) {
-						log.DebugFormat("ManagedObjectPool.Return(OID={0} IDN={1})",
+						log.DebugFormat("PrincipalObjectPool.Return(OID={0} IDN={1})",
 								pool[x].Object.GetHashCode(),
 								Thread.CurrentPrincipal.Identity.Name);
 					}

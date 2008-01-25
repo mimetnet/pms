@@ -13,6 +13,7 @@ config.sub
 configure
 configure-stamp
 debian
+debian.*/tmp
 debian.*/files
 debian.*/libpms-cil
 debian.*/libpms-cil-doc

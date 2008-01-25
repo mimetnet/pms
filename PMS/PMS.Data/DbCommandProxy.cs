@@ -2,6 +2,8 @@ using System;
 using System.Data;
 using System.ComponentModel;
 
+using PMS.DataAccess;
+
 namespace PMS.Data
 {
     public sealed class DbCommandProxy : Component, IDbCommand
@@ -9,12 +11,18 @@ namespace PMS.Data
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Data.DbCommandProxy");
 		private DbConnectionProxy conn = null;
         private IDbCommand cmd = null;
+		private IDbManager mgr = null;
 
         internal DbCommandProxy(DbConnectionProxy conn)
         {
 			this.conn = conn;
             this.cmd = this.conn._Connection.CreateCommand();
         }
+
+		internal IDbManager Manager {
+			get { return mgr; }
+			set { mgr = value; }
+		}
 
         #region IDbCommand Members
 
@@ -83,10 +91,19 @@ namespace PMS.Data
 				throw new ApplicationException("ExecuteReader(CommandBehavior): Failed to lock connection");
 
 			try {
-				reader = this.cmd.ExecuteReader(behavior);
+				reader = this.cmd.ExecuteReader();
 			} catch (NotSupportedException) {
-				if (this.CanReopenConnection())
-					reader = this.cmd.ExecuteReader();
+				if (this.CanReopenConnection()) {
+					try {
+						reader = this.cmd.ExecuteReader();
+					} catch (Exception e) {
+						this.conn.ReleaseLock();
+						throw e;
+					}
+				}
+			} catch (Exception e) {
+				this.conn.ReleaseLock();
+				throw e;
 			}
 
             return new DbDataReaderProxy(reader, this.conn);
@@ -102,8 +119,17 @@ namespace PMS.Data
 			try {
 				reader = this.cmd.ExecuteReader();
 			} catch (NotSupportedException) {
-				if (this.CanReopenConnection())
-					reader = this.cmd.ExecuteReader();
+				if (this.CanReopenConnection()) {
+					try {
+						reader = this.cmd.ExecuteReader();
+					} catch (Exception e) {
+						this.conn.ReleaseLock();
+						throw e;
+					}
+				}
+			} catch (Exception e) {
+				this.conn.ReleaseLock();
+				throw e;
 			}
 
             return new DbDataReaderProxy(reader, this.conn);
@@ -145,7 +171,12 @@ namespace PMS.Data
 
         public new void Dispose()
         {
-            this.cmd.Dispose();
+			if (this.cmd != null) {
+				if (this.mgr != null)
+					this.mgr.ReturnCommand(this.cmd);
+
+				this.cmd.Dispose();
+			}
         }
 
         #endregion

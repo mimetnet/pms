@@ -13,7 +13,6 @@ namespace PMS.Metadata
         private static readonly log4net.ILog log = 
             log4net.LogManager.GetLogger("PMS.Metadata.MetaObject");
 
-        //private static Hashtable fieldCache = new Hashtable();
         private IProvider provider = null;
 		private Class cdesc = null;
 

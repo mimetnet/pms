@@ -62,18 +62,35 @@ namespace PMS.Data.Pool
         #region Transactions
         public void BeginTransaction()
         {
-            this.GetConnection().BeginTransaction();
+   			DbConnectionProxy conn = this.GetConnection();
+
+			try {
+				conn.BeginTransaction();
+			} finally {
+				ReturnConnection(conn);
+			}
         }
 
         public void CommitTransaction()
         {
-            this.GetConnection().CommitTransation();
-        }
+   			DbConnectionProxy conn = this.GetConnection();
+
+			try {
+				conn.CommitTransaction();
+			} finally {
+				ReturnConnection(conn);
+			}
+		}
 
         public void RollbackTransaction()
         {
-            this.GetConnection().RollbackTransaction();
-        }
-        #endregion
-    }
+   			DbConnectionProxy conn = this.GetConnection();
+
+			try {
+				conn.RollbackTransaction();
+			} finally {
+				ReturnConnection(conn);
+			}		}
+		#endregion
+	}
 }

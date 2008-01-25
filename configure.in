@@ -60,8 +60,13 @@ AC_SUBST(MONO)
 AC_SUBST(GACUTIL)
 AC_SUBST(PKG_CONFIG)
 AC_SUBST(DEBUG_FLAGS)
-AC_SUBST([pmsdir], $libdir/cli/libpms-0.6)
 AC_SUBST([GACUTIL_FLAGS], ['-root $(DESTDIR)/usr/lib'])
+
+if test "dapper" != "`lsb_release -sc`"; then
+	AC_SUBST([pmsdir], $libdir/cli/libpms-$VERSION)
+else
+	AC_SUBST([pmsdir], $libdir/mono/2.0)
+fi
 
 
 AC_MSG_CHECKING(for log4net >= 1.2)

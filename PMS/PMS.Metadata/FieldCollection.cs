@@ -1,6 +1,5 @@
 using System;
-using System.Collections;
-using System.Data;
+using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -9,11 +8,10 @@ namespace PMS.Metadata
     /// <summary>
     /// FieldCollection Class
     /// </summary>
-    [XmlRoot("fields")]
 	[Serializable]
-    public class FieldCollection : CollectionBase, IXmlSerializable
+    [XmlRoot("fields")]
+    public class FieldCollection : List<Field>, IXmlSerializable
     {
-        #region CollectionBase Members
         ///<summary>
         /// Default constructor.
         ///</summary>
@@ -24,99 +22,15 @@ namespace PMS.Metadata
         ///<summary>
         /// The zero-based index of the element to get or set.
         ///</summary>
-        public Field this[int index] {
-            get { return (Field)this.List[index]; }
-            set { this.List[index] = value; }
-        }
-
-        ///<summary>
-        /// The zero-based index of the element to get or set.
-        ///</summary>
         public Field this[string name] {
             get { 
-                foreach (Field f in this.List)
+                foreach (Field f in this)
                     if (f.Name == name)
                         return f;
 
                 return null;
             }
         }
-
-        ///<summary>
-        /// Gets the number of elements contained in the FieldCollection.
-        ///</summary>
-        public new int Count
-        {
-            get { return this.List.Count; }
-        }
-
-        ///<summary>
-        /// Removes all items from the FieldCollection.
-        ///</summary>
-        public new void Clear()
-        {
-            this.List.Clear();
-        }
-
-        ///<summary>
-        /// Adds an item to the FieldCollection.
-        ///</summary>
-        public void Add(Field value)
-        {
-            this.List.Add(value);
-        }
-
-        ///<summary>
-        /// Removes the first occurrence of a specific object from the FieldCollection.
-        ///</summary>
-        public void Remove(Field value)
-        {
-            this.List.Remove(value);
-        }
-
-        ///<summary>
-        /// Removes the Field item at the specified index.
-        ///</summary>
-        public new void RemoveAt(int index)
-        {
-            this.List.RemoveAt(index);
-        }
-
-        ///<summary>
-        /// Inserts an item to the FieldCollection at the specified index.
-        ///</summary>
-        public void Insert(int index, Field value)
-        {
-            this.List.Insert(index, value);
-        }
-
-        ///<summary>
-        /// Determines the index of a specific item in the FieldCollection.
-        ///</summary>
-        public int IndexOf(Field value)
-        {
-            return this.List.IndexOf(value);
-        }
-
-        ///<summary>
-        /// Determines whether the FieldCollection contains a specific value.
-        ///</summary>
-        public bool Contains(Field value)
-        {
-            return this.List.Contains(value);
-        }
-
-        ///<summary>
-        /// Copies elements of the FieldCollection to a System.Array, 
-        /// starting at a particular System.Array index.
-        ///</summary>
-        public void CopyTo(Array array, int index)
-        {
-            this.List.CopyTo(array, index);
-        } 
-        #endregion
-
-        #region IXmlSerializable Members
 
         public System.Xml.Schema.XmlSchema GetSchema()
         {
@@ -130,7 +44,7 @@ namespace PMS.Metadata
 
 				switch (reader.LocalName) {
 					case "field":
-						this.List.Add(new Field(reader));
+						this.Add(new Field(reader));
 						break;
 					case "fields":
 						return;
@@ -142,10 +56,8 @@ namespace PMS.Metadata
         {
             XmlSerializer xml = new XmlSerializer(typeof(Field));
 
-            foreach (Field f in this.List)
+            foreach (Field f in this)
                 xml.Serialize(writer, f);
         }
-
-        #endregion
     }
 }

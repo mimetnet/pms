@@ -72,13 +72,15 @@ namespace PMS.DataAccess
 					}
 				} catch (Exception e) {
 					result = new DbResult(cmd.CommandText, e);
+
+					if (cmd.Transaction != null)
+						throw e;
 				} finally {
 					if (result.Exception != null) {
 						log.Error("ExecuteSelectObject: " + result);
 					} else if (log.IsDebugEnabled) {
 						log.Debug(result);
 					}
-					dbManager.ReturnCommand(cmd);
 				}
 			}
 
@@ -106,13 +108,15 @@ namespace PMS.DataAccess
 					}
 				} catch (Exception e) {
 					result = new DbResult(cmd.CommandText, e);
+
+					if (cmd.Transaction != null)
+						throw e;
 				} finally {
 					if (result.Exception != null) {
 						log.Error("ExecuteSelectArray: " + result);
 					} else if (log.IsDebugEnabled) {
 						log.Debug(result);
 					}
-					dbManager.ReturnCommand(cmd);
 				}
 			}
 
@@ -140,13 +144,15 @@ namespace PMS.DataAccess
 					}
 				} catch (Exception e) {
 					result = new DbResult(cmd.CommandText, e);
+
+					if (cmd.Transaction != null)
+						throw e;
 				} finally {
 					if (result.Exception != null) {
 						log.Error("ExecuteSelectList: " + result);
 					} else if (log.IsDebugEnabled) {
 						log.Debug(result);
 					}
-					dbManager.ReturnCommand(cmd);
 				}
 			}
 
@@ -254,14 +260,7 @@ namespace PMS.DataAccess
         {
             if (obj == null) throw new ArgumentNullException("Object cannot be null");
 
-            IQuery query = null;
-
-			try {
-				query = new QueryByObject(obj);
-				return ExecuteNonQuery(query.Update());
-			} catch (Exception e) {
-				return new DbResult(e);
-			}
+			return ExecuteUpdate(new QueryByObject(obj));
         }
 
         /// <summary>
@@ -289,11 +288,8 @@ namespace PMS.DataAccess
         {
             if (obj == null) throw new ArgumentNullException("Object cannot be null");
 
-			IQuery query = null;
-
 			try {
-				query = new QueryByObject(obj);
-				return ExecuteScalar(query.Count());
+				return ExecuteScalar(new QueryByObject(obj).Count());
 			} catch (Exception e) {
 				return new DbResult(e);
 			}
@@ -318,15 +314,17 @@ namespace PMS.DataAccess
 			using (IDbCommand cmd = dbManager.GetCommand(sql)) {
 				try {
 					result = new DbResult(cmd.ExecuteNonQuery(), sql);
-				} catch (Exception ex) {
-					result = new DbResult(sql, ex);
+				} catch (Exception e) {
+					result = new DbResult(sql, e);
+
+					if (cmd.Transaction != null)
+						throw e;
 				} finally {
 					if (result.Exception != null) {
 						log.Error("ExecuteNonQuery: " + result);
 					} else if (log.IsDebugEnabled) {
 						log.Debug(result);
 					}
-					dbManager.ReturnCommand(cmd);
 				}
 			}
 
@@ -351,15 +349,17 @@ namespace PMS.DataAccess
  			using (IDbCommand cmd = dbManager.GetCommand(sql)) {
 				try {
 					result = new DbResult(cmd.ExecuteScalar(), sql);
-				} catch (Exception ex) {
-					result = new DbResult(sql, ex);
+				} catch (Exception e) {
+					result = new DbResult(sql, e);
+
+					if (cmd.Transaction != null)
+						throw e;
 				} finally {
 					if (result.Exception != null) {
 						log.Error("ExecuteScalar: " + result);
 					} else if (log.IsDebugEnabled) {
 						log.Debug(result);
 					}
-					dbManager.ReturnCommand(cmd);
 				}
 			}
 
@@ -368,7 +368,6 @@ namespace PMS.DataAccess
 
         public static IDataReader ExecuteReader(string sql)
         {
-            IDbCommand cmd = null;
             IDataReader reader = null;
 
             if (sql == null)
@@ -377,17 +376,19 @@ namespace PMS.DataAccess
             if (sql == String.Empty)
                 throw new ArgumentNullException("SQL cannot be Empty");
 
-            try {
-                cmd = dbManager.GetCommand(sql);
-                reader = cmd.ExecuteReader();
-            } catch (Exception ex) {
-                log.Error("ExecuteReader", ex);
-            } finally {
-                if (log.IsDebugEnabled)
-                    log.Debug("SQL = " + sql);
-                if (cmd != null)
-                    dbManager.ReturnCommand(cmd);
-            }
+			using (IDbCommand cmd = dbManager.GetCommand(sql)) {
+				try {
+					reader = cmd.ExecuteReader();
+				} catch (Exception e) {
+					log.Error("ExecuteReader", e);
+
+					if (cmd.Transaction != null)
+						throw e;
+				} finally {
+					if (log.IsDebugEnabled)
+						log.Debug("SQL = " + sql);
+				}
+			}
 
             return reader;
         } 

@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Security.Principal;
 
+using PMS.Data;
 using PMS.Data.Pool;
 using PMS.Metadata;
 
@@ -9,7 +10,7 @@ namespace PMS.DataAccess
 {
     internal sealed class SingleDbManager : MarshalByRefObject, IDbManager
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.DataAccess.SingleDbManager");
         private ConnectionPool pool = null;
         private bool isInit = false;
 
@@ -43,14 +44,20 @@ namespace PMS.DataAccess
         /// <returns>IDbCommand instance</returns>
         public IDbCommand GetCommand(string sql)
         {
-            IDbCommand cmd = this.pool.GetConnection().CreateCommand();
+            DbCommandProxy cmd = (DbCommandProxy) this.pool.GetConnection().CreateCommand();
+			cmd.Manager = this;
             cmd.CommandText = sql;
             return cmd;
         }
 
-        public void ReturnCommand(IDbCommand command)
-        {
-            pool.ReturnConnection(command.Connection);
+		public void ReturnCommand(IDbCommand cmd)
+		{
+			if (cmd != null) {
+				pool.ReturnConnection(cmd.Connection);
+			} else {
+				log.Warn("ReturnCommand was given a null command >>");
+				log.Warn(new System.Diagnostics.StackTrace());
+			}
         }
         #endregion
 

@@ -1,3 +1,9 @@
+libpms-cil (0.6.90-2-0ubuntu0.6.06) dapper; urgency=low
+
+  * control replaces libpms & depends on mono-gac
+
+ -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Thu, 24 Jan 2008 15:43:30 -0500
+
 libpms-cil (0.6.90-1) unstable; urgency=low
 
   * Added field.default (override null as default value)

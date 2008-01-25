@@ -18,7 +18,7 @@ namespace PMS.Collections.Pool
 
         private int min = 0;
         private int max = 0;
-        private string cleanup;
+        private MethodInfo cleanup;
         private Type type = null;
         private object[] typeParams;
 
@@ -56,9 +56,9 @@ namespace PMS.Collections.Pool
             this.type = type;
             this.min = min;
             this.max = max;
-            this.cleanup = sFree;
-            this.pool = new ItemCollection();
             this.typeParams = typeParams;
+            this.pool = new ItemCollection();
+            this.cleanup = type.GetMethod(sFree);;
 			this.ZombieHandler += new EventHandler(ZombieMaster);
 
 			this.zTimer = new System.Timers.Timer();
@@ -149,23 +149,16 @@ namespace PMS.Collections.Pool
 		[MethodImpl(MethodImplOptions.Synchronized)]
         public virtual void CleanObject(ref Object obj)
         {
-            Type objType = null;
-            MethodInfo methInfo = null;
-
             try {
                 if (cleanup != null) {
-                    objType = obj.GetType();
-                    methInfo = objType.GetMethod(cleanup);
-                    methInfo.Invoke(obj, null);
+					cleanup.Invoke(obj, null);
 
                     if (log.IsDebugEnabled) {
-                        log.DebugFormat("{0}.{1}(OID={2})", objType, cleanup, obj.GetHashCode());
+                        log.DebugFormat("{0}.{1}(OID={2})", type, cleanup, obj.GetHashCode());
 					}
                 }
             } finally {
                 obj = null;
-                objType = null;
-                methInfo = null;
             }
         }
 

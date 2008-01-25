@@ -72,8 +72,10 @@ namespace PMS.Data
 						}
 					}
 				}
-			} catch (Exception e1) {
-				log.Error("Load << ", e1);
+			} catch (UnauthorizedAccessException e1) {
+				log.Error("Load << " + e1.Message);
+			} catch (Exception e2) {
+				log.Error("Load << ", e2);
 			}
 		}
 

@@ -6,8 +6,10 @@ Build-Depends: autotools-dev, debhelper (>= 4.0.0), mono-gac, cli-common (>= 0.2
 Standards-Version: 3.6.2
 
 Package: libpms-cil
+Replaces: libpms
+Conflicts: libpms
 Architecture: all
-Depends: ${cli:Depends}, python-elementtree | python-celementtree
+Depends: ${cli:Depends}, python-elementtree | python-celementtree, mono-gac
 Description: PMS - Phil & Matt Spaces for .NET
  PMS is an object relation mapping library for .NET/mono.
  .
@@ -19,6 +21,8 @@ Depends: monodoc-manual
 Description: compiled XML documentation for PMS
 
 Package: libpms-cil-dbg
+Replaces: libpms-dbg
+Conflicts: libpms-dbg
 Architecture: all
 Depends: libpms-cil (= ${Source-Version})
 Description: Debug symbols for libpms
