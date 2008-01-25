@@ -46,13 +46,18 @@ if __name__ == '__main__':
         help(sys.argv[0])
         sys.exit(0)
 
+    input = sys.argv[1]
+
     if len(sys.argv) != 3:
         output = sys.argv[1]
     else:
         output = sys.argv[2]
 
+    if output == '-':
+        output = sys.stdout
+
     try:
-        root = ET.parse(sys.argv[1])
+        root = ET.parse(input)
     except:
         print 'Failed to load', sys.argv[1]
         traceback.print_exc()
