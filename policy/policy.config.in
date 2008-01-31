@@ -3,7 +3,7 @@
       <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
        <dependentAssembly>
          <assemblyIdentity name="PMS" publicKeyToken="9efcb6b828991de4" />
-         <bindingRedirect oldVersion="0.6.40.1-0.6.90.1" newVersion="0.6.90.2"/>
+         <bindingRedirect oldVersion="0.6.40.1-0.6.90.2" newVersion="0.6.90.3"/>
        </dependentAssembly>
       </assemblyBinding>
    </runtime>

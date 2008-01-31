@@ -68,7 +68,6 @@ else
 	AC_SUBST([pmsdir], $libdir/mono/2.0)
 fi
 
-
 AC_MSG_CHECKING(for log4net >= 1.2)
 if $PKG_CONFIG $PKGLOG4NET; then
 	AC_MSG_RESULT($PKGLOG4NET)

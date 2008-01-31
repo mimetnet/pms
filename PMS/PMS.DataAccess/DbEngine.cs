@@ -168,14 +168,7 @@ namespace PMS.DataAccess
         {
             if (query == null) throw new ArgumentNullException("IQuery cannot be null");
 
-			string sql = null;
-
-            try {
-				sql = query.Delete();
-				return ExecuteNonQuery(sql);
-			} catch (Exception e) {
-				return new DbResult(sql, e);
-			}
+			return ExecuteNonQuery(query.Delete());
         }
 
         /// <summary>
@@ -218,13 +211,23 @@ namespace PMS.DataAccess
 				result = ExecuteScalar(query.Count());
 
 				if (result.Count >= 1) {
-					return ExecuteNonQuery(query.Update());
+					result = ExecuteNonQuery(query.Update());
 				} else {
-					return ExecuteNonQuery(query.Insert());
+					result = ExecuteNonQuery(query.Insert());
 				}
-			} catch (Exception e) {
-				return new DbResult(e);
+
+			} finally {
+				if (result != null) {
+					if (result.Exception != null) {
+						log.Error("ExecutePersist: " + result);
+					} else if (log.IsDebugEnabled) {
+						log.Debug(result);
+					}
+				}
 			}
+
+			return result;
+
         }
 
         /// <summary>
@@ -288,11 +291,7 @@ namespace PMS.DataAccess
         {
             if (obj == null) throw new ArgumentNullException("Object cannot be null");
 
-			try {
-				return ExecuteScalar(new QueryByObject(obj).Count());
-			} catch (Exception e) {
-				return new DbResult(e);
-			}
+			return ExecuteScalar(new QueryByObject(obj).Count());
         }
 
         #region Execution
