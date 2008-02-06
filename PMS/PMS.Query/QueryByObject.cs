@@ -37,10 +37,8 @@ namespace PMS.Query
         /// just return key=value.  Else loop through the objects Fields and
         /// setup key=value pairs.
         /// </summary>
-        public override string Condition
-        {
-            get
-            {
+        public override string Condition {
+            get {
                 bool withClause = false;
                 StringBuilder sql = new StringBuilder();
 
@@ -66,8 +64,7 @@ namespace PMS.Query
         /// <summary>
         /// (column, column, column) VALUES (value, value, value)
         /// </summary>
-        public override string InsertClause
-        {
+        public override string InsertClause {
             get {
                 bool keyClause = false;
                 bool clause = false;
@@ -119,8 +116,7 @@ namespace PMS.Query
         /// <summary>
         /// "ORDER BY x ASC, y DESC, z"
         /// </summary>
-        public override string OrderBy
-        {
+        public override string OrderBy {
             get {
                 if (criteria.OrderCount > 0)
                     return criteria.GetOrderByClause();

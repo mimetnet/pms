@@ -18,7 +18,7 @@ namespace PMS.Metadata
 		public string DefaultDb;
         public bool Unique = false;
         public bool PrimaryKey = false;
-        public bool IgnoreDefault = false;
+        public bool IgnoreDefault = true;
         public Reference Reference = null;
 		public Type CType = null;
 
@@ -199,21 +199,33 @@ namespace PMS.Metadata
 
         public void ReadXml(System.Xml.XmlReader reader)
         {
+			string tmp = null;
+
             if (reader.Name != "field") {
                 log.Error("ReadXml did not find <field> tag, but <" + reader.Name + "> instead");
                 return;
             }
 
-            this.Name = reader.GetAttribute("name");
-            this.Column = reader.GetAttribute("column");
-            this.DbType = reader.GetAttribute("db_type");
-            this.PrimaryKey = Convert.ToBoolean(reader.GetAttribute("primarykey"));
-            this.Unique = Convert.ToBoolean(reader.GetAttribute("unique"));
-            this.IgnoreDefault = Convert.ToBoolean(reader.GetAttribute("ignore_default"));
-            this.Default = reader.GetAttribute("default");
+            Name = reader.GetAttribute("name");
+            Column = reader.GetAttribute("column");
+            DbType = reader.GetAttribute("db_type");
+            Default = reader.GetAttribute("default");
 
-            if ((this.DefaultDb = reader.GetAttribute("default_db")) == null)
-				this.DefaultDb = "null";
+			if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("primarykey")))
+				if (tmp == "true")
+					PrimaryKey = true;
+
+			if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("unique")))
+				if (tmp == "true")
+					Unique = true;
+
+			if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("ignore_default")))
+				if (tmp == "false")
+					IgnoreDefault = false;
+
+
+            if ((DefaultDb = reader.GetAttribute("default_db")) == null)
+				DefaultDb = "null";
 
             if (reader.IsEmptyElement == false) {
                 if (reader.Read()) {

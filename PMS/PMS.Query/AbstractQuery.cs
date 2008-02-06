@@ -96,6 +96,7 @@ namespace PMS.Query
 
 				if (verbose) {
 					log.InfoFormat("     Init: '{0}'", init);
+					log.InfoFormat("      << : " + !(init != null && field.IgnoreDefault && init.Equals(value)));
 					log.InfoFormat("--");
 				}
 
@@ -103,11 +104,12 @@ namespace PMS.Query
 			} 
 			
 			if (verbose) {
+				log.InfoFormat("      << : " + (field.IgnoreDefault && field.Default == null));
 				log.InfoFormat("--");
 			}
 
 			// VALUE IS NULL
-			return (field.IgnoreDefault && field.Default == null);
+			return !(field.IgnoreDefault && field.Default == null);
 		}
 
         public SqlCommand Command {

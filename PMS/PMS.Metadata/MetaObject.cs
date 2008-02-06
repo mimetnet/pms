@@ -135,6 +135,7 @@ namespace PMS.Metadata
 				//Console.WriteLine(f);
 	
 				finfo = cdesc.Type.GetField(f.Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+
 				if (finfo == null) {
 					log.ErrorFormat("Field '{0}' not found for Column '{1}'", f.Name, f.Column);
 					continue;
