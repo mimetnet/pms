@@ -242,8 +242,8 @@ namespace PMS.Metadata
             writer.WriteAttributeString("column", this.Column);
             writer.WriteAttributeString("db_type", this.DbType);
 
-            if (IgnoreDefault)
-                writer.WriteAttributeString("ignore_default", "true");
+            if (!IgnoreDefault)
+                writer.WriteAttributeString("ignore_default", "false");
 
 			if (Default != null)
 				writer.WriteAttributeString("default", Default.ToString());
