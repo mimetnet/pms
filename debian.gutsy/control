@@ -17,7 +17,7 @@ Description: PMS - Phil & Matt Spaces for .NET
 
 Package: libpms-cil-doc
 Architecture: all
-Depends: monodoc-manual
+Depends: monodoc-manual, monodoc-base
 Description: compiled XML documentation for PMS
 
 Package: libpms-cil-dbg
