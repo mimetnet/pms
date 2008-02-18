@@ -1,6 +1,7 @@
 EXTRA_DIST = pms.zip pms.tree pms.source
 CLEANFILES = pms.zip pms.tree pms.stamp
 
+if HAVE_MONODOC
 all: pms.stamp
 
 pms.stamp:
@@ -14,8 +15,8 @@ api-html:
 	$(MONODOCS2HTML) --source api --dest api-html
 
 install-data-local:
-	$(install_sh_DATA) -m 755 -d $(DESTDIR)`$(PKG_CONFIG) $(MONODOC) --variable=sourcesdir`/
-	$(install_sh_DATA) -t $(DESTDIR)`$(PKG_CONFIG) $(MONODOC) --variable=sourcesdir`/ $(EXTRA_DIST)
+	$(install_sh_DATA) -m 755 -d $(DESTDIR)$(MONODOC_SRC_DIR)/
+	$(install_sh_DATA) -t $(DESTDIR)$(MONODOC_SRC_DIR)/ $(EXTRA_DIST)
 
 uninstall-local:
 	for file in $(EXTRA_DIST); do \
@@ -23,3 +24,4 @@ uninstall-local:
 			rm $(DESTDIR)`$(PKG_CONFIG) $(MONODOC) --variable=sourcesdir`/$$file; \
 		fi; \
 	done;
+endif

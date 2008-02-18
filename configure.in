@@ -61,6 +61,7 @@ AC_SUBST(GACUTIL)
 AC_SUBST(PKG_CONFIG)
 AC_SUBST(DEBUG_FLAGS)
 AC_SUBST([GACUTIL_FLAGS], ['-root $(DESTDIR)/usr/lib'])
+AC_SUBST([MONODOC_SRC_DIR], ['`$(PKG_CONFIG) monodoc --variable=sourcesdir`'])
 
 if test "dapper" != "`lsb_release -sc`"; then
 	AC_SUBST([pmsdir], $libdir/cli/libpms-$VERSION)

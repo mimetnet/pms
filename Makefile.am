@@ -1,14 +1,4 @@
-SUBDIRS = PMS PMS.Data.Pgsql 
-
-if HAVE_SQLITE
-	SUBDIRS += PMS.Data.Sqlite 
-endif
-
-SUBDIRS += scripts policy build
-
-if HAVE_MONODOC
-	SUBDIRS += doc
-endif
+SUBDIRS = PMS PMS.Data.Pgsql PMS.Data.Sqlite scripts policy build doc
 
 EXTRA_DIST = PMS.snk
 
