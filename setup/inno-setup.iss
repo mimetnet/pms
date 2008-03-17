@@ -19,26 +19,26 @@ DefaultGroupName=PMS
 ShowLanguageDialog=yes
 AppID={{F1EC159F-1DCB-4E97-BF43-EC14D05ED4EC}
 AppName=PMS
-AppVerName=PMS 0.6.91
-AppVersion=0.6.91
+AppVerName=PMS 0.6.90.3
+AppVersion=0.6.90.3
 AppCopyright=Matthew Metnetsky
 AppPublisher=Matthew Metnetsky
 AppPublisherURL=http://cowarthill.com/
 AppSupportURL=http://cowarthill.com/PMS/
 AppUpdatesURL=http://cowarthill.com/PMS/
 AppMutex=pms-setup
-OutputBaseFilename=pms-setup-0.6.91
-VersionInfoVersion=0.6.91
+OutputBaseFilename=pms-setup-0.6.90.3
+VersionInfoVersion=0.6.90.3
 VersionInfoDescription=PMS
 VersionInfoCopyright=Matthew Metnetsky
 Compression=lzma
 InternalCompressLevel=normal
 OutputDir=.\
 SetupIconFile=setup.ico
-LicenseFile=..\debian\copyright
+LicenseFile=..\debian.gutsy\copyright
 DisableProgramgroupPage=true
 UsePreviousGroup=false
-AppReadmeFile=..\debian\copyright
+AppReadmeFile=..\debian.gutsy\copyright
 SolidCompression=true
 PrivilegesRequired=poweruser
 
@@ -62,9 +62,9 @@ Filename: {app}\scripts\pms-providers.py; Parameters: "sqlite ""PMS.Data.Sqlite.
 Filename: {app}\scripts\pms-providers.py; Parameters: "pgsql ""PMS.Data.Postgresql.PostgresqlProvider, PMS.Data.Pgsql"""; Components: PGSQL; Flags: shellexec runhidden
 
 [UninstallRun]
-Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/u ""PMS, Version=0.6.91.0, Culture=neutral, PublicKeyToken=1b9e664700a659b9, processorArchitecture=MSIL"""; Components: PMS; Flags: runhidden
 Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/u ""PMS.Data.Pgsql, Version=0.3.0.0, Culture=neutral, PublicKeyToken=1b9e664700a659b9, processorArchitecture=MSIL"""; Components: PGSQL; Flags: runhidden
 Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/u ""PMS.Data.Sqlite, Version=0.0.1.0, Culture=neutral, PublicKeyToken=1b9e664700a659b9, processorArchitecture=MSIL"""; Components: SQLite; Flags: runhidden
+Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/u ""PMS, Version=0.6.90.3, Culture=neutral, PublicKeyToken=1b9e664700a659b9, processorArchitecture=MSIL"""; Components: PMS; Flags: runhidden
 Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/u ""log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL"""; Components: PMS; Flags: runhidden
 Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/u ""Npgsql, Version=0.99.3.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL"""; Components: PGSQL; Flags: runhidden
 Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters: "/u ""System.Data.SQLite, Version=1.0.48.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86"""; Components: SQLite; Flags: runhidden
@@ -72,8 +72,8 @@ Filename: {reg:HKLM\SOFTWARE\GTK\2.0,Path|C:\GTK\2.8}\bin\gacco.exe; Parameters:
 
 [Registry]
 Root: HKLM; Subkey: SOFTWARE\PMS; Flags: uninsdeletekeyifempty
-Root: HKLM; Subkey: SOFTWARE\PMS\0.6.91; Flags: uninsdeletekeyifempty
-Root: HKLM; Subkey: SOFTWARE\PMS\0.6.91; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletevalue
+Root: HKLM; Subkey: SOFTWARE\PMS\0.6.90.3; Flags: uninsdeletekeyifempty
+Root: HKLM; Subkey: SOFTWARE\PMS\0.6.90.3; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletevalue
 Root: HKLM; Subkey: SOFTWARE\Microsoft\.NETFramework\AssemblyFolders\PMS; Flags: uninsdeletekeyifempty
 Root: HKLM; Subkey: SOFTWARE\Microsoft\.NETFramework\AssemblyFolders\PMS; ValueType: string; ValueData: {app}\bin; Flags: uninsdeletevalue
 
@@ -85,7 +85,7 @@ var
 	Result1: Boolean;
 	PMS: Boolean;
 begin
-	//PMS := RegKeyExists(HKLM, 'SOFTWARE\PMS\0.6.91');
+	//PMS := RegKeyExists(HKLM, 'SOFTWARE\PMS\0.6.90.3');
 	PMS := false
 	if PMS =true then
 	begin
