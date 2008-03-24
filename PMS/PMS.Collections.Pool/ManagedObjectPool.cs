@@ -35,7 +35,7 @@ namespace PMS.Collections.Pool
         {
 			index = (index != (pool.Count - 1)) ? index + 1 : 0;
 
-			if (pool[index].Available) {
+			if (index != pool.Count && pool[index].Available) {
 				if (verbose && log.IsDebugEnabled) {
 					log.DebugFormat("ManagedObjectPool.Borrow(OID={0} IDN={1})",
 							pool[index].Object.GetHashCode(),

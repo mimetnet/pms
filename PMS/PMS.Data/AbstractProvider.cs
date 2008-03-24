@@ -44,7 +44,10 @@ namespace PMS.Data
 
         public virtual string PrepareSqlString(object value)
         {
-            return "'" + value.ToString().Replace("\\", "\\\\").Replace("'", "''") + "'";
+			if (value != null)
+				return "'" + value.ToString().Replace("\\", "\\\\").Replace("'", "''") + "'";
+
+			return "null";
         }
 
         public virtual string PrepareSqlBoolean(object value)

@@ -19,6 +19,7 @@ SOURCES = \
 	 ./PMS.Collections.Pool/ManagedObjectPool.cs \
 	 ./PMS.Collections.Pool/ObjectNotCheckedOutException.cs \
 	 ./PMS.Collections.Pool/ObjectNotInPoolException.cs \
+	 ./PMS.Collections.Pool/ObjectPoolEmptyException.cs \
 	 ./PMS.Collections.Pool/PrincipalObjectPool.cs \
 	 ./PMS.Collections.Pool/ItemCollection.cs \
 	 ./PMS.Data/AbstractProvider.cs \
