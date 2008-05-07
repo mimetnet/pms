@@ -68,7 +68,7 @@ namespace PMS.Data
 							list[key] = (IProvider)Activator.CreateInstance(type);
 
 						} catch (Exception e2) {
-							log.Error("Load.Line << ", e2);
+							log.Error("Load.Line << " + e2.Message);
 						}
 					}
 				}
