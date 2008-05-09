@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public class OrClause : PMS.Query.IClause" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.6.90.0</AssemblyVersion>
+    <AssemblyVersion>0.6.90.3</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -12,6 +12,10 @@
       <InterfaceName>PMS.Query.IClause</InterfaceName>
     </Interface>
   </Interfaces>
+  <Docs>
+    <summary>To be added.</summary>
+    <remarks>To be added.</remarks>
+  </Docs>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public OrClause ();" />
@@ -23,8 +27,4 @@
       </Docs>
     </Member>
   </Members>
-  <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
-  </Docs>
 </Type>

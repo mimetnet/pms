@@ -2,12 +2,16 @@
   <TypeSignature Language="C#" Value="public sealed class RepositoryManager : MarshalByRefObject" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.6.90.0</AssemblyVersion>
+    <AssemblyVersion>0.6.90.3</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.MarshalByRefObject</BaseTypeName>
   </Base>
   <Interfaces />
+  <Docs>
+    <summary>To be added.</summary>
+    <remarks>To be added.</remarks>
+  </Docs>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public RepositoryManager ();" />
@@ -186,6 +190,22 @@
       </Docs>
     </Member>
     <Member MemberName="Save">
+      <MemberSignature Language="C#" Value="public static bool Save (string package);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="package" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="package">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Save">
       <MemberSignature Language="C#" Value="public static bool Save (PMS.Metadata.Repository repo, string package);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
@@ -203,17 +223,17 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="Save">
-      <MemberSignature Language="C#" Value="public static bool Save (string package);" />
+    <Member MemberName="SaveAs">
+      <MemberSignature Language="C#" Value="public static bool SaveAs (string fileName);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="package" Type="System.String" />
+        <Parameter Name="fileName" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="package">To be added.</param>
+        <param name="fileName">To be added.</param>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
@@ -237,25 +257,5 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="SaveAs">
-      <MemberSignature Language="C#" Value="public static bool SaveAs (string fileName);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="fileName" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="fileName">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
   </Members>
-  <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
-  </Docs>
 </Type>

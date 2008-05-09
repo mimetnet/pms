@@ -2,9 +2,17 @@
   <TypeSignature Language="C#" Value="public interface IPersistenceBroker" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.6.90.0</AssemblyVersion>
+    <AssemblyVersion>0.6.90.3</AssemblyVersion>
   </AssemblyInfo>
   <Interfaces />
+  <Docs>
+    <summary>
+      <para>Basic interface used to marshal data to and from the server.</para>
+    </summary>
+    <remarks>
+      <para>This should only be implemented if you know that the inner details of <see cref="T:PMS.Broker.PersistenceBroker" /> do not meet your needs.</para>
+    </remarks>
+  </Docs>
   <Members>
     <Member MemberName="BeginTransaction">
       <MemberSignature Language="C#" Value="public void BeginTransaction ();" />
@@ -230,8 +238,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary><para>Look for repository.xml in immediate folder and try to load it.</para></summary>
-        <returns><para>Success or failure to find and parse repository.xml in current folder</para></returns>
+        <summary>
+          <para>Look for repository.xml in immediate folder and try to load it.</para>
+        </summary>
+        <returns>
+          <para>Success or failure to find and parse repository.xml in current folder</para>
+        </returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -245,9 +257,14 @@
         <Parameter Name="file" Type="System.IO.FileInfo" />
       </Parameters>
       <Docs>
-        <param name="file"><para>FileInfo.FullName must point to a fully valid repository file</para></param>
-        <summary><para>Loads XML file containing repository root tag.</para>.</summary>
-        <returns><para>Success or failure to parse file</para></returns>
+        <param name="file">
+          <para>FileInfo.FullName must point to a fully valid repository file</para>
+        </param>
+        <summary>
+          <para>Loads XML file containing repository root tag.</para>.</summary>
+        <returns>
+          <para>Success or failure to parse file</para>
+        </returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -261,10 +278,16 @@
         <Parameter Name="repositoryFile" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="repositoryFile"><para>Points to either a repository.xml OR to a "package" that can be found in <see cref="T:PMS.Config" />.SystemPath.</para></param>
+        <param name="repositoryFile">
+          <para>Points to either a repository.xml OR to a "package" that can be found in <see cref="T:PMS.Config" />.SystemPath.</para>
+        </param>
         <summary>To be added.</summary>
-        <returns><para>Success or failure to parse repository.xml OR load package.</para></returns>
-        <remarks><para>Passing in "foo" will make PMS first look for a file named "foo" and if it fails it will try to find a directory named /etc/libpms/foo where it can find *.pmx and *.pmc XML files.</para></remarks>
+        <returns>
+          <para>Success or failure to parse repository.xml OR load package.</para>
+        </returns>
+        <remarks>
+          <para>Passing in "foo" will make PMS first look for a file named "foo" and if it fails it will try to find a directory named /etc/libpms/foo where it can find *.pmx and *.pmc XML files.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Open">
@@ -275,9 +298,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary><para>Opens database connection(s) from current <see cref="T:PMS.Metadata.Repository" /></para></summary>
-        <returns><para>Success or failure to open database connection refered to by currently loaded Repository</para></returns>
-        <remarks><para>Must be called AFTER <see cref="T:PMS.Broker.IPersistenceBroker" />.Load([])</para></remarks>
+        <summary>
+          <para>Opens database connection(s) from current <see cref="T:PMS.Metadata.Repository" /></para>
+        </summary>
+        <returns>
+          <para>Success or failure to open database connection refered to by currently loaded Repository</para>
+        </returns>
+        <remarks>
+          <para>Must be called AFTER <see cref="T:PMS.Broker.IPersistenceBroker" />.Load([])</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Persist">
@@ -353,8 +382,4 @@
       </Docs>
     </Member>
   </Members>
-  <Docs>
-    <summary><para>Basic interface used to marshal data to and from the server.</para></summary>
-    <remarks><para>This should only be implemented if you know that the inner details of <see cref="T:PMS.Broker.PersistenceBroker" /> do not meet your needs.</para></remarks>
-  </Docs>
 </Type>

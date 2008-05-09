@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public sealed class DbConnectionProxy : System.ComponentModel.Component, System.Data.IDbConnection" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.6.90.0</AssemblyVersion>
+    <AssemblyVersion>0.6.90.3</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.ComponentModel.Component</BaseTypeName>
@@ -12,6 +12,10 @@
       <InterfaceName>System.Data.IDbConnection</InterfaceName>
     </Interface>
   </Interfaces>
+  <Docs>
+    <summary>To be added.</summary>
+    <remarks>To be added.</remarks>
+  </Docs>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public DbConnectionProxy (Type typeOfConnection);" />
@@ -143,12 +147,12 @@
       </Docs>
     </Member>
     <Member MemberName="LockTimeout">
-      <MemberSignature Language="C#" Value="public const int LockTimeout = 30000;" />
+      <MemberSignature Language="C#" Value="public const int LockTimeout = 10000;" />
       <MemberType>Field</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <MemberValue>30000</MemberValue>
+      <MemberValue>10000</MemberValue>
       <Docs>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
@@ -179,8 +183,4 @@
       </Docs>
     </Member>
   </Members>
-  <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
-  </Docs>
 </Type>

@@ -1,18 +1,20 @@
 <Type Name="ItemCollection" FullName="PMS.Collections.Pool.ItemCollection">
-  <TypeSignature Language="C#" Value="public class ItemCollection : System.Collections.CollectionBase" />
+  <TypeSignature Language="C#" Value="public class ItemCollection : System.Collections.Generic.List&lt;PMS.Collections.Pool.Item&gt;" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.6.90.0</AssemblyVersion>
+    <AssemblyVersion>0.6.90.3</AssemblyVersion>
   </AssemblyInfo>
   <Base>
-    <BaseTypeName>System.Collections.CollectionBase</BaseTypeName>
+    <BaseTypeName>System.Collections.Generic.List&lt;PMS.Collections.Pool.Item&gt;</BaseTypeName>
+    <BaseTypeArguments>
+      <BaseTypeArgument TypeParamName="T">PMS.Collections.Pool.Item</BaseTypeArgument>
+    </BaseTypeArguments>
   </Base>
   <Interfaces />
-  <Attributes>
-    <Attribute>
-      <AttributeName>System.Reflection.DefaultMember("Item")</AttributeName>
-    </Attribute>
-  </Attributes>
+  <Docs>
+    <summary>To be added.</summary>
+    <remarks>To be added.</remarks>
+  </Docs>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public ItemCollection ();" />
@@ -129,16 +131,16 @@
       </Docs>
     </Member>
     <Member MemberName="Item">
-      <MemberSignature Language="C#" Value="public PMS.Collections.Pool.Item this[int index] { set; get; };" />
+      <MemberSignature Language="C#" Value="public PMS.Collections.Pool.Item this[int ] { set; get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>PMS.Collections.Pool.Item</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="index" Type="System.Int32" />
+        <Parameter Name="" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="index">To be added.</param>
+        <param name="">To be added.</param>
         <summary>To be added.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
@@ -175,8 +177,4 @@
       </Docs>
     </Member>
   </Members>
-  <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
-  </Docs>
 </Type>

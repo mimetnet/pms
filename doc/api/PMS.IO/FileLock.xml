@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public sealed class FileLock : IDisposable" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.6.90.0</AssemblyVersion>
+    <AssemblyVersion>0.6.90.3</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -12,6 +12,21 @@
       <InterfaceName>System.IDisposable</InterfaceName>
     </Interface>
   </Interfaces>
+  <Docs>
+    <summary>Used to create locks on configuration files while reading and deserializing them.</summary>
+    <remarks>
+      <para>FileLock does its job by creating an actual file to ensure it's safe from other PMS instances. As this class implements <see cref="T:System.IDisposable" />, please wrap utilize "using".</para>
+      <para>
+        <example>
+          <code lang="C#">
+using (FileLock flock = new FileLock("repository.xml")) {
+    ...
+}
+  </code>
+        </example>
+      </para>
+    </remarks>
+  </Docs>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public FileLock (System.IO.FileInfo file);" />
@@ -37,20 +52,17 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="System.IDisposable.Dispose">
+      <MemberSignature Language="C#" Value="void IDisposable.Dispose ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
   </Members>
-  <Docs>
-    <summary>Used to create locks on configuration files while reading and deserializing them.</summary>
-    <remarks>
-      <para>FileLock does its job by creating an actual file to ensure it's safe from other PMS instances. As this class implements <see cref="T:System.IDisposable" />, please wrap utilize "using".</para>
-      <para>
-        <example>
-          <code lang="C#">
-using (FileLock flock = new FileLock("repository.xml")) {
-    ...
-}
-  </code>
-        </example>
-      </para>
-    </remarks>
-  </Docs>
 </Type>

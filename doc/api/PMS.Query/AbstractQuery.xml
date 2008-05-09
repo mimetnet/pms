@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public abstract class AbstractQuery : PMS.Query.IQuery" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.6.90.0</AssemblyVersion>
+    <AssemblyVersion>0.6.90.3</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -12,6 +12,10 @@
       <InterfaceName>PMS.Query.IQuery</InterfaceName>
     </Interface>
   </Interfaces>
+  <Docs>
+    <summary>To be added.</summary>
+    <remarks>To be added.</remarks>
+  </Docs>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="protected AbstractQuery ();" />
@@ -93,6 +97,17 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="command">
+      <MemberSignature Language="C#" Value="protected PMS.Query.SqlCommand command;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.SqlCommand</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Command">
       <MemberSignature Language="C#" Value="public PMS.Query.SqlCommand Command { set; get; };" />
       <MemberType>Property</MemberType>
@@ -102,17 +117,6 @@
       <Docs>
         <summary>To be added.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="command">
-      <MemberSignature Language="C#" Value="protected PMS.Query.SqlCommand command;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>PMS.Query.SqlCommand</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -141,6 +145,17 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="criteria">
+      <MemberSignature Language="C#" Value="protected PMS.Query.Criteria criteria;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Criteria">
       <MemberSignature Language="C#" Value="public PMS.Query.Criteria Criteria { set; get; };" />
       <MemberType>Property</MemberType>
@@ -150,17 +165,6 @@
       <Docs>
         <summary>To be added.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="criteria">
-      <MemberSignature Language="C#" Value="protected PMS.Query.Criteria criteria;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>PMS.Query.Criteria</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -406,8 +410,4 @@
       </Docs>
     </Member>
   </Members>
-  <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
-  </Docs>
 </Type>

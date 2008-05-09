@@ -2,12 +2,20 @@
   <TypeSignature Language="C#" Value="public static class Config" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.6.90.0</AssemblyVersion>
+    <AssemblyVersion>0.6.90.3</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
   </Base>
   <Interfaces />
+  <Docs>
+    <summary>
+      <para>Contains static variables pointing to resources used during startup</para>
+    </summary>
+    <remarks>
+      <para>Most end-users will never need this</para>
+    </remarks>
+  </Docs>
   <Members>
     <Member MemberName="SystemPath">
       <MemberSignature Language="C#" Value="public static string SystemPath { get; };" />
@@ -16,9 +24,13 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary><para>Returns string path where PMS config files can be found.</para></summary>
-        <value><para>Unix = /etc/libpms</para>
-<para>Win32 = c:\Program Files\Common Files\PMS</para></value>
+        <summary>
+          <para>Returns string path where PMS config files can be found.</para>
+        </summary>
+        <value>
+          <para>Unix = /etc/libpms</para>
+          <para>Win32 = c:\Program Files\Common Files\PMS</para>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -29,14 +41,14 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary><para>Returns string path where PMS config files can be found for the user.</para></summary>
-        <value><example>Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "libpms")</example></value>
+        <summary>
+          <para>Returns string path where PMS config files can be found for the user.</para>
+        </summary>
+        <value>
+          <example>Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "libpms")</example>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
   </Members>
-  <Docs>
-    <summary><para>Contains static variables pointing to resources used during startup</para></summary>
-    <remarks><para>Most end-users will never need this</para></remarks>
-  </Docs>
 </Type>

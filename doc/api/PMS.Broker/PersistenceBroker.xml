@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public sealed class PersistenceBroker : MarshalByRefObject, PMS.Broker.IPersistenceBroker" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.6.90.0</AssemblyVersion>
+    <AssemblyVersion>0.6.90.3</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.MarshalByRefObject</BaseTypeName>
@@ -12,6 +12,10 @@
       <InterfaceName>PMS.Broker.IPersistenceBroker</InterfaceName>
     </Interface>
   </Interfaces>
+  <Docs>
+    <summary>To be added.</summary>
+    <remarks>To be added.</remarks>
+  </Docs>
   <Members>
     <Member MemberName="BeginTransaction">
       <MemberSignature Language="C#" Value="public void BeginTransaction ();" />
@@ -371,8 +375,4 @@
       </Docs>
     </Member>
   </Members>
-  <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
-  </Docs>
 </Type>
