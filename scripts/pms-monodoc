@@ -6,7 +6,7 @@ import traceback
 
 
 try:
-    import xml.etree.cElementTree as ET
+	import xml.etree.cElementTree as ET
 except:
     try:
         import cElementTree as ET
@@ -18,7 +18,7 @@ except:
 
 
 def help(name):
-    print 'Usage:', name.split(os.sep).pop(), 'path-2-xml [install|uninstall]'
+    print 'Usage:', name.split(os.sep).pop(), 'path/to/monodoc.xml [install|uninstall]'
 
 def install_tag():
     if len(sys.argv) == 4:

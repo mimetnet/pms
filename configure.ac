@@ -100,4 +100,5 @@ AC_OUTPUT([
 			  scripts/Makefile
 			  policy/Makefile
 			  doc/Makefile
+			  doc/man/Makefile
 ])

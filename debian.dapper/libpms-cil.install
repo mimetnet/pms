@@ -4,9 +4,13 @@ usr/lib/mono/2.0/PMS.dll
 usr/lib/mono/gac/PMS/*/PMS.dll
 
 usr/lib/mono/gac/policy.*.PMS/*
-usr/lib/pkgconfig/libpms.pc
+usr/lib/pkgconfig/pms.pc
 
 usr/bin/pms-providers
 usr/bin/pms-repo-split
 usr/bin/pms-repo-upgrade
+
+usr/man/man1/pms-providers.1
+usr/man/man1/pms-repo-split.1
+usr/man/man1/pms-repo-upgrade.1
 

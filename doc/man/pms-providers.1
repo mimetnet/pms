@@ -1,0 +1,36 @@
+.\" 
+.\" pms-providers manual page.
+.\" (C) 2004 - 2008 Matthew Metnetsky <matthew@cowarthill.com
+.\"
+.de Sp \" Vertical space (when we can't use .PP)
+.if t .sp .5v
+.if n .sp
+..
+.TH pms-providers 1
+
+.SH NAME
+pms-providers \- install/uninstall database providers from PMS
+
+.SH SYNOPSIS
+.B pms-providers [options] name 'type, assembly'
+
+.SH RUNTIME OPTIONS
+The following options are available:
+.TP
+.I "-r"
+Uninstall provider
+.TP
+.I "-l"
+Modify $HOME/.config/libpms/providers instead of /etc/libpms/providers
+.TP
+.I "-h --help"
+Show this help list
+.TP
+.I "--version"
+Show version number and exit
+
+.SH AUTHOR
+Matthew Metnetsky <matthew@cowarthill.com>
+
+.SH WEB SITE
+http://www.cowarthill.com/

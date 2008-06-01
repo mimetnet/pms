@@ -1,5 +1,5 @@
-#MFLAGS = $(DEBUG_FLAGS) -nologo -d:$(MONO_VERSION) -keyfile:$(top_srcdir)/certs/PMS.snk
-MFLAGS = $(DEBUG_FLAGS) -nologo -d:$(MONO_VERSION) -delaysign+ -keyfile:$(top_srcdir)/certs/PMS.pfx.pub
+MFLAGS = $(DEBUG_FLAGS) -nologo -d:$(MONO_VERSION) -keyfile:$(top_srcdir)/certs/PMS.snk
+#MFLAGS = $(DEBUG_FLAGS) -nologo -d:$(MONO_VERSION) -delaysign+ -keyfile:$(top_srcdir)/certs/PMS.pfx.pub
 
 noinst_SCRIPTS = $(ASSEMBLY)
 

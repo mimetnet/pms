@@ -1,3 +1,5 @@
+SUBDIRS = man
+
 EXTRA_DIST = pms.zip pms.tree pms.source
 CLEANFILES = pms.zip pms.tree pms.stamp
 

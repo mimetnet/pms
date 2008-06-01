@@ -1,3 +1,9 @@
+libpms-cil (0.7.0-0-0ubuntu0.6.06) dapper; urgency=low
+
+  * Bugs
+
+ -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Sun,  1 Jun 2008 12:56:08 -0400
+
 libpms-cil (0.6.90-3-0ubuntu0.6.06) dapper; urgency=low
 
   * repackaged to capture correct changelog (yes... this file ;-)
