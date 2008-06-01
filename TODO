@@ -1,3 +1,5 @@
+() resign keys now that mono supports PFX
+
 () rewrite repository & dbengine integration
 () transactions across multiple web requests (keys?)
 () add delegates

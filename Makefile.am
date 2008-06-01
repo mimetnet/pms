@@ -1,6 +1,6 @@
 SUBDIRS = PMS PMS.Data.Pgsql PMS.Data.Sqlite scripts policy build doc
 
-EXTRA_DIST = PMS.snk
+EXTRA_DIST = PMS.snk certs/PMS.snk certs/PMS.pfx
 
 REWRITE = \
 	sed -e "s|\@prefix\@|$(prefix)|g"	\

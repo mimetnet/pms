@@ -1,84 +1,82 @@
-#!/bin/sh
+#! /bin/sh
+
+PROJECT=PMS
+CONFIGURE=configure.ac
+
+: ${AUTOCONF=autoconf}
+: ${AUTOHEADER=autoheader}
+: ${AUTOMAKE=automake}
+: ${LIBTOOLIZE=libtoolize}
+: ${ACLOCAL=aclocal}
+: ${LIBTOOL=libtool}
+
+if [ -z "$conf_flags" ]; then
+	conf_flags="--prefix=/usr"
+fi
 
 srcdir=`dirname $0`
-
 test -z "$srcdir" && srcdir=.
 
-## check for autoconf #######################################
-echo -n "Checking for autoconf ..."
-(autoconf --version | head -1) || {
-  echo
-  echo "**Error**: You must have \`autoconf' installed to compile."
-  exit 1
+ORIGDIR=`pwd`
+cd $srcdir
+aclocalinclude="-I . $ACLOCAL_FLAGS"
+
+DIE=0
+
+($AUTOCONF --version) < /dev/null > /dev/null 2>&1 || {
+        echo
+        echo "You must have autoconf installed to compile $PROJECT."
+        echo "Download the appropriate package for your distribution,"
+        echo "or get the source tarball at ftp://ftp.gnu.org/pub/gnu/"
+        DIE=1
 }
 
-## check for libtool
-echo -n "Checking for libtool..."
-if [ -z "$LIBTOOL" ]; then
-  LIBTOOL=`which glibtool 2>/dev/null` 
-  LIBTOOLIZE=`which glibtoolize 2>/dev/null`
-  if [ ! -x "$LIBTOOL" ]; then
-    LIBTOOL=`which libtool`
-    LIBTOOLIZE=`which libtoolize 2>/dev/null`
-  fi
+($AUTOMAKE --version) < /dev/null > /dev/null 2>&1 || {
+        echo
+        echo "You must have automake installed to compile $PROJECT."
+        echo "Get ftp://sourceware.cygnus.com/pub/automake/automake-1.4.tar.gz"
+        echo "(or a newer version if it is available)"
+        DIE=1
+}
 
-  if [ "" = "$LIBTOOL" ]; then
+(grep "^AM_PROG_LIBTOOL" $CONFIGURE >/dev/null) && {
+  ($LIBTOOL --version) < /dev/null > /dev/null 2>&1 || {
     echo
-    echo "**Error**: You must have libtool installed"
-    exit 1
-  fi
-  $LIBTOOL --version | head -1 
+    echo "**Error**: You must have \`libtool' installed to compile $PROJECT."
+    echo "Get ftp://ftp.gnu.org/pub/gnu/libtool-1.2d.tar.gz"
+    echo "(or a newer version if it is available)"
+    DIE=1
+  }
+}
+
+if test "$DIE" -eq 1; then
+        exit 1
 fi
 
-$LIBTOOLIZE --automake 
-
-
-## check for automake
-echo -n "Checking for automake ..."
-(automake --version | head -1) || {
-  echo
-  echo "**Error**: You must have \`automake' installed to compile."
-  exit 1
-}
-
-## if no automake, don't bother testing for aclocal
-echo -n "Checking for aclocal ..."
-(aclocal --version | head -1) || {
-  echo
-  echo "**Error**: Missing \`aclocal'.  The version of \`automake'"
-  echo "installed doesn't appear recent enough."
-  exit 1
-}
-
-
-## run commands ##
-echo "Running aclocal $ACLOCAL_FLAGS ..."
-aclocal $ACLOCAL_FLAGS || {
-  echo
-  echo "**Error**: aclocal failed. This may mean that you have not"
-  echo "installed all of the packages you need, or you may need to"
-  echo "set ACLOCAL_FLAGS to include \"-I \$prefix/share/aclocal\""
-  echo "for the prefix where you installed the packages whose"
-  echo "macros were not found"
-  exit 1
-}
-
-if grep "^AM_CONFIG_HEADER" configure.in >/dev/null; then
-  echo "Running autoheader ..."
-  autoheader || { echo "**Error**: autoheader failed."; exit 1; }
+if test -z "$*"; then
+        echo "I am going to run ./configure with no arguments - if you wish "
+        echo "to pass any to it, please specify them on the $0 command line."
+		  echo
 fi
 
-echo "Running automake --gnu $am_opt ..."
-automake --add-missing --gnu $am_opt ||
-  { echo "**Error**: automake failed."; exit 1; }
-echo "Running autoconf ..."
-autoconf || { echo "**Error**: autoconf failed."; exit 1; }
+case $CC in
+*xlc | *xlc\ * | *lcc | *lcc\ *) am_opt=--include-deps;;
+esac
 
-echo
-echo $srcdir/configure --prefix=/usr $@
-$srcdir/configure --prefix=/usr $@
-echo
-echo Then run \`make\' to compile $PKG_NAME
-echo
+(grep "^AM_PROG_LIBTOOL" $CONFIGURE >/dev/null) && {
+    echo "Running $LIBTOOLIZE ..."
+    $LIBTOOLIZE --force --copy
+}
 
-exit 0
+echo "Running $ACLOCAL $aclocalinclude ..."
+$ACLOCAL $aclocalinclude
+
+echo "Running $AUTOMAKE --gnu $am_opt ..."
+$AUTOMAKE --add-missing --gnu $am_opt
+
+echo "Running $AUTOCONF ..."
+$AUTOCONF
+
+echo Running $srcdir/configure $conf_flags "$@" ...
+$srcdir/configure --enable-maintainer-mode $conf_flags "$@" \
+

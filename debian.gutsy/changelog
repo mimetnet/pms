@@ -1,10 +1,16 @@
-libpms-cil (0.6.90-3-0ubuntu1) gutsy; urgency=low
+libpms-cil (0.7.0-0-0ubuntu1) unstable; urgency=low
+
+  * initial packaging attempt for hardy!
+
+ -- Matthew Metnetsky <matthew@cowarthill.com>  Thu, 31 Jan 2008 11:58:04 -0500
+
+libpms-cil (0.6.90-3-0ubuntu1) unstable; urgency=low
 
   * repackaged to capture correct changelog (yes... this file ;-)
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Thu, 31 Jan 2008 11:58:04 -0500
 
-libpms-cil (0.6.90-2-0ubuntu1) gutsy; urgency=low
+libpms-cil (0.6.90-2-0ubuntu1) unstable; urgency=low
 
   * control replaces libpms & depends on mono-gac
 

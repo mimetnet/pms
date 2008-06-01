@@ -1,19 +1,17 @@
-POLICY=policy.0.6.PMS.config
-POLICY_DLL=policy.0.6.PMS.dll
+COMPAT_VERSIONS=0.6 0.7
 
-CLEANFILES = $(POLICY) $(POLICY_DLL)
-EXTRA_DIST = policy.config.in $(POLICY)
+POLICY_DLLS=$(patsubst %,policy.%.PMS.dll,$(COMPAT_VERSIONS))
 
-noinst_SCRIPTS = $(POLICY_DLL)
+CLEANFILES = $(POLICY_DLLS)
+EXTRA_DIST = Makefile.in Makefile.am
 
-$(POLICY): policy.config
-	cp $< $@
+noinst_SCRIPTS = $(POLICY_DLLS)
 
-$(POLICY_DLL): $(POLICY)
-	$(AL) -link:$(POLICY) -out:$(POLICY_DLL) -keyfile:../PMS.snk
+$(POLICY_DLLS): %.dll: %.config $(top_srcdir)/PMS/PMS.dll $(top_srcdir)/certs/PMS.snk
+	$(AL) -link:$< -out:$@ -keyfile:$(top_srcdir)/certs/PMS.snk
 
-install-data-local:
-	$(GACUTIL) $(GACUTIL_FLAGS) -i $(POLICY_DLL)
+install-data-local: $(POLICY_DLLS)
+	for i in $^ ; do $(GACUTIL) $(GACUTIL_FLAGS) -i $$i ; done
 
 uninstall-local:
-	$(GACUTIL) $(GACUTIL_FLAGS) -u $(POLICY_DLL)
+	for i in $(POLICY_DLLS:%.dll=%) ; do $(GACUTIL) $(GACUTIL_FLAGS) -u $$i ; done

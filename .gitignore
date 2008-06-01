@@ -1,4 +1,5 @@
 .wapi
+.deps
 *.dll
 *.mdb
 *.exe
