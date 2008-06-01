@@ -29,8 +29,8 @@ install-data-local:
 	$(GACUTIL) -i "$(DESTDIR)$(pmsdir)/$(ASSEMBLY)" $(GACUTIL_FLAGS) -check_refs -f
 
 uninstall-local:
-	$(GACUTIL) $(GACUTIL_FLAGS) -us $(DESTDIR)$(pmsdir)/$(ASSEMBLY)
+	$(GACUTIL) -us $(DESTDIR)$(pmsdir)/$(ASSEMBLY) $(GACUTIL_FLAGS) 
 	rm $(DESTDIR)$(pmsdir)/$(ASSEMBLY) 
-	if test -n "$(DEBUG_FLAGS)"; then $(DESTDIR)$(pmsdir)/$(ASSEMBLY).mdb; fi;
+	if test -n "$(DEBUG_FLAGS)"; then rm $(DESTDIR)$(pmsdir)/$(ASSEMBLY).mdb; fi;
 
 -include $(SOURCES_make)
