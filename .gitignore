@@ -9,7 +9,7 @@ bin
 build-arch-stamp
 build-indep-stamp
 build/libpms.pc
-build/PMS.pc
+build/pms.pc
 build-stamp
 config.guess
 config.log
