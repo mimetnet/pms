@@ -10,7 +10,7 @@ usr/bin/pms-providers
 usr/bin/pms-repo-split
 usr/bin/pms-repo-upgrade
 
-usr/man/man1/pms-providers.1
-usr/man/man1/pms-repo-split.1
-usr/man/man1/pms-repo-upgrade.1
+usr/share/man/man1/pms-repo-split.1
+usr/share/man/man1/pms-providers.1
+usr/share/man/man1/pms-repo-upgrade.1
 

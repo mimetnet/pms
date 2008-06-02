@@ -5,10 +5,13 @@
 
 set -e
 
+MXML=`pkg-config monodoc --variable=sourcesdir`/../monodoc.xml
+MSRC=`pkg-config monodoc --variable=sourcesdir`/pms.source
+
 case "$1" in
 	remove|upgrade)
 		if [ -x /usr/bin/pms-monodoc ]; then
-        	pms-monodoc `pkg-config monodoc --variable=sourcesdir`/../monodoc.xml uninstall
+            pms-monodoc -i "$MXML" -o "$MXML" -s "$MSRC" -r
 		fi
 	;;
 	deconfigure)

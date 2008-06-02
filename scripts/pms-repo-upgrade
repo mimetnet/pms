@@ -4,17 +4,10 @@ import os
 import sys
 import traceback
 
-
 try:
-    import xml.etree.cElementTree as ET
+    from lxml import etree as ET 
 except:
-    try:
-        import cElementTree as ET
-    except:
-        try:
-            import elementtree.ElementTree as ET
-        except:
-            raise("Could not load element tree module. Please install python, python-celementtree, or python-elementtree")
+    raise("Could not lxml. Please install python-lxml")
 
 def _convert_type_to_provider(conn):
     if 'type' in conn.attrib:

@@ -7,8 +7,8 @@ if HAVE_MONODOC
 all: pms.stamp
 
 pms.stamp:
-	touch $@
 	$(MDASSEMBLER) --ecma api -o pms
+	touch $@
 
 api: ../PMS/PMS.dll
 	$(MONODOCER) -assembly:$< -name:$(PACKAGE) -path:api -pretty

@@ -9,7 +9,7 @@ Package: libpms-cil
 Replaces: libpms
 Conflicts: libpms
 Architecture: all
-Depends: ${cli:Depends}, python-elementtree | python-celementtree, mono-gac
+Depends: ${cli:Depends}, python-lxml, mono-gac
 Description: PMS - Phil & Matt Spaces for .NET
  PMS is an object relation mapping library for .NET/mono.
  .

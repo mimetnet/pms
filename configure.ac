@@ -77,7 +77,7 @@ AC_SUBST(GACUTIL)
 AC_SUBST(PKG_CONFIG)
 AC_SUBST(DEBUG_FLAGS)
 AC_SUBST([GACUTIL_FLAGS], ['-root $(DESTDIR)$(prefix)/lib'])
-AC_SUBST([MONODOC_SRC_DIR], ['`$(PKG_CONFIG) monodoc --variable=sourcesdir`'])
+AC_SUBST([MONODOC_SRC_DIR], [`$PKG_CONFIG monodoc --variable=sourcesdir`])
 AC_SUBST([MONO_VERSION], [MONO_`$MCS --version | awk '{print $5}' | sed 's/\./ /g' | awk '{print $1"_"$2}'`])
 
 ##############################################################################

@@ -1,3 +1,5 @@
+AUTOMAKE_OPTIONS = gnu
+
 if HAVE_SQLITE
 include $(top_srcdir)/m4/lib.mk
 endif

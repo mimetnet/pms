@@ -3,68 +3,89 @@
 import os
 import sys
 import traceback
-
+from optparse import OptionParser
 
 try:
-	import xml.etree.cElementTree as ET
+    from lxml import etree as ET 
 except:
-    try:
-        import cElementTree as ET
-    except:
-        try:
-            import elementtree.ElementTree as ET
-        except:
-            raise("Could not load element tree module. Please install python, python-celementtree, or python-elementtree")
+    raise("Could not lxml. Please install python-lxml")
 
+class Config(OptionParser):
+    def __init__(self):
+        OptionParser.__init__(self, version='%prog 0.3')
+        self.disable_interspersed_args()
+        self.add_option('-i', dest='monodoc', help='location of monodox.xml', default='/usr/lib/monodoc/monodoc.xml')
+        self.add_option('-s', dest='source', help='location of project.source')
+        self.add_option('-o', dest='output', help='where to write modifications', default='-')
+        self.add_option('-p', dest='parent', help='install node under this parent/@name')
+        self.add_option('-r', dest='remove', help='Remove provider', action='store_true')
+        self.parse_args()
 
-def help(name):
-    print 'Usage:', name.split(os.sep).pop(), 'path/to/monodoc.xml [install|uninstall]'
+def install_tag(source):
+    src = source.getchildren()[0]
+    return "<node label='%s' name='%s' />" % (src.get('title'), src.get('path'))
 
-def install_tag():
-    if len(sys.argv) == 4:
-        return sys.argv[3]
-    return "<node label='PMS' name='pms' />"
+def install(base, source, parent=None):
+    child = ET.fromstring(install_tag(source))
 
-def install(base):
-    if base.get('name') != 'root:':
-        print "'%s' doesn't contain expected root node\n    :: <node label='' name='root:'>" % (sys.argv[1])
-        sys.exit(1)
-    base.append(ET.fromstring(install_tag()))
+    if not parent:
+        base.append(child)
+        return True
 
-def uninstall_name():
-    if len(sys.argv) == 4:
-        return sys.argv[3]
-    return 'pms'
+    for node in base.xpath('.//node[@name="' + parent + '"]'):
+        node.append(child)
+        return True
 
-def uninstall(base):
-    tag = uninstall_name()
-    for node in base.findall("node"):
-        if tag == node.get('name'):
-            base.remove(node)
-            break
+    parent = ET.fromstring("<node label='%s' name='%s' />" % (parent, parent))
+    parent.append(child)
+    base.append(parent)
+
+    return False
+
+def uninstall_name(source):
+    src = source.getchildren()[0]
+    return src.get('path')
+
+def uninstall(base, source):
+    tag = uninstall_name(source)
+    for node in base.xpath('.//node[@name="pms"]'):
+        node.getparent().remove(node)
+    return True
 
 if __name__ == '__main__':
-    if len(sys.argv) < 3:
-        help(sys.argv[0])
+    cfg = Config()
+
+    if cfg.values.source == None:
+        cfg.print_help()
         sys.exit(1)
 
     try:
-        root = ET.parse(sys.argv[1])
+        root = ET.parse(cfg.values.monodoc)
     except:
-        print 'Failed to load', sys.argv[1]
+        print 'Failed to load', cfg.values.monodoc
+        sys.exit(1)
+
+    try:
+        source = ET.parse(cfg.values.source)
+    except:
+        print 'Failed to load', cfg.values.source
         traceback.print_exc()
         sys.exit(1)
 
-    if sys.argv[2] == 'install':
-        install(root.getroot())
-    elif sys.argv[2] == 'uninstall':
-        uninstall(root.getroot())
+    if not cfg.values.remove:
+        result = install(root.getroot(), source.getroot(), cfg.values.parent)
     else:
-        help(sys.argv[0])
+        result = uninstall(root.getroot(), source.getroot())
+
+    if not result:
         sys.exit(1)
 
     try:
-        root.write(sys.argv[1], 'utf-8')
+        if cfg.values.output == '-':
+            root.write(sys.stdout, 'utf-8')
+        else:
+            root.write(cfg.values.output, 'utf-8')
     except:
         print 'Failed to write (%s) %s' % (sys.argv[2], sys.argv[1])
         sys.exit(1)
+

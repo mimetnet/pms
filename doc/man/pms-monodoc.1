@@ -9,10 +9,31 @@
 .TH pms-monodoc 1
 
 .SH NAME
-pms-monodoc \- install/uninstall documentation from monodoc 
+pms-monodoc \- install/uninstall documentation from monodoc source list
 
-.SH SYNOPSIS
-.B pms-monodoc path/to/monodoc.xml [install|uninstall]
+.SH RUNTIME OPTIONS
+The following options are available:
+.TP
+.I "-i"
+Location of monodoc.xml (defaults to /usr/lib/monodoc/monodoc.xml)
+.TP
+.I "-o"
+Location of modified monodoc.xml (stdout if not specified)
+.TP
+.I "-s"
+Location of package.source so we know what the node to insert/remove looks like
+.TP
+.I "-p"
+Insert new node below this node[@name]
+.TP
+.I "-r"
+Remove node specified in source instead of inserting it
+.TP
+.I "-h --help"
+Show this help list
+.TP
+.I "--version"
+Show version number and exit
 
 .SH AUTHOR
 Matthew Metnetsky <matthew@cowarthill.com>

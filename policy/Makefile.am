@@ -1,3 +1,5 @@
+AUTOMAKE_OPTIONS = gnu
+
 COMPAT_VERSIONS=0.6
 
 POLICY_DLLS=$(patsubst %,policy.%.PMS.dll,$(COMPAT_VERSIONS))

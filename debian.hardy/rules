@@ -30,10 +30,12 @@ install-indep:
 	dh_clean -k -i 
 	dh_installdirs -i
 	$(MAKE) install DESTDIR=$(DEBDIR)/tmp
-	install -d $(DEBDIR)/tmp/etc/pms
-	echo "# providers" > $(DEBDIR)/tmp/etc/pms/providers
+	install -d $(DEBDIR)/tmp/etc/libpms
+	echo "# providers" > $(DEBDIR)/tmp/etc/libpms/providers
 	dh_install -i --sourcedir=$(DEBDIR)/tmp
-	for i in libpms-cil libpms-pgsql-cil libpms-sqlite3-cil; do find $(DEBDIR)/$$i -type f -name '*.mdb' -prune -exec rm '{}' \; ; done
+	for i in libpms-cil libpms-pgsql-cil libpms-sqlite3-cil; do \
+		find $(DEBDIR)/$$i -type f -name '*.mdb' -prune -exec rm '{}' \; ; \
+	done;
 	find $(DEBDIR)/ -type f -name "*.dll" -or -name "*.mdb" | xargs chmod -x
 
 binary-common:

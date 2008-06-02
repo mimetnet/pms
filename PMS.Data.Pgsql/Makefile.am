@@ -1,3 +1,5 @@
+AUTOMAKE_OPTIONS = gnu
+
 include $(top_srcdir)/m4/lib.mk
 
 ASSEMBLY = PMS.Data.Pgsql.dll
