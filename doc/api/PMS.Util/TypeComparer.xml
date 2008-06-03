@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public class TypeComparer : System.Collections.Generic.IComparer&lt;Type&gt;" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.6.90.3</AssemblyVersion>
+    <AssemblyVersion>0.7.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>

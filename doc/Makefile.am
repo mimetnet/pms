@@ -6,11 +6,11 @@ CLEANFILES = pms.zip pms.tree pms.stamp
 if HAVE_MONODOC
 all: pms.stamp
 
-pms.stamp:
+pms.stamp: api/index.xml
 	$(MDASSEMBLER) --ecma api -o pms
 	touch $@
 
-api: ../PMS/PMS.dll
+api/index.xml: $(top_srcdir)/PMS/PMS.dll
 	$(MONODOCER) -assembly:$< -name:$(PACKAGE) -path:api -pretty
 
 api-html:
@@ -22,8 +22,9 @@ install-data-local:
 
 uninstall-local:
 	for file in $(EXTRA_DIST); do \
-		if test -f $(DESTDIR)`$(PKG_CONFIG) $(MONODOC) --variable=sourcesdir`/$$file; then \
-			rm $(DESTDIR)`$(PKG_CONFIG) $(MONODOC) --variable=sourcesdir`/$$file; \
+		if test -f $(DESTDIR)$(MONODOC_SRC_DIR)/$$file; then \
+			rm $(DESTDIR)$(MONODOC_SRC_DIR)/$$file; \
 		fi; \
 	done;
 endif
+

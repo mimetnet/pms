@@ -1,6 +1,6 @@
 <Overview>
   <Assemblies>
-    <Assembly Name="PMS" Version="0.6.90.3">
+    <Assembly Name="PMS" Version="0.7.0.0">
       <Attributes>
         <Attribute>
           <AttributeName>System.Runtime.CompilerServices.RuntimeCompatibility(WrapNonExceptionThrows=true)</AttributeName>
@@ -127,5 +127,5 @@
       <Type Name="TypeLoader" />
     </Namespace>
   </Types>
-  <Title>libpms</Title>
+  <Title>pms</Title>
 </Overview>
