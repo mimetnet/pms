@@ -3,10 +3,6 @@
 set -e
 
 #DEBHELPER#
-#! /bin/sh
-# postinst script for libpms-cil-doc
-#
-# see: dh_installdeb(1)
 
 MXML=`pkg-config monodoc --variable=sourcesdir`/../monodoc.xml
 MSRC=`pkg-config monodoc --variable=sourcesdir`/pms.source
