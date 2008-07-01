@@ -2,14 +2,14 @@ Source: libpms-cil
 Section: universe/libs
 Priority: optional
 Maintainer: Matthew Metnetsky <matthew@cowarthill.com>
-Build-Depends: autotools-dev, debhelper (>= 4.0.0), mono-gac, cli-common (>= 0.2.0), cli-common-dev (>= 0.4.4), monodoc-base
+Build-Depends: autotools-dev, debhelper (>= 4.0.0), mono-gac, cli-common (>= 0.2.0), cli-common-dev (>= 0.4.4), monodoc-base, libmono-system-data2.0-cil | mono-classlib-2.0, liblog4net1.2-cil | liblog4net-cil | printgroove-liblog4net2.0, python-lxml, mono-gac
 Standards-Version: 3.6.2
 
 Package: libpms-cil
 Replaces: libpms
 Conflicts: libpms
 Architecture: all
-Depends: ${cli:Depends}, python-lxml, mono-gac
+Depends: libmono-system-data2.0-cil | mono-classlib-2.0, liblog4net1.2-cil | liblog4net-cil | printgroove-liblog4net2.0, python-lxml, mono-gac
 Description: PMS - Phil & Matt Spaces for .NET
  PMS is an object relation mapping library for .NET/mono.
  .

@@ -11,7 +11,7 @@ CONFIGURE=configure.ac
 : ${LIBTOOL=libtool}
 
 if [ -z "$conf_flags" ]; then
-	conf_flags="--prefix=/usr"
+	conf_flags="--prefix=/usr --mandir=/usr/share/man"
 fi
 
 srcdir=`dirname $0`
