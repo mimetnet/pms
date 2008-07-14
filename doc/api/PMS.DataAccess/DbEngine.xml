@@ -1,15 +1,17 @@
 <Type Name="DbEngine" FullName="PMS.DataAccess.DbEngine">
-  <TypeSignature Language="C#" Value="public sealed class DbEngine : MarshalByRefObject" />
+  <TypeSignature Language="C#" Value="public static class DbEngine" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
     <AssemblyVersion>0.7.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
-    <BaseTypeName>System.MarshalByRefObject</BaseTypeName>
+    <BaseTypeName>System.Object</BaseTypeName>
   </Base>
   <Interfaces />
   <Docs>
-    <summary>To be added.</summary>
+    <summary>
+      <para>Manages access to DbManager instance objects</para>
+    </summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -21,7 +23,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>
+          <para>Begin transaction with <see cref="T:PMS.DataAccess.IDbManager" /></para>
+        </summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -33,7 +37,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>
+          <para>Commit transaction with <see cref="T:PMS.DataAccess.IDbManager" /></para>
+        </summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -63,10 +69,10 @@
         <Parameter Name="query" Type="PMS.Query.IQuery" />
       </Parameters>
       <Docs>
-        <param name="query">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="query">IQuery to call .Delete() on</param>
+        <summary>Delete object based on IQuery</summary>
+        <returns>DbResult</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ExecuteDelete">
@@ -79,10 +85,10 @@
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="obj">Object to delete via QueryByObject</param>
+        <summary>Delete object</summary>
+        <returns>Result of query</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ExecuteDelete">
@@ -95,10 +101,10 @@
         <Parameter Name="type" Type="System.Type" />
       </Parameters>
       <Docs>
-        <param name="type">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="type">Type to delete via QueryByType</param>
+        <summary>Delete all objects of this type</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>Be careful what you wish for</remarks>
       </Docs>
     </Member>
     <Member MemberName="ExecuteInsert">
@@ -143,10 +149,10 @@
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="obj">Object to save</param>
+        <summary>Insert or update object based on count retrieved</summary>
+        <returns>Result of query</returns>
+        <remarks>For the moment this is an ugly method which calls Exist() and then either Update() or Insert() accordingly</remarks>
       </Docs>
     </Member>
     <Member MemberName="ExecuteReader">
@@ -191,10 +197,10 @@
         <Parameter Name="query" Type="PMS.Query.IQuery" />
       </Parameters>
       <Docs>
-        <param name="query">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="query">Query to perform</param>
+        <summary>Execute SQL built by IQuery and return instantiated classes</summary>
+        <returns>Instantiated classes or null</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ExecuteSelectList">
@@ -207,10 +213,10 @@
         <Parameter Name="query" Type="PMS.Query.IQuery" />
       </Parameters>
       <Docs>
-        <param name="query">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="query">Query to perform</param>
+        <summary>Execute SQL built by IQuery and return instantiated classes inside IList</summary>
+        <returns>CollectionBase of instantiated classes</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ExecuteSelectObject">
@@ -223,10 +229,16 @@
         <Parameter Name="query" Type="PMS.Query.IQuery" />
       </Parameters>
       <Docs>
-        <param name="query">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="query">Query to perform</param>
+        <summary>
+          <para>Execute SQL built by IQuery and return instantiated class</para>
+        </summary>
+        <returns>
+          <para>Instantiated class or null</para>
+        </returns>
+        <remarks>
+          <para>Selecting a single object implies LIMIT 1, feel free to change offset</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ExecuteUpdate">
@@ -269,7 +281,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>
+          <para>Rollback transaction with <see cref="T:PMS.DataAccess.IDbManager" /></para>
+        </summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -284,7 +298,9 @@
       </Parameters>
       <Docs>
         <param name="mode">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>
+          <para>Start private <see cref="T:PMS.DataAccess.IDbManager" /> as specificed by DbManagerMode</para>
+        </summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -297,7 +313,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>
+          <para>Stop private <see cref="T:PMS.DataAccess.IDbManager" /> as configured w/in repository.xml or .pmx</para>
+        </summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>

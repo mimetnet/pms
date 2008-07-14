@@ -74,7 +74,6 @@ namespace PMS.Metadata
 				}
 			}
 
-
 			/**
 			log.Debug(new System.Diagnostics.StackTrace());
 			log.Info("Type asked: " + type);

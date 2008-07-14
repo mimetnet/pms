@@ -170,6 +170,14 @@ namespace PMS.Metadata
                         break;
                 }
             }
+
+			if (this.GenerateTypes) {
+				foreach (Class c in this.Classes) {
+					if (c.ListType == null) {
+						c.ListType = Generator.GenerateListType(c.Type);
+					}
+				}
+			}
         }
 
         public void WriteXml(System.Xml.XmlWriter writer)

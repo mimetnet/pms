@@ -4,7 +4,7 @@ using System.Security.Principal;
 
 namespace PMS.DataAccess
 {
-    internal interface IDbManager
+    public interface IDbManager
     {
         IDbCommand GetCommand(string sql);
         void ReturnCommand(IDbCommand command);

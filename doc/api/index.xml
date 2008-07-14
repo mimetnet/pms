@@ -74,6 +74,7 @@
       <Type Name="AccessMode" />
       <Type Name="DbEngine" />
       <Type Name="DbEngineNotStartedException" />
+      <Type Name="IDbManager" />
     </Namespace>
     <Namespace Name="PMS.IO">
       <Type Name="FileLock" />
@@ -92,6 +93,7 @@
       <Type Name="FieldNotFoundException" />
       <Type Name="Reference" />
       <Type Name="Repository" />
+      <Type Name="RepositoryDefinitionException" />
       <Type Name="RepositoryManager" />
       <Type Name="RepositoryNotFoundException" />
     </Namespace>

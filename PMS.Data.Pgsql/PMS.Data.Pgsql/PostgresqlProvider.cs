@@ -3,21 +3,27 @@ using System.Data;
 
 namespace PMS.Data.Postgresql
 {
-    [Serializable]
     internal sealed class PostgresqlProvider : PMS.Data.AbstractProvider
     {
+		public PostgresqlProvider()
+		{
+			//Npgsql.NpgsqlEventLog.Level = Npgsql.LogLevel.Debug;
+			//Npgsql.NpgsqlEventLog.LogName = "NpgsqlTests.log";
+			//Npgsql.NpgsqlEventLog.EchoMessages = true;
+		}
+
 		public override Type Type {
-			get { return typeof(Npgsql.NpgsqlConnection); }
+			get { return typeof(PostgresqlConnection); }
 		}
 
         public override IDbConnection GetConnection()
         {
-            return new Npgsql.NpgsqlConnection();
+            return new PostgresqlConnection();
         }
 
         public override IDbConnection GetConnection(string properties)
         {
-            return new Npgsql.NpgsqlConnection(properties);
+            return new PostgresqlConnection(properties);
         }
 
         public override IDbInspector GetInspector()

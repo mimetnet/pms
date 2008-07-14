@@ -91,13 +91,12 @@ namespace PMS.Metadata
         {
             IList list = null;
 			
-            try {
-				if (cdesc.ListType == null) {
-                    if (log.IsErrorEnabled)
-                        log.Error("MaterializeList:GetClassListType(" + cdesc.Type + ") == NULL");
-                    return list;
-                }
+			if (cdesc.ListType == null) {
+				throw new RepositoryDefinitionException("DbEngine.RetrieveList requires a valid @list-type for <class/> for " + cdesc.Type);
+			}
 
+
+            try {
 				list = (IList)Activator.CreateInstance(cdesc.ListType);
             } catch (Exception e) {
                 if (log.IsErrorEnabled)

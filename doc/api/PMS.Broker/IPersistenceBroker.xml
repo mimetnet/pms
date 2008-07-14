@@ -79,6 +79,22 @@
       </Docs>
     </Member>
     <Member MemberName="Delete">
+      <MemberSignature Language="C#" Value="public PMS.Data.DbResult Delete (System.Collections.IList list);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Data.DbResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="list" Type="System.Collections.IList" />
+      </Parameters>
+      <Docs>
+        <param name="list">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Delete">
       <MemberSignature Language="C#" Value="public PMS.Data.DbResult Delete (object obj);" />
       <MemberType>Method</MemberType>
       <ReturnValue>

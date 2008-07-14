@@ -18,6 +18,11 @@ namespace PMS.DataAccess
         {
         }
 
+		~SingleDbManager()
+		{
+			this.Stop();
+		}
+
         #region Transactions
         public void BeginTransaction()
         {
@@ -36,12 +41,6 @@ namespace PMS.DataAccess
         #endregion
 
         #region IDbCommand Methods
-        /// <summary>
-        /// Retrieve IDbCommand at from pool based on AccessMode (Read|Write)
-        /// and sets the IDbCommand.CommandText = sql
-        /// </summary>
-        /// <param name="sql">SQL</param>
-        /// <returns>IDbCommand instance</returns>
         public IDbCommand GetCommand(string sql)
         {
             DbCommandProxy cmd = (DbCommandProxy) this.pool.GetConnection().CreateCommand();
@@ -62,17 +61,13 @@ namespace PMS.DataAccess
         #endregion
 
         #region Control
-        /// <summary>
-        /// Pull default connection information from repository and initialize
-        /// the database pool.
-        /// </summary>
         public bool Start()
         {
             if (isInit)
                 Stop();
 
             Connection conn = RepositoryManager.DefaultConnection;
-            pool = new ConnectionPool(conn.Provider.Type, conn.Value);
+            pool = new ConnectionPool(conn.Provider, conn.Value);
 
             if ((isInit = pool.Open()))
 				return CanSendHello();
@@ -80,9 +75,6 @@ namespace PMS.DataAccess
 			return false;
         }
 
-        /// <summary>
-        /// Closes the database pool if it has been Start()ed
-        /// </summary>
         public void Stop()
         {
             if (pool != null)

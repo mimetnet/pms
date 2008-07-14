@@ -1,5 +1,5 @@
 <Type Name="DbCommandProxy" FullName="PMS.Data.DbCommandProxy">
-  <TypeSignature Language="C#" Value="public sealed class DbCommandProxy : System.ComponentModel.Component, System.Data.IDbCommand" />
+  <TypeSignature Language="C#" Value="public class DbCommandProxy : System.ComponentModel.Component, System.Data.IDbCommand" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
     <AssemblyVersion>0.7.0.0</AssemblyVersion>
@@ -17,6 +17,18 @@
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DbCommandProxy (PMS.Data.DbConnectionProxy conn);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="conn" Type="PMS.Data.DbConnectionProxy" />
+      </Parameters>
+      <Docs>
+        <param name="conn">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Cancel">
       <MemberSignature Language="C#" Value="public void Cancel ();" />
       <MemberType>Method</MemberType>
@@ -24,6 +36,33 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanReopenConnection">
+      <MemberSignature Language="C#" Value="protected virtual bool CanReopenConnection (Exception ex);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="ex" Type="System.Exception" />
+      </Parameters>
+      <Docs>
+        <param name="ex">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="command">
+      <MemberSignature Language="C#" Value="protected System.Data.IDbCommand command;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Data.IDbCommand</ReturnType>
+      </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
@@ -62,6 +101,17 @@
       <Docs>
         <summary>To be added.</summary>
         <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="connection">
+      <MemberSignature Language="C#" Value="protected PMS.Data.DbConnectionProxy connection;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Data.DbConnectionProxy</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace PMS.Data
 {
-    public sealed class DbDataReaderProxy : IDataReader, IEnumerable
+    public class DbDataReaderProxy : IDataReader, IEnumerable
     {
         //private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		private IDataReader reader = null;
@@ -57,8 +57,10 @@ namespace PMS.Data
 				if (this.reader != null)
 					this.reader.Close();
 			} finally {
-				if (this.reader != null && this.conn != null)
+				if (this.conn != null) {
 					this.conn.ReleaseLock();
+				}
+
 				this.reader = null;
 			}
 		}

@@ -1,0 +1,126 @@
+<Type Name="IDbManager" FullName="PMS.DataAccess.IDbManager">
+  <TypeSignature Language="C#" Value="public interface IDbManager" />
+  <AssemblyInfo>
+    <AssemblyName>PMS</AssemblyName>
+    <AssemblyVersion>0.7.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <para>Controls access to a database connection</para>
+    </summary>
+    <remarks>To be added.</remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="BeginTransaction">
+      <MemberSignature Language="C#" Value="public void BeginTransaction ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <para>Start a transaction</para>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CommitTransaction">
+      <MemberSignature Language="C#" Value="public void CommitTransaction ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <para>Commit a transaction to the database <see cref="T:PMS.Data.IProvider" /></para>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetCommand">
+      <MemberSignature Language="C#" Value="public System.Data.IDbCommand GetCommand (string sql);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Data.IDbCommand</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sql" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="sql">
+          <para>SQL to be assigned to <see cref="T:System.Data.IDbCommand.CommandText" /></para>
+        </param>
+        <summary>
+          <para>Retrieve an <see cref="T:System.Data.IDbCommand" /> connected to a database and with a preconfigured .CommandText</para>
+        </summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReturnCommand">
+      <MemberSignature Language="C#" Value="public void ReturnCommand (System.Data.IDbCommand command);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="command" Type="System.Data.IDbCommand" />
+      </Parameters>
+      <Docs>
+        <param name="command">
+          <para>Set to the response of GetCommand(sql)</para>
+        </param>
+        <summary>
+          <para>Called so that the connection assigned to the response of GetCommand(string)  can be returned to the database pool</para>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RollbackTransaction">
+      <MemberSignature Language="C#" Value="public void RollbackTransaction ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <para>Keep the executed SQL commands from being persisted by the database</para>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Start">
+      <MemberSignature Language="C#" Value="public bool Start ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <para>Open the database connection (or pool of connections) against the configured database</para>
+        </summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Stop">
+      <MemberSignature Language="C#" Value="public void Stop ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <para>Shutdown all connections managed by this instance as we're about to nullified</para>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

@@ -42,6 +42,8 @@ namespace PMS.Query
 
 		protected AbstractQuery(object obj, Criteria crit) : this()
         {
+			if (obj == null) throw new ArgumentNullException("Object cannot be null");
+
 			this.obj = obj;
 			this.cdesc = RepositoryManager.GetClass(obj.GetType());
 

@@ -1,5 +1,5 @@
 <Type Name="DbConnectionProxy" FullName="PMS.Data.DbConnectionProxy">
-  <TypeSignature Language="C#" Value="public sealed class DbConnectionProxy : System.ComponentModel.Component, System.Data.IDbConnection" />
+  <TypeSignature Language="C#" Value="public class DbConnectionProxy : System.ComponentModel.Component, System.Data.IDbConnection" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
     <AssemblyVersion>0.7.0.0</AssemblyVersion>
@@ -18,6 +18,18 @@
   </Docs>
   <Members>
     <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DbConnectionProxy (System.Data.IDbConnection connection);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="connection" Type="System.Data.IDbConnection" />
+      </Parameters>
+      <Docs>
+        <param name="connection">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public DbConnectionProxy (Type typeOfConnection);" />
       <MemberType>Constructor</MemberType>
       <Parameters>
@@ -26,6 +38,19 @@
       <Docs>
         <param name="typeOfConnection">To be added.</param>
         <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AcquireLock">
+      <MemberSignature Language="C#" Value="public bool AcquireLock ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -58,6 +83,22 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="CanReopen">
+      <MemberSignature Language="C#" Value="public virtual bool CanReopen (Exception ex);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="ex" Type="System.Exception" />
+      </Parameters>
+      <Docs>
+        <param name="ex">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="ChangeDatabase">
       <MemberSignature Language="C#" Value="public void ChangeDatabase (string databaseName);" />
       <MemberType>Method</MemberType>
@@ -80,6 +121,17 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="connection">
+      <MemberSignature Language="C#" Value="protected System.Data.IDbConnection connection;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Data.IDbConnection</ReturnType>
+      </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
@@ -170,6 +222,31 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="ReleaseLock">
+      <MemberSignature Language="C#" Value="public void ReleaseLock ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Reopen">
+      <MemberSignature Language="C#" Value="public virtual bool Reopen ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="State">
       <MemberSignature Language="C#" Value="public System.Data.ConnectionState State { get; };" />
       <MemberType>Property</MemberType>
@@ -179,6 +256,17 @@
       <Docs>
         <summary>To be added.</summary>
         <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="transaction">
+      <MemberSignature Language="C#" Value="protected System.Data.IDbTransaction transaction;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Data.IDbTransaction</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

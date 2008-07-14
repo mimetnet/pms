@@ -58,7 +58,7 @@ namespace PMS.Collections.Pool
             this.max = max;
             this.typeParams = typeParams;
             this.pool = new ItemCollection();
-            this.cleanup = type.GetMethod(sFree);;
+            this.cleanup = type.GetMethod(sFree);
 			this.ZombieHandler += new EventHandler(ZombieMaster);
 
 			this.zTimer = new System.Timers.Timer();
@@ -70,9 +70,6 @@ namespace PMS.Collections.Pool
 			verbose = (Environment.GetEnvironmentVariable("PMS_VERBOSE") != null)? true : false;
         }
 
-        /// <summary>
-        /// Destructor
-        /// </summary>
         ~ObjectPool()
         {
             Close();
@@ -81,16 +78,15 @@ namespace PMS.Collections.Pool
 
         #region Abstract
 
-        /// <summary>
-        /// Add new instance of Type to pool
-        /// </summary>
-        /// <returns>status</returns>
         protected virtual long Add()
         {
             Item obj = null;
 
             lock (ilock) {
-                pool.Add((obj = new Item(Activator.CreateInstance(type, typeParams))));
+				if (this.typeParams == null)
+					this.pool.Add((obj = new Item(Activator.CreateInstance(type))));
+				else
+					this.pool.Add((obj = new Item(Activator.CreateInstance(type, typeParams))));
             }
 
             if (log.IsDebugEnabled)
@@ -188,25 +184,16 @@ namespace PMS.Collections.Pool
 		}
 
         #region Properties
-        /// <summary>
-        /// Returns the number of elements within the pool
-        /// </summary>
         public int Count
         {
             get { return pool.Count; }
         }
 
-        /// <summary>
-        /// Returns how small the pool can be
-        /// </summary>
         public int Min
         {
             get { return min; }
         }
 
-        /// <summary>
-        /// Returns how large the pool can be
-        /// </summary>
         public int Max
         {
             get { return max; }
