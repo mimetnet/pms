@@ -35,10 +35,14 @@ namespace PMS.Data.Postgresql
 			if (nex == null)
 				return false;
 
+			if (nex.Code == "57P01")
+				return this.Reopen();
+
 			Console.WriteLine("ShouldReopen: " + nex.ToString());
 			Console.WriteLine("ShouldReopen: " + nex.InnerException);
+			Console.WriteLine("ShouldReopen: " + (nex.Code == "57P01").ToString());
 
 			return false;
 		}
-    }
+	}
 }
