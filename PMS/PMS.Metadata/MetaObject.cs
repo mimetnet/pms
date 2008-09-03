@@ -1,14 +1,16 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 
-using PMS.Data;
-
 namespace PMS.Metadata
 {
+	using PMS.Data;
+	using PMS.Query;
+
     [Serializable]
-    internal sealed class MetaObject
+    internal class MetaObject
     {
         private static readonly log4net.ILog log = 
             log4net.LogManager.GetLogger("PMS.Metadata.MetaObject");
@@ -55,20 +57,14 @@ namespace PMS.Metadata
         /// <returns>Instantiated Object</returns>
         public object Materialize(IDataReader reader)
         {
-            if (reader.Read()) {
+            if (reader.Read())
                 return PopulateObject(CreateObject(), reader);
-            }
 
             return null;
         }
 
-        /// <summary>
-        /// Convert IDataReader to object[]
-        /// </summary>
-        /// <param name="reader">List of results to create objects from</param>
-        /// <returns>Empty or full Object[] list</returns>
         public object[] MaterializeArray(IDataReader reader)
-        {
+		{
             ArrayList list = new ArrayList();
 
             try {
@@ -82,19 +78,13 @@ namespace PMS.Metadata
             return (object[])list.ToArray(cdesc.Type);
         }
 
-        /// <summary>
-        /// Convert IDataReader to IList of Objects
-        /// </summary>
-        /// <param name="reader">List of Results to create objects from</param>
-        /// <returns>IList is null if list-type attribute is invalid, otherwise its always an IList</returns>
         public IList MaterializeList(IDataReader reader)
-        {
+		{
             IList list = null;
 			
 			if (cdesc.ListType == null) {
 				throw new RepositoryDefinitionException("DbEngine.RetrieveList requires a valid @list-type for <class/> for " + cdesc.Type);
 			}
-
 
             try {
 				list = (IList)Activator.CreateInstance(cdesc.ListType);
