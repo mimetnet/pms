@@ -15,7 +15,7 @@ namespace PMS.Query
         protected Criteria criteria = null;
 		protected FieldCollection columns;
         protected FieldCollection keys;
-        protected string _selection = "*";
+        protected String selection = "*";
 		protected Object obj = null;
 		protected Class cdesc = null;
 		protected IProvider provider = null;
@@ -120,8 +120,8 @@ namespace PMS.Query
         }
 
         public virtual string Selection {
-            get { return _selection; }
-            set { _selection = value; }
+            get { return selection; }
+            set { selection = value; }
         }
 
         public virtual string Table {
