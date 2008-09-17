@@ -59,6 +59,7 @@ namespace PMS.Data
 			} finally {
 				if (this.conn != null) {
 					this.conn.ReleaseLock();
+					this.conn = null;
 				}
 
 				this.reader = null;
