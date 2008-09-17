@@ -131,12 +131,13 @@ namespace PMS.Metadata
 				return;
 
 			this.Id = reader.GetAttribute("id");
-			String prov = reader.GetAttribute("provider");
 
 			try {
-				this.Provider = PMS.Data.ProviderFactory.Create(prov);
+				this.Provider = PMS.Data.ProviderFactory.Create(reader.GetAttribute("provider"));
 			} catch (ProviderNotFoundException e1) {
 				log.ErrorFormat("ReadXml: {0} in {1}", e1.Message, Config.SystemPath);
+			} catch (ArgumentNullException) {
+				log.WarnFormat("<connection id=\"{0}\"/> has no @provider attribute", this.Id);
 			} catch (Exception e2) {
 				log.Debug("ReadXml: ", e2);
 			}

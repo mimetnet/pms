@@ -9,7 +9,7 @@ Package: libpms-cil
 Replaces: libpms
 Conflicts: libpms
 Architecture: all
-Depends: libmono-system-data2.0-cil | mono-classlib-2.0, liblog4net1.2-cil | liblog4net-cil | printgroove-liblog4net2.0, python-lxml, mono-gac
+Depends: libmono-system-data2.0-cil | mono-classlib-2.0, liblog4net1.2-cil | printgroove-liblog4net2.0, python-lxml, mono-gac
 Description: PMS - Phil & Matt Spaces for .NET
  PMS is an object relation mapping library for .NET/mono.
  .
