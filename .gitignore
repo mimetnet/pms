@@ -36,8 +36,6 @@ doc/Makefile.in
 doc/*.tree
 doc/*.zip
 doc/*.stamp
-extra/policy.0.6.PMS.config
-extra/policy.config
 install-sh
 ltmain.sh
 Makefile
@@ -55,8 +53,6 @@ PMS.Setup/Debug
 PMS.Setup/Release
 PMS.suo
 PMS-*.tar.gz
-policy/policy.*.PMS.config
-policy/policy.config
 scripts/pms-repo
 PMS.Data.Pgsql/obj
 PMS.Data.Sqlite/obj

@@ -1,8 +1,14 @@
+libpms-cil (0.7.0-1-0ubuntu2) unstable; urgency=low
+
+  * DbDataReaderProxy clears connection so we don't try double unlock it
+  * Failure to load connection provider is properly logged
+
+ -- Matthew Metnetsky <matthew@cowarthill.com>  Fri, 19 Sep 2008 09:11:42 -0400
+
 libpms-cil (0.7.0-0-0ubuntu2) unstable; urgency=low
 
   * refactored DbConnectionProxy integration so that Providers can override it
   * Added numerous generic methods for faster processing
-  * Added generic callback during assignment of db record
   * initial packaging attempt for hardy!
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Thu, 31 Jan 2008 11:58:04 -0500
