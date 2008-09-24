@@ -29,8 +29,12 @@ namespace PMS.Data
 
 		public static void Load(FileInfo file)
 		{
+			if (file == null)
+				throw new ArgumentNullException("file");
+
 			if (!file.Exists) {
-				log.Debug("Not Found << " + file);
+				if (file.Directory.Exists)
+					log.Debug("Not Found << " + file);
 				return;
 			}
 

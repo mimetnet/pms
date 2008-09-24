@@ -52,7 +52,6 @@ binary-common:
 	dh_makeshlibs
 	dh_installdeb
 	dh_makeclilibs -m 0.7.0 -l 0.7.1
-	#dh_makeclilibs -V 'libpms-cil (== 0.7.0-0-0ubuntu1)'
 	dh_clideps
 	dh_gencontrol
 	dh_md5sums
