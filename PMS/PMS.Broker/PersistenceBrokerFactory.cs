@@ -11,27 +11,14 @@ namespace PMS.Broker
         {
         }
 
-        /// <summary>
-        /// Return Singleton
-        /// </summary>
         public static IPersistenceBroker CreateBroker()
         {
             return (real != null) ? real : (real = new PersistenceBroker());
         }
 
-        /// <summary>
-        /// Return Proxied Singleton
-        /// </summary>
         public static IPersistenceBroker CreateProxiedBroker()
         {
-            return (proxy != null) ? proxy : (proxy = LoadProxy());
-        }
-
-        private static IPersistenceBroker LoadProxy()
-        {
-            return ((IPersistenceBroker) 
-                Activator.GetObject(Type.GetType("PMS.Broker.PersistenceBroker, PMS"),
-                    "tcp://localhost:5642/PMS.Broker.PersistenceBroker"));
+			throw new NotImplementedException();
         }
     }
 }

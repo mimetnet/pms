@@ -1,6 +1,6 @@
 <Overview>
   <Assemblies>
-    <Assembly Name="PMS" Version="0.7.0.0">
+    <Assembly Name="PMS" Version="0.7.0.1">
       <Attributes>
         <Attribute>
           <AttributeName>System.Runtime.CompilerServices.RuntimeCompatibility(WrapNonExceptionThrows=true)</AttributeName>

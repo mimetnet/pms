@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public class ItemCollection : System.Collections.Generic.List&lt;PMS.Collections.Pool.Item&gt;" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.7.0.0</AssemblyVersion>
+    <AssemblyVersion>0.7.0.1</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Collections.Generic.List&lt;PMS.Collections.Pool.Item&gt;</BaseTypeName>

@@ -2,14 +2,16 @@
   <TypeSignature Language="C#" Value="public sealed class PersistenceBrokerFactory" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.7.0.0</AssemblyVersion>
+    <AssemblyVersion>0.7.0.1</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
   </Base>
   <Interfaces />
   <Docs>
-    <summary>To be added.</summary>
+    <summary>
+      <para>Manage the creation of singleton <see cref="T:PMS.Broker.IPersistenceBroker" />'s for either direct or proxied use</para>
+    </summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>

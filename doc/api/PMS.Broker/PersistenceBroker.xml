@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public sealed class PersistenceBroker : MarshalByRefObject, PMS.Broker.IPersistenceBroker" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.7.0.0</AssemblyVersion>
+    <AssemblyVersion>0.7.0.1</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.MarshalByRefObject</BaseTypeName>
@@ -13,7 +13,9 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>To be added.</summary>
+    <summary>
+      <para>Default class to marshal data to and from the server.</para>
+    </summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -232,8 +234,12 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>
+          <para>Has a repository.xml or package been loaded?</para>
+        </summary>
+        <value>
+          <para>true/false status</para>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -244,8 +250,12 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>
+          <para>Can a connection be established with the database(s)</para>
+        </summary>
+        <value>
+          <para>true/false status</para>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -330,7 +340,9 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>
+          <para>Assigned to 'repository.xml'</para>
+        </summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -385,8 +397,12 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>
+          <para>Returns current PMS version</para>
+        </summary>
+        <value>
+          <para>Returns PMS's assembly version</para>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

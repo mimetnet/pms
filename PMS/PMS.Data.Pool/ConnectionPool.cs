@@ -93,43 +93,6 @@ namespace PMS.Data.Pool
 			}
 		}
 		/*}}}*/
-	
-		/* ObjectPool Overrides {{{ */
-		/*
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		protected override long Add()
-		{
-			Item obj = null;
-
-			lock (ilock) {
-				pool.Add((obj = new Item(this.provider.GetConnection())));
-			}
-
-			if (log.IsDebugEnabled)
-				log.DebugFormat("ObjectPool.Add(new {0}())", obj.Object.GetType());
-
-			return pool.Count;
-		}
-		*/
-
-		/*
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public override void CleanObject(ref Object obj)
-		{
-			try {
-				if (cleanup != null) {
-					cleanup.Invoke(obj, null);
-
-					if (log.IsDebugEnabled) {
-						log.DebugFormat("{0}.{1}(OID={2})", type, cleanup, obj.GetHashCode());
-					}
-				}
-			} finally {
-				obj = null;
-			}
-		}
-		*/
-		/* }}} */
 	}
 }
 // vim:foldmethod=marker:foldlevel=0:

@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public interface IQuery" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.7.0.0</AssemblyVersion>
+    <AssemblyVersion>0.7.0.1</AssemblyVersion>
   </AssemblyInfo>
   <Interfaces />
   <Docs>
