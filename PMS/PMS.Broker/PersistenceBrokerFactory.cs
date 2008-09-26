@@ -4,7 +4,7 @@ namespace PMS.Broker
 {
     public sealed class PersistenceBrokerFactory
     {
-        private static IPersistenceBroker proxy = null;
+        //private static IPersistenceBroker proxy = null;
         private static IPersistenceBroker real = null;
 
         private PersistenceBrokerFactory()
