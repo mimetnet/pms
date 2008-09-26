@@ -22,12 +22,23 @@ namespace PMS.Broker
 
         #region CRUD
         object GetObject(IQuery query);
+        T GetObject<T>(IQuery query);
 
         IList GetObjectList(IQuery query);
         IList GetObjectList(Type type);
 
+        IList GetObjectList<T>(); // Type
+        IList GetObjectList<T>(QueryCallback<T> callback); // Type w/ callback
+        IList GetObjectList<T>(IQuery query);
+        IList GetObjectList<T>(IQuery query, QueryCallback<T> callback);
+
         object[] GetObjectArray(IQuery query);
         object[] GetObjectArray(Type type);
+
+        T[] GetObjectArray<T>();
+        T[] GetObjectArray<T>(QueryCallback<T> callback);
+        T[] GetObjectArray<T>(IQuery query);
+        T[] GetObjectArray<T>(IQuery query, QueryCallback<T> callback);
 
         DbResult Persist(object obj);
 

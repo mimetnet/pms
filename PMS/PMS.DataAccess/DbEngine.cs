@@ -6,6 +6,7 @@ using System.Security.Principal;
 using PMS.Data;
 
 using PMS.Metadata;
+
 using PMS.Query;
 
 namespace PMS.DataAccess
@@ -34,7 +35,7 @@ namespace PMS.DataAccess
         #endregion
         
         public static object ExecuteSelectObject(IQuery query)
-        {
+		{
 			if (query == null) throw new ArgumentNullException("IQuery cannot be null");
 
             Object obj = null;
@@ -69,8 +70,44 @@ namespace PMS.DataAccess
             return obj;
         }
 
+		public static T ExecuteSelectObject<T>(IQuery query)
+		{
+			if (query == null) throw new ArgumentNullException("IQuery cannot be null");
+
+            T obj = default(T);
+			DbResult result = null;
+			PMS.Metadata.Generic.MetaObject<T> mobj = new PMS.Metadata.Generic.MetaObject<T>();
+
+			using (IDbCommand cmd = dbManager.GetCommand(query.Select())) {
+				try {
+					query.Criteria.Limit = 1;
+					using (IDataReader reader = cmd.ExecuteReader()) {
+						obj = mobj.Materialize(reader);
+						result = new DbResult(((obj == null)? 0 : 1), cmd.CommandText);
+					}
+				} catch (RepositoryDefinitionException rde) {
+					throw rde;
+				} catch (Exception e) {
+					result = new DbResult(cmd.CommandText, e);
+
+					if (cmd.Transaction != null)
+						throw e;
+				} finally {
+					if (result != null) {
+						if (result.Exception != null) {
+							log.Error("ExecuteSelectObject<T>: " + result);
+						} else if (log.IsDebugEnabled) {
+							log.Debug(result);
+						}
+					}
+				}
+			}
+
+            return obj;
+        }
+
         public static object[] ExecuteSelectArray(IQuery query)
-        {
+		{
 			if (query == null) throw new ArgumentNullException("IQuery cannot be null");
 
             object[] list = null;
@@ -104,8 +141,43 @@ namespace PMS.DataAccess
             return list;
         }
 
+        public static T[] ExecuteSelectArray<T>(IQuery query, QueryCallback<T> callback)
+		{
+			if (query == null) throw new ArgumentNullException("IQuery cannot be null");
+
+            T[] list = null;
+			DbResult result = null;
+			PMS.Metadata.Generic.MetaObject<T> mobj = new PMS.Metadata.Generic.MetaObject<T>();
+
+			using (IDbCommand cmd = dbManager.GetCommand(query.Select())) {
+				try {
+					using (IDataReader reader = cmd.ExecuteReader()) {
+						list = mobj.MaterializeArray(reader, callback);
+						result = new DbResult(list.Length, cmd.CommandText);
+					}
+				} catch (RepositoryDefinitionException rde) {
+					throw rde;
+				} catch (Exception e) {
+					result = new DbResult(cmd.CommandText, e);
+
+					if (cmd.Transaction != null)
+						throw e;
+				} finally {
+					if (result != null) {
+						if (result.Exception != null) {
+							log.Error("ExecuteSelectArray<T>: " + result);
+						} else if (log.IsDebugEnabled) {
+							log.Debug(result);
+						}
+					}
+				}
+			}
+
+            return list;
+        }
+
         public static IList ExecuteSelectList(IQuery query)
-        {
+		{
 			if (query == null) throw new ArgumentNullException("IQuery cannot be null");
 
             IList list = null;
@@ -129,6 +201,41 @@ namespace PMS.DataAccess
 					if (result != null) {
 						if (result.Exception != null) {
 							log.Error("ExecuteSelectList: " + result);
+						} else if (log.IsDebugEnabled) {
+							log.Debug(result);
+						}
+					}
+				}
+			}
+
+            return list;
+        }
+
+		public static IList ExecuteSelectList<T>(IQuery query, QueryCallback<T> callback)
+        {
+			if (query == null) throw new ArgumentNullException("IQuery cannot be null");
+
+            IList list = null;
+			DbResult result = null;
+			PMS.Metadata.Generic.MetaObject<T> mobj = new PMS.Metadata.Generic.MetaObject<T>();
+
+			using (IDbCommand cmd = dbManager.GetCommand(query.Select())) {
+				try {
+					using (IDataReader reader = cmd.ExecuteReader()) {
+						list = mobj.MaterializeList(reader, callback);
+						result = new DbResult(list.Count, cmd.CommandText);
+					}
+				} catch (RepositoryDefinitionException rde) {
+					throw rde;
+				} catch (Exception e) {
+					result = new DbResult(cmd.CommandText, e);
+
+					if (cmd.Transaction != null)
+						throw e;
+				} finally {
+					if (result != null) {
+						if (result.Exception != null) {
+							log.Error("ExecuteSelectList<T>: " + result);
 						} else if (log.IsDebugEnabled) {
 							log.Debug(result);
 						}

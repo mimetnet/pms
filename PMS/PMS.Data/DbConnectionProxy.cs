@@ -106,8 +106,6 @@ namespace PMS.Data
 			try {
 				this.connection.Close();
 			} catch {}
-
-			//log.Info("Conn.Close");
 		}
 		/*}}}*/
 

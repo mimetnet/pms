@@ -93,10 +93,13 @@ namespace PMS.Data
 			try {
 				reader = this.command.ExecuteReader();
 			} catch (Exception e) {
-				if (this.CanReopenConnection(e))
+				if (this.CanReopenConnection(e)) {
 					reader = this.command.ExecuteReader();
-				else
+				} else {
+					this.connection.ReleaseLock();
+					this.connection = null;
 					throw e;
+				}
 			}
 			
             return new DbDataReaderProxy(reader, this.connection);
@@ -112,10 +115,13 @@ namespace PMS.Data
 			try {
 				reader = this.command.ExecuteReader();
 			} catch (Exception e) {
-				if (this.CanReopenConnection(e))
+				if (this.CanReopenConnection(e)) {
 					reader = this.command.ExecuteReader();
-				else 
+				} else {
+					this.connection.ReleaseLock();
+					this.connection = null;
 					throw e;
+				}
 			}
 
             return new DbDataReaderProxy(reader, this.connection);
@@ -161,6 +167,10 @@ namespace PMS.Data
 					this.mgr.ReturnCommand(this.command);
 
 				this.command.Dispose();
+			}
+
+			if (this.connection != null) {
+				this.connection = null;
 			}
         }
 
