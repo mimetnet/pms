@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public static class DbEngine" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.7.0.1</AssemblyVersion>
+    <AssemblyVersion>0.7.0.2</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -203,6 +203,25 @@
         <remarks />
       </Docs>
     </Member>
+    <Member MemberName="ExecuteSelectArray&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public static T[] ExecuteSelectArray&lt;T&gt; (PMS.Query.IQuery query, PMS.Query.QueryCallback&lt;T&gt; callback);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>T[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="query" Type="PMS.Query.IQuery" />
+        <Parameter Name="callback" Type="PMS.Query.QueryCallback&lt;T&gt;" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">To be added.</typeparam>
+        <param name="query">To be added.</param>
+        <param name="callback">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="ExecuteSelectList">
       <MemberSignature Language="C#" Value="public static System.Collections.IList ExecuteSelectList (PMS.Query.IQuery query);" />
       <MemberType>Method</MemberType>
@@ -217,6 +236,25 @@
         <summary>Execute SQL built by IQuery and return instantiated classes inside IList</summary>
         <returns>CollectionBase of instantiated classes</returns>
         <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ExecuteSelectList&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public static System.Collections.IList ExecuteSelectList&lt;T&gt; (PMS.Query.IQuery query, PMS.Query.QueryCallback&lt;T&gt; callback);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.IList</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="query" Type="PMS.Query.IQuery" />
+        <Parameter Name="callback" Type="PMS.Query.QueryCallback&lt;T&gt;" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">To be added.</typeparam>
+        <param name="query">To be added.</param>
+        <param name="callback">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ExecuteSelectObject">
@@ -239,6 +277,23 @@
         <remarks>
           <para>Selecting a single object implies LIMIT 1, feel free to change offset</para>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ExecuteSelectObject&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public static T ExecuteSelectObject&lt;T&gt; (PMS.Query.IQuery query);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>T</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="query" Type="PMS.Query.IQuery" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">To be added.</typeparam>
+        <param name="query">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ExecuteUpdate">

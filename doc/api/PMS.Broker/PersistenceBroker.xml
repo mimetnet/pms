@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public sealed class PersistenceBroker : MarshalByRefObject, PMS.Broker.IPersistenceBroker" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.7.0.1</AssemblyVersion>
+    <AssemblyVersion>0.7.0.2</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.MarshalByRefObject</BaseTypeName>
@@ -147,6 +147,23 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="GetObject&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public T GetObject&lt;T&gt; (PMS.Query.IQuery query);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>T</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="query" Type="PMS.Query.IQuery" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">To be added.</typeparam>
+        <param name="query">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="GetObjectArray">
       <MemberSignature Language="C#" Value="public object[] GetObjectArray (PMS.Query.IQuery query);" />
       <MemberType>Method</MemberType>
@@ -179,6 +196,73 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="GetObjectArray&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public T[] GetObjectArray&lt;T&gt; ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>T[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <typeparam name="T">To be added.</typeparam>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetObjectArray&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public T[] GetObjectArray&lt;T&gt; (PMS.Query.IQuery query);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>T[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="query" Type="PMS.Query.IQuery" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">To be added.</typeparam>
+        <param name="query">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetObjectArray&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public T[] GetObjectArray&lt;T&gt; (PMS.Query.QueryCallback&lt;T&gt; callback);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>T[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="callback" Type="PMS.Query.QueryCallback&lt;T&gt;" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">To be added.</typeparam>
+        <param name="callback">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetObjectArray&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public T[] GetObjectArray&lt;T&gt; (PMS.Query.IQuery query, PMS.Query.QueryCallback&lt;T&gt; callback);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>T[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="query" Type="PMS.Query.IQuery" />
+        <Parameter Name="callback" Type="PMS.Query.QueryCallback&lt;T&gt;" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">To be added.</typeparam>
+        <param name="query">To be added.</param>
+        <param name="callback">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="GetObjectList">
       <MemberSignature Language="C#" Value="public System.Collections.IList GetObjectList (PMS.Query.IQuery query);" />
       <MemberType>Method</MemberType>
@@ -196,6 +280,23 @@
       </Docs>
     </Member>
     <Member MemberName="GetObjectList">
+      <MemberSignature Language="C#" Value="public System.Collections.IList GetObjectList&lt;T&gt; (PMS.Query.IQuery query);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.IList</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="query" Type="PMS.Query.IQuery" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">To be added.</typeparam>
+        <param name="query">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetObjectList">
       <MemberSignature Language="C#" Value="public System.Collections.IList GetObjectList (Type type);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
@@ -206,6 +307,56 @@
       </Parameters>
       <Docs>
         <param name="type">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetObjectList&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public System.Collections.IList GetObjectList&lt;T&gt; ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.IList</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <typeparam name="T">To be added.</typeparam>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetObjectList&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public System.Collections.IList GetObjectList&lt;T&gt; (PMS.Query.QueryCallback&lt;T&gt; callback);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.IList</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="callback" Type="PMS.Query.QueryCallback&lt;T&gt;" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">To be added.</typeparam>
+        <param name="callback">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetObjectList&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public System.Collections.IList GetObjectList&lt;T&gt; (PMS.Query.IQuery query, PMS.Query.QueryCallback&lt;T&gt; callback);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.IList</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="query" Type="PMS.Query.IQuery" />
+        <Parameter Name="callback" Type="PMS.Query.QueryCallback&lt;T&gt;" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">To be added.</typeparam>
+        <param name="query">To be added.</param>
+        <param name="callback">To be added.</param>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>

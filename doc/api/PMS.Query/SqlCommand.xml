@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public enum SqlCommand" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.7.0.1</AssemblyVersion>
+    <AssemblyVersion>0.7.0.2</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Enum</BaseTypeName>

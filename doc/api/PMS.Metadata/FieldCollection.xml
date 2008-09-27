@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public class FieldCollection : System.Collections.Generic.List&lt;PMS.Metadata.Field&gt;, System.Xml.Serialization.IXmlSerializable" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.7.0.1</AssemblyVersion>
+    <AssemblyVersion>0.7.0.2</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Collections.Generic.List&lt;PMS.Metadata.Field&gt;</BaseTypeName>

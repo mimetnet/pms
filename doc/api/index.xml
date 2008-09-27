@@ -1,6 +1,6 @@
 <Overview>
   <Assemblies>
-    <Assembly Name="PMS" Version="0.7.0.1">
+    <Assembly Name="PMS" Version="0.7.0.2">
       <Attributes>
         <Attribute>
           <AttributeName>System.Runtime.CompilerServices.RuntimeCompatibility(WrapNonExceptionThrows=true)</AttributeName>
@@ -120,6 +120,7 @@
       <Type Name="QueryByObject" />
       <Type Name="QueryBySql" />
       <Type Name="QueryByType" />
+      <Type Name="QueryCallback`1" DisplayName="QueryCallback&lt;T&gt;" />
       <Type Name="RangeClause" />
       <Type Name="SqlCommand" />
       <Type Name="ValueClause" />
