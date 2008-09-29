@@ -76,11 +76,13 @@ namespace PMS.Broker
 			return DbEngine.ExecuteSelectObject(query);
 		}
 
+#if !MONO_1_1
 		public T GetObject<T>(IQuery query)
 		{
 			CheckStatus();
 			return DbEngine.ExecuteSelectObject<T>(query);
 		}
+#endif
 
 		/* GetObjectArray {{{ */
 		public object[] GetObjectArray(IQuery query)
@@ -96,6 +98,7 @@ namespace PMS.Broker
 		}
 		/* }}} */
 
+#if !MONO_1_1
 		/* GetObjectArray<T> ... {{{ */
 		public T[] GetObjectArray<T>()
 		{
@@ -121,6 +124,7 @@ namespace PMS.Broker
 			return DbEngine.ExecuteSelectArray<T>(query, callback);
 		}
 		/* }}} */
+#endif
 
 		/* GetObjectList {{{ */
 		public IList GetObjectList(IQuery query)
@@ -136,6 +140,7 @@ namespace PMS.Broker
 		}
 		/* }}} */
 
+#if !MONO_1_1
 		/* GetObjectList<T> ... {{{ */
 		public IList GetObjectList<T>()
 		{
@@ -161,6 +166,7 @@ namespace PMS.Broker
 			return DbEngine.ExecuteSelectList<T>(query, callback);
 		}
 		/* }}} */
+#endif
 
 		public DbResult Persist(object obj)
 		{

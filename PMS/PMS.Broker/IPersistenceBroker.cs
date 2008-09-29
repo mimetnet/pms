@@ -12,33 +12,31 @@ namespace PMS.Broker
 {
     public interface IPersistenceBroker
     {
-        #region Properties
         bool IsOpen { get; }
-
         bool IsLoaded { get; }
-
         string Version { get; }
-        #endregion
 
-        #region CRUD
         object GetObject(IQuery query);
-        T GetObject<T>(IQuery query);
 
         IList GetObjectList(IQuery query);
         IList GetObjectList(Type type);
+
+        object[] GetObjectArray(IQuery query);
+        object[] GetObjectArray(Type type);
+
+#if !MONO_1_1
+        T GetObject<T>(IQuery query);
 
         IList GetObjectList<T>(); // Type
         IList GetObjectList<T>(QueryCallback<T> callback); // Type w/ callback
         IList GetObjectList<T>(IQuery query);
         IList GetObjectList<T>(IQuery query, QueryCallback<T> callback);
 
-        object[] GetObjectArray(IQuery query);
-        object[] GetObjectArray(Type type);
-
         T[] GetObjectArray<T>();
         T[] GetObjectArray<T>(QueryCallback<T> callback);
         T[] GetObjectArray<T>(IQuery query);
         T[] GetObjectArray<T>(IQuery query, QueryCallback<T> callback);
+#endif
 
         DbResult Persist(object obj);
 
@@ -54,24 +52,17 @@ namespace PMS.Broker
 		DbResult Delete(IList list);
         DbResult Delete(object[] list); 
         DbResult Delete(object obj);
-        #endregion
 
-        #region Control
         bool Load();
         bool Load(string repositoryFile);
         bool Load(System.IO.FileInfo file);
 
         void Clear();
-
         bool Open();
-
         void Close(); 
-        #endregion
 
-        #region Transactions
         void BeginTransaction();
         void RollbackTransaction();
         void CommitTransaction(); 
-        #endregion
     }
 }

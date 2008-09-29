@@ -1,8 +1,6 @@
 libpms-cil (0.7.0-2-0ubuntu0.6.06) dapper; urgency=low
 
   * Missing table exceptions won't hold connection lock
-  * Added numerous generic select single/list methods for massive speedup
-  * Added QueryCallback as 2nd argument to handle object assignment
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Sat, 27 Sep 2008 17:04:53 -0400
 
