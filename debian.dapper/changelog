@@ -1,4 +1,4 @@
-libpms-cil (0.7.0-2-0ubuntu2) stable; urgency=low
+libpms-cil (0.7.0-2-0ubuntu0.6.06) dapper; urgency=low
 
   * Missing table exceptions won't hold connection lock
   * Added numerous generic select single/list methods for massive speedup
