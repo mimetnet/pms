@@ -292,6 +292,23 @@
       </Docs>
     </Member>
     <Member MemberName="GetObjectList">
+      <MemberSignature Language="C#" Value="public System.Collections.IList GetObjectList&lt;T&gt; (PMS.Query.IQuery query);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.IList</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="query" Type="PMS.Query.IQuery" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">To be added.</typeparam>
+        <param name="query">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetObjectList">
       <MemberSignature Language="C#" Value="public System.Collections.IList GetObjectList (Type type);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
