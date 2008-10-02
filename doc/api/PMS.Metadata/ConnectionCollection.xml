@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public class ConnectionCollection : System.Collections.CollectionBase, System.Xml.Serialization.IXmlSerializable" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.7.0.2</AssemblyVersion>
+    <AssemblyVersion>0.7.0.3</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Collections.CollectionBase</BaseTypeName>

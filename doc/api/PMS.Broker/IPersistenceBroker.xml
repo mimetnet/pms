@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public interface IPersistenceBroker" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.7.0.2</AssemblyVersion>
+    <AssemblyVersion>0.7.0.3</AssemblyVersion>
   </AssemblyInfo>
   <Interfaces />
   <Docs>
@@ -253,6 +253,23 @@
         <typeparam name="T">To be added.</typeparam>
         <param name="query">To be added.</param>
         <param name="callback">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetObjectList">
+      <MemberSignature Language="C#" Value="public System.Collections.IList GetObjectList&lt;T&gt; (PMS.Query.IQuery query);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.IList</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="query" Type="PMS.Query.IQuery" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">To be added.</typeparam>
+        <param name="query">To be added.</param>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>

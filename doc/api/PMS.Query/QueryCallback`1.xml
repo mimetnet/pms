@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public delegate bool QueryCallback&lt;T&gt;(T obj);" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.7.0.2</AssemblyVersion>
+    <AssemblyVersion>0.7.0.3</AssemblyVersion>
   </AssemblyInfo>
   <TypeParameters>
     <TypeParameter>T</TypeParameter>

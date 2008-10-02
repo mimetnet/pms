@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public sealed class DbResult" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.7.0.2</AssemblyVersion>
+    <AssemblyVersion>0.7.0.3</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -211,6 +211,22 @@
       <Docs>
         <summary>To be added.</summary>
         <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ToString">
+      <MemberSignature Language="C#" Value="public string ToString (bool exception);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="exception" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="exception">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
