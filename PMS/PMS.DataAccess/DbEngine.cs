@@ -59,9 +59,9 @@ namespace PMS.DataAccess
 				} finally {
 					if (result != null) {
 						if (result.Exception != null) {
-							log.Error("ExecuteSelectObject: " + result);
+							log.Error("ExecuteSelectObject: " + result.ToString(false), result.Exception);
 						} else if (log.IsDebugEnabled) {
-							log.Debug(result);
+							log.Debug(result.ToString());
 						}
 					}
 				}
@@ -95,9 +95,9 @@ namespace PMS.DataAccess
 				} finally {
 					if (result != null) {
 						if (result.Exception != null) {
-							log.Error("ExecuteSelectObject<T>: " + result);
+							log.Error("ExecuteSelectObject<T>: " + result.ToString(false), result.Exception);
 						} else if (log.IsDebugEnabled) {
-							log.Debug(result);
+							log.Debug(result.ToString());
 						}
 					}
 				}
@@ -130,9 +130,9 @@ namespace PMS.DataAccess
 				} finally {
 					if (result != null) {
 						if (result.Exception != null) {
-							log.Error("ExecuteSelectArray: " + result);
+							log.Error("ExecuteSelectArray: " + result.ToString(false), result.Exception);
 						} else if (log.IsDebugEnabled) {
-							log.Debug(result);
+							log.Debug(result.ToString());
 						}
 					}
 				}
@@ -165,9 +165,9 @@ namespace PMS.DataAccess
 				} finally {
 					if (result != null) {
 						if (result.Exception != null) {
-							log.Error("ExecuteSelectArray<T>: " + result);
+							log.Error("ExecuteSelectArray<T>: " + result.ToString(false), result.Exception);
 						} else if (log.IsDebugEnabled) {
-							log.Debug(result);
+							log.Debug(result.ToString());
 						}
 					}
 				}
@@ -200,9 +200,9 @@ namespace PMS.DataAccess
 				} finally {
 					if (result != null) {
 						if (result.Exception != null) {
-							log.Error("ExecuteSelectList: " + result);
+							log.Error("ExecuteSelectList: " + result.ToString(false), result.Exception);
 						} else if (log.IsDebugEnabled) {
-							log.Debug(result);
+							log.Debug(result.ToString());
 						}
 					}
 				}
@@ -235,9 +235,9 @@ namespace PMS.DataAccess
 				} finally {
 					if (result != null) {
 						if (result.Exception != null) {
-							log.Error("ExecuteSelectList<T>: " + result);
+							log.Error("ExecuteSelectList<T>: " + result.ToString(false), result.Exception);
 						} else if (log.IsDebugEnabled) {
-							log.Debug(result);
+							log.Debug(result.ToString());
 						}
 					}
 				}
@@ -282,9 +282,9 @@ namespace PMS.DataAccess
 			} finally {
 				if (result != null) {
 					if (result.Exception != null) {
-						log.Error("ExecutePersist: " + result);
+						log.Error("ExecutePersist: " + result.ToString(false), result.Exception);
 					} else if (log.IsDebugEnabled) {
-						log.Debug(result);
+						log.Debug(result.ToString());
 					}
 				}
 			}
@@ -382,9 +382,9 @@ namespace PMS.DataAccess
 				} finally {
 					if (result != null) {
 						if (result.Exception != null) {
-							log.Error("ExecuteNonQuery: " + result);
+							log.Error("ExecuteNonQuery: " + result.ToString(false), result.Exception);
 						} else if (log.IsDebugEnabled) {
-							log.Debug(result);
+							log.Debug(result.ToString());
 						}
 					}
 				}
@@ -421,9 +421,9 @@ namespace PMS.DataAccess
 				} finally {
 					if (result != null) {
 						if (result.Exception != null) {
-							log.Error("ExecuteScalar: " + result);
+							log.Error("ExecuteScalar: " + result.ToString(false), result.Exception);
 						} else if (log.IsDebugEnabled) {
-							log.Debug(result);
+							log.Debug(result.ToString());
 						}
 					}
 				}
@@ -454,7 +454,7 @@ namespace PMS.DataAccess
 						throw e;
 				} finally {
 					if (log.IsDebugEnabled)
-						log.Debug("SQL = " + sql);
+						log.Debug("ExecuteReader.SQL = " + sql);
 				}
 			}
 

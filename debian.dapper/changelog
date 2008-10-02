@@ -1,3 +1,9 @@
+libpms-cil (0.7.0-3-0ubuntu0.6.06) dapper; urgency=low
+
+  * DbEngine logs full stack traces on exceptions
+
+ -- Matthew Metnetsky <matthew@cowarthill.com>  Thu, 02 Oct 2008 09:29:10 -0400
+
 libpms-cil (0.7.0-2-0ubuntu0.6.06) dapper; urgency=low
 
   * Missing table exceptions won't hold connection lock
