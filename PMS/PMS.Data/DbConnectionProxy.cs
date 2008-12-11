@@ -8,11 +8,11 @@ namespace PMS.Data
 {
     public class DbConnectionProxy : Component, IDbConnection
     {
-		private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Data.DbConnectionProxy");
-		private Semaphore sema = new Semaphore(1, 1);
+		protected static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Data.DbConnectionProxy");
         protected IDbTransaction transaction = null;
-
         protected IDbConnection connection = null;
+
+		private Semaphore sema = new Semaphore(1, 1);
 
 		public const int LockTimeout = 10000;
 
@@ -151,14 +151,15 @@ namespace PMS.Data
 
 		public virtual bool CanReopen(Exception ex)
 		{
-			if (ex != null)
-				return false;
+			try {
+				if (ex != null)
+					return false;
 
-			if (ex.GetType() == typeof(IOException) || (ex.InnerException != null && ex.InnerException.GetType() == typeof(IOException)))
-				return this.Reopen();
-
-			if (ex.InnerException == null)
-				return false;
+				if (ex.GetType() == typeof(IOException) || (ex.InnerException != null && ex.InnerException.GetType() == typeof(IOException)))
+					return this.Reopen();
+			} catch (Exception e) {
+				log.Error("CanReopen: ", e);
+			}
 
 			return false;
 		}
@@ -167,14 +168,14 @@ namespace PMS.Data
 		{
 			try {
 				this.Close();
-			} catch (Exception) {
-				log.Error("CanReopenConnection: Failed to Close in order to reopen it");
+			} catch (Exception ce) {
+				log.Error("CanReopenConnection: Failed to Close in order to reopen it -> ", ce);
 			}
 
 			try {
 				this.Open();
-			} catch (Exception) {
-				log.Error("CanReopenConnection: Failed to Open connection, it appears dead!");
+			} catch (Exception oe) {
+				log.Error("CanReopenConnection: Failed to Open connection, it appears dead ->", oe);
 				return false;
 			}
 

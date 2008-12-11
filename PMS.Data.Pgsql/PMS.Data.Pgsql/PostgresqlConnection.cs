@@ -24,23 +24,33 @@ namespace PMS.Data.Postgresql
 			if (ex == null)
 				return false;
 			
-			// older Npgsql threw this on database restart
-			if (ex.GetType() == typeof(NotSupportedException)) 
-				return true;
-			else if (ex.InnerException != null && ex.InnerException.GetType() == typeof(IOException))
-				return this.Reopen();
+			try {
+				Type exType = ex.GetType();
+				Type iexType = (ex.InnerException != null)? ex.InnerException.GetType() : null;
 
-			NpgsqlException nex = ex as NpgsqlException;
+				//log.Warn("exType: " + exType);
+				//log.Warn("iexType: " + iexType);
 
-			if (nex == null)
-				return false;
+				// older Npgsql (8.1) threw this on database restart
+				if ((exType == typeof(NotSupportedException) || exType == typeof(IOException)) || 
+						(iexType != null && (iexType == typeof(NotSupportedException) || iexType == typeof(IOException))))
+					return this.Reopen();
 
-			if (nex.Code == "57P01")
-				return this.Reopen();
+				NpgsqlException nex = ex as NpgsqlException;
 
-			Console.WriteLine("ShouldReopen: " + nex.ToString());
-			Console.WriteLine("ShouldReopen: " + nex.InnerException);
-			Console.WriteLine("ShouldReopen: " + (nex.Code == "57P01").ToString());
+				if (nex == null)
+					return false;
+
+				// 8.3
+				if (nex.Code == "57P01")
+					return this.Reopen();
+
+				//Console.WriteLine("ShouldReopen: " + nex.ToString());
+				//Console.WriteLine("ShouldReopen: " + nex.InnerException);
+				//Console.WriteLine("ShouldReopen: " + (nex.Code == "57P01").ToString());
+			} catch (Exception e) {
+				log.Error("CanReopen(Pgsql): ", e);
+			}
 
 			return false;
 		}

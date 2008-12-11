@@ -96,9 +96,12 @@ namespace PMS.Data
 				if (this.CanReopenConnection(e)) {
 					reader = this.command.ExecuteReader();
 				} else {
+					throw e;
+				}
+			} finally {
+				if (reader == null) {
 					this.connection.ReleaseLock();
 					this.connection = null;
-					throw e;
 				}
 			}
 			
@@ -118,9 +121,12 @@ namespace PMS.Data
 				if (this.CanReopenConnection(e)) {
 					reader = this.command.ExecuteReader();
 				} else {
+					throw e;
+				}
+			} finally {
+				if (reader == null) {
 					this.connection.ReleaseLock();
 					this.connection = null;
-					throw e;
 				}
 			}
 
