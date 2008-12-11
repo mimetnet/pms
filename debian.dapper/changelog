@@ -2,8 +2,9 @@ libpms-cil (0.7.0-3-0ubuntu0.6.06) dapper; urgency=low
 
   * CanReopen will now try on NotSupportedException & IOException
   * Fixed potential lock issue when CanReopen works but ExceuteABC fails
+  * DbEngine logs full stack traces on exceptions
 
- -- Matthew Metnetsky <mmetnetsky@kmbs.konicaminolta.us>  Thu, 11 Dec 2008 18:50:07 -0500
+ -- Matthew Metnetsky <matthew@cowarthill.com>  Thu, 11 Dec 2008 18:50:07 -0500
 
 libpms-cil (0.7.0-2-0ubuntu0.6.06) dapper; urgency=low
 
