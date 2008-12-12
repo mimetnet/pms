@@ -2,6 +2,7 @@
 
 PROJECT=PMS
 CONFIGURE=configure.ac
+LSB_RELEASE=$(lsb_release -sc)
 
 : ${AUTOCONF=autoconf}
 : ${AUTOHEADER=autoheader}
@@ -9,6 +10,10 @@ CONFIGURE=configure.ac
 : ${LIBTOOLIZE=libtoolize}
 : ${ACLOCAL=aclocal}
 : ${LIBTOOL=libtool}
+
+if [ ! -d debian ]; then
+	ln -s debian.${LSB_RELEASE}/ debian
+fi
 
 if [ -z "$conf_flags" ]; then
 	conf_flags="--prefix=/usr --mandir=/usr/share/man"
