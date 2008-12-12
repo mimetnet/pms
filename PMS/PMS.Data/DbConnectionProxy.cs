@@ -14,7 +14,7 @@ namespace PMS.Data
 
 		private Semaphore sema = new Semaphore(1, 1);
 
-		public const int LockTimeout = 10000;
+		public const int LockTimeout = 1000;
 
 		/* {{{ Constructors */
         public DbConnectionProxy(IDbConnection connection)

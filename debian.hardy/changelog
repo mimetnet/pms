@@ -3,6 +3,7 @@ libpms-cil (0.7.0-3-0ubuntu2) stable; urgency=low
   * CanReopen will now try on NotSupportedException & IOException
   * Fixed potential lock issue when CanReopen works but ExceuteABC fails
   * DbEngine logs full stack traces on exceptions
+  * Decreased TIMEOUT to 1sec
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Thu, 11 Dec 2008 18:50:07 -0500
 
