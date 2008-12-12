@@ -8,18 +8,21 @@ using PMS.Metadata;
 
 namespace PMS.Query
 {
-    /// <summary>
-    /// Create Query representing a class type
-    /// </summary>
     [Serializable]
     public class QueryByType : QueryByObject
     {
-        /// <summary>
-        /// Construct
-        /// </summary>
-        /// <param name="type">Type to query</param>
         public QueryByType(Type type) : base(Activator.CreateInstance(type))
         {
         }
+
+		protected new bool IsFieldSet(Field field)
+		{
+			return false;
+		}
+
+		protected new bool IsFieldSet(Field field, object value)
+		{
+			return false;
+		}
     }
 }
