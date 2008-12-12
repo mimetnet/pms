@@ -15,7 +15,7 @@
           <AttributeName>System.Reflection.AssemblyTrademark("")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>System.Reflection.AssemblyCopyright("Copyright © Matthew Metnetsky 2004-2008")</AttributeName>
+          <AttributeName>System.Reflection.AssemblyCopyright("Copyright ?? Matthew Metnetsky 2004-2008")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>System.Reflection.AssemblyProduct("PMS")</AttributeName>

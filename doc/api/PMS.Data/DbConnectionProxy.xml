@@ -199,12 +199,12 @@
       </Docs>
     </Member>
     <Member MemberName="LockTimeout">
-      <MemberSignature Language="C#" Value="public const int LockTimeout = 10000;" />
+      <MemberSignature Language="C#" Value="public const int LockTimeout = 1000;" />
       <MemberType>Field</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <MemberValue>10000</MemberValue>
+      <MemberValue>1000</MemberValue>
       <Docs>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
