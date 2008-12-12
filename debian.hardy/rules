@@ -41,9 +41,9 @@ install-indep:
 binary-common:
 	dh_testdir
 	dh_testroot
-	dh_installchangelogs -plibpms-cil -plibpms-pgsql-cil -plibpms-sqlite3-cil -Nlibpms-cil-dbg -Nlibpms-pgsql-cil-dbg -Nlibpms-sqlite3-cil-dbg
-	dh_installdocs -plibpms-cil -Nlibpms-cil-dbg
-	dh_installman -plibpms-cil -Nlibpms-cil-dbg
+	dh_installchangelogs -plibpms-cil -plibpms-pgsql-cil -plibpms-sqlite3-cil -plibpms-cil-doc
+	dh_installdocs -plibpms-cil
+	dh_installman -plibpms-cil -plibpms-cil-doc
 	dh_link
 	dh_strip
 	dh_compress 
