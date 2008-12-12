@@ -210,6 +210,17 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="log">
+      <MemberSignature Language="C#" Value="protected static readonly log4net.ILog log;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>log4net.ILog</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Open">
       <MemberSignature Language="C#" Value="public void Open ();" />
       <MemberType>Method</MemberType>
