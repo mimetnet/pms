@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("PMS Sqlite")]
-[assembly: AssemblyCopyright("Copyright © Matthew Metnetsky 2004-2008")]
+[assembly: AssemblyCopyright("Copyright © Matthew Metnetsky 2004-2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

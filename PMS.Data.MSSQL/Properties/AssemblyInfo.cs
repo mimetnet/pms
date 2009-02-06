@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PMS PGSQL")]
-[assembly: AssemblyDescription("Postgresql Bindings for PMS ontop Npgsql")]
+[assembly: AssemblyTitle("PMS MSSQL")]
+[assembly: AssemblyDescription("MSSQL Bindings for PMS")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PMS PGSQL")]
+[assembly: AssemblyProduct("PMS MSSQL")]
 [assembly: AssemblyCopyright("Copyright © Matthew Metnetsky 2004-2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,4 +19,4 @@ using System.Runtime.InteropServices;
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
 
-[assembly: AssemblyVersion("0.4.0.1")]
+[assembly: AssemblyVersion("0.0.1.0")]

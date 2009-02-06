@@ -55,4 +55,6 @@ PMS.suo
 PMS-*.tar.gz
 scripts/pms-repo
 PMS.Data.Pgsql/obj
+PMS.Data.MSSQL/obj
+PMS.Data.MSSQL/bin
 PMS.Data.Sqlite/obj

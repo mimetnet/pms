@@ -1,11 +1,13 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS", "PMS\PMS.csproj", "{DD828130-E4B7-404F-8F2B-56D1AF2BBC48}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.Data.Pgsql", "PMS.Data.Pgsql\PMS.Data.Pgsql.csproj", "{F1CCF9A9-FFA0-46DE-872C-47E0D94C703F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.Data.Sqlite", "PMS.Data.Sqlite\PMS.Data.Sqlite.csproj", "{F54C1626-3F99-4232-A4E5-000402772325}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.Data.MSSQL", "PMS.Data.MSSQL\PMS.Data.MSSQL.csproj", "{F54C1626-3F99-4232-A4E5-000402772025}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +27,10 @@ Global
 		{F54C1626-3F99-4232-A4E5-000402772325}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F54C1626-3F99-4232-A4E5-000402772325}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F54C1626-3F99-4232-A4E5-000402772325}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F54C1626-3F99-4232-A4E5-000402772025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F54C1626-3F99-4232-A4E5-000402772025}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F54C1626-3F99-4232-A4E5-000402772025}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F54C1626-3F99-4232-A4E5-000402772025}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

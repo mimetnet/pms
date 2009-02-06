@@ -4,11 +4,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F1CCF9A9-FFA0-46DE-872C-47E0D94C703F}</ProjectGuid>
+    <ProjectGuid>{F54C1626-3F99-4232-A4E5-000402772025}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PMS.Data.Pgsql</RootNamespace>
-    <AssemblyName>PMS.Data.Pgsql</AssemblyName>
+    <RootNamespace>PMS.Data.MSSQL</RootNamespace>
+    <AssemblyName>PMS.Data.MSSQL</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\certs\PMS.pfx</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
@@ -16,7 +16,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
-    <PublishUrl>http://localhost/PMS.Data.Pgsql/</PublishUrl>
+    <PublishUrl>http://localhost/PMS.Data.MSSQL/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -56,15 +56,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Npgsql" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PMS.Data.Pgsql\PostgresqlInspector.cs" />
-    <Compile Include="PMS.Data.Pgsql\PostgresqlProvider.cs" />
+    <Compile Include="PMS.Data.MSSQL\MSSQLInspector.cs" />
+    <Compile Include="PMS.Data.MSSQL\MSSQLProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
