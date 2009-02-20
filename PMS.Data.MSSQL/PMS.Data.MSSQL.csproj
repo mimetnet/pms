@@ -62,6 +62,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PMS.Data.MSSQL\MSSQLConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PMS.Data.MSSQL\MSSQLInspector.cs" />
     <Compile Include="PMS.Data.MSSQL\MSSQLProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

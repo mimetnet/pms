@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.Data.Sqlite", "PMS.Data
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.Data.MSSQL", "PMS.Data.MSSQL\PMS.Data.MSSQL.csproj", "{F54C1626-3F99-4232-A4E5-000402772025}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.Tester", "PMS.Tester\PMS.Tester.csproj", "{23974264-36F8-4ED1-A396-AD35D44DFCD6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F54C1626-3F99-4232-A4E5-000402772025} = {F54C1626-3F99-4232-A4E5-000402772025}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +36,10 @@ Global
 		{F54C1626-3F99-4232-A4E5-000402772025}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F54C1626-3F99-4232-A4E5-000402772025}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F54C1626-3F99-4232-A4E5-000402772025}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23974264-36F8-4ED1-A396-AD35D44DFCD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23974264-36F8-4ED1-A396-AD35D44DFCD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23974264-36F8-4ED1-A396-AD35D44DFCD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23974264-36F8-4ED1-A396-AD35D44DFCD6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

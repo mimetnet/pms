@@ -17,7 +17,7 @@ namespace PMS.Query
         /// Construct with criteria
         /// </summary>
         /// <param name="criteria">Criteria to use for SQL</param>
-        public QueryByCriteria(Criteria criteria) : base(criteria.cdesc)
+        public QueryByCriteria(Criteria criteria) : base(criteria.Description)
         {
             this.criteria = criteria;
         }
@@ -27,8 +27,9 @@ namespace PMS.Query
         /// </summary>
         public override string Condition {
             get {
-                return (criteria.ClauseCount > 0) ? 
-                    criteria.GetWhereClause() : String.Empty;
+                StringBuilder str = new StringBuilder();
+                this.criteria.AppendCondition(str);
+                return str.ToString();
             }
         }
 
@@ -37,8 +38,9 @@ namespace PMS.Query
         /// </summary>
         public override string OrderBy {
             get {
-                return (criteria.OrderCount > 0) ?
-                    criteria.GetOrderByClause() : String.Empty;
+                StringBuilder str = new StringBuilder();
+                this.criteria.AppendOrderBy(str);
+                return str.ToString();
             }
         }
 

@@ -1,13 +1,23 @@
 namespace PMS.Query
 {
-    /// <summary>
-    /// Represents literal "OR" string in SQL
-    /// </summary>
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+
     public class OrClause : IClause
     {
+        public bool IsCondition { 
+            get { return false; } 
+        }
+
         public override string ToString()
         {
             return " OR ";
+        }
+
+        public IList<IDataParameter> CreateParameters(CreateParameterDelegate callback)
+        {
+            throw new NotSupportedException("RawClause doesn't support parameters");
         }
     }
 }

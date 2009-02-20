@@ -63,6 +63,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PMS.Data.Sqlite\SqliteConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PMS.Data.Sqlite\SqliteInspector.cs" />
     <Compile Include="PMS.Data.Sqlite\SqliteProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

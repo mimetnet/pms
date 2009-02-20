@@ -26,7 +26,7 @@ namespace PMS.Query
 			this.columns = new FieldCollection();
 
 			if (this.provider == null) {
-				this.provider = RepositoryManager.CurrentConnection.Provider;
+				//this.provider = RepositoryManager.CurrentConnection.Provider;
 			}
 		}
 
@@ -45,7 +45,7 @@ namespace PMS.Query
 			if (obj == null) throw new ArgumentNullException("Object cannot be null");
 
 			this.obj = obj;
-			this.cdesc = RepositoryManager.GetClass(obj.GetType());
+			//this.cdesc = RepositoryManager.GetClass(obj.GetType());
 
 			if (this.cdesc == null)
 				throw new ClassNotFoundException(obj.GetType());

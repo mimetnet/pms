@@ -70,13 +70,13 @@ namespace PMS.DataAccess
             return obj;
         }
 
-		public static T ExecuteSelectObject<T>(IQuery query)
+		public static T ExecuteSelectObject<T>(IQuery query) where T : new()
 		{
 			if (query == null) throw new ArgumentNullException("IQuery cannot be null");
 
             T obj = default(T);
 			DbResult result = null;
-			PMS.Metadata.Generic.MetaObject<T> mobj = new PMS.Metadata.Generic.MetaObject<T>();
+			PMS.Metadata.Generic.MetaObject<T> mobj = null;//new PMS.Metadata.Generic.MetaObject<T>();
 
 			using (IDbCommand cmd = dbManager.GetCommand(query.Select())) {
 				try {
@@ -141,13 +141,13 @@ namespace PMS.DataAccess
             return list;
         }
 
-        public static T[] ExecuteSelectArray<T>(IQuery query, QueryCallback<T> callback)
+        public static T[] ExecuteSelectArray<T>(IQuery query, QueryCallback<T> callback) where T : new()
 		{
 			if (query == null) throw new ArgumentNullException("IQuery cannot be null");
 
             T[] list = null;
 			DbResult result = null;
-			PMS.Metadata.Generic.MetaObject<T> mobj = new PMS.Metadata.Generic.MetaObject<T>();
+			PMS.Metadata.Generic.MetaObject<T> mobj = null;//new PMS.Metadata.Generic.MetaObject<T>();
 
 			using (IDbCommand cmd = dbManager.GetCommand(query.Select())) {
 				try {
@@ -211,18 +211,18 @@ namespace PMS.DataAccess
             return list;
         }
 
-		public static IList ExecuteSelectList<T>(IQuery query, QueryCallback<T> callback)
+		public static IList ExecuteSelectList<T>(IQuery query, QueryCallback<T> callback) where T : new()
         {
 			if (query == null) throw new ArgumentNullException("IQuery cannot be null");
 
             IList list = null;
 			DbResult result = null;
-			PMS.Metadata.Generic.MetaObject<T> mobj = new PMS.Metadata.Generic.MetaObject<T>();
+			PMS.Metadata.Generic.MetaObject<T> mobj = null;//new PMS.Metadata.Generic.MetaObject<T>();
 
 			using (IDbCommand cmd = dbManager.GetCommand(query.Select())) {
 				try {
 					using (IDataReader reader = cmd.ExecuteReader()) {
-						list = mobj.MaterializeList(reader, callback);
+						list = null;//mobj.MaterializeList(reader, callback);
 						result = new DbResult(list.Count, cmd.CommandText);
 					}
 				} catch (RepositoryDefinitionException rde) {
@@ -471,7 +471,7 @@ namespace PMS.DataAccess
 
                 dbManager = new SingleDbManager();
 
-                return dbManager.Start();
+                return dbManager.Open();
             }
 
             throw new ApplicationException("DbManagerMode Not Currently Support: " + mode);
@@ -483,13 +483,12 @@ namespace PMS.DataAccess
                 if (log.IsDebugEnabled)
                     log.Debug("DBEngine.Stop()");
 
-                dbManager.Stop();
+                dbManager.Close();
                 dbManager = null;
             }
 
             return true;
         } 
         #endregion
-
     }
 }

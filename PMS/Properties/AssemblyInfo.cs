@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("PMS")]
-[assembly: AssemblyCopyright("Copyright © Matthew Metnetsky 2004-2008")]
+[assembly: AssemblyCopyright("Copyright © Matthew Metnetsky 2003-2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,6 +31,6 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("0.7.0.3")]
+[assembly: AssemblyVersion("0.8.0.0")]
 
 //[assembly: log4net.Config.Repository(Name="PMS")]

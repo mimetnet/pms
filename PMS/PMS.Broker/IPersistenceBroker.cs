@@ -25,17 +25,17 @@ namespace PMS.Broker
         object[] GetObjectArray(Type type);
 
 #if !MONO_1_1
-        T GetObject<T>(IQuery query);
+        T GetObject<T>(IQuery query) where T : new();
 
-        IList GetObjectList<T>(); // Type
-        IList GetObjectList<T>(QueryCallback<T> callback); // Type w/ callback
-        IList GetObjectList<T>(IQuery query);
-        IList GetObjectList<T>(IQuery query, QueryCallback<T> callback);
+        IList GetObjectList<T>() where T : new(); // Type
+        IList GetObjectList<T>(QueryCallback<T> callback) where T : new(); // Type w/ callback
+        IList GetObjectList<T>(IQuery query) where T : new();
+        IList GetObjectList<T>(IQuery query, QueryCallback<T> callback) where T : new();
 
-        T[] GetObjectArray<T>();
-        T[] GetObjectArray<T>(QueryCallback<T> callback);
-        T[] GetObjectArray<T>(IQuery query);
-        T[] GetObjectArray<T>(IQuery query, QueryCallback<T> callback);
+        T[] GetObjectArray<T>() where T : new();
+        T[] GetObjectArray<T>(QueryCallback<T> callback) where T : new();
+        T[] GetObjectArray<T>(IQuery query) where T : new();
+        T[] GetObjectArray<T>(IQuery query, QueryCallback<T> callback) where T : new();
 #endif
 
         DbResult Persist(object obj);

@@ -4,8 +4,12 @@ using System.Data;
 using System.IO;
 
 using PMS;
+using PMS.Config;
 using PMS.IO;
 using PMS.Metadata;
+
+using System.Configuration;
+using System.Xml;
 
 namespace PMS.Data
 {
@@ -19,13 +23,36 @@ namespace PMS.Data
 
 		static ProviderFactory()
 		{
-			Load(new FileInfo(Path.Combine(Config.SystemPath, FILE_NAME)));
-			Load(new FileInfo(Path.Combine(Config.UserPath, FILE_NAME)));
+			Load(new FileInfo(Path.Combine(PMS.Config.Section.SystemPath, FILE_NAME)));
+			Load(new FileInfo(Path.Combine(PMS.Config.Section.UserPath, FILE_NAME)));
+
+            try  {
+                foreach (ProviderElement e in Section.Providers) {
+                    Add(e.Name, e.Type);
+                }
+            } catch (Exception e) {
+                Console.WriteLine("Problem reading configuration section : {0}", e.Message);
+                return;
+            }
 		}
 
 		public static SortedList<String, IProvider> Providers {
 			get { return list; }
 		}
+
+        public static IProvider Create(string name)
+        {
+			if (String.IsNullOrEmpty(name)) {
+				throw new ArgumentNullException("name");
+			}
+
+			IProvider p = null;
+
+			if (list.TryGetValue(name, out p))
+				return p;
+
+            throw new ProviderNotFoundException("'" + name + "' not loaded");
+        }
 
 		public static void Load(FileInfo file)
 		{
@@ -41,7 +68,6 @@ namespace PMS.Data
 			log.Debug("Load << " + file);
 
 			Int32 div;
-			Type type;
 			String line, key;
 
 			try {
@@ -57,44 +83,52 @@ namespace PMS.Data
 							if (String.IsNullOrEmpty(key = line.Substring(0, div)))
 								continue;
 
-							key = key.Trim();
-
-							if (list.ContainsKey(key)) {
-								log.WarnFormat("Duplicate IProvider key found << '{0}'", key);
-								continue;
-							}
-
-							type = PMS.Util.TypeLoader.Load(line.Substring(div+1).Trim());
-
-							if (Array.IndexOf(type.GetInterfaces(), typeof(IProvider)) == -1)
-								continue;
-
-							list[key] = (IProvider)Activator.CreateInstance(type);
+							Add(key, line.Substring(div+1).Trim());
 
 						} catch (Exception e2) {
 							log.Error("Load.Line << " + e2.Message);
 						}
 					}
 				}
-			} catch (UnauthorizedAccessException e1) {
-				log.Error("Load << " + e1.Message);
-			} catch (Exception e2) {
-				log.Error("Load << ", e2);
+			} catch (UnauthorizedAccessException e) {
+				log.Error("Load << " + e.Message);
+			} catch (Exception e) {
+				log.Error("Load << ", e);
 			}
 		}
 
-        public static IProvider Create(string name)
+        private static void Add(string key, string sType)
         {
-			if (String.IsNullOrEmpty(name)) {
-				throw new ArgumentNullException("name");
+            if (key == null || sType == null)
+                return;
+
+            key = key.Trim();
+            sType = sType.Trim();
+
+            if (key == String.Empty || sType == String.Empty)
+                return;
+
+			if (list.ContainsKey(key)) {
+				log.WarnFormat("Duplicate IProvider key found: '{0}' << SKIP", key);
+				return;
 			}
 
-			IProvider p = null;
+			Type type = null;
+            
+            try {
+                type = PMS.Util.TypeLoader.Load(sType);
+            } catch (Exception e) {
+                log.WarnFormat("Failed to load type: " + sType);
+                log.Warn("Failed to load type: ", e);
+                return;
+            }
 
-			if (list.TryGetValue(name, out p))
-				return p;
+			if (Array.IndexOf(type.GetInterfaces(), typeof(IProvider)) == -1) {
+                log.WarnFormat("Specified type({0}) doesn't implement IProvider", type.FullName);
+				return;
+            }
 
-            throw new ProviderNotFoundException("'" + name + "' cannot be found");
+			list[key] = (IProvider)Activator.CreateInstance(type);
         }
     }
 }
