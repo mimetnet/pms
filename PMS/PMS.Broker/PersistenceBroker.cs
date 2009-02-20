@@ -42,7 +42,7 @@ namespace PMS.Broker
 		}
 
 		public bool IsLoaded {
-			get { return RepositoryManager.IsLoaded; }
+			get { return false;/*return RepositoryManager.IsLoaded*/; }
 		}
 
 		public string Version {
@@ -77,7 +77,7 @@ namespace PMS.Broker
 		}
 
 #if !MONO_1_1
-		public T GetObject<T>(IQuery query)
+		public T GetObject<T>(IQuery query) where T : new()
 		{
 			CheckStatus();
 			return DbEngine.ExecuteSelectObject<T>(query);
@@ -100,25 +100,25 @@ namespace PMS.Broker
 
 #if !MONO_1_1
 		/* GetObjectArray<T> ... {{{ */
-		public T[] GetObjectArray<T>()
+		public T[] GetObjectArray<T>() where T : new()
 		{
 			CheckStatus();
 			return DbEngine.ExecuteSelectArray<T>(new QueryByType(typeof(T)), null);
 		}
 
-		public T[] GetObjectArray<T>(QueryCallback<T> callback)
+		public T[] GetObjectArray<T>(QueryCallback<T> callback) where T : new()
 		{
 			CheckStatus();
 			return DbEngine.ExecuteSelectArray<T>(new QueryByType(typeof(T)), callback);
 		}
 
-		public T[] GetObjectArray<T>(IQuery query)
+		public T[] GetObjectArray<T>(IQuery query) where T : new()
 		{
 			CheckStatus();
 			return DbEngine.ExecuteSelectArray<T>(query, null);
 		}
 
-		public T[] GetObjectArray<T>(IQuery query, QueryCallback<T> callback)
+		public T[] GetObjectArray<T>(IQuery query, QueryCallback<T> callback) where T : new()
 		{
 			CheckStatus();
 			return DbEngine.ExecuteSelectArray<T>(query, callback);
@@ -142,25 +142,25 @@ namespace PMS.Broker
 
 #if !MONO_1_1
 		/* GetObjectList<T> ... {{{ */
-		public IList GetObjectList<T>()
+		public IList GetObjectList<T>() where T : new()
 		{
 			CheckStatus();
 			return DbEngine.ExecuteSelectList<T>(new QueryByType(typeof(T)), null);
 		}
 
-		public IList GetObjectList<T>(QueryCallback<T> callback)
+		public IList GetObjectList<T>(QueryCallback<T> callback) where T : new()
 		{
 			CheckStatus();
 			return DbEngine.ExecuteSelectList<T>(new QueryByType(typeof(T)), callback);
 		}
 
-		public IList GetObjectList<T>(IQuery query)
+		public IList GetObjectList<T>(IQuery query) where T : new()
 		{
 			CheckStatus();
 			return DbEngine.ExecuteSelectList<T>(query, null);
 		}
 
-		public IList GetObjectList<T>(IQuery query, QueryCallback<T> callback)
+		public IList GetObjectList<T>(IQuery query, QueryCallback<T> callback) where T : new()
 		{
 			CheckStatus();
 			return DbEngine.ExecuteSelectList<T>(query, callback);
@@ -245,23 +245,23 @@ namespace PMS.Broker
 
 		public bool Load(string fileName)
 		{
-			return PMS.Metadata.RepositoryManager.Load(fileName);
+			return false;//return PMS.Metadata.RepositoryManager.Load(fileName);
 		}
 
 		public bool Load(System.IO.FileInfo file)
 		{
-			return PMS.Metadata.RepositoryManager.Load(file);
+			return false;//return PMS.Metadata.RepositoryManager.Load(file);
 		}
 
 		public void Clear()
 		{
-			PMS.Metadata.RepositoryManager.Close();
+			//PMS.Metadata.RepositoryManager.Close();
 		}
 
 		public bool Open()
 		{
 			if (IsLoaded == true && IsOpen == false) {
-				isOpen = DbEngine.Start(RepositoryManager.Repository.DbManagerMode);
+				//isOpen = DbEngine.Start(RepositoryManager.Repository.DbManagerMode);
 			}
 
 			return IsOpen;

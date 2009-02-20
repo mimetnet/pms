@@ -5,87 +5,53 @@ using System.Threading;
 using System.Xml.Serialization;
 
 using PMS.IO;
+using PMS.Metadata;
 
 namespace PMS.Metadata
 {
-    public sealed class RepositoryManager : MarshalByRefObject
+    public sealed class RepositoryManager
     {
         #region Private Fields
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Metadata.RepositoryManager");
-        private static XmlSerializer serializer = new XmlSerializer(typeof(Repository));
-        private static Repository repository = new Repository();
-        private static Connection cConn = null;
-        private static bool isLoaded = false;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Metadata.SessionManager");
+        private XmlSerializer serializer = new XmlSerializer(typeof(Repository));
+        private Repository repository = new Repository();
+        private string package = null;
         #endregion
 
-		public static string Package = String.Empty;
+        public RepositoryManager(string package)
+        {
+            if (null == (this.package = this.Load(package)))
+                throw new RepositoryNotFoundException("Failed to load " + package);
+        }
 
         #region Properties
-        public static Repository Repository {
+        public string Package {
+            get { return this.package; }
+        }
+
+        public Repository Repository {
             get { return repository; }
-            set { repository = value; }
         }
-
-        public static Connection DefaultConnection {
-            get {
-                foreach (Connection conn in Repository.Connections) {
-                    if (conn.IsDefault == true)
-                        return conn;
-                }
-
-				if (Repository.Connections.Count > 0)
-					return Repository.Connections[0];
-
-				return null;
-            }
-            set {
-                value.IsDefault = true;
-                foreach (Connection conn in Repository.Connections) {
-                    conn.IsDefault = false;
-                }
-
-                Repository.Connections.Add(value);
-            }
-        }
-
-        public static Connection CurrentConnection {
-            get {
-                if (cConn == null)
-                    cConn = DefaultConnection;
-
-                return cConn;
-            }
-            set { cConn = value; }
-        } 
         #endregion
 
         #region Methods
-        public static Class GetClass(Type type)
+        public Class GetClass(Type type)
         {
 			Class klass = Repository.Classes[type];
 
-			if (klass == null) {
-				if (Load(type)) {
-					return GetClass(type);
-				} else if (Repository.GenerateTypes && Build(type)) {
-					return GetClass(type);
-				} else {
-					log.Error("Type '" + type.FullName + ", " + type.Assembly + "' Not Found in Repository");
-				}
+            if (klass != null)
+                return klass;
+		
+			if (Load(type)) {
+				return GetClass(type);
+			} else if (Repository.GenerateTypes && Build(type)) {
+				return GetClass(type);
 			}
 
-			/**
-			log.Debug(new System.Diagnostics.StackTrace());
-			log.Info("Type asked: " + type);
-			log.Info("Class gotten: " + klass.Table);
-			log.Info("Class gotten: " + klass.Type);
-			log.Info("-");
-			**/
-
-			return klass;
+            throw new ClassNotFoundException(type);
         }
 
-		private static bool Build(Type type)
+		private bool Build(Type type)
 		{
 			try {
 				Repository.Classes.Add(new Class(type));
@@ -99,7 +65,7 @@ namespace PMS.Metadata
 			return true;
 		}
 
-        public static Type GetClassListType(Type type)
+        public Type GetClassListType(Type type)
         {
             Class cdesc = GetClass(type);
 
@@ -109,96 +75,26 @@ namespace PMS.Metadata
             return null;
         }
 
-        public static bool Exists(Type type)
+        public bool Exists(Type type)
         {
-            return (GetClass(type) != null) ? true : false;
+            return GetClass(type) != null;
         } 
         #endregion
 
         #region File IO
-        public static bool SaveAs(string fileName)
-        {
-            return SaveAs(repository, fileName);
-        }
-
-        public static bool SaveAs(Repository rep, string fileName)
-        {
-            using (TextWriter writer = new StreamWriter(fileName)) {
-                try {
-                    serializer.Serialize(writer, rep);
-                } catch (Exception e) {
-                    log.Error("SaveAs", e);
-                }
-                writer.Close();
-            }
-
-            return true;
-        }
-
-		public static bool Save(string package)
-		{
-			return Save(repository, package);
-		}
-
-		public static bool Save(Repository repo, string package)
-		{
-			DirectoryInfo dir = new DirectoryInfo(GetPath(package));
-
-			if (dir.Exists == false) {
-				dir.Create();
-			}
-
-			String path = null;
-			FileStream fs = null;
-			XmlSerializer xml = null;
-
-			xml = new XmlSerializer(typeof(Class));
-			foreach (Class klass in repo.Classes) {
-				path = Path.Combine(dir.FullName, (klass.Type.FullName + ".pmc"));
-				fs = new FileStream(path, FileMode.Create);
-				
-				try {
-					xml.Serialize(fs, klass);
-				} catch (Exception se) {
-					log.Error("Save ", se);
-				} finally {
-					fs.Close();
-				}
-			}
-
-			xml = new XmlSerializer(typeof(Connection));
-			foreach (Connection conn in repo.Connections) {
-				path = Path.Combine(dir.FullName, (conn.Id + ".pmx"));
-				fs = new FileStream(path, FileMode.Create);
-
-				try {
-					xml.Serialize(fs, conn);
-				} catch (Exception se2) {
-					log.Error("Save ", se2);
-				} finally {
-					fs.Close();
-				}
-			}
-
-			Package = package;
-
-			return true;
-		}
-
-        public static bool Load(string file)
+        private string Load(string file)
         {
 			FileInfo f = new FileInfo(Path.GetFullPath(file));
 
 			// repository.xml style
-			if (f.Exists) {
+			if (f.Exists)
 				return Load(f);
-			}
 
 			// /etc/libpms/[package] style
 			DirectoryInfo dir = new DirectoryInfo(GetPath(file));
-			if (!dir.Exists) {
-				return false;
-			}
+			
+            if (!dir.Exists)
+				return null;
 
 			XmlSerializer xml = new XmlSerializer(typeof(Connection));
 
@@ -211,23 +107,15 @@ namespace PMS.Metadata
 				}
 			}
 
-			if (repository.Connections.Count == 0) {
-				return false;
-			}
-
-			Package = file;
-
-			return (isLoaded = true);
+			return dir.FullName;
         }
 
-        public static bool Load(FileInfo file)
+        private string Load(FileInfo file)
         {
-			bool res = false;
-
 			using (FileStream fs = file.OpenRead()) {
 				try {
 					repository += (Repository)serializer.Deserialize(fs);
-					res = (repository.Connections.Count > 0);
+					return file.FullName;
 				} catch (FileNotFoundException) {
 					if (log.IsErrorEnabled)
 						log.Error("Load(" + file + ") failed");
@@ -237,14 +125,13 @@ namespace PMS.Metadata
 				}
 			}
 
-            return (isLoaded = res);
+            return null;
         }
 
-		public static bool Load(Type type)
+		private bool Load(Type type)
 		{
 			XmlSerializer xml = new XmlSerializer(typeof(Class));
 			FileInfo f = new FileInfo(Path.Combine(GetPath(Package), type.FullName + ".pmc"));
-			bool status = false;
 
 			if (f.Exists == false) {
 				log.Error("Load("+type+") File does not exist: " + f);
@@ -256,30 +143,48 @@ namespace PMS.Metadata
 					Class klass = (Class) xml.Deserialize(new FileStream(f.FullName, FileMode.Open, FileAccess.Read, FileShare.Read));
 					if (klass != null && klass.Type != null) {
 						repository.Classes.Add(klass);
-						status = true;
+						return true;
 					}
 				}
 			} catch (Exception e) {
 				log.Error("Load(" + type.Name + "): ", e);
 			}
 
-			return status;
+			return false;
 		}
 
-        public static void Close()
+        public void Close()
         {
-			isLoaded = false;
 			repository = new Repository();
         }
 
-        public static bool IsLoaded {
-            get { return isLoaded; }
-        }
-
-		private static string GetPath(string package)
+		private string GetPath(string package)
 		{
-			return Path.Combine(PMS.Config.SystemPath, package);
+			return Path.Combine(PMS.Config.Section.SystemPath, package);
 		}
         #endregion
+
+        public Connection GetDescriptor(string connectionID)
+        {
+            foreach (Connection c in this.repository.Connections)
+                if (0 == StringComparer.InvariantCulture.Compare(c.ID, connectionID))
+                    return c;
+
+            throw new RepositoryException(String.Format("Package({0}) doesn't have <connection id='{1}' />", this.package, connectionID));
+        }
+
+        public Connection GetDescriptor()
+        {
+            foreach (Connection c in this.repository.Connections)
+                if (c.IsDefault)
+                    return c;
+
+            log.DebugFormat("Package({0}) doesn't have default <connection /> - using first one", this.package);
+
+            if (this.repository.Connections.Count > 0)
+                return this.repository.Connections[0];
+
+            throw new RepositoryException(String.Format("Package({0}) contains no <connection/> tags", this.package));
+        }
     }
 }

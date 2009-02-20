@@ -63,6 +63,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PMS.Data.Pgsql\PostgresqlConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PMS.Data.Pgsql\PostgresqlInspector.cs" />
     <Compile Include="PMS.Data.Pgsql\PostgresqlProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

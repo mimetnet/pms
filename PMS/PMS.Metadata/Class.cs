@@ -119,6 +119,9 @@ namespace PMS.Metadata
 
             this.Table = reader.GetAttribute("table");
 
+            if (this.Table == "order")
+                this.Table = "\"" + this.Table + "\"";
+
             string ltype = reader.GetAttribute("list-type");
 			if (!String.IsNullOrEmpty(ltype)) {
 				try {

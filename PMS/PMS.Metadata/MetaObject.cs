@@ -20,8 +20,8 @@ namespace PMS.Metadata
 
         public MetaObject(Type type)
         {
-			this.cdesc = RepositoryManager.GetClass(type);
-			this.provider = RepositoryManager.CurrentConnection.Provider;
+			//this.cdesc = RepositoryManager.GetClass(type);
+			//this.provider = RepositoryManager.CurrentConnection.Provider;
 
 			if (this.cdesc == null) {
 				throw new Exception("type '" + type + "' not found in repository");
@@ -34,8 +34,8 @@ namespace PMS.Metadata
                 throw new NoNullAllowedException("Parameter obj cannot be null");
             }
 
-			this.cdesc = RepositoryManager.GetClass(obj.GetType());
-			this.provider = RepositoryManager.CurrentConnection.Provider;
+			//this.cdesc = RepositoryManager.GetClass(obj.GetType());
+			//this.provider = RepositoryManager.CurrentConnection.Provider;
 
 			if (this.cdesc == null) {
 				throw new Exception("obj.GetType(" + obj.GetType() + ") not found in repository");

@@ -49,15 +49,12 @@ namespace PMS.Query
 
                 withClause = BuildList(this.columns, " AND ", ref sql);
 
-                if (criteria.ClauseCount > 0) {
-                    sql.Append(criteria.GetWhereClause());
-                    withClause = true;
+                // used to only return inside this if statement
+                if (this.criteria.ClauseCount > 0) {
+                    this.criteria.AppendCondition(sql);
                 }
 
-                if (withClause == true)
-                    return sql.ToString();
-
-                return String.Empty;
+                return sql.ToString();
             }
         }
 
@@ -118,10 +115,9 @@ namespace PMS.Query
         /// </summary>
         public override string OrderBy {
             get {
-                if (criteria.OrderCount > 0)
-                    return criteria.GetOrderByClause();
-
-                return String.Empty;
+                StringBuilder str = new StringBuilder();
+                this.criteria.AppendOrderBy(str);
+                return str.ToString();
             }
         } 
         #endregion

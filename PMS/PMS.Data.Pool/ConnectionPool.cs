@@ -21,6 +21,8 @@ namespace PMS.Data.Pool
 			//this.provider = provider;
         }
 
+        //public ConnectionPool(Type type, string properties): base(
+
         ~ConnectionPool()
         {
             Close();

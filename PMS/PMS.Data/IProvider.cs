@@ -1,6 +1,9 @@
 using System;
 using System.Data;
 
+using PMS.Metadata;
+using PMS.Query;
+
 namespace PMS.Data
 {
     public interface IProvider
@@ -42,9 +45,15 @@ namespace PMS.Data
 		IDbConnection GetConnection();
 		IDbConnection GetConnection(string connString);
 
+        IDataParameter CreateParameter(string name, object value);
+        
         // ---------------------------------------------------------------
 		
 		IDbInspector GetInspector();
 		IDbInspector GetInspector(IDbConnection conn);
+
+        // ---------------------------------------------------------------
+
+        Query<T> CreateQuery<T>(Class cdesc, IDbConnection connection) where T : new();
 	}
 }

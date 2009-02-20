@@ -1,21 +1,41 @@
 namespace PMS.Query
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+
     public abstract class ValueClause : IClause
     {
-        private string Field;
-        private object Value;
-        private string Operator;
+        private string field;
+        private object value;
+        private string op;
 
         internal ValueClause(string field, object value, string op)
         {
-            Field    = field;
-            Value    = value;
-            Operator = op;
+            this.field = field;
+            this.op = op;
+            this.value = value;
+        }
+
+        public bool IsCondition { 
+            get { return true; } 
         }
 
         public override string ToString()
         {
-            return (Field + " " + Operator + " " + Value);
+            return (this.field + " " + this.op + " @" + this.field);
+        }
+
+        public IList<IDataParameter> CreateParameters(CreateParameterDelegate callback)
+        {
+            if (callback == null)
+                throw new ArgumentNullException("CreateParameterDelegate");
+
+            List<IDataParameter> list = new List<IDataParameter>();
+            list.Add(callback("@" + field, value));
+
+            return list;
         }
     }
 }

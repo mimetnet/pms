@@ -10,7 +10,7 @@ namespace PMS.Metadata.Generic
 	using PMS.Query;
 
     [Serializable]
-    internal sealed class MetaObject <T>
+    internal sealed class MetaObject <T> where T : new()
     {
         private static readonly log4net.ILog log = 
             log4net.LogManager.GetLogger("PMS.Metadata.MetaObject");
@@ -18,10 +18,10 @@ namespace PMS.Metadata.Generic
         private IProvider provider = null;
 		private Class cdesc = null;
 
-        public MetaObject()
+        public MetaObject(Class cdesc, IProvider provider)
         {
-			this.cdesc = RepositoryManager.GetClass(typeof(T));
-			this.provider = RepositoryManager.CurrentConnection.Provider;
+			this.cdesc = cdesc;
+			this.provider = provider;
 
 			if (this.cdesc == null) {
 				throw new Exception("type '" + typeof(T) + "' not found in repository");
@@ -36,11 +36,6 @@ namespace PMS.Metadata.Generic
             get { return this.cdesc.Type; }
         }
 
-        /// <summary>
-        /// Converts IDataReader into instantiated object
-        /// </summary>
-        /// <param name="reader">IDataReader containing SQL SELECT results</param>
-        /// <returns>Instantiated Object</returns>
         public T Materialize(IDataReader reader)
         {
             if (reader.Read())
@@ -69,21 +64,17 @@ namespace PMS.Metadata.Generic
             return list.ToArray();
         }
 
-        public IList MaterializeList(IDataReader reader)
+        public TList MaterializeList<TList>(IDataReader reader) where TList : IList<T>, new()
 		{
-			return this.MaterializeList(reader, null);
+			return this.MaterializeList<TList>(reader, null);
 		}
 
-        public IList MaterializeList(IDataReader reader, QueryCallback<T> callback)
+        public TList MaterializeList<TList>(IDataReader reader, QueryCallback<T> callback) where TList : IList<T>, new()
         {
-            IList list = null;
-			
-			if (cdesc.ListType == null) {
-				throw new RepositoryDefinitionException("DbEngine.RetrieveList requires a valid @list-type for <class/> for " + cdesc.Type);
-			}
-
+            TList list = default(TList);
+            
             try {
-				list = (IList)Activator.CreateInstance(cdesc.ListType);
+				list = (TList) Activator.CreateInstance(typeof(TList));
             } catch (Exception e) {
                 if (log.IsErrorEnabled)
                     log.Error("MaterializeList:GetClassListType", e);
@@ -104,7 +95,7 @@ namespace PMS.Metadata.Generic
 
         private T CreateObject()
         {
-			return (T) Activator.CreateInstance(cdesc.Type);
+			return (T) Activator.CreateInstance<T>();
         }
 
         private T PopulateObject(T obj, IDataReader reader, QueryCallback<T> callback)
@@ -167,5 +158,7 @@ namespace PMS.Metadata.Generic
 
             return obj;
         }
+
+        
     }
 }

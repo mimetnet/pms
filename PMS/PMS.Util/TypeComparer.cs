@@ -13,7 +13,10 @@ namespace PMS.Util
 			if (y == null)
 				throw new ArgumentNullException("y");
 
-			return String.CompareOrdinal(x.ToString(), y.ToString());
+            //Console.WriteLine("\n\nTypeComparer:\n{0}\n{1}\n", x.GUID, y.GUID);
+
+            return x.GUID.CompareTo(y.GUID);
+			//return String.CompareOrdinal(x.ToString(), y.ToString());
 		}
 	}
 }

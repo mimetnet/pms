@@ -51,15 +51,14 @@ namespace PMS.Metadata
 
 		public static Type GenerateListType(Type type)
 		{
-			string name = type.FullName + "Collection";
+            String name = type.FullName + "List";
 
 			AssemblyName an = new AssemblyName("PMS." + name);
-
 			AssemblyBuilder assBuild = AppDomain.CurrentDomain.DefineDynamicAssembly(an, AssemblyBuilderAccess.RunAndSave);
 
 			ModuleBuilder modBuild = assBuild.DefineDynamicModule("Module"); 
-
-			TypeBuilder tb = modBuild.DefineType(name, TypeAttributes.Public | TypeAttributes.Serializable, typeof(CollectionBase));
+			TypeBuilder tb = modBuild.DefineType(name, TypeAttributes.Public); 
+            tb.SetParent(typeof(System.Collections.Generic.List<>).MakeGenericType(tb.DefineGenericParameters("T")[0]));
 
 			return tb.CreateType();
 		}

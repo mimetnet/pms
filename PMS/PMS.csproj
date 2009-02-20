@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PMS</RootNamespace>
-    <AssemblyName>PMS</AssemblyName>
+    <AssemblyName>PMS2</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\certs\PMS.pfx</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
@@ -62,11 +62,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PMS.Config\Handler.cs" />
+    <Compile Include="PMS.Config\Sections.cs" />
+    <Compile Include="PMS.Config\ProviderElement.cs" />
+    <Compile Include="PMS.Config\ProviderElementList.cs" />
+    <Compile Include="PMS.Data\DbExecutor.cs" />
+    <Compile Include="PMS.Data\DbManagerFactory.cs" />
+    <Compile Include="PMS.Broker\DbBroker.cs" />
+    <Compile Include="PMS.Metadata\MetaObjectEnumerator.cs" />
+    <Compile Include="PMS.Metadata\RepositoryManagerFactory.cs" />
+    <Compile Include="PMS.Metadata\RepositoryManager.cs" />
+    <Compile Include="PMS.Data\DbManager.cs" />
+    <Compile Include="PMS.Metadata\RepositoryException.cs" />
     <Compile Include="PMS.Metadata\Generator.cs" />
     <Compile Include="PMS.Metadata\RepositoryDefinitionException.cs" />
     <Compile Include="PMS.Metadata.Generic\MetaObject.cs" />
+    <Compile Include="PMS.Query\CreateParameterDelegate.cs" />
+    <Compile Include="PMS.Query\QueryCriteria.cs" />
+    <Compile Include="PMS.Query\Query.cs" />
+    <Compile Include="PMS.Query\RawClause.cs" />
     <Compile Include="PMS.Query\QueryCallback.cs" />
-    <Compile Include="PMS\Config.cs" />
     <Compile Include="PMS.Util\TypeComparer.cs" />
     <Compile Include="PMS.Util\TypeLoader.cs" />
     <Compile Include="PMS.Broker\IPersistenceBroker.cs" />
@@ -114,7 +129,6 @@
     <Compile Include="PMS.Metadata\FieldNotFoundException.cs" />
     <Compile Include="PMS.Metadata\MetaObject.cs" />
     <Compile Include="PMS.Metadata\Repository.cs" />
-    <Compile Include="PMS.Metadata\RepositoryManager.cs" />
     <Compile Include="PMS.Query\AbstractQuery.cs" />
     <Compile Include="PMS.Query\AndClause.cs" />
     <Compile Include="PMS.Query\BetweenClause.cs" />
@@ -174,6 +188,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PMS\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -18,7 +18,7 @@ namespace PMS.Metadata
         public const int DEFAULT_POOL_SIZE = 1;
 		public IProvider Provider;
         public string Value;
-        public string Id;
+        public string ID;
         public bool IsDefault;
         public int PoolSize = DEFAULT_POOL_SIZE;
         #endregion
@@ -26,6 +26,11 @@ namespace PMS.Metadata
         #region Constructors
         public Connection()
         {
+        }
+
+        public Connection(XmlReader reader)
+        {
+            this.ReadXml(reader);
         }
 
         public Connection(string id, string conn, IProvider provider)
@@ -40,13 +45,27 @@ namespace PMS.Metadata
 
         public Connection(string id, string conn, IProvider provider, bool isDefault, int pool)
         {
-            Id = id;
+            ID = id;
             Provider = provider;
             Value = conn;
             IsDefault = isDefault;
             PoolSize = pool;
         }
         #endregion
+
+        public bool IsValid {
+            get {
+                if (String.IsNullOrEmpty(this.Value)) {
+                    return false;
+                }
+
+                if (this.Provider == null) {
+                    return false;
+                }
+
+                return true;
+            }
+        }
 
         #region ObjectOverloads
 
@@ -59,7 +78,7 @@ namespace PMS.Metadata
             if (Object.ReferenceEquals(obj1, null)) return false;
             if (Object.ReferenceEquals(obj2, null)) return false;
 
-            if (obj1.Id != obj2.Id) {
+            if (obj1.ID != obj2.ID) {
 				return false;
 			}
 
@@ -105,7 +124,7 @@ namespace PMS.Metadata
         ///</summary> 
         public override string ToString()
         {
-            return String.Format("[ Connection (Id={0}) (Provider={1}) (Value={2}) (IsDefault={3}) (PoolSize={4} ]", Id, Provider, Value, IsDefault, PoolSize);
+            return String.Format("[ Connection (Id={0}) (Provider={1}) (Value={2}) (IsDefault={3}) (PoolSize={4} ]", ID, Provider, Value, IsDefault, PoolSize);
         }
 
         ///<summary>
@@ -130,14 +149,14 @@ namespace PMS.Metadata
 			if (reader.LocalName != "connection")
 				return;
 
-			this.Id = reader.GetAttribute("id");
+			this.ID = reader.GetAttribute("id");
 
 			try {
 				this.Provider = PMS.Data.ProviderFactory.Create(reader.GetAttribute("provider"));
 			} catch (ProviderNotFoundException e1) {
-				log.ErrorFormat("ReadXml: {0} in {1}", e1.Message, Config.SystemPath);
+				log.Debug("Provider " + e1.Message);
 			} catch (ArgumentNullException) {
-				log.WarnFormat("<connection id=\"{0}\"/> has no @provider attribute", this.Id);
+				log.WarnFormat("<connection id=\"{0}\"/> has no @provider attribute", this.ID);
 			} catch (Exception e2) {
 				log.Debug("ReadXml: ", e2);
 			}
@@ -154,8 +173,8 @@ namespace PMS.Metadata
 
 		public void WriteXml(System.Xml.XmlWriter writer)
 		{
-			if (String.IsNullOrEmpty(Id) == false) {
-				writer.WriteAttributeString("id", Id);
+			if (String.IsNullOrEmpty(ID) == false) {
+				writer.WriteAttributeString("id", ID);
 			}
 
 			if (PoolSize > 0) {

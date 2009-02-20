@@ -20,8 +20,12 @@ namespace PMS.DataAccess
 
 		~SingleDbManager()
 		{
-			this.Stop();
+			this.Close();
 		}
+
+        public bool IsOpen { 
+            get { return this.isInit; }
+        }
 
         #region Transactions
         public void BeginTransaction()
@@ -58,16 +62,26 @@ namespace PMS.DataAccess
 				log.Warn(new System.Diagnostics.StackTrace());
 			}
         }
+
+        public IDbConnection GetConnection()
+        {
+            return this.pool.GetConnection();
+        }
+        
+        public void ReturnConnection(IDbConnection connection)
+        {
+            this.pool.ReturnConnection(connection);
+        }
         #endregion
 
         #region Control
-        public bool Start()
+        public bool Open()
         {
             if (isInit)
-                Stop();
+                Close();
 
-            Connection conn = RepositoryManager.DefaultConnection;
-            pool = new ConnectionPool(conn.Provider, conn.Value);
+            //Connection conn = RepositoryManager.DefaultConnection;
+            //pool = new ConnectionPool(conn.Provider, conn.Value);
 
             if ((isInit = pool.Open()))
 				return CanSendHello();
@@ -75,7 +89,7 @@ namespace PMS.DataAccess
 			return false;
         }
 
-        public void Stop()
+        public void Close()
         {
             if (pool != null)
                 pool.Close();

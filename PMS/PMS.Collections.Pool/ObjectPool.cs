@@ -67,7 +67,8 @@ namespace PMS.Collections.Pool
 			this.zTimer.AutoReset = true;
 			this.zTimer.Elapsed += new ElapsedEventHandler(ZombieMaster);
 
-			verbose = (Environment.GetEnvironmentVariable("PMS_VERBOSE") != null)? true : false;
+			//verbose = (Environment.GetEnvironmentVariable("PMS_VERBOSE") != null)? true : false;
+            verbose = true;
         }
 
         ~ObjectPool()

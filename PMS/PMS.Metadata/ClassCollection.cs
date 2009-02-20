@@ -53,22 +53,15 @@ namespace PMS.Metadata
 			try {
 				listLock.AcquireWriterLock(2000);
 
-				while (reader.Read()) {
-					reader.MoveToElement();
+				Class klass = null;
+                XmlSerializer xml = new XmlSerializer(typeof(Class));
 
-					if (reader.LocalName == "class") {
-						try {
-							Class klass = new Class(reader);
-							if (klass.Type != null) {
-								this.list.Add(klass.Type, klass);
-							} else {
-								log.WarnFormat("Failed to find type for Class.table {0}", klass.Table);
-							}
-						} catch (Exception) {}
-					} else if (reader.LocalName == "classes") {
-						break;
-					}
-				}
+                reader.Read();
+
+                while (reader.NodeType != XmlNodeType.EndElement) {
+                    if ((klass = (Class) xml.Deserialize(reader)) != null)
+                        this.Add(klass);
+                }
 			} catch (Exception e) {
 				log.Error("ReadXml: ", e);
 			} finally {
@@ -172,8 +165,7 @@ namespace PMS.Metadata
 
 		public Class this[int index]
 		{
-			get
-			{
+			get {
 				Class klass = null;
 
 				listLock.AcquireReaderLock(2000);
@@ -182,8 +174,7 @@ namespace PMS.Metadata
 
 				return klass;
 			}
-			set
-			{
+			set {
 				listLock.AcquireWriterLock(2000);
 
 				Class tmp = this.list.Values[index];

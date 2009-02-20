@@ -3,6 +3,9 @@ using System.Collections;
 using System.Data;
 using System.Globalization;
 
+using PMS.Metadata;
+using PMS.Query;
+
 namespace PMS.Data
 {
     /// <summary>
@@ -12,7 +15,12 @@ namespace PMS.Data
     [Serializable]
     public abstract class AbstractProvider : IProvider
     {
-		private string name;
+		protected string name;
+
+        public string Name {
+			get { return this.name; }
+			set { this.name = value; }
+		}
 
         public virtual string PrepareSqlValue(string dbType, object value)
         {
@@ -336,33 +344,20 @@ namespace PMS.Data
 			return obj;
 		}
 
-		public virtual IDbConnection GetConnection()
-		{
-			throw new NotImplementedException("AbstractProvider");
-		}
+        public abstract Type Type { get; }
 
-		public virtual IDbConnection GetConnection(string connString)
-		{
-			throw new NotImplementedException("AbstractProvider");
-		}
+		public abstract IDbConnection GetConnection();
+		public abstract IDbConnection GetConnection(string connString);
+        
+        public abstract IDataParameter CreateParameter(string name, object value);
 
-		public virtual IDbInspector GetInspector()
-		{
-			throw new NotImplementedException("AbstractProvider");
-		}
+		public abstract IDbInspector GetInspector();
+		public abstract IDbInspector GetInspector(IDbConnection conn);
 
-		public virtual IDbInspector GetInspector(IDbConnection conn)
-		{
-			throw new NotImplementedException("AbstractProvider");
-		}
 
-		public virtual Type Type {
-			get { return GetConnection().GetType(); }
-		}
-
-		public string Name {
-			get { return this.name; }
-			set { this.name = value; }
-		}
+        public virtual Query<T> CreateQuery<T>(Class cdesc, IDbConnection connection) where T : new()
+        {
+            return new Query<T>(cdesc, this, connection);
+        }
 	}
 }

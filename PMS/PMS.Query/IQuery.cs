@@ -22,12 +22,12 @@ namespace PMS.Query
 
         string UpdateClause { get; }
 
+        Criteria Criteria { get; set;}
+
         string Insert();
         string Update();
         string Delete();
         string Select();
         string Count();
-
-        Criteria Criteria { get; set;}
     }
 }

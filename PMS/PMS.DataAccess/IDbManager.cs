@@ -6,11 +6,16 @@ namespace PMS.DataAccess
 {
     public interface IDbManager
     {
+        bool IsOpen { get; }
+
         IDbCommand GetCommand(string sql);
         void ReturnCommand(IDbCommand command);
 
-        bool Start();
-        void Stop();
+        IDbConnection GetConnection();
+        void ReturnConnection(IDbConnection connection);
+
+        bool Open();
+        void Close();
 
         void BeginTransaction();
         void RollbackTransaction();
