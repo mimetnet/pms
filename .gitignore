@@ -2,6 +2,7 @@
 .deps
 *.dll
 *.mdb
+*.pdb
 *.exe
 *.swp
 aclocal.m4
@@ -58,3 +59,5 @@ PMS.Data.Pgsql/obj
 PMS.Data.MSSQL/obj
 PMS.Data.MSSQL/bin
 PMS.Data.Sqlite/obj
+PMS.Tester/bin
+PMS.Tester/obj

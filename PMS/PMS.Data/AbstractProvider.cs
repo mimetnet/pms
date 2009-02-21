@@ -357,6 +357,12 @@ namespace PMS.Data
 
         public virtual Query<T> CreateQuery<T>(Class cdesc, IDbConnection connection) where T : new()
         {
+            if (cdesc == null)
+                throw new ArgumentNullException("Class");
+
+            if (connection == null)
+                throw new ArgumentNullException("IDbConnection");
+
             return new Query<T>(cdesc, this, connection);
         }
 	}

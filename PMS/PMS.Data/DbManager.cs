@@ -14,9 +14,11 @@ namespace PMS.Data
         private ConnectionPool pool = null;
         private bool isOpen = false;
 
-        public DbManager(IProvider provider, string connectionString)
+        public DbManager(Connection connection)
         {
-            this.pool = new ConnectionPool(provider, connectionString);
+            this.pool = new ConnectionPool(connection.Provider, connection.Value);
+            this.pool.Min = connection.Minimum;
+            this.pool.Max = connection.Maximum;
         }
 
 		~DbManager()

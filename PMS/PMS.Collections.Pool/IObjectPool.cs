@@ -10,8 +10,6 @@ namespace PMS.Collections.Pool
 
         bool Remove(object obj);
 
-        void CleanObject(ref object obj);
-
         bool Open();
         void Close();
 

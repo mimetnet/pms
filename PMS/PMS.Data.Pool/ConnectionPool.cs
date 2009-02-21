@@ -9,13 +9,13 @@ using PMS.Data;
 
 namespace PMS.Data.Pool
 {
-    internal sealed class ConnectionPool : PrincipalObjectPool
+    internal sealed class ConnectionPool : ManagedObjectPool
     {
         private String sConn;
 		//private IProvider provider;
 
 		/* {{{ Constructors */
-        public ConnectionPool(IProvider provider, string sConn) : base(provider.Type, "Close")
+        public ConnectionPool(IProvider provider, string sConn) : base(provider.Type, 2, 10, "Close")
         {
             this.sConn = sConn;
 			//this.provider = provider;
