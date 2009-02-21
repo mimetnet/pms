@@ -15,12 +15,12 @@ namespace PMS.Metadata
 			log4net.LogManager.GetLogger("PMS.Metadata.Connection");
 
         #region Public Properties
-        public const int DEFAULT_POOL_SIZE = 1;
 		public IProvider Provider;
         public string Value;
         public string ID;
         public bool IsDefault;
-        public int PoolSize = DEFAULT_POOL_SIZE;
+        public int Minimum = 0;
+        public int Maximum = 20;
         #endregion
 
         #region Constructors
@@ -34,22 +34,30 @@ namespace PMS.Metadata
         }
 
         public Connection(string id, string conn, IProvider provider)
-            : this(id, conn, provider, true, DEFAULT_POOL_SIZE)
+            : this(id, conn, provider, true, -1, -1)
         {
         }
 
         public Connection(string id, string conn, IProvider provider, bool isDefault)
-            : this(id, conn, provider, isDefault, DEFAULT_POOL_SIZE)
+            : this(id, conn, provider, isDefault, -1, -1)
         {
         }
 
-        public Connection(string id, string conn, IProvider provider, bool isDefault, int pool)
+        public Connection(string id, string conn, IProvider provider, bool isDefault, int minPool, int maxPool)
         {
             ID = id;
             Provider = provider;
             Value = conn;
             IsDefault = isDefault;
-            PoolSize = pool;
+            
+            if (0 < minPool)
+                Minimum = minPool;
+
+            if (0 < maxPool)
+                Maximum = maxPool;
+
+            if (Minimum >= Maximum)
+                throw new ArgumentException("maxPool isn't greater than maxPool");
         }
         #endregion
 
@@ -94,7 +102,11 @@ namespace PMS.Metadata
 				return false;
 			}
 
-            if (obj1.PoolSize != obj2.PoolSize) {
+            if (obj1.Minimum != obj2.Minimum) {
+				return false;
+			}
+
+            if (obj1.Maximum != obj2.Maximum) {
 				return false;
 			}
 
@@ -124,7 +136,7 @@ namespace PMS.Metadata
         ///</summary> 
         public override string ToString()
         {
-            return String.Format("[ Connection (Id={0}) (Provider={1}) (Value={2}) (IsDefault={3}) (PoolSize={4} ]", ID, Provider, Value, IsDefault, PoolSize);
+            return String.Format("[ Connection (Id={0}) (Provider={1}) (Value={2}) (IsDefault={3}) (Pool={4}/{5} ]", ID, Provider, Value, IsDefault, Minimum, Maximum);
         }
 
         ///<summary>
@@ -161,8 +173,9 @@ namespace PMS.Metadata
 				log.Debug("ReadXml: ", e2);
 			}
 
-			Int32.TryParse(reader.GetAttribute("pool-size"), out this.PoolSize);
-			Boolean.TryParse(reader.GetAttribute("default"), out this.IsDefault);
+			Int32.TryParse(reader.GetAttribute("pool-min"), out this.Minimum);
+            Int32.TryParse(reader.GetAttribute("pool-max"), out this.Maximum);
+            Boolean.TryParse(reader.GetAttribute("default"), out this.IsDefault);
 
 			if (reader.IsEmptyElement == false) {
 				this.Value = reader.ReadElementContentAsString();
@@ -177,17 +190,17 @@ namespace PMS.Metadata
 				writer.WriteAttributeString("id", ID);
 			}
 
-			if (PoolSize > 0) {
-				writer.WriteAttributeString("pool-size", PoolSize.ToString());
-			}
+			if (Minimum > 0)
+				writer.WriteAttributeString("pool-min", Minimum.ToString());
 
-			if (IsDefault) {
+            if (Maximum > 0)
+				writer.WriteAttributeString("pool-max", Maximum.ToString());
+
+			if (IsDefault)
 				writer.WriteAttributeString("default", "true");
-			}
 
-			if (Provider != null) {
+			if (Provider != null)
 				writer.WriteAttributeString("provider", Provider.Name);
-			}
 
 			if (String.IsNullOrEmpty(Value) == false) {
 				writer.WriteString(Value);

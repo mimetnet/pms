@@ -21,7 +21,7 @@ namespace PMS.Data
                 if (managers.TryGetValue(connection, out value))
                     return value;
 
-                value = new DbManager(connection.Provider, connection.Value);
+                value = new DbManager(connection);
                 
                 if (value.Open()) {
                     managers.Add(connection, value);
@@ -51,7 +51,8 @@ namespace PMS.Data
 
                 return (
                     (x.Provider.Name == y.Provider.Name) &&
-                    (x.PoolSize == y.PoolSize) && 
+                    (x.Maximum == y.Maximum) &&
+                    (x.Minimum == y.Minimum) &&
                     (0 == StringComparer.InvariantCulture.Compare(x.Value, y.Value)));
             }
 

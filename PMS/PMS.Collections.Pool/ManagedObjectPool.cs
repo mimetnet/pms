@@ -7,71 +7,136 @@ using System.Threading;
 
 namespace PMS.Collections.Pool
 {
-    public class ManagedObjectPool : ObjectPool, IObjectPool
+    public class ManagedObjectPool : IObjectPool
     {
-		private int index = -1;
+        private int min = 0;
+        private int max = 0;
+        private MethodInfo cleanup;
+        private Type type = null;
+        private Object[] typeParams;
+        private Queue queue = new Queue();
+        private Semaphore poolGate = null;
+        private Object lockObject = new Object();
 
         public ManagedObjectPool(Type type, int min, int max, string sFree) :
-			base(type, min, max, sFree, false)
+			this(type, null, min, max, sFree)
         {
         }
 
-		public ManagedObjectPool(Type type, object[] typeParams, int min, int max, string sFree) :
-			base(type, typeParams, min, max, sFree, true)
+		public ManagedObjectPool(Type type, object[] typeParams, int min, int max, string sFree)
 		{
+            this.type = type;
+            this.typeParams = typeParams;
+            this.min = min;
+            this.max = max;
+            this.cleanup = type.GetMethod(sFree);
+            this.poolGate = new Semaphore(max, max);
 		}
 
-
-        /// <summary>
-        /// Destructor
-        /// </summary>
         ~ManagedObjectPool()
         {
             Close();
         } 
 
-		[MethodImpl(MethodImplOptions.Synchronized)]
-        public override object Borrow()
+        public int Min {
+            get { return this.min; }
+            set {
+                if (value > max)
+                    throw new ArgumentException("min cannot be greater than max");
+                min = value;
+            }
+        }
+
+        public int Max {
+            get { return this.max; }
+            set {
+                if (value < min)
+                    throw new ArgumentException("max cannot be less than min");
+                max = value;
+            }
+        }
+
+        public int Count {
+            get { return this.queue.Count; }
+        }
+
+        public object Borrow()
         {
-			index = (index != (pool.Count - 1)) ? index + 1 : 0;
+            if (!this.poolGate.WaitOne((60 * 1000), false))
+                throw new ApplicationException("Timer expired before borrow could work");
 
-			if (index != pool.Count && pool[index].Available) {
-				if (verbose && log.IsDebugEnabled) {
-					log.DebugFormat("ManagedObjectPool.Borrow(OID={0} IDN={1})",
-							pool[index].Object.GetHashCode(),
-							Thread.CurrentPrincipal.Identity.Name);
-					}
-
-				return pool[index].Checkout();
-			}
-
-			// nothing left, so add one more and recurse
-			if (this.Add() > THRESHOLD) {
-				ZombieKiller(30);
-			}
-
-			return this.Borrow();
+            lock (this.lockObject) {
+                if (this.queue.Count == 0)
+                    this.Add();
+                Console.WriteLine("Borrow: " + queue.Peek().GetHashCode());
+                return queue.Dequeue();
+            }
 		}
 
-		[MethodImpl(MethodImplOptions.Synchronized)]
-        public override bool Return(object obj)
+        public bool Return(object obj)
 		{
-			int code = obj.GetHashCode();
+            if (obj == null)
+                return false;
 
-			for (int x = 0; x < pool.Count; x++) {
-				if (pool[x].Object.GetHashCode() == code) {
-					pool[x].Checkin();
+			lock (this.lockObject) {
+                if (this.queue.Contains(obj))
+                    throw new Exception("Return: queue already has object??");
 
-					if (verbose && log.IsDebugEnabled)
-						log.DebugFormat("ManagedObjectPool.Return(OID={0} TID={1})",
-								pool[x].GetHashCode(),
-								Thread.CurrentThread.ManagedThreadId);
+                Console.WriteLine("Return: " + obj.GetHashCode());
+                this.queue.Enqueue(obj);
 
-					return true;
-				}
-			}
+                this.poolGate.Release();
+            }
 
-			return false;
+            return true;
 		}
+
+        public bool Remove(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual long Add()
+        {
+			if (this.typeParams == null)
+				this.queue.Enqueue(Activator.CreateInstance(type));
+			else
+				this.queue.Enqueue(Activator.CreateInstance(type, typeParams));
+
+            Console.WriteLine("ObjectPool.Add(new {0}())", type.Name);
+
+            //if (queue.Count > THRESHOLD) {
+			//    ZombieKiller(30);
+		    //}
+
+		    return queue.Count;
+        }
+
+        public bool Open()
+        {
+            Console.WriteLine("ManagedObjectPool.Close()");
+
+            lock (this.lockObject) {
+                for (int x=0; x<this.min; x++) {
+                    this.Add();
+                }
+
+                return (this.queue.Count == this.min);
+            }
+        }
+
+        public void Close()
+        {
+            lock (this.lockObject) {
+                Console.WriteLine("ManagedObjectPool.Close({0})", this.queue.Count);
+                while (this.queue.Count > 0) {
+                    Object o = this.queue.Dequeue();
+                    
+                    if (cleanup != null) {
+					    cleanup.Invoke(o, null);
+                    }
+                }
+            }
+        }
 	}
 }
