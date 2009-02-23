@@ -6,6 +6,7 @@ using System.IO;
 using PMS.Broker;
 using PMS.Data;
 using PMS.Query;
+using System.Threading;
 
 namespace PMS.Tester
 {
@@ -54,14 +55,21 @@ namespace PMS.Tester
                     TestTwo(cxt);
                     TestThree(cxt);
                     TestFour(cxt);
+                    TestFive(cxt);
 
-                    //Console.WriteLine("first: " + cxt.Query<Member>().Exec().First());
-                    //Console.WriteLine("first: " + cxt.Exec<Member>().First());
-                    //Console.WriteLine("count: " + cxt.Query<Member>().GreaterThan("id", 50000).Exec().Count<int>());
-                    //Console.WriteLine("scalar: " + cxt.Exec<Member>().Scalar<int>("SELECT id FROM member WHERE username='mimetnet'"));
+                    Member m = new Member();
+                    m.Name = "mimetnet";
 
-                    Console.WriteLine("between: " + cxt.Query<Member>().Between("id", 50000, 60000).Exec().Count<int>());
+                    Console.WriteLine("insert: " + cxt.Query<Member>().Set(m).Exec().Insert());
+
+                    m.ID = 1;
+                    Console.WriteLine("insert: " + cxt.Query<Member>().Set(m).Exec().Delete());
+
+                    m.ID = 1;
+                    Console.WriteLine("insert: " + cxt.Query<Member>().Set(m).Exec().Update());
                 }
+
+                //TestZero();
             } catch (Exception e) {
                 Console.WriteLine(e);
             } finally {
@@ -72,6 +80,29 @@ namespace PMS.Tester
 
 		    return 0;
 	    }
+
+        //private static void TestZero()
+        //{
+        //    for (int x=0; x<25; x++) {
+        //        (new Thread(new ThreadStart(TestThread))).Start();
+        //    }
+        //    Console.ReadLine();
+        //}
+
+        //private static void TestThread()
+        //{
+        //    try {
+        //        using (DbBroker cxt = new DbBroker("peon")) {
+        //            IList<Member> list = cxt.Query<Member>().Like("username", "%a%").OrderBy("id").Exec().Objects<List<Member>>();
+    
+        //            foreach (Member m in list) {
+        //                Console.WriteLine(" : " + m);
+        //            }
+        //        }
+        //    } catch (Exception e) {
+        //        Console.WriteLine("\n\nTestThread Death: " + e.Message);
+        //    }
+        //}
 
         private static void TestOne(DbBroker cxt)
         {
@@ -103,6 +134,16 @@ namespace PMS.Tester
                     Console.WriteLine("Member(id={0}, name='{1}')", reader[0], reader[1]);
                 }
             }
+        }
+
+        private static void TestFive(DbBroker cxt)
+        {
+            //Console.WriteLine("first: " + cxt.Query<Member>().Exec().First());
+            //Console.WriteLine("first: " + cxt.Exec<Member>().First());
+            //Console.WriteLine("count: " + cxt.Query<Member>().GreaterThan("id", 50000).Exec().Count<int>());
+            //Console.WriteLine("scalar: " + cxt.Exec<Member>().Scalar<int>("SELECT id FROM member WHERE username='mimetnet'"));
+            Console.WriteLine("between: " + cxt.Query<Member>().Between("id", 50000, 60000).Exec().Count<int>());
+            Console.WriteLine("in: " + cxt.Query<Member>().In("id", 5,6,67,8,9).Exec().Count<int>());
         }
     }
 }

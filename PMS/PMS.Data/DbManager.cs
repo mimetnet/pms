@@ -16,9 +16,10 @@ namespace PMS.Data
 
         public DbManager(Connection connection)
         {
-            this.pool = new ConnectionPool(connection.Provider, connection.Value);
-            this.pool.Min = connection.Minimum;
-            this.pool.Max = connection.Maximum;
+            int min = Math.Max(connection.Minimum, 2);
+            int max = Math.Max(connection.Maximum, 100);
+
+            this.pool = new ConnectionPool(connection.Provider, connection.Value, min, max);
         }
 
 		~DbManager()

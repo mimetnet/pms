@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Security.Principal;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -7,14 +7,14 @@ using System.Threading;
 
 namespace PMS.Collections.Pool
 {
-    public class ManagedObjectPool : IObjectPool
+    public class ManagedObjectPool<T> : IObjectPool<T>
     {
         private int min = 0;
         private int max = 0;
         private MethodInfo cleanup;
         private Type type = null;
         private Object[] typeParams;
-        private Queue queue = new Queue();
+        private Queue<T> queue = new Queue<T>();
         private Semaphore poolGate = null;
         private Object lockObject = new Object();
 
@@ -35,32 +35,22 @@ namespace PMS.Collections.Pool
 
         ~ManagedObjectPool()
         {
-            Close();
+            this.Close();
         } 
 
-        public int Min {
+        public int Minimum {
             get { return this.min; }
-            set {
-                if (value > max)
-                    throw new ArgumentException("min cannot be greater than max");
-                min = value;
-            }
         }
 
-        public int Max {
+        public int Maximum {
             get { return this.max; }
-            set {
-                if (value < min)
-                    throw new ArgumentException("max cannot be less than min");
-                max = value;
-            }
         }
 
         public int Count {
             get { return this.queue.Count; }
         }
 
-        public object Borrow()
+        public T Borrow()
         {
             if (!this.poolGate.WaitOne((60 * 1000), false))
                 throw new ApplicationException("Timer expired before borrow could work");
@@ -68,12 +58,12 @@ namespace PMS.Collections.Pool
             lock (this.lockObject) {
                 if (this.queue.Count == 0)
                     this.Add();
-                Console.WriteLine("Borrow: " + queue.Peek().GetHashCode());
+                //Console.WriteLine("Borrow: " + queue.Peek().GetHashCode());
                 return queue.Dequeue();
             }
 		}
 
-        public bool Return(object obj)
+        public bool Return(T obj)
 		{
             if (obj == null)
                 return false;
@@ -82,7 +72,7 @@ namespace PMS.Collections.Pool
                 if (this.queue.Contains(obj))
                     throw new Exception("Return: queue already has object??");
 
-                Console.WriteLine("Return: " + obj.GetHashCode());
+                //Console.WriteLine("Return: " + obj.GetHashCode());
                 this.queue.Enqueue(obj);
 
                 this.poolGate.Release();
@@ -91,7 +81,7 @@ namespace PMS.Collections.Pool
             return true;
 		}
 
-        public bool Remove(object obj)
+        public bool Remove(T obj)
         {
             throw new NotImplementedException();
         }
@@ -99,9 +89,9 @@ namespace PMS.Collections.Pool
         protected virtual long Add()
         {
 			if (this.typeParams == null)
-				this.queue.Enqueue(Activator.CreateInstance(type));
+				this.queue.Enqueue((T)Activator.CreateInstance(type));
 			else
-				this.queue.Enqueue(Activator.CreateInstance(type, typeParams));
+				this.queue.Enqueue((T)Activator.CreateInstance(type, typeParams));
 
             Console.WriteLine("ObjectPool.Add(new {0}())", type.Name);
 

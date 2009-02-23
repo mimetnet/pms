@@ -18,6 +18,10 @@ namespace PMS.Query
             this.value = value;
         }
 
+        public string Name {
+            get { return this.field; }
+        }
+
         public bool IsCondition { 
             get { return true; } 
         }

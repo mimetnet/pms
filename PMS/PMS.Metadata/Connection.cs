@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
@@ -7,8 +8,8 @@ using PMS.Data;
 
 namespace PMS.Metadata
 {
+    [Serializable]
     [XmlRoot("connection")]
-	[Serializable]
     public sealed class Connection : IXmlSerializable
     {
 		private static readonly log4net.ILog log =
@@ -57,19 +58,17 @@ namespace PMS.Metadata
                 Maximum = maxPool;
 
             if (Minimum >= Maximum)
-                throw new ArgumentException("maxPool isn't greater than maxPool");
+                throw new ArgumentException("minPool isn't greater than maxPool");
         }
         #endregion
 
         public bool IsValid {
             get {
-                if (String.IsNullOrEmpty(this.Value)) {
+                if (String.IsNullOrEmpty(this.Value))
                     return false;
-                }
 
-                if (this.Provider == null) {
+                if (this.Provider == null)
                     return false;
-                }
 
                 return true;
             }
@@ -86,29 +85,23 @@ namespace PMS.Metadata
             if (Object.ReferenceEquals(obj1, null)) return false;
             if (Object.ReferenceEquals(obj2, null)) return false;
 
-            if (obj1.ID != obj2.ID) {
+            if (obj1.ID != obj2.ID)
 				return false;
-			}
 
-            if (obj1.Provider != obj2.Provider) {
+            if (obj1.Provider != obj2.Provider)
 				return false;
-			}
 
-            if (obj1.Value != obj2.Value) {
+            if (obj1.Value != obj2.Value)
 				return false;
-			}
 
-            if (obj1.IsDefault != obj2.IsDefault) {
+            if (obj1.IsDefault != obj2.IsDefault)
 				return false;
-			}
 
-            if (obj1.Minimum != obj2.Minimum) {
+            if (obj1.Minimum != obj2.Minimum)
 				return false;
-			}
 
-            if (obj1.Maximum != obj2.Maximum) {
+            if (obj1.Maximum != obj2.Maximum)
 				return false;
-			}
 
             return true;
         }
@@ -186,9 +179,8 @@ namespace PMS.Metadata
 
 		public void WriteXml(System.Xml.XmlWriter writer)
 		{
-			if (String.IsNullOrEmpty(ID) == false) {
+			if (String.IsNullOrEmpty(ID) == false)
 				writer.WriteAttributeString("id", ID);
-			}
 
 			if (Minimum > 0)
 				writer.WriteAttributeString("pool-min", Minimum.ToString());
@@ -202,9 +194,8 @@ namespace PMS.Metadata
 			if (Provider != null)
 				writer.WriteAttributeString("provider", Provider.Name);
 
-			if (String.IsNullOrEmpty(Value) == false) {
+			if (String.IsNullOrEmpty(Value) == false)
 				writer.WriteString(Value);
-			}
 		}
 
 		#endregion

@@ -2,19 +2,17 @@
 
 namespace PMS.Collections.Pool
 {
-    interface IObjectPool
+    interface IObjectPool<T>
     {
-        object Borrow();
-
-        bool Return(object obj);
-
-        bool Remove(object obj);
+        T Borrow();
+        bool Return(T obj);
+        bool Remove(T obj);
 
         bool Open();
         void Close();
 
         int Count { get; }
-        int Max { get; }
-        int Min { get; }
+        int Maximum { get; }
+        int Minimum { get; }
     }
 }

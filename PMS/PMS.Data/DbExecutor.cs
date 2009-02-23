@@ -17,6 +17,21 @@ namespace PMS.Data
             this.query = query;
         }
 
+        public string Insert()
+        {
+            return query.ToString(SqlCommand.Insert);
+        }
+
+        public string Update()
+        {
+            return query.ToString(SqlCommand.Update);
+        }
+
+        public string Delete()
+        {
+            return query.ToString(SqlCommand.Delete);
+        }
+
         public IDataReader Reader()
         {
             return this.Reader(query.ToString(SqlCommand.Select));
@@ -47,7 +62,7 @@ namespace PMS.Data
         {
             using (IDbCommand cmd = query.Connection.CreateCommand()) {
                 cmd.CommandText = sqlOverride;
-                Console.WriteLine("scalar: " + query.Parameters.Count + " " + sqlOverride);
+
                 foreach (IDataParameter p in query.Parameters)
                     cmd.Parameters.Add(p);
 

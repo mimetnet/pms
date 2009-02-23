@@ -7,14 +7,24 @@ namespace PMS.Query
     internal class RawClause : IClause
     {
         private string value;
+        private bool isCondition = false;
 
-        public RawClause(string s)
+        public RawClause(string s) : this(s, false)
+        {
+        }
+
+        public RawClause(string s, bool isCondition)
         {
             this.value = s;
+            this.isCondition = isCondition;
+        }
+
+        public string Name {
+            get { return null; }
         }
 
         public bool IsCondition { 
-            get { return false; } 
+            get { return isCondition; } 
         }
 
         public override string ToString()
