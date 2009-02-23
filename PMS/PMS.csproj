@@ -77,6 +77,8 @@
     <Compile Include="PMS.Metadata\Generator.cs" />
     <Compile Include="PMS.Metadata\RepositoryDefinitionException.cs" />
     <Compile Include="PMS.Metadata.Generic\MetaObject.cs" />
+    <Compile Include="PMS.Query\NotInClause.cs" />
+    <Compile Include="PMS.Query\InClause.cs" />
     <Compile Include="PMS.Query\CreateParameterDelegate.cs" />
     <Compile Include="PMS.Query\QueryCriteria.cs" />
     <Compile Include="PMS.Query\Query.cs" />

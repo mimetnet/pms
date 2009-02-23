@@ -6,6 +6,10 @@ namespace PMS.Query
 
     public class AndClause : IClause
     {
+        public string Name {
+            get { return null; }
+        }
+
         public bool IsCondition { 
             get { return false; } 
         }

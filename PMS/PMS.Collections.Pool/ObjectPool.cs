@@ -8,7 +8,7 @@ using System.Timers;
 
 namespace PMS.Collections.Pool
 {
-    public abstract class ObjectPool : MarshalByRefObject, IObjectPool
+    public abstract class ObjectPool : MarshalByRefObject, IObjectPool<Object>
     {
 		protected static readonly log4net.ILog log =
 			            log4net.LogManager.GetLogger("PMS.Collections.Pool.ObjectPool");
@@ -27,7 +27,6 @@ namespace PMS.Collections.Pool
         protected ItemCollection pool = null;
 		protected System.Timers.Timer zTimer = null;
 		protected readonly bool verbose = false;
-
 
         #region Constructors
 		public ObjectPool(Type type, string sFree) :
@@ -123,7 +122,7 @@ namespace PMS.Collections.Pool
 		[MethodImpl(MethodImplOptions.Synchronized)]
         public virtual bool Open()
         {
-			for (int i = pool.Count; i < this.Min; i++) {
+			for (int i = pool.Count; i < this.Minimum; i++) {
 				this.Add();
 			}
 
@@ -190,12 +189,12 @@ namespace PMS.Collections.Pool
             get { return pool.Count; }
         }
 
-        public int Min
+        public int Minimum
         {
             get { return min; }
         }
 
-        public int Max
+        public int Maximum
         {
             get { return max; }
         }

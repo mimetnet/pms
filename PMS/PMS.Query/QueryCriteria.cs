@@ -9,7 +9,8 @@ namespace PMS.Query
 {
     public partial class Query <Table>
     {
-        protected List<IClause> clause = new List<IClause>();
+        protected List<IClause> criteria = new List<IClause>();
+        //protected List<IClause> values = new List<IClause>();
         protected List<String> order = new List<String>();
 		protected uint limit = 0;
         protected uint offset = 0;
@@ -235,6 +236,40 @@ namespace PMS.Query
         } 
         #endregion
 
+        #region In (...)
+        public Query<Table> In(string field, params object[] list)
+        {
+            return this.AndIn(field, list);
+        }
+
+        public Query<Table> AndIn(string field, params object[] list)
+        {
+            return And().Add(new InClause(field, list));
+        }
+
+        public Query<Table> OrIn(string field, params object[] list)
+        {
+            return Or().Add(new InClause(field, list));
+        }
+        #endregion
+
+        #region NotIn (...)
+        public Query<Table> NotIn(string field, params object[] list)
+        {
+            return this.AndNotIn(field, list);
+        }
+
+        public Query<Table> AndNotIn(string field, params object[] list)
+        {
+            return And().Add(new NotInClause(field, list));
+        }
+
+        public Query<Table> OrNotIn(string field, params object[] list)
+        {
+            return Or().Add(new NotInClause(field, list));
+        }
+        #endregion
+
         #region Between
         public Query<Table> Between(string field, object val1, object val2)
         {
@@ -272,27 +307,27 @@ namespace PMS.Query
         #region Internal
         public Query<Table> And()
         {
-            if (clause.Count != 0)
-                clause.Add(new AndClause());
+            if (criteria.Count != 0)
+                criteria.Add(new AndClause());
             return this;
         }
 
         public Query<Table> Or()
         {
-            if (clause.Count != 0)
-                clause.Add(new OrClause());
+            if (criteria.Count != 0)
+                criteria.Add(new OrClause());
             return this;
         }
 
         public Query<Table> Not()
         {
-            clause.Add(new RawClause(" NOT "));
+            criteria.Add(new RawClause(" NOT "));
             return this;
         }
 
         public Query<Table> Add(IClause item)
         {
-            this.clause.Add(item);
+            this.criteria.Add(item);
             return this;
         }
         #endregion
@@ -326,16 +361,78 @@ namespace PMS.Query
         #region Grouping
         public Query<Table> StartGroup()
         {
-            this.clause.Add(new RawClause("("));
+            this.criteria.Add(new RawClause("("));
             return this;
         }
 
         public Query<Table> StopGroup()
         {
-            this.clause.Add(new RawClause(")"));
+            this.criteria.Add(new RawClause(")"));
             return this;
         }
         #endregion
+
+        public Query<Table> Set(string field, object value)
+        {
+            this.criteria.Add(new EqualToClause(field, value));
+            return this;
+        }
+
+        public Query<Table> Set(Table record)
+        {
+            foreach (Field field in this.cdesc.Fields) {
+                Object fvalue = cdesc.GetValue(field, record);
+
+			    if ((fvalue == null && field.Default == null) || (fvalue != null && field.Default != null && field.Default.ToString() == fvalue.ToString())) {
+				    fvalue = field.DefaultDb;
+			    }
+
+                if (IsFieldSet(field, fvalue)) {
+                    this.EqualTo(field.Column, fvalue);
+                    //this.criteria.Add(new EqualToClause(field.Column, fvalue));
+                }
+            }
+
+            return this;
+        }
+
+		protected bool IsFieldSet(Field field, object value)
+		{
+			object init = null;
+
+			if (verbose) {
+				log.InfoFormat("   Column: '{0}'", field.Column);
+				if (value != null)
+					log.InfoFormat("    Value: '{0}'", value);
+				else
+					log.Info("    Value: NULL");
+
+				log.Info("   DbType: " + field.DbType);
+				log.InfoFormat("  Default: '{0}' | {1}", field.Default, ((field.Default != null)? field.Default.GetType().ToString() : ""));
+				log.Info("   Ignore: " + field.IgnoreDefault);
+			}
+
+			if (value != null) {
+				init = (field.Default == null)? 
+					provider.GetTypeInit(field.DbType) : provider.ConvertToType(field.DbType, field.Default);
+
+				if (verbose) {
+					log.InfoFormat("     Init: '{0}'", init);
+					log.InfoFormat("      << : " + !(init != null && field.IgnoreDefault && init.Equals(value)));
+					log.InfoFormat("--");
+				}
+
+				return !(init != null && field.IgnoreDefault && init.Equals(value));
+			} 
+			
+			if (verbose) {
+				log.InfoFormat("      << : " + (field.IgnoreDefault && field.Default == null));
+				log.InfoFormat("--");
+			}
+
+			// VALUE IS NULL
+			return !(field.IgnoreDefault && field.Default == null);
+		}
 
         public Query<Table> SetColumns(string columns) 
         {

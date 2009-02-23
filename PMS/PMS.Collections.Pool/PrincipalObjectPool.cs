@@ -8,7 +8,7 @@ using System.Timers;
 
 namespace PMS.Collections.Pool
 {
-    public class PrincipalObjectPool : ObjectPool, IObjectPool
+    public class PrincipalObjectPool : ObjectPool, IObjectPool<Object>
     {
         public PrincipalObjectPool(Type type, string sFree) : base(type, sFree)
 		{

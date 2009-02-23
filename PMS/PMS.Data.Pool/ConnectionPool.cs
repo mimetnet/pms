@@ -9,19 +9,21 @@ using PMS.Data;
 
 namespace PMS.Data.Pool
 {
-    internal sealed class ConnectionPool : ManagedObjectPool
+    internal sealed class ConnectionPool : ManagedObjectPool<IDbConnection>
     {
         private String sConn;
 		//private IProvider provider;
 
 		/* {{{ Constructors */
-        public ConnectionPool(IProvider provider, string sConn) : base(provider.Type, 2, 10, "Close")
+        public ConnectionPool(IProvider provider, string sConn) : base(provider.Type, 0, 1000, "Close")
         {
             this.sConn = sConn;
-			//this.provider = provider;
         }
 
-        //public ConnectionPool(Type type, string properties): base(
+        public ConnectionPool(IProvider provider, string sConn, int minimum, int maximum) : base(provider.Type, minimum, maximum, "Close")
+        {
+            this.sConn = sConn;
+        }
 
         ~ConnectionPool()
         {

@@ -80,9 +80,8 @@ namespace PMS.Metadata
 		{
 			FieldInfo finfo = Type.GetField(field.Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
 
-			if (finfo != null) {
+			if (finfo != null)
 				return finfo.GetValue(obj);
-			}
 
 			return null;
 		}

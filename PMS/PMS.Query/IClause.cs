@@ -6,6 +6,7 @@ namespace PMS.Query
 
     public interface IClause
     {
+        string Name { get; }
         bool IsCondition { get; }
 
         string ToString();

@@ -90,6 +90,11 @@
             return this.Query<T>().Exec();
         }
 
+        public DbExecutor<T> Exec<T>(T record) where T : new()
+        {
+            return this.Query<T>().Set(record).Exec();
+        }
+
         public Query<T> Query<T>() where T : new()
         {
             return this.connDesc.Provider.CreateQuery<T>(

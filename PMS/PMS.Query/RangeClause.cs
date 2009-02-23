@@ -3,31 +3,54 @@ namespace PMS.Query
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Text;
 
     public class RangeClause : IClause
     {
-        private string field;
-        private string op;
-        private string comparison;
-        private object[] values = new Object[2];
+        protected string field;
+        protected string op;
+        protected string separator;
+        protected object[] values;
 
-        internal RangeClause(string field, string oper, object val1, string comparison, object val2)
+        internal RangeClause(string field, string oper, string separator, params object[] list)
         {
             this.field = field;
-            this.comparison = comparison;
+            this.separator = separator;
             this.op = oper;
-            this.values[0] = val1;
-            this.values[1] = val2;
+            this.values = list;
+        }
+
+        public string Name {
+            get { return field; }
         }
 
         public bool IsCondition { 
             get { return true; } 
         }
 
-        // (id NOT BETWEEN 3 AND 5)
+        // id NOT BETWEEN 3 AND 5
+        // id IN (1,2,3)
         public override string ToString()
         {
-            return ("(" + field + " " + op + " @" + field + "1 " + comparison + " @" + field + "2)");
+            StringBuilder str = new StringBuilder(this.field);
+            str.Append(' ');
+            str.Append(this.op);
+            str.Append(" (");
+            
+            for (int i=0; i<this.values.Length; i++) {
+                if (i > 0) {
+                    str.Append(this.separator);
+                }
+                str.Append("@");
+                str.Append(this.field);
+                str.Append(i+1);
+            }
+
+            str.Append(')');
+            
+            return str.ToString();
+            
+            //("(" + field + " " + op + " @" + field + "1 " + comparison + " @" + field + "2)");
         }
 
         public IList<IDataParameter> CreateParameters(CreateParameterDelegate callback)
@@ -36,8 +59,9 @@ namespace PMS.Query
                 throw new ArgumentNullException("CreateParameterDelegate");
 
             List<IDataParameter> list = new List<IDataParameter>();
-            list.Add(callback("@" + field + "1", values[0]));
-            list.Add(callback("@" + field + "2", values[1]));
+            
+            for (int i=0; i<this.values.Length; i++)
+                list.Add(callback("@" + this.field + (i+1), this.values[i]));
 
             return list;
         }
