@@ -69,9 +69,10 @@ namespace PMS.Metadata
 
         public Field GetFieldByColumn(string colName)
         {
-            foreach (Field field in Fields)
-                if (field.Column.Equals(colName))
-                    return field;
+            if (!String.IsNullOrEmpty(colName))
+                foreach (Field field in Fields)
+                    if (field.Column.Equals(colName))
+                        return field;
 
             return null;
         }
@@ -106,22 +107,19 @@ namespace PMS.Metadata
 
         public void ReadXml(XmlReader reader)
         {
-            if (reader.Name != "class") {
-                log.Error("ReadXml did not find <class> tag, but <" + reader.Name + "> instead");
-                return;
-            }
+            if (!(reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "class"))
+                throw new InvalidOperationException("ReadXml expected <class/>, but found <" + reader.LocalName + "/>");
 
-			try {
-				this.Type = PMS.Util.TypeLoader.Load(reader.GetAttribute("type"));
-			} catch (Exception) {
-			}
-
+            this.Type = PMS.Util.TypeLoader.Load(reader.GetAttribute("type"));
             this.Table = reader.GetAttribute("table");
+
+            //Console.WriteLine("Class.Enter: {0} {2} {1}", reader.LocalName, reader.NodeType, this.Table);
 
             if (this.Table == "order")
                 this.Table = "\"" + this.Table + "\"";
 
             string ltype = reader.GetAttribute("list-type");
+
 			if (!String.IsNullOrEmpty(ltype)) {
 				try {
 					this.ListType = PMS.Util.TypeLoader.Load(ltype);
@@ -130,46 +128,23 @@ namespace PMS.Metadata
 				}
 			}
 
-            while (reader.Read()) {
-                reader.MoveToElement();
-
-                switch (reader.LocalName) {
-                    case "fields":
-                        this.Fields.ReadXml(reader);
-                        break;
-
-                    case "class":
-						LoadCTypes();
-                        return;
-                }
+            if (reader.IsEmptyElement) {
+                reader.Read();
+                return;
             }
+                
+            XmlSerializer xml = new XmlSerializer(typeof(FieldCollection));
+            if (reader.ReadToDescendant("fields")) {
+                this.Fields = (FieldCollection) xml.Deserialize(reader);
+            }
+
+            reader.Read();
+
+            //this.LoadCTypes();
+
+            //Console.WriteLine("Class.Exit: {0} {1}", reader.LocalName, reader.NodeType);
         }
 
-		private void LoadCTypes()
-		{
-			List<Int32> ids = new List<Int32>();
-
-			FieldInfo finfo = null;
-
-			for (int x=0; x<Fields.Count; x++) {
-				finfo = Type.GetField(Fields[x].Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-				if (finfo != null) {
-					Fields[x].LoadType(finfo.FieldType);
-				} else {
-					ids.Add(x);
-				}
-			}
-
-			foreach (Int32 f in ids) {
-				log.WarnFormat("Removing Field({0}) - not found in Type({1})", Fields[f].Name, Type.ToString());
-				Fields.RemoveAt(f);
-			}
-		}
-
-        /// <summary>
-        /// Write XML to stream
-        /// </summary>
-        /// <param name="writer">XmlWriter</param>
         public void WriteXml(XmlWriter writer)
         {
 			if (this.Type != null) {
@@ -191,6 +166,33 @@ namespace PMS.Metadata
             writer.WriteEndElement();
         }
         #endregion
+
+        private void LoadCTypes()
+		{
+            if (this.Type == null)
+                return;
+
+			FieldInfo finfo = null;
+            List<Int32> ids = new List<Int32>();
+
+			for (int x=0; x<Fields.Count; x++) {
+                try {
+				finfo = Type.GetField(Fields[x].Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+				if (finfo != null) {
+					Fields[x].LoadType(finfo.FieldType);
+				} else {
+					ids.Add(x);
+				}
+                } catch (Exception e) {
+                    Console.WriteLine("LoadCTypes: " + e.Message);
+                }
+			}
+
+			foreach (Int32 f in ids) {
+				log.WarnFormat("Removing Field({0}) - not found in Type({1})", Fields[f].Name, Type.ToString());
+				Fields.RemoveAt(f);
+			}
+		}
 
         #region Object Overloads
 

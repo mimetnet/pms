@@ -8,7 +8,7 @@ namespace PMS.Data
 {
     public class DbCommandProxy : Component, IDbCommand
     {
-        //private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Data.DbCommandProxy");
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Data.DbCommandProxy");
 		protected DbConnectionProxy connection = null;
         protected IDbCommand command = null;
 		private IDbManager mgr = null;
@@ -78,7 +78,7 @@ namespace PMS.Data
 					x = this.command.ExecuteNonQuery();
 			} finally {
 				this.connection.ReleaseLock();
-                Console.WriteLine("ExecuteNonQuery("+this.command.Parameters.Count+"): " + this.command.CommandText);
+                log.Debug("ExecuteNonQuery("+this.command.Parameters.Count+"): " + this.command.CommandText);
 			}
 
 			return x;
@@ -104,7 +104,7 @@ namespace PMS.Data
 					this.connection.ReleaseLock();
 					this.connection = null;
 				}
-                Console.WriteLine("ExecuteReader("+this.command.Parameters.Count+"): " + this.command.CommandText);
+                log.Debug("ExecuteReader("+this.command.Parameters.Count+"): " + this.command.CommandText);
 			}
 			
             return new DbDataReaderProxy(reader, this.connection);
@@ -130,7 +130,7 @@ namespace PMS.Data
 					this.connection.ReleaseLock();
 					this.connection = null;
 				}
-                Console.WriteLine("ExecuteReader("+this.command.Parameters.Count+"): " + this.command.CommandText);
+                log.Debug("ExecuteReader("+this.command.Parameters.Count+"): " + this.command.CommandText);
 			}
 
             return new DbDataReaderProxy(reader, this.connection);
@@ -150,7 +150,7 @@ namespace PMS.Data
 					obj = this.command.ExecuteScalar();
 			} finally {
 				this.connection.ReleaseLock();
-                Console.WriteLine("ExecuteScalar("+this.command.Parameters.Count+"): " + this.command.CommandText);
+                log.Debug("ExecuteScalar("+this.command.Parameters.Count+"): " + this.command.CommandText);
 			}
 
             return obj;

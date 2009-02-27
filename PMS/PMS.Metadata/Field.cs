@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Xml.Serialization;
+using System.Xml;
 
 namespace PMS.Metadata
 {
@@ -23,7 +24,7 @@ namespace PMS.Metadata
 		public Type CType = null;
 
         public bool HasReference {
-            get { return (Reference != null)? true : false; }
+            get { return (Reference != null); }
         }
 
         #region Constructors
@@ -74,53 +75,38 @@ namespace PMS.Metadata
 
         #region ObjectOverloads
 
-        ///<summary>
-        ///OverLoading == operator
-        ///</summary> 
         public static bool operator ==(Field obj1, Field obj2)
         {
             if (Object.ReferenceEquals(obj1, obj2)) return true;
             if (Object.ReferenceEquals(obj1, null)) return false;
             if (Object.ReferenceEquals(obj2, null)) return false;
 
-            if (obj1.Name != obj2.Name) {
+            if (obj1.Name != obj2.Name)
                 return false;
-            }
 
-            if (obj1.Column != obj2.Column) {
+            if (obj1.Column != obj2.Column)
                 return false;
-            }
 
-            if (obj1.DbType != obj2.DbType) {
+            if (obj1.DbType != obj2.DbType)
                 return false;
-            }
             
-            if (obj1.PrimaryKey != obj2.PrimaryKey) {
+            if (obj1.PrimaryKey != obj2.PrimaryKey)
                 return false;
-            }
             
-            if (obj1.IgnoreDefault != obj2.IgnoreDefault) {
+            if (obj1.IgnoreDefault != obj2.IgnoreDefault)
                 return false;
-            }
             
-            if (obj1.Reference != obj2.Reference) {
+            if (obj1.Reference != obj2.Reference)
                 return false;
-            }
 
             return true;
         }
 
-        ///<summary>
-        ///OverLoading != operator
-        ///</summary> 
         public static bool operator !=(Field obj1, Field obj2)
         {
             return !(obj1 == obj2);
         }
 
-        ///<summary>
-        ///Overriden Equals
-        ///</summary> 
         public override bool Equals(object obj)
         {
             if (!(obj is Field)) return false;
@@ -128,17 +114,11 @@ namespace PMS.Metadata
             return this == (Field)obj;
         }
 
-        ///<summary>
-        ///ToString()
-        ///</summary> 
         public override string ToString()
         {
             return String.Format("[ Field (Name={0}) (Column={1}) (DbType={2}) (PrimaryKey={3}) (IgnoreDefault={4}) ]", Name, Column, DbType, PrimaryKey, IgnoreDefault);
         }
 
-        ///<summary>
-        ///Overriden GetHashCode()
-        ///</summary> 
         public override int GetHashCode()
         {
             return ToString().GetHashCode();
@@ -199,41 +179,43 @@ namespace PMS.Metadata
 
         public void ReadXml(System.Xml.XmlReader reader)
         {
-			string tmp = null;
-
-            if (reader.Name != "field") {
-                log.Error("ReadXml did not find <field> tag, but <" + reader.Name + "> instead");
-                return;
-            }
+			if (!(reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "field"))
+                throw new InvalidOperationException("ReadXml expected <field/>, but found <" + reader.LocalName + "/>");
 
             Name = reader.GetAttribute("name");
             Column = reader.GetAttribute("column");
             DbType = reader.GetAttribute("db_type");
             Default = reader.GetAttribute("default");
 
-			if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("primarykey")))
-				if (tmp == "true")
-					PrimaryKey = true;
+            //Console.WriteLine("Field.Enter: {0} ({2}) {1}", reader.LocalName, reader.NodeType, Name);
+
+            string tmp = null;
+
+			if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("primarykey"))) {
+				if (tmp == "true") PrimaryKey = true;
+            } else if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("primary"))) {
+				if (tmp == "true") PrimaryKey = true;
+            }
 
 			if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("unique")))
 				if (tmp == "true")
 					Unique = true;
 
-			if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("ignore_default")))
-				if (tmp == "false")
-					IgnoreDefault = false;
-
+			if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("ignore_default"))) {
+				if (tmp == "false") IgnoreDefault = false;
+            } else if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("not-null"))) {
+                if (tmp == "false") IgnoreDefault = false;
+            } else if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("nullable"))) {
+                if (tmp == "false") IgnoreDefault = false;
+            }
 
             if ((DefaultDb = reader.GetAttribute("default_db")) == null)
 				DefaultDb = "null";
 
-            if (reader.IsEmptyElement == false) {
-                if (reader.Read()) {
-                    reader.MoveToElement();
-                    XmlSerializer xml = new XmlSerializer(typeof(Reference));
-                    this.Reference = (Reference)xml.Deserialize(reader);
-                }
-            }
+            if (reader.IsEmptyElement == false)
+                reader.Read();
+
+            //Console.WriteLine("Field.Exit: {0} {1}", reader.LocalName, reader.NodeType);
         }
 
         public void WriteXml(System.Xml.XmlWriter writer)
@@ -243,13 +225,13 @@ namespace PMS.Metadata
             writer.WriteAttributeString("db_type", this.DbType);
 
             if (!IgnoreDefault)
-                writer.WriteAttributeString("ignore_default", "false");
+                writer.WriteAttributeString("nullable", "false");
 
 			if (Default != null)
 				writer.WriteAttributeString("default", Default.ToString());
         
             if (PrimaryKey)
-                writer.WriteAttributeString("primarykey", "true");
+                writer.WriteAttributeString("primary", "true");
 
             if (Unique)
                 writer.WriteAttributeString("unique", "true");

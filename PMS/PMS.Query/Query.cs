@@ -45,7 +45,19 @@ namespace PMS.Query
         {
             StringBuilder sql = new StringBuilder("DELETE FROM ");
             sql.Append(this.cdesc.Table);
+            AppendWhere(sql);
             AppendCondition(sql);
+
+            if (this.values.Count > 0 && this.values[0].IsCondition == false)
+                this.values.RemoveAt(0);
+            
+            this.values.ForEach(delegate(IClause c) {
+                sql.Append(c.ToString());
+            
+                if (c.IsCondition)
+                    this.parameters.AddRange(c.CreateParameters(this.provider.CreateParameter));
+            });
+
             AppendLimit(sql);
 
             return sql.ToString();
@@ -65,7 +77,22 @@ namespace PMS.Query
         {
             StringBuilder sql = new StringBuilder("UPDATE ");
             sql.Append(this.cdesc.Table);
-            AppendUpdate(sql);
+            
+            if (this.criteria.Count > 0) {
+                sql.Append(" SET ");
+
+                if (this.values[0].IsCondition == false)
+                    this.values.RemoveAt(0);
+
+                this.values.ForEach(delegate(IClause c) {
+                    sql.Append(c.ToString());
+                    
+                    if (c.IsCondition)
+                        this.parameters.AddRange(c.CreateParameters(this.provider.CreateParameter));
+                });
+                AppendWhere(sql);
+                AppendCondition(sql);
+            }
 
             return sql.ToString();
         }
@@ -78,6 +105,7 @@ namespace PMS.Query
             sql.Append(this.columns);
             sql.Append(" FROM ");
             sql.Append(this.cdesc.Table);
+            AppendWhere(sql);
             AppendCondition(sql);
             AppendOrderBy(sql);
             AppendLimit(sql);
@@ -89,6 +117,7 @@ namespace PMS.Query
         {
             StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ");
             sql.Append(this.cdesc.Table);
+            AppendWhere(sql);
             AppendCondition(sql);
             AppendOrderBy(sql);
             AppendLimit(sql);
@@ -108,10 +137,18 @@ namespace PMS.Query
             }
         }
 
+        public void AppendWhere(StringBuilder sql)
+        {
+            if (this.criteria.Count > 0 || this.values.Count > 0)
+                sql.Append(" WHERE ");
+        }
+
         public void AppendCondition(StringBuilder sql)
         {
             if (this.criteria.Count > 0) {
-                sql.Append(" WHERE ");
+                if (this.criteria[0].IsCondition == false)
+                    this.criteria.RemoveAt(0);
+
                 this.criteria.ForEach(delegate(IClause c) {
                     sql.Append(c.ToString());
                     
@@ -121,47 +158,45 @@ namespace PMS.Query
             }
         }
         
-        // UPDATE member SET key=value WHERE key=value
-        public void AppendUpdate(StringBuilder sql)
-        {
-            if (this.criteria.Count > 0) {
-                sql.Append(" SET ");
-                this.criteria.ForEach(delegate(IClause c) {
-                    sql.Append(c.ToString());
-                    
-                    if (c.IsCondition)
-                        this.parameters.AddRange(c.CreateParameters(this.provider.CreateParameter));
-                });
-            }
-        }
-
         public void AppendInsert(StringBuilder sql)
         {
-            if (this.criteria.Count == 0)
-                return;
-            
             sql.Append('(');
+
+            if (this.criteria.Count > 0 && this.criteria[0].IsCondition == false)
+                this.criteria.RemoveAt(0);
             
-            for (int i=0; i<this.criteria.Count; i++) {
-                if (!this.criteria[i].IsCondition)
-                    continue;
-                if (i > 0) sql.Append(',');
-                sql.Append(this.criteria[i].Name);
-            }
+            if (0 == AppendInsert(sql, this.criteria, String.Empty))
+                if (this.values.Count > 0 && this.values[0].IsCondition == false)
+                    this.values.RemoveAt(0);
+
+            AppendInsert(sql, this.values, String.Empty);
 
             sql.Append(") VALUES (");
 
-            for (int i=0; i<this.criteria.Count; i++) {
-                if (!this.criteria[i].IsCondition)
-                    continue;
-                if (i > 0) sql.Append(',');
-                sql.Append('@');
-                sql.Append(this.criteria[i].Name);
-                
-                this.parameters.AddRange(this.criteria[i].CreateParameters(this.provider.CreateParameter));
-            }
+            AppendInsert(sql, this.criteria, "@");
+            AppendInsert(sql, this.values, "@");
 
             sql.Append(')');
+        }
+
+        public int AppendInsert(StringBuilder sql, List<IClause> list, string prepend)
+        {
+            int x=0;
+
+            for (int i=0; i<list.Count; i++) {
+                if (list[i].IsCondition) {
+                    if (i > 0)
+                        sql.Append(',');
+                    sql.Append(prepend);
+                    sql.Append(list[i].Name);
+
+                    if (!String.IsNullOrEmpty(prepend))
+                        this.parameters.AddRange(list[i].CreateParameters(this.provider.CreateParameter));
+                    
+                    x++;
+                }
+            }
+            return x;
         }
 
         public void AppendLimit(StringBuilder sql)

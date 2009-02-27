@@ -50,23 +50,30 @@ namespace PMS.Metadata
 
         public void ReadXml(XmlReader reader)
         {
-			try {
-				listLock.AcquireWriterLock(2000);
+            if (!(reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "classes"))
+                throw new InvalidOperationException("ReadXml expected <classes/>, but found <" + reader.LocalName + "/> " + reader.LocalName);
 
-				Class klass = null;
+            if (reader.IsEmptyElement)
+                return;
+
+            //Console.WriteLine("Classes.Enter: {0} {1}", reader.LocalName, reader.NodeType);
+
+            try {
+                listLock.AcquireWriterLock(2000);
+
                 XmlSerializer xml = new XmlSerializer(typeof(Class));
-
-                reader.Read();
-
-                while (reader.NodeType != XmlNodeType.EndElement) {
-                    if ((klass = (Class) xml.Deserialize(reader)) != null)
-                        this.Add(klass);
+                if (reader.ReadToDescendant("class")) {
+                    do {
+                        //Console.WriteLine("Classes.Middle(1): {0} {1}", reader.LocalName, reader.NodeType);
+                        this.Add((Class) xml.Deserialize(reader));
+                        //Console.WriteLine("Classes.Middle(2): {0} {1}\n", reader.LocalName, reader.NodeType);
+                    } while (reader.ReadToNextSibling("class"));
                 }
-			} catch (Exception e) {
-				log.Error("ReadXml: ", e);
-			} finally {
-				listLock.ReleaseWriterLock();
-			}
+            } finally {
+                listLock.ReleaseWriterLock();
+            }
+
+            //Console.WriteLine("Classes.Exit: {0} {1}\n", reader.LocalName, reader.NodeType);
         }
 
         public void WriteXml(XmlWriter writer)

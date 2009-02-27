@@ -10,7 +10,7 @@ namespace PMS.Query
     public partial class Query <Table>
     {
         protected List<IClause> criteria = new List<IClause>();
-        //protected List<IClause> values = new List<IClause>();
+        protected List<IClause> values = new List<IClause>();
         protected List<String> order = new List<String>();
 		protected uint limit = 0;
         protected uint offset = 0;
@@ -32,27 +32,27 @@ namespace PMS.Query
 
         public Query<Table> AndFilter(string sClause)
         {
-            return And().Add(new RawClause(sClause));
+            return And().Add(new RawClause(sClause, true));
         }
 
         public Query<Table> OrFilter(string sClause)
         {
-            return Or().Add(new RawClause(sClause));
+            return Or().Add(new RawClause(sClause, true));
         }
 
         public Query<Table> NotFilter(string sClause)
         {
-            return Not().AndFilter(sClause);
+            return AndNotFilter(sClause);
         }
 
         public Query<Table> AndNotFilter(string sClause)
         {
-            return And().AndFilter(sClause);
+            return And().Not().Add(new RawClause(sClause, true));
         }
 
         public Query<Table> OrNotFilter(string sClause)
         {
-            return Or().OrFilter(sClause);
+            return Or().Not().Add(new RawClause(sClause, true));
         }
         #endregion
         
@@ -372,6 +372,7 @@ namespace PMS.Query
         }
         #endregion
 
+        #region UPDATE foo SET
         public Query<Table> Set(string field, object value)
         {
             this.criteria.Add(new EqualToClause(field, value));
@@ -383,20 +384,24 @@ namespace PMS.Query
             foreach (Field field in this.cdesc.Fields) {
                 Object fvalue = cdesc.GetValue(field, record);
 
-			    if ((fvalue == null && field.Default == null) || (fvalue != null && field.Default != null && field.Default.ToString() == fvalue.ToString())) {
-				    fvalue = field.DefaultDb;
-			    }
+			    //if ((fvalue == null && field.Default == null) || (fvalue != null && field.Default != null && field.Default.ToString() == fvalue.ToString()))
+				//    fvalue = field.DefaultDb;
 
                 if (IsFieldSet(field, fvalue)) {
-                    this.EqualTo(field.Column, fvalue);
-                    //this.criteria.Add(new EqualToClause(field.Column, fvalue));
+                    if (!(field.PrimaryKey || field.Unique)) {
+                        this.values.Add(new AndClause());
+                        this.values.Add(new EqualToClause(field.Column, fvalue));
+                    } else {
+                        this.EqualTo(field.Column, fvalue);
+                    }
                 }
             }
 
             return this;
         }
+        #endregion
 
-		protected bool IsFieldSet(Field field, object value)
+        protected bool IsFieldSet(Field field, object value)
 		{
 			object init = null;
 
@@ -434,20 +439,20 @@ namespace PMS.Query
 			return !(field.IgnoreDefault && field.Default == null);
 		}
 
-        public Query<Table> SetColumns(string columns) 
+        public Query<Table> Columns(string columns) 
         {
             this.columns = String.IsNullOrEmpty(columns)?
                 "*" : columns;
             return this;
         }
 
-        public Query<Table> SetLimit(uint limit)
+        public Query<Table> Limit(uint limit)
         {
             this.limit = limit;
             return this;
         }
         
-        public Query<Table> SetOffset(uint offset)
+        public Query<Table> Offset(uint offset)
         {
             this.offset = offset;
             return this;
