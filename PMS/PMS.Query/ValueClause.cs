@@ -7,14 +7,14 @@ namespace PMS.Query
 
     public abstract class ValueClause : IClause
     {
-        private string field;
-        private object value;
-        private string op;
+        protected string field;
+        protected object value;
+        protected string oper;
 
         internal ValueClause(string field, object value, string op)
         {
             this.field = field;
-            this.op = op;
+            this.oper = op;
             this.value = value;
         }
 
@@ -28,10 +28,10 @@ namespace PMS.Query
 
         public override string ToString()
         {
-            return (this.field + " " + this.op + " @" + this.field);
+            return (this.field + " " + this.oper + " @" + this.field);
         }
 
-        public IList<IDataParameter> CreateParameters(CreateParameterDelegate callback)
+        public virtual IList<IDataParameter> CreateParameters(CreateParameterDelegate callback)
         {
             if (callback == null)
                 throw new ArgumentNullException("CreateParameterDelegate");

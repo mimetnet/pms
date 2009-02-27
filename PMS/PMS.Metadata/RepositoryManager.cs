@@ -12,7 +12,7 @@ namespace PMS.Metadata
     public sealed class RepositoryManager
     {
         #region Private Fields
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Metadata.SessionManager");
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Metadata.RepositoryManager");
         private XmlSerializer serializer = new XmlSerializer(typeof(Repository));
         private Repository repository = new Repository();
         private string package = null;
@@ -84,7 +84,7 @@ namespace PMS.Metadata
         #region File IO
         private string Load(string file)
         {
-			FileInfo f = new FileInfo(Path.GetFullPath(file));
+			FileInfo f = new FileInfo(Path.Combine(PMS.Config.Section.RepositoryPath, file));
 
 			// repository.xml style
 			if (f.Exists)
@@ -119,9 +119,6 @@ namespace PMS.Metadata
 				} catch (FileNotFoundException) {
 					if (log.IsErrorEnabled)
 						log.Error("Load(" + file + ") failed");
-				} catch (Exception e) {
-					if (log.IsErrorEnabled)
-						log.Error("Unkown failure", e);
 				}
 			}
 

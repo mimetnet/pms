@@ -49,7 +49,6 @@
             }
             
             this.db = DbManagerFactory.Factory(this.connDesc);
-            this.conn = this.db.GetConnection();
 		}
 
 		~DbBroker()
@@ -97,81 +96,32 @@
 
         public Query<T> Query<T>() where T : new()
         {
+            //if (this.conn != null)
+            //    this.db.ReturnConnection(this.conn);
+
+            //this.conn = this.db.GetConnection();
+
             return this.connDesc.Provider.CreateQuery<T>(
                 this.repository.GetClass(typeof(T)), 
-                this.conn);
+                this.db.GetConnection());
+                //this.conn);
         }
 
-        //public DbResult Persist(object obj)
-        //{
-        //    return DbEngine.ExecutePersist(obj);
-        //}
-
-        //public DbResult Count(object obj)
-        //{
-        //    return DbEngine.ExecuteCount(obj);
-        //}
-
-        //public DbResult Insert(object obj)
-        //{
-        //    return DbEngine.ExecuteInsert(obj);
-        //}
-
-        //public DbResult Update(object obj)
-        //{
-        //    return DbEngine.ExecuteUpdate(obj);
-        //}
-
-        //public DbResult Update(IQuery query)
-        //{
-        //    return DbEngine.ExecuteUpdate(query);
-        //}
-
-        //public DbResult Delete(IList list)
-        //{
-        //    DbResult result = new DbResult();
-
-        //    foreach (object obj in list)
-        //        result += this.Delete(obj);
-
-        //    return result;
-        //} 
-
-        //public DbResult Delete(object[] list)
-        //{
-        //    DbResult result = new DbResult();
-
-        //    foreach (object obj in list)
-        //        result += this.Delete(obj);
-
-        //    return result;
-        //} 
-
-        //public DbResult Delete(object obj)
-        //{
-        //    return DbEngine.ExecuteDelete(obj);
-        //}
-
-		/* Control {{{ */
 		public void Close()
 		{
 			this.Dispose();
-		} 
-		/* }}} */
-
-        #region IDisposable Members
+		}
 
         public void Dispose()
         {
-            if (this.db != null) {
-                this.db.ReturnConnection(this.conn);
+            lock (this) {
+                if (this.db != null && this.conn != null)
+                    this.db.ReturnConnection(this.conn);
+
                 this.db = null;
+                this.conn = null;
+                this.repository = null;
             }
-
-            this.conn = null;
-            this.repository = null;
         }
-
-        #endregion
     }
 }

@@ -5,23 +5,14 @@ using System.Xml.Serialization;
 
 namespace PMS.Metadata
 {
-    /// <summary>
-    /// FieldCollection Class
-    /// </summary>
 	[Serializable]
     [XmlRoot("fields")]
     public class FieldCollection : List<Field>, IXmlSerializable
     {
-        ///<summary>
-        /// Default constructor.
-        ///</summary>
         public FieldCollection()
         {
         }
 
-        ///<summary>
-        /// The zero-based index of the element to get or set.
-        ///</summary>
         public Field this[string name] {
             get { 
                 foreach (Field f in this)
@@ -39,17 +30,24 @@ namespace PMS.Metadata
 
         public void ReadXml(XmlReader reader)
         {
-            while (reader.Read()) {
-                reader.MoveToElement();
+            if (!(reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "fields"))
+                throw new InvalidOperationException("ReadXml expected <fields/>, but found <" + reader.LocalName + "/> " + reader.LocalName);
 
-				switch (reader.LocalName) {
-					case "field":
-						this.Add(new Field(reader));
-						break;
-					case "fields":
-						return;
-				}
+            if (reader.IsEmptyElement)
+                return;
+
+            //Console.WriteLine("Fields.Enter: {0} {1}", reader.LocalName, reader.NodeType);
+
+            XmlSerializer xml = new XmlSerializer(typeof(Field));
+            if (reader.ReadToDescendant("field")) {
+                do {
+                    //Console.WriteLine("Fields.Middle(1): {0} {1}", reader.LocalName, reader.NodeType);
+                    this.Add((Field) xml.Deserialize(reader));
+                    //Console.WriteLine("Fields.Middle(2): {0} {1}\n", reader.LocalName, reader.NodeType);
+                } while (reader.ReadToNextSibling("field"));
             }
+
+            //Console.WriteLine("Fields.Exit: {0} {1}\n", reader.LocalName, reader.NodeType);
         }
 
         public void WriteXml(XmlWriter writer)

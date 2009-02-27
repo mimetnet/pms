@@ -17,19 +17,31 @@ namespace PMS.Data
             this.query = query;
         }
 
-        public string Insert()
+        public int Insert()
         {
-            return query.ToString(SqlCommand.Insert);
+            return this.Scalar<int>(query.ToString(SqlCommand.Insert) + ";SELECT CAST(SCOPE_IDENTITY() AS int)");
         }
 
-        public string Update()
+        public int Update()
         {
-            return query.ToString(SqlCommand.Update);
+            return this.NonQuery(query.ToString(SqlCommand.Update));
         }
 
-        public string Delete()
+        public int Delete()
         {
-            return query.ToString(SqlCommand.Delete);
+            return this.NonQuery(query.ToString(SqlCommand.Delete));
+        }
+
+        public int NonQuery(string sqlOverride)
+        {
+            using (IDbCommand cmd = query.Connection.CreateCommand()) {
+                cmd.CommandText = sqlOverride;
+                
+                foreach (IDataParameter p in query.Parameters)
+                    cmd.Parameters.Add(p);
+
+                return cmd.ExecuteNonQuery();
+            }
         }
 
         public IDataReader Reader()
@@ -101,7 +113,7 @@ namespace PMS.Data
 
         public T First()
         {
-            //this.SetLimit(1);
+            //this.Limit(1);
             using (IEnumerator<T> list = this.GetEnumerator())
                 if (list.MoveNext())
                     return list.Current;

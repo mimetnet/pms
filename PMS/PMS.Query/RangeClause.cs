@@ -7,17 +7,24 @@ namespace PMS.Query
 
     public class RangeClause : IClause
     {
+        protected bool parenthesis;
         protected string field;
         protected string op;
         protected string separator;
         protected object[] values;
 
         internal RangeClause(string field, string oper, string separator, params object[] list)
+            : this(field, oper, separator, true, list)
+        {
+        }
+
+        internal RangeClause(string field, string oper, string separator, bool parenthesis, params object[] list)
         {
             this.field = field;
             this.separator = separator;
             this.op = oper;
             this.values = list;
+            this.parenthesis = parenthesis;
         }
 
         public string Name {
@@ -35,7 +42,10 @@ namespace PMS.Query
             StringBuilder str = new StringBuilder(this.field);
             str.Append(' ');
             str.Append(this.op);
-            str.Append(" (");
+            str.Append(' ');
+
+            if (this.parenthesis)
+                str.Append('(');
             
             for (int i=0; i<this.values.Length; i++) {
                 if (i > 0) {
@@ -46,7 +56,8 @@ namespace PMS.Query
                 str.Append(i+1);
             }
 
-            str.Append(')');
+            if (this.parenthesis)
+                str.Append(')');
             
             return str.ToString();
             

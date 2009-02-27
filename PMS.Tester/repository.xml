@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <dbmanager-mode>single</dbmanager-mode>
-    <generate-types>true</generate-types>
+    <generate-types>false</generate-types>
 
     <connections>
         <connection provider="pgsql" default="true">Server=fluffy;User Id=groove;Password=no_password_yet;Database=pod_people;Pooling=false;</connection>
@@ -9,13 +9,32 @@
     </connections>
 
     <classes>
-
-        <class type="PMS.Tester.Member, PMS.Tester" table="member">
+        
+        <class type="PMS.Tester.Department, PMS.Tester" table="department">
             <fields>
-                <field name="id" column="id" db_type="serial4" />
-                <field name="username" column="username" db_type="varchar" />
+                <field name="id" column="id" db_type="int" primary="true" />
+                <field name="name" column="name" db_type="varchar" unique="true" />
+                <field name="oid" column="owner_id" db_type="int" />
+                <field name="pid" column="parent_id" db_type="int" />
+                <!-- field name="cdate" column="creation_date" db_type="timestampz" -->
             </fields>
         </class>
+        <class type="PMS.Tester.Member, PMS.Tester" table="member">
+            <fields>
+                <field name="id" column="id" db_type="int" primary="true" />
+                <field name="did" column="department_id" db_type="int" primary="true" />
+                <field name="rid" column="reports_to_id" db_type="int" primary="true" />
 
+                <field name="email" column="email" db_type="varchar" unique="true"/>
+                <field name="fname" column="first_name" db_type="varchar" />
+                <field name="lname" column="last_name" db_type="varchar" />
+
+                <field name="gender" column="gender" db_type="smallint" />
+
+                <!-- field name="cdate" column="creation_date" db_type="timestampz" -->
+            </fields>
+        </class>
+        
     </classes>
+    
 </repository>

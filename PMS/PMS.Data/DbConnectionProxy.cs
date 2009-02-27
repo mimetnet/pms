@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Threading;
+using PMS.Data.Pool;
 
 namespace PMS.Data
 {
@@ -11,6 +12,8 @@ namespace PMS.Data
 		protected static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Data.DbConnectionProxy");
         protected IDbTransaction transaction = null;
         protected IDbConnection connection = null;
+
+        internal ConnectionPool Pool = null;
 
 		private Semaphore sema = new Semaphore(1, 1);
 
@@ -140,6 +143,9 @@ namespace PMS.Data
 		public void ReleaseLock()
 		{
 			try {
+                if (this.Pool != null)
+                    this.Pool.ReturnConnection(this);
+
 				//log.Info("Try release");
 				sema.Release();
 				//log.Info("Released");
@@ -151,6 +157,8 @@ namespace PMS.Data
 
 		public virtual bool CanReopen(Exception ex)
 		{
+            log.Info("CanReopen<?>: ", ex);
+
 			try {
 				if (ex != null)
 					return false;

@@ -34,29 +34,21 @@ namespace PMS.Metadata
 
 			c.GenerateTypes = (a.GenerateTypes || b.GenerateTypes);
             
-            if (a.Classes != null) {
-                foreach (Class classDesc in a.Classes) {
+            if (a.Classes != null)
+                foreach (Class classDesc in a.Classes)
                     c.Classes.Add(classDesc);
-                }
-            }
 
-            if (b.Classes != null) {
-                foreach (Class classDesc in b.Classes) {
+            if (b.Classes != null)
+                foreach (Class classDesc in b.Classes)
                     c.Classes.Add(classDesc);
-                }
-            }
 
-            if (a.Connections != null) {
-                foreach (Connection connDesc in a.Connections) {
+            if (a.Connections != null)
+                foreach (Connection connDesc in a.Connections)
                     c.Connections.Add(connDesc);
-                }
-            }
 
-            if (b.Connections != null) {
-                foreach (Connection connDesc in b.Connections) {
+            if (b.Connections != null)
+                foreach (Connection connDesc in b.Connections)
                     c.Connections.Add(connDesc);
-                }
-            }
 
             return c;
         }
@@ -152,9 +144,8 @@ namespace PMS.Metadata
                         break;
 
 					case "generate-types":
-						if ((gt = reader.ReadString()) != null && gt.Length > 0) {
+						if ((gt = reader.ReadString()) != null && gt.Length > 0)
 							this.GenerateTypes = Boolean.Parse(gt);
-						}
 						break;
 
                     case "assemblies":
@@ -183,15 +174,10 @@ namespace PMS.Metadata
         public void WriteXml(System.Xml.XmlWriter writer)
         {
 			if (this.GenerateTypes) {
-				writer.WriteStartElement("generate-types");
-				writer.WriteValue("true");
-				writer.WriteEndElement();
+                writer.WriteElementString("generate-types", "true");
 			}
 
-            writer.WriteStartElement("dbmanager-mode");
-            writer.WriteValue(this.DbManagerMode.ToString());
-            writer.WriteEndElement();
-
+            writer.WriteElementString("dbmanager-mode", this.DbManagerMode.ToString());
 
             XmlSerializer xml = null;
 

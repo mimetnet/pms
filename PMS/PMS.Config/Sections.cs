@@ -9,12 +9,17 @@ namespace PMS.Config
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger("KMBS.SEC.Web.Config.Manager");	
         private static XmlNode section = null;
-        
+        private static string repositoryPath = Environment.CurrentDirectory;
         public static ProviderElementList Providers = new ProviderElementList();
 
         static Section()
         {
             Load();
+        }
+
+        public static string RepositoryPath {
+            get { return repositoryPath; }
+            set { repositoryPath = value; }
         }
 
         public static string SystemPath {
