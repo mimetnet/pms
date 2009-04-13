@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Data.SQLite;
 
 namespace PMS.Data.Sqlite
 {
@@ -28,6 +29,17 @@ namespace PMS.Data.Sqlite
         public override IDbInspector GetInspector(IDbConnection conn)
         {
             return new SqliteInspector(conn);
+        }
+
+        public override IDataParameter CreateParameter(string name, object value)
+        {
+            Type t = value.GetType();
+
+            if (typeof(DateTime) == t) {
+                value = ((DateTime)value).ToString("yyyy-MM-dd HH:mm:sszz");
+            }
+
+            return new SQLiteParameter(name, value);
         }
     }
 }

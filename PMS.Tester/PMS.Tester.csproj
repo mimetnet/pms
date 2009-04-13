@@ -55,9 +55,6 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +65,10 @@
     <ProjectReference Include="..\PMS.Data.MSSQL\PMS.Data.MSSQL.csproj">
       <Project>{F54C1626-3F99-4232-A4E5-000402772025}</Project>
       <Name>PMS.Data.MSSQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PMS.Data.Sqlite\PMS.Data.Sqlite.csproj">
+      <Project>{F54C1626-3F99-4232-A4E5-000402772325}</Project>
+      <Name>PMS.Data.Sqlite</Name>
     </ProjectReference>
     <ProjectReference Include="..\PMS\PMS.csproj">
       <Project>{DD828130-E4B7-404F-8F2B-56D1AF2BBC48}</Project>
