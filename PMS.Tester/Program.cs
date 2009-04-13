@@ -105,7 +105,7 @@ namespace PMS.Tester
 
         public override string ToString()
         {
-            return String.Format("Member({0}, {1}, {2})", id, email, cdate.ToShortDateString());
+            return String.Format("Member({0}, {1}, {2})", id, email, did);
         }
     }
 
@@ -143,8 +143,8 @@ namespace PMS.Tester
 
         private static void TestSeven(DbBroker cxt)
         {
-            foreach (Member u in cxt.Query<Member>().IsNull("department_id").IsNull("reports_to_id").Exec()) {
-                Console.WriteLine("0: " + u);
+            foreach (Member u in cxt.Query<Member>().IsNull("reports_to_id").Exec()) {
+                Console.WriteLine("0: " + u.ToString());
                 TestSevenQ(cxt, u.ID, 0);
             }
         }
@@ -153,7 +153,7 @@ namespace PMS.Tester
         {
             foreach (Member u in cxt.Query<Member>().EqualTo("reports_to_id", rid).Exec()) {
                 Console.Write(new String(' ', cnt));
-                Console.WriteLine(rid + ": " + u);
+                Console.WriteLine(rid + ": " + u.ToString());
 
                 TestSevenQ(cxt, u.ID, (cnt+1));
             }

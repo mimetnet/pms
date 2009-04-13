@@ -10,7 +10,7 @@ namespace PMS.Data.Sqlite
     {
 		public SqliteConnection() : 
 #if NET_2_0
-			base(typeof(System.Data.SQLiteConnection))
+			base(typeof(System.Data.SQLite.SQLiteConnection))
 #else
 			base(typeof(Mono.Data.Sqlite.SqliteConnection))
 #endif
@@ -19,7 +19,7 @@ namespace PMS.Data.Sqlite
 
 		public SqliteConnection(string connectionString) : 
 #if NET_2_0
-			base(typeof(System.Data.SQLiteConnection))
+			base(typeof(System.Data.SQLite.SQLiteConnection))
 #else
 			base(typeof(Mono.Data.Sqlite.SqliteConnection))
 #endif
