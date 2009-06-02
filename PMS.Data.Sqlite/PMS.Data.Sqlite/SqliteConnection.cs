@@ -26,5 +26,33 @@ namespace PMS.Data.Sqlite
 		{
 			this.ConnectionString = connectionString;
 		}
+
+        public override bool CanReopen(Exception ex)
+        {
+            log.Info("CanReopen<?>: " + ex.GetType());
+
+            try {
+                if (ex == null)
+                    return false;
+
+#if NET_2_0
+                System.Data.SQLite.SQLiteException err = ex as System.Data.SQLite.SQLiteException;
+
+                if (null == err)
+                    return false;
+
+                if (err.ErrorCode == System.Data.SQLite.SQLiteErrorCode.IOErr)
+                    return Reopen();
+#else
+#warning "handle Mono.Sqlite.ErrorCode for Reopen()";
+#endif
+
+                return false;
+            } catch (Exception e) {
+                log.Error("CanReopen: ", e);
+            }
+
+            return false;
+        }
     }
 }
