@@ -157,10 +157,10 @@ namespace PMS.Data
 
 		public virtual bool CanReopen(Exception ex)
 		{
-            log.Info("CanReopen<?>: ", ex);
+            log.Info("Exception<?>: ", ex);
 
 			try {
-				if (ex != null)
+				if (ex == null)
 					return false;
 
 				if (ex.GetType() == typeof(IOException) || (ex.InnerException != null && ex.InnerException.GetType() == typeof(IOException)))
