@@ -69,7 +69,6 @@ namespace PMS.Query
             sql.Append(this.cdesc.Table);
             sql.Append(' ');
             AppendInsert(sql);
-            
             return sql.ToString();
         }
 
@@ -109,7 +108,6 @@ namespace PMS.Query
             AppendCondition(sql);
             AppendOrderBy(sql);
             AppendLimit(sql);
-
             return sql.ToString();
         }
 
@@ -121,7 +119,23 @@ namespace PMS.Query
             AppendCondition(sql);
             AppendOrderBy(sql);
             AppendLimit(sql);
+            return sql.ToString();
+        }
 
+        protected virtual string CreateSql()
+        {
+            StringBuilder sql = new StringBuilder("CREATE TABLE ");
+            sql.Append(this.cdesc.Table);
+            sql.AppendLine(" (");
+            AppendColumns(sql);
+            sql.Append("\n)");
+            return sql.ToString();
+        }
+
+        protected virtual string DropSql()
+        {
+            StringBuilder sql = new StringBuilder("DROP TABLE ");
+            sql.Append(this.cdesc.Table);
             return sql.ToString();
         }
         #endregion
@@ -199,6 +213,21 @@ namespace PMS.Query
             return x;
         }
 
+        public void AppendColumns(StringBuilder sql)
+        {
+            for (int i = 0; i < this.cdesc.Fields.Count; i++) {
+                if (i > 0)
+                    sql.AppendLine(",");
+
+                this.AppendColumns(sql, this.cdesc.Fields[i]);
+            }
+        }
+
+        public virtual void AppendColumns(StringBuilder sql, Field field)
+        {
+            sql.Append(field.ToString());
+        }
+
         public void AppendLimit(StringBuilder sql)
         {
             if (this.limit == 0)
@@ -239,6 +268,12 @@ namespace PMS.Query
 
                 case SqlCommand.Count:
                     return CountSql();
+
+                case SqlCommand.Create:
+                    return CreateSql();
+
+                case SqlCommand.Drop:
+                    return DropSql();
 			}
 
 			return SelectSql();

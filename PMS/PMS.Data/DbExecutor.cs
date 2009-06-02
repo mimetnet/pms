@@ -32,6 +32,16 @@ namespace PMS.Data
             return this.NonQuery(query.ToString(SqlCommand.Delete));
         }
 
+        public bool Create()
+        {
+            return (0 < this.NonQuery(query.ToString(SqlCommand.Create)));
+        }
+
+        public bool Drop()
+        {
+            return (0 < this.NonQuery(query.ToString(SqlCommand.Drop)));
+        }
+
         public int NonQuery(string sqlOverride)
         {
             using (IDbCommand cmd = query.Connection.CreateCommand()) {

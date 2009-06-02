@@ -6,6 +6,8 @@ namespace PMS.Query
         Count,
         Insert,
         Update,
-        Delete
+        Delete,
+        Create,
+        Drop,
     }
 }
