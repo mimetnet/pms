@@ -74,8 +74,11 @@ namespace PMS.Data
 			try {
 				x = this.command.ExecuteNonQuery();
 			} catch (Exception e) {
-				if (this.CanReopenConnection(e))
-					x = this.command.ExecuteNonQuery();
+                if (this.CanReopenConnection(e)) {
+                    x = this.command.ExecuteNonQuery();
+                } else {
+                    throw e;
+                }
 			} finally {
 				this.connection.ReleaseLock();
                 log.Debug("ExecuteNonQuery("+this.command.Parameters.Count+"): " + this.command.CommandText);
@@ -146,8 +149,11 @@ namespace PMS.Data
 			try {
 				obj = this.command.ExecuteScalar();
 			} catch (Exception e) {
-				if (this.CanReopenConnection(e))
-					obj = this.command.ExecuteScalar();
+                if (this.CanReopenConnection(e)) {
+                    obj = this.command.ExecuteScalar();
+                } else {
+                    throw e;
+                }
 			} finally {
 				this.connection.ReleaseLock();
                 log.Debug("ExecuteScalar("+this.command.Parameters.Count+"): " + this.command.CommandText);
