@@ -116,7 +116,13 @@ namespace PMS.Metadata
 
         public override string ToString()
         {
-            return String.Format("[ Field (Name={0}) (Column={1}) (DbType={2}) (PrimaryKey={3}) (IgnoreDefault={4}) ]", Name, Column, DbType, PrimaryKey, IgnoreDefault);
+            //return String.Format("[ Field (Name={0}) (Column={1}) (DbType={2}) (PrimaryKey={3}) (IgnoreDefault={4}) ]", Name, Column, DbType, PrimaryKey, IgnoreDefault);
+
+            return String.Format("{0} {1} {2} {3}", //{4} == NOT NULL
+                this.Column,
+                this.DbType,
+                (this.PrimaryKey) ? "PRIMARY KEY" : String.Empty,
+                (this.Unique && !this.PrimaryKey) ? "UNIQUE" : String.Empty);
         }
 
         public override int GetHashCode()
