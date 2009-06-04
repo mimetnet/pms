@@ -12,7 +12,7 @@ except:
 
 
 def help(name):
-    print 'usage:', name.split(os.sep).pop(), 'repository output:/etc/libpms/project'
+    print 'usage:', name.split(os.sep).pop(), 'repository output:/etc/libpms2/project'
 
 def save(file, node):
     ET.ElementTree(node).write(file, 'utf-8')

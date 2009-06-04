@@ -20,7 +20,7 @@ class Config:
         self.op.add_option('-r', dest='remove', help='Remove provider', action='store_true')
         self.config, self.remainder = self.op.parse_args()
         if os.name != 'nt':
-            self.provider = '/etc/libpms/providers'
+            self.provider = '/etc/libpms2/providers'
         else:
             self.provider = 'c:\\Program Files\\Common Files\\PMS\\etc\\providers'
     
@@ -91,7 +91,7 @@ def remove_provider(cfg):
         print "Usage: %s -r name" % (cfg.op.get_prog_name())
         exit(1)
 
-    tmp = os.path.join(tempfile.gettempdir(), 'pms-providers')
+    tmp = os.path.join(tempfile.gettempdir(), 'pms2-providers')
 
     f = open(cfg.provider, 'r')
     t = open(tmp, 'w')

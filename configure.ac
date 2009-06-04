@@ -83,7 +83,7 @@ fi
 
 ##############################################################################
 
-AC_MSG_CHECKING(for System.Data)
+AC_MSG_CHECKING(for System.Data.SqlClient)
 AC_MSG_RESULT([no])
 AM_CONDITIONAL(HAVE_NPGSQL, test a = b)
 
@@ -114,7 +114,7 @@ AC_OUTPUT([
 			  PMS/Makefile
 			  PMS.Data.Pgsql/Makefile
 			  PMS.Data.Sqlite/Makefile
-			  build/pms.pc
+			  build/pms2.pc
 			  build/Makefile
 			  scripts/Makefile
 			  policy/Makefile

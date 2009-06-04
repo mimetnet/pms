@@ -6,4 +6,4 @@ Name: @PACKAGE@
 Description: PMS - Phil & Matt Spaces for .NET
 
 Version: @VERSION@
-Libs: -r:${libdir}/PMS.dll
+Libs: -r:${libdir}/PMS2.dll

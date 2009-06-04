@@ -46,7 +46,6 @@ PMS/bin
 PMS/Makefile
 PMS/obj
 PMS/PMS.csproj.user
-PMS/Properties/AssemblyInfo.cs
 PMS.Server/bin
 PMS.Server/obj
 PMS.Setup/bin

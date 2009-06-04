@@ -1,0 +1,3 @@
+usr/bin/pms-monodoc
+usr/lib/monodoc/sources/*
+usr/share/man/man1/pms-monodoc.1
