@@ -1,13 +1,12 @@
-AC_INIT(README)
-AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE(pms, 0.7)
+AC_INIT([pms], [2.0], [matthew@cowarthill.com])
+AC_CONFIG_SRCDIR([PMS/Makefile.am])
+AM_INIT_AUTOMAKE([foreign tar-pax])
 AM_MAINTAINER_MODE
 
 AC_PROG_INSTALL
 
 AC_PATH_PROG(AL, al, no)
-AC_PATH_PROG(CSC, csc, no)
-AC_PATH_PROG(MCS, gmcs, no)
+AC_PATH_PROG(GMCS, gmcs, no)
 AC_PATH_PROG(MONO, mono, no)
 AC_PATH_PROG(GACUTIL, gacutil, no)
 AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
@@ -20,13 +19,16 @@ if test "x$PKG_CONFIG" = "xno"; then
 	AC_MSG_ERROR([You need to install pkg-config])
 fi
 
-if test "x$CSC" = "xno" -a "x$MCS" = "xno"  ; then
-	dnl AC_MSG_ERROR([You need to install a C# compiler])
+if test "x$GMCS" = "xno"  ; then
 	AC_MSG_ERROR([No csharp compiler found])
 fi
 
-if test "x$MCS" = "xno" ; then
-	MCS=$CSC
+if test "x$AL" = "xno"  ; then
+	AC_MSG_ERROR([No assembly linker found])
+fi
+
+if test "x$GACUTIL" = "xno"  ; then
+	AC_MSG_ERROR([No gacutil found])
 fi
 
 if test "x$MONO" = "xno"; then
@@ -70,15 +72,32 @@ fi
 
 ##############################################################################
 
+AC_MSG_CHECKING(for Npgsql)
+if test "`${GACUTIL} -l Npgsql | tail -1 | awk '{print $5}'`" -gt "0"; then
+	AC_MSG_RESULT([yes])
+	AM_CONDITIONAL(HAVE_NPGSQL, test a = a)
+else
+	AC_MSG_RESULT([no])
+	AM_CONDITIONAL(HAVE_NPGSQL, test a = b)
+fi
+
+##############################################################################
+
+AC_MSG_CHECKING(for System.Data)
+AC_MSG_RESULT([no])
+AM_CONDITIONAL(HAVE_NPGSQL, test a = b)
+
+##############################################################################
+
 AC_SUBST(AL)
-AC_SUBST(MCS)
+AC_SUBST(GMCS)
 AC_SUBST(MONO)
 AC_SUBST(GACUTIL)
 AC_SUBST(PKG_CONFIG)
 AC_SUBST(DEBUG_FLAGS)
 AC_SUBST([GACUTIL_FLAGS], ['-root $(DESTDIR)$(prefix)/lib'])
 AC_SUBST([MONODOC_SRC_DIR], [`$PKG_CONFIG monodoc --variable=sourcesdir`])
-AC_SUBST([MONO_VERSION], [MONO_`$MCS --version | awk '{print $5}' | sed 's/\./ /g' | awk '{print $1"_"$2}'`])
+AC_SUBST([MONO_VERSION], [MONO_`$GMCS --version | awk '{print $5}' | sed 's/\./ /g' | awk '{print $1"_"$2}'`])
 
 ##############################################################################
 
