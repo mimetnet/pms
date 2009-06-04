@@ -1,6 +1,10 @@
 using System;
 using System.Data;
+#if NET_2_0
 using System.Data.SQLite;
+#else
+using Mono.Data.Sqlite;
+#endif
 
 namespace PMS.Data.Sqlite
 {
@@ -39,7 +43,7 @@ namespace PMS.Data.Sqlite
                 value = ((DateTime)value).ToString("yyyy-MM-dd HH:mm:sszz");
             }
 
-            return new SQLiteParameter(name, value);
+            return new SqliteParameter(name, value);
         }
     }
 }

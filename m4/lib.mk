@@ -11,7 +11,7 @@ CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb $(SOURCES_file) $(SOURCES_make)
 EXTRA_DIST = $(SOURCES) $(subst .dll,.csproj,$(ASSEMBLY))
 
 $(ASSEMBLY): $(SOURCES) $(SOURCES_file)
-	$(MCS) $(MFLAGS) -target:library -out:$@ $(REFERENCES) @$(SOURCES_file)
+	$(GMCS) $(MFLAGS) -target:library -out:$@ $(REFERENCES) @$(SOURCES_file)
 
 $(DEPS_dir):
 	mkdir $@

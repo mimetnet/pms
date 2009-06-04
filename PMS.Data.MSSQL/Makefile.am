@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS = gnu
 
-if HAVE_SQLITE
+if HAVE_MSSQL
 include $(top_srcdir)/m4/lib.mk
 endif
 

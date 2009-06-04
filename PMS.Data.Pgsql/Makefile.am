@@ -1,6 +1,8 @@
 AUTOMAKE_OPTIONS = gnu
 
+if HAVE_NPGSQL
 include $(top_srcdir)/m4/lib.mk
+endif
 
 ASSEMBLY = PMS.Data.Pgsql.dll
 
