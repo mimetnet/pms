@@ -1,0 +1,9 @@
+prefix=/opt/pms2
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib/cli/pms-2.0
+
+Name: pms
+Description: PMS - Phil & Matt Spaces for .NET
+
+Version: 2.0
+Libs: -r:${libdir}/PMS2.dll

@@ -1,0 +1,16 @@
+etc/libpms2/providers
+
+usr/lib/cli/pms-2.0/PMS.dll
+usr/lib/mono/gac/PMS/*/PMS.dll
+
+usr/lib/mono/gac/policy.*.PMS/*
+usr/lib/pkgconfig/pms2.pc
+
+usr/bin/pms2-providers
+usr/bin/pms2-repo-split
+usr/bin/pms2-repo-upgrade
+
+usr/share/man/man1/pms2-repo-split.1
+usr/share/man/man1/pms2-providers.1
+usr/share/man/man1/pms2-repo-upgrade.1
+

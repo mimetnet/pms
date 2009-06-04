@@ -1,4 +1,4 @@
-EXTRA_DIST = pms.pc.in
+EXTRA_DIST = pms2.pc.in
 
 pkgconfigdir = /usr/lib/pkgconfig
-pkgconfig_DATA = pms.pc
+pkgconfig_DATA = pms2.pc
