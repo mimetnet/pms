@@ -12,19 +12,19 @@ namespace PMS.Metadata
     [XmlRoot("connection")]
     public sealed class Connection : IXmlSerializable
     {
-		private static readonly log4net.ILog log =
-			log4net.LogManager.GetLogger("PMS.Metadata.Connection");
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger("PMS.Metadata.Connection");
 
-        #region Public Properties
-		public IProvider Provider;
+#region Public Properties
+        public IProvider Provider;
         public string Value;
         public string ID;
         public bool IsDefault;
         public int Minimum = 0;
         public int Maximum = 20;
-        #endregion
+#endregion
 
-        #region Constructors
+#region Constructors
         public Connection()
         {
         }
@@ -50,7 +50,7 @@ namespace PMS.Metadata
             Provider = provider;
             Value = conn;
             IsDefault = isDefault;
-            
+
             if (0 < minPool)
                 Minimum = minPool;
 
@@ -60,7 +60,7 @@ namespace PMS.Metadata
             if (Minimum >= Maximum)
                 throw new ArgumentException("minPool isn't greater than maxPool");
         }
-        #endregion
+#endregion
 
         public bool IsValid {
             get {
@@ -74,7 +74,7 @@ namespace PMS.Metadata
             }
         }
 
-        #region ObjectOverloads
+#region ObjectOverloads
 
         ///<summary>
         ///OverLoading == operator
@@ -86,22 +86,22 @@ namespace PMS.Metadata
             if (Object.ReferenceEquals(obj2, null)) return false;
 
             if (obj1.ID != obj2.ID)
-				return false;
+                return false;
 
             if (obj1.Provider != obj2.Provider)
-				return false;
+                return false;
 
             if (obj1.Value != obj2.Value)
-				return false;
+                return false;
 
             if (obj1.IsDefault != obj2.IsDefault)
-				return false;
+                return false;
 
             if (obj1.Minimum != obj2.Minimum)
-				return false;
+                return false;
 
             if (obj1.Maximum != obj2.Maximum)
-				return false;
+                return false;
 
             return true;
         }
@@ -140,64 +140,64 @@ namespace PMS.Metadata
             return ToString().GetHashCode();
         }
 
-        #endregion
+#endregion
 
-		#region IXmlSerializable Members
+#region IXmlSerializable Members
 
-		public System.Xml.Schema.XmlSchema GetSchema()
-		{
-			return null;
-		}
+        public System.Xml.Schema.XmlSchema GetSchema()
+        {
+            return null;
+        }
 
-		public void ReadXml(System.Xml.XmlReader reader)
-		{
-			if (reader.LocalName != "connection")
-				return;
+        public void ReadXml(System.Xml.XmlReader reader)
+        {
+            if (reader.LocalName != "connection")
+                return;
 
-			this.ID = reader.GetAttribute("id");
+            this.ID = reader.GetAttribute("id");
 
-			try {
-				this.Provider = PMS.Data.ProviderFactory.Create(reader.GetAttribute("provider"));
-			} catch (ProviderNotFoundException e1) {
-				log.Debug("Provider " + e1.Message);
-			} catch (ArgumentNullException) {
-				log.WarnFormat("<connection id=\"{0}\"/> has no @provider attribute", this.ID);
-			} catch (Exception e2) {
-				log.Debug("ReadXml: ", e2);
-			}
+            try {
+                this.Provider = PMS.Data.ProviderFactory.Create(reader.GetAttribute("provider"));
+            } catch (ProviderNotFoundException e1) {
+                log.WarnFormat("<connection id='{0}' />: {1}", this.ID, e1.Message);
+            } catch (ArgumentNullException) {
+                log.WarnFormat("<connection id=\"{0}\"/> has no @provider attribute", this.ID);
+            } catch (Exception e2) {
+                log.Debug("ReadXml: ", e2);
+            }
 
-			Int32.TryParse(reader.GetAttribute("pool-min"), out this.Minimum);
+            Int32.TryParse(reader.GetAttribute("pool-min"), out this.Minimum);
             Int32.TryParse(reader.GetAttribute("pool-max"), out this.Maximum);
             Boolean.TryParse(reader.GetAttribute("default"), out this.IsDefault);
 
-			if (reader.IsEmptyElement == false) {
-				this.Value = reader.ReadElementContentAsString();
-			} else {
-				reader.Read();
-			}
-		}
+            if (reader.IsEmptyElement == false) {
+                this.Value = reader.ReadElementContentAsString();
+            } else {
+                reader.Read();
+            }
+        }
 
-		public void WriteXml(System.Xml.XmlWriter writer)
-		{
-			if (String.IsNullOrEmpty(ID) == false)
-				writer.WriteAttributeString("id", ID);
+        public void WriteXml(System.Xml.XmlWriter writer)
+        {
+            if (String.IsNullOrEmpty(ID) == false)
+                writer.WriteAttributeString("id", ID);
 
-			if (Minimum > 0)
-				writer.WriteAttributeString("pool-min", Minimum.ToString());
+            if (Minimum > 0)
+                writer.WriteAttributeString("pool-min", Minimum.ToString());
 
             if (Maximum > 0)
-				writer.WriteAttributeString("pool-max", Maximum.ToString());
+                writer.WriteAttributeString("pool-max", Maximum.ToString());
 
-			if (IsDefault)
-				writer.WriteAttributeString("default", "true");
+            if (IsDefault)
+                writer.WriteAttributeString("default", "true");
 
-			if (Provider != null)
-				writer.WriteAttributeString("provider", Provider.Name);
+            if (Provider != null)
+                writer.WriteAttributeString("provider", Provider.Name);
 
-			if (String.IsNullOrEmpty(Value) == false)
-				writer.WriteString(Value);
-		}
+            if (String.IsNullOrEmpty(Value) == false)
+                writer.WriteString(Value);
+        }
 
-		#endregion
-	}
+#endregion
+    }
 }
