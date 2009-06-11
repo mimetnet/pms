@@ -99,8 +99,6 @@ namespace PMS.Query
         protected virtual string SelectSql()
         {
             StringBuilder sql = new StringBuilder("SELECT ");
-            sql.Append(this.cdesc.Table);
-            sql.Append('.');
             sql.Append(this.columns);
             sql.Append(" FROM ");
             sql.Append(this.cdesc.Table);
