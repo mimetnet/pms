@@ -85,7 +85,7 @@ fi
 
 AC_MSG_CHECKING(for System.Data.SqlClient)
 AC_MSG_RESULT([no])
-AM_CONDITIONAL(HAVE_NPGSQL, test a = b)
+AM_CONDITIONAL(HAVE_MSSQL, test a = b)
 
 ##############################################################################
 
