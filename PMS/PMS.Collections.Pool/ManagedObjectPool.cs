@@ -58,7 +58,7 @@ namespace PMS.Collections.Pool
             lock (this.lockObject) {
                 if (this.queue.Count == 0)
                     this.Add();
-                Console.WriteLine("Borrow: " + queue.Peek().GetHashCode());
+                //Console.WriteLine("Borrow: " + queue.Peek().GetHashCode());
                 return queue.Dequeue();
             }
 		}
@@ -72,7 +72,7 @@ namespace PMS.Collections.Pool
                 if (this.queue.Contains(obj))
                     throw new Exception("Return: queue already has object??");
 
-                Console.WriteLine("Return: " + obj.GetHashCode());
+                //Console.WriteLine("Return: " + obj.GetHashCode());
                 this.queue.Enqueue(obj);
 
                 this.poolGate.Release();
@@ -93,7 +93,7 @@ namespace PMS.Collections.Pool
 			else
 				this.queue.Enqueue((T)Activator.CreateInstance(type, typeParams));
 
-            Console.WriteLine("ObjectPool.Add(new {0}())", type.Name);
+            Console.WriteLine("ManagedObjectPool.Add(new {0}())", type.Name);
 
             //if (queue.Count > THRESHOLD) {
 			//    ZombieKiller(30);
@@ -104,9 +104,9 @@ namespace PMS.Collections.Pool
 
         public bool Open()
         {
-            Console.WriteLine("ManagedObjectPool.Close()");
-
             lock (this.lockObject) {
+                Console.WriteLine("ManagedObjectPool.Open()");
+
                 for (int x=this.queue.Count; x<this.min; x++) {
                     this.Add();
                 }
