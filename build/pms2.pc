@@ -1,4 +1,4 @@
-prefix=/opt/pms2
+prefix=/usr
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib/cli/pms-2.0
 
