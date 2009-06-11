@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 
@@ -143,30 +144,30 @@ namespace PMS.Data
         }
 
         #region Objects<TList> with QueryCallback
-        public TList Objects<TList>() where TList : IList<T>, new()
+        public TList Objects<TList>() where TList : IList, new()
         {
             return this.Reader2List<TList>(query.ToString(SqlCommand.Select), null);
         }
 
-        public TList Objects<TList>(QueryCallback<T> callback) where TList : IList<T>, new()
+        public TList Objects<TList>(QueryCallback<T> callback) where TList : IList, new()
         {
             return this.Reader2List<TList>(query.ToString(SqlCommand.Select), callback);
         }
         #endregion
 
         #region Objects<TList> with SQL override
-        public TList Objects<TList>(string sqlOverride) where TList : IList<T>, new()
+        public TList Objects<TList>(string sqlOverride) where TList : IList, new()
         {
             return this.Reader2List<TList>(sqlOverride, null);
         }
 
-        public TList Objects<TList>(string sqlOverride, QueryCallback<T> callback) where TList : IList<T>, new()
+        public TList Objects<TList>(string sqlOverride, QueryCallback<T> callback) where TList : IList, new()
         {
             return this.Reader2List<TList>(sqlOverride, callback);
         }
         #endregion
 
-        private TList Reader2List<TList>(string sqlOverride, QueryCallback<T> callback) where TList : IList<T>, new()
+        private TList Reader2List<TList>(string sqlOverride, QueryCallback<T> callback) where TList : IList, new()
         {
             TList list = Activator.CreateInstance<TList>();
             IEnumerator<T> enumerator = this.GetEnumerator(sqlOverride);
