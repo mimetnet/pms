@@ -5,16 +5,21 @@ namespace PMS.Data.Postgresql
 {
     internal sealed class PostgresqlProvider : PMS.Data.AbstractProvider
     {
-		public PostgresqlProvider()
-		{
-			//Npgsql.NpgsqlEventLog.Level = Npgsql.LogLevel.Debug;
-			//Npgsql.NpgsqlEventLog.LogName = "NpgsqlTests.log";
-			//Npgsql.NpgsqlEventLog.EchoMessages = true;
-		}
+        public PostgresqlProvider()
+        {
+            //Npgsql.NpgsqlEventLog.Level = Npgsql.LogLevel.Debug;
+            //Npgsql.NpgsqlEventLog.LogName = "NpgsqlTests.log";
+            //Npgsql.NpgsqlEventLog.EchoMessages = true;
+        }
 
-		public override Type Type {
-			get { return typeof(PostgresqlConnection); }
-		}
+        public override Type Type {
+            get { return typeof(PostgresqlConnection); }
+        }
+
+        public override IDataParameter CreateParameter(string name, object value)
+        {
+            return new Npgsql.NpgsqlParameter(name, value);
+        }
 
         public override IDbConnection GetConnection()
         {
