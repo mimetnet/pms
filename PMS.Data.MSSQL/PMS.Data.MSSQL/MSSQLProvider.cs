@@ -9,19 +9,19 @@ namespace PMS.Data.MSSQL
     [Serializable]
     internal sealed class MSSQLProvider : PMS.Data.AbstractProvider
     {
-		public override Type Type {
-			get { return typeof(MSSQLConnection); }
-		}
+        public override Type Type {
+            get { return typeof(MSSQLConnection); }
+        }
 
         public override IDbConnection GetConnection()
         {
-			return new MSSQLConnection();
+            return new MSSQLConnection();
         }
 
         public override IDbConnection GetConnection(string properties)
         {
-			return new MSSQLConnection(properties);
-		}
+            return new MSSQLConnection(properties);
+        }
 
         public override IDataParameter CreateParameter(string name, object value)
         {
