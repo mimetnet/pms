@@ -34,7 +34,7 @@
         {
         }
 
-        public DbBroker(string connectionID) : this("repository.xml", connectionID)
+        public DbBroker(string connectionID) : this(connectionID, connectionID)
 		{
 		}
 
