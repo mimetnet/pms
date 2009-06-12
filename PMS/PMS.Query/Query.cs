@@ -65,6 +65,9 @@ namespace PMS.Query
 
         protected virtual string InsertSql()
         {
+            if (this.criteria.Count == 0 && this.values.Count == 0)
+                throw new QueryException("No criteria found to perform INSERT with");
+
             StringBuilder sql = new StringBuilder("INSERT INTO ");
             sql.Append(this.cdesc.Table);
             sql.Append(' ');
@@ -77,7 +80,7 @@ namespace PMS.Query
             StringBuilder sql = new StringBuilder("UPDATE ");
             sql.Append(this.cdesc.Table);
             
-            if (this.criteria.Count > 0) {
+            if (this.criteria.Count > 0 || this.values.Count > 0) {
                 sql.Append(" SET ");
 
                 if (this.values[0].IsCondition == false)
@@ -91,6 +94,8 @@ namespace PMS.Query
                 });
                 AppendWhere(sql);
                 AppendCondition(sql);
+            } else {
+                throw new QueryException("No criteria found to perform UPDATE with");
             }
 
             return sql.ToString();
@@ -151,7 +156,7 @@ namespace PMS.Query
 
         public void AppendWhere(StringBuilder sql)
         {
-            if (this.criteria.Count > 0 || this.values.Count > 0)
+            if (this.criteria.Count > 0)
                 sql.Append(" WHERE ");
         }
 
