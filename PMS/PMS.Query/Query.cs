@@ -65,6 +65,9 @@ namespace PMS.Query
 
         protected virtual string InsertSql()
         {
+            if (this.criteria.Count == 0)
+                throw new QueryException("No criteria found to perform INSERT with");
+
             StringBuilder sql = new StringBuilder("INSERT INTO ");
             sql.Append(this.cdesc.Table);
             sql.Append(' ');
@@ -91,6 +94,8 @@ namespace PMS.Query
                 });
                 AppendWhere(sql);
                 AppendCondition(sql);
+            } else {
+                throw new QueryException("No criteria found to perform UPDATE with");
             }
 
             return sql.ToString();
