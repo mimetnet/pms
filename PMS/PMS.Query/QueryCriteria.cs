@@ -375,7 +375,7 @@ namespace PMS.Query
         #region UPDATE foo SET
         public Query<Table> Set(string field, object value)
         {
-            this.criteria.Add(new EqualToClause(field, value));
+            this.values.Add(new EqualToClause(field, value));
             return this;
         }
 
@@ -389,7 +389,7 @@ namespace PMS.Query
 
                 if (IsFieldSet(field, fvalue)) {
                     if (!(field.PrimaryKey || field.Unique)) {
-                        this.values.Add(new AndClause());
+                        this.values.Add(new RawClause(", "));
                         this.values.Add(new EqualToClause(field.Column, fvalue));
                     } else {
                         this.EqualTo(field.Column, fvalue);
