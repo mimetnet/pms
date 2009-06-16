@@ -15,8 +15,12 @@ namespace PMS.Util
 
             //Console.WriteLine("\n\nTypeComparer:\n{0}\n{1}\n", x.GUID, y.GUID);
 
+#if NET_2_0
             return x.GUID.CompareTo(y.GUID);
-			//return String.CompareOrdinal(x.ToString(), y.ToString());
+#else
+            return (x == y)?
+                0 : String.CompareOrdinal(x.ToString(), y.ToString());
+#endif
 		}
 	}
 }
