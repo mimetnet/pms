@@ -9,12 +9,21 @@ namespace PMS.Query
     {
         protected string field;
         protected object value;
+        protected PMS.DbType dbType;
         protected string oper;
 
         internal ValueClause(string field, object value, string op)
         {
             this.field = field;
             this.oper = op;
+            this.value = value;
+        }
+
+        internal ValueClause(string field, object value, PMS.DbType dbType, string op)
+        {
+            this.field = field;
+            this.oper = op;
+            this.dbType = dbType;
             this.value = value;
         }
 
@@ -37,7 +46,7 @@ namespace PMS.Query
                 throw new ArgumentNullException("CreateParameterDelegate");
 
             List<IDataParameter> list = new List<IDataParameter>();
-            list.Add(callback("@" + field, value));
+            list.Add(callback("@" + field, value, dbType));
 
             return list;
         }

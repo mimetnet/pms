@@ -23,9 +23,14 @@ namespace PMS.Data.MSSQL
             return new MSSQLConnection(properties);
         }
 
-        public override IDataParameter CreateParameter(string name, object value)
+        public override IDataParameter CreateParameter(string name, object value, PMS.DbType dbType)
         {
-            return new System.Data.SqlClient.SqlParameter(name, value);
+            IDataParameter p = new System.Data.SqlClient.SqlParameter();
+            p.ParamterName = name;
+            if (dbType != null)
+                p.DbType = dbType.SystemDbType;
+            p.Value = value;
+            return p;
         }
 
         public override IDbInspector GetInspector()

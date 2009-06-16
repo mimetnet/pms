@@ -15,9 +15,10 @@ namespace PMS.Metadata
 
         public Field this[string name] {
             get { 
-                foreach (Field f in this)
-                    if (f.Name == name)
-                        return f;
+                if (!String.IsNullOrEmpty(name))
+                    foreach (Field f in this)
+                        if (0 == StringComparer.InvariantCulture.Compare(f.Name, name))
+                            return f;
 
                 return null;
             }

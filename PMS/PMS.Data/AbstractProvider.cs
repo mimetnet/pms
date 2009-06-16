@@ -349,11 +349,10 @@ namespace PMS.Data
 		public abstract IDbConnection GetConnection();
 		public abstract IDbConnection GetConnection(string connString);
         
-        public abstract IDataParameter CreateParameter(string name, object value);
+        public abstract IDataParameter CreateParameter(string name, object value, PMS.DbType dbType);
 
 		public abstract IDbInspector GetInspector();
 		public abstract IDbInspector GetInspector(IDbConnection conn);
-
 
         public virtual Query<T> CreateQuery<T>(Class cdesc, IDbConnection connection) where T : new()
         {
@@ -364,6 +363,62 @@ namespace PMS.Data
                 throw new ArgumentNullException("IDbConnection");
 
             return new Query<T>(cdesc, this, connection);
+        }
+
+        public virtual PMS.DbType GetDbType(string dbTypeName)
+        {
+			switch (dbTypeName) {
+				case "int":
+				case "int4":
+				case "integer":
+				case "serial":
+				case "serial4":
+                    return new PMS.DbType(System.Data.DbType.Int32);
+
+				case "int2":
+				case "smallint":
+                    return new PMS.DbType(System.Data.DbType.Int16);
+
+				case "int8":
+				case "serial8":
+				case "bigint":
+                    return new PMS.DbType(System.Data.DbType.Int64);
+
+				case "char":
+                    return new PMS.DbType(System.Data.DbType.String);
+
+				case "varchar":
+				case "text":
+                    return new PMS.DbType(System.Data.DbType.String);
+
+				case "bool":
+				case "boolean":
+                    return new PMS.DbType(System.Data.DbType.Boolean);
+
+				case "float":
+				case "float4":
+                    return new PMS.DbType(System.Data.DbType.Single);
+
+				case "float8":
+                    return new PMS.DbType(System.Data.DbType.Double);
+
+				case "numeric":
+				case "money":
+                    return new PMS.DbType(System.Data.DbType.Decimal);
+
+				case "time":
+				case "timez":
+                    return new PMS.DbType(System.Data.DbType.Time);
+
+				case "date":
+                    return new PMS.DbType(System.Data.DbType.Date);
+
+				case "timestamp":
+				case "timestampz":
+                    return new PMS.DbType(System.Data.DbType.DateTime);
+			}
+
+            return null;
         }
 	}
 }

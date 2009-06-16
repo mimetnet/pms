@@ -7,6 +7,7 @@ namespace PMS.Query
 
     public class RangeClause : IClause
     {
+        protected PMS.DbType dbType;
         protected bool parenthesis;
         protected string field;
         protected string op;
@@ -19,6 +20,11 @@ namespace PMS.Query
         }
 
         internal RangeClause(string field, string oper, string separator, bool parenthesis, params object[] list)
+            : this(field, null, oper, separator, parenthesis, list)
+        {
+        }
+
+        internal RangeClause(string field, PMS.DbType dbType, string oper, string separator, bool parenthesis, params object[] list)
         {
             this.field = field;
             this.separator = separator;
@@ -72,7 +78,7 @@ namespace PMS.Query
             List<IDataParameter> list = new List<IDataParameter>();
             
             for (int i=0; i<this.values.Length; i++)
-                list.Add(callback("@" + this.field + (i+1), this.values[i]));
+                list.Add(callback("@" + this.field + (i+1), this.values[i], dbType));
 
             return list;
         }

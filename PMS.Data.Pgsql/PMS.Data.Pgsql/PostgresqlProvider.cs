@@ -16,9 +16,15 @@ namespace PMS.Data.Postgresql
             get { return typeof(PostgresqlConnection); }
         }
 
-        public override IDataParameter CreateParameter(string name, object value)
+        public override IDataParameter CreateParameter(string name, object value, PMS.DbType dbType)
         {
-            return new Npgsql.NpgsqlParameter(name, value);
+            IDataParameter p = new Npgsql.NpgsqlParameter();
+            p.ParameterName = name;
+            if (dbType != null)
+                p.DbType = dbType.SystemDbType;
+            p.Value = value;
+            return p;
+
         }
 
         public override IDbConnection GetConnection()

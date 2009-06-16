@@ -35,15 +35,21 @@ namespace PMS.Data.Sqlite
             return new SqliteInspector(conn);
         }
 
-        public override IDataParameter CreateParameter(string name, object value)
+        public override IDataParameter CreateParameter(string name, object value, PMS.DbType dbType)
         {
-            Type t = value.GetType();
+            //Type t = value.GetType();
+            //if (typeof(DateTime) == t) {
+            //    value = ((DateTime)value).ToString("yyyy-MM-dd HH:mm:sszz");
+            //}
+            //return new SqliteParameter(name, value);
 
-            if (typeof(DateTime) == t) {
-                value = ((DateTime)value).ToString("yyyy-MM-dd HH:mm:sszz");
-            }
+            IDataParameter p = new SqliteParameter();
+            p.ParamterName = name;
+            if (dbType != null)
+                p.DbType = dbType.SystemDbType;
+            p.Value = value;
+            return p;
 
-            return new SqliteParameter(name, value);
         }
     }
 }

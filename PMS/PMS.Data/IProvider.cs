@@ -45,7 +45,9 @@ namespace PMS.Data
 		IDbConnection GetConnection();
 		IDbConnection GetConnection(string connString);
 
-        IDataParameter CreateParameter(string name, object value);
+        IDataParameter CreateParameter(string name, object value, PMS.DbType dbType);
+
+        PMS.DbType GetDbType(string dbTypeName);
         
         // ---------------------------------------------------------------
 		
