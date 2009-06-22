@@ -179,27 +179,21 @@ namespace PMS.Query
         {
             sql.Append('(');
 
-            if (this.criteria.Count > 0 && this.criteria[0].IsCondition == false)
-                this.criteria.RemoveAt(0);
+			List<IClause> list = new List<IClause>();
+			list.AddRange(this.criteria);
+			list.AddRange(this.values);
+
+            if (list.Count > 0 && list[0].IsCondition == false)
+                list.RemoveAt(0);
             
-            if (0 == AppendInsert(sql, this.criteria, String.Empty))
-                if (this.values.Count > 0 && this.values[0].IsCondition == false)
-                    this.values.RemoveAt(0);
-
-            AppendInsert(sql, this.values, String.Empty);
-
+            AppendInsert(sql, list, String.Empty);
             sql.Append(") VALUES (");
-
-            AppendInsert(sql, this.criteria, "@");
-            AppendInsert(sql, this.values, "@");
-
+            AppendInsert(sql, list, "@");
             sql.Append(')');
         }
 
-        public int AppendInsert(StringBuilder sql, List<IClause> list, string prepend)
+        public void AppendInsert(StringBuilder sql, List<IClause> list, string prepend)
         {
-            int x=0;
-
             for (int i=0; i<list.Count; i++) {
                 if (list[i].IsCondition) {
                     if (i > 0)
@@ -209,11 +203,8 @@ namespace PMS.Query
 
                     if (!String.IsNullOrEmpty(prepend))
                         this.parameters.AddRange(list[i].CreateParameters(this.provider.CreateParameter));
-                    
-                    x++;
                 }
             }
-            return x;
         }
 
         public void AppendColumns(StringBuilder sql)
