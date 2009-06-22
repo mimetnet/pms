@@ -304,6 +304,10 @@ namespace PMS.Data
 					obj = Convert.ToInt64(obj);
 					break;
 
+				case "char":
+					obj = Convert.ToChar(obj);
+					break;
+
 				case "varchar":
 				case "text":
 					obj = Convert.ToString(obj);
