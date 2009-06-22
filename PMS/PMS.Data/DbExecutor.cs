@@ -21,7 +21,7 @@ namespace PMS.Data
         public int Insert()
         {
             //return this.Scalar<int>(query.ToString(SqlCommand.Insert) + ";SELECT CAST(SCOPE_IDENTITY() AS int)");
-            return this.Scalar<int>(query.ToString(SqlCommand.Insert));
+            return this.NonQuery(query.ToString(SqlCommand.Insert));
         }
 
         public int Update()
