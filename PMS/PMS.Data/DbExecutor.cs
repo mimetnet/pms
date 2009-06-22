@@ -20,7 +20,8 @@ namespace PMS.Data
 
         public int Insert()
         {
-            return this.Scalar<int>(query.ToString(SqlCommand.Insert) + ";SELECT CAST(SCOPE_IDENTITY() AS int)");
+            //return this.Scalar<int>(query.ToString(SqlCommand.Insert) + ";SELECT CAST(SCOPE_IDENTITY() AS int)");
+            return this.Scalar<int>(query.ToString(SqlCommand.Insert));
         }
 
         public int Update()
@@ -117,15 +118,29 @@ namespace PMS.Data
             return this.First();
         }
 
-        public T Single()
+        public T Object(string sqlOverride)
         {
+            return this.First(sqlOverride);
+        }
+
+        public T Single()
+		{
             return this.First();
+		}
+
+        public T Single(string sqlOverride)
+        {
+            return this.First(sqlOverride);
         }
 
         public T First()
+		{
+			return First(query.ToString(SqlCommand.Select));
+		}
+
+        public T First(string sqlOverride)
         {
-            //this.Limit(1);
-            using (IEnumerator<T> list = this.GetEnumerator())
+            using (IEnumerator<T> list = this.GetEnumerator(sqlOverride))
                 if (list.MoveNext())
                     return list.Current;
 
@@ -133,6 +148,11 @@ namespace PMS.Data
         }
 
         public T Last()
+		{
+			return Last(query.ToString(SqlCommand.Select));
+		}
+
+		public T Last(string sqlOverride)
         {
             T current = default(T);
 
