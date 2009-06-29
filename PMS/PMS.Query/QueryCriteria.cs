@@ -375,6 +375,9 @@ namespace PMS.Query
         #region UPDATE foo SET
         public Query<Table> Set(string field, object value)
         {
+			if (String.IsNullOrEmpty(field))
+				throw new ArgumentNullException("field");
+
             if (this.values.Count > 0)
                 this.values.Add(new RawClause(", "));
             this.values.Add(new EqualToClause(field, value));
@@ -383,6 +386,8 @@ namespace PMS.Query
 
         public Query<Table> Set(Table record)
         {
+			if (null == record) return this;
+
             foreach (Field field in this.cdesc.Fields) {
                 Object fvalue = cdesc.GetValue(field, record);
 
