@@ -114,7 +114,7 @@ AC_OUTPUT([
 			  PMS/Makefile
 			  PMS.Data.Pgsql/Makefile
 			  PMS.Data.Sqlite/Makefile
-			  build/pms2.pc
+			  build/pms-2.0.pc
 			  build/Makefile
 			  scripts/Makefile
 			  policy/Makefile

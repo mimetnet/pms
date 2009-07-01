@@ -10,8 +10,7 @@ autom4te.cache
 bin
 build-arch-stamp
 build-indep-stamp
-build/libpms.pc
-build/pms.pc
+build/pms-2.0.pc
 build-stamp
 config.guess
 config.log
