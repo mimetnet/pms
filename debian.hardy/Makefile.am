@@ -5,5 +5,5 @@ EXTRA_DIST = control \
 				 copyright \
 				 docs \
 				 rules \
-				 libpms.install \
-				 libpms-dbg.install
+				 libpms2.install \
+				 libpms2-dbg.install
