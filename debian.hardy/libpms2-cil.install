@@ -4,7 +4,7 @@ usr/lib/cli/pms-2.0/PMS.dll
 usr/lib/mono/gac/PMS/*/PMS.dll
 
 usr/lib/mono/gac/policy.*.PMS/*
-usr/lib/pkgconfig/pms2.pc
+usr/lib/pkgconfig/pms-2.0.pc
 
 usr/bin/pms2-providers
 usr/bin/pms2-repo-split
