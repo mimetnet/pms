@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<monodoc>
+  <source provider="ecma" basefile="pms2" path="pms2" title="PMS 2.0"/>
+</monodoc>

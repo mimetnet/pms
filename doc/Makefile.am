@@ -1,13 +1,13 @@
 SUBDIRS = man
 
-EXTRA_DIST = pms.zip pms.tree pms.source
-CLEANFILES = pms.zip pms.tree pms.stamp
+EXTRA_DIST = pms2.zip pms2.tree pms2.source
+CLEANFILES = pms2.zip pms2.tree pms2.stamp
 
 if HAVE_MONODOC
-all: pms.stamp
+all: pms2.stamp
 
-pms.stamp: api/index.xml
-	$(MDASSEMBLER) --ecma api -o pms
+pms2.stamp: api/index.xml
+	$(MDASSEMBLER) --ecma api -o pms2
 	touch $@
 
 api/index.xml: $(top_srcdir)/PMS/PMS.dll
