@@ -18,17 +18,22 @@ class Config:
         self.op.disable_interspersed_args()
         self.op.add_option('-l', dest='local', help='Modify $USER PMS providers', action='store_true')
         self.op.add_option('-r', dest='remove', help='Remove provider', action='store_true')
+        self.op.add_option('-c', dest='create', help='Create provider', action='store_true')
         self.config, self.remainder = self.op.parse_args()
         if os.name != 'nt':
             self.provider = '/etc/libpms2/providers'
         else:
             self.provider = 'c:\\Program Files\\Common Files\\PMS\\etc\\providers'
-    
+
     def remove(self):
         return self.config.remove
 
+    def create(self):
+        return self.config.create
+
     def local(self):
         return self.config.local
+
 
 def exit(val):
     sys.exit(val)
@@ -38,28 +43,71 @@ def get_type_nt(val):
     ret = os.popen('c:\\GTK\\2.8\\bin\\gacco.exe -e ' + t[1])
     p = ret.readlines()
     ret.close()
-    
+
     if 'not found in the Microsft Global' in p[0]:
         return None
-    
+
     return "%s, %s" % (t[0], str(p[0]).strip())
 
+
+def ensure_file(cfg, mode='r'):
+    if not os.access(cfg.provider, os.F_OK):
+        return False
+    try:
+        open(cfg.provider, mode).close()
+        return True
+    except:
+        return False
+
+def ensure_dir(cfg):
+    if not os.access(os.path.dirname(cfg.provider), os.F_OK):
+        try:
+            os.mkdir(os.path.dirname(cfg.provider))
+        except:
+            print("mkdir(%s) failed" % (os.path.dirname(cfg.provider)))
+            exit(1)
 
 def get_type(val):
     t = val.split(',')
     p = getoutput('gacutil /l ' + t[1]).split("\n")
+    t = [x.strip() for x in t]
+    p = [x.strip() for x in p]
+    pl = len(p)
+    tl = len(t)
 
-    if p[len(p)-1].endswith("0"):
+    if p[pl-1].endswith("0"):
         return None
 
-    return "%s, %s" % (t[0], str(p[len(p)-2]).strip())
+    # find highest because we're not specific
+    if not tl > 2:
+        return "%s, %s" % (t[0], str(p[pl-2]))
 
+    # find best match
+    matches = []
+    for i in range(1, pl-1):
+        parts = p[i].split(',')
+        parts = [x.strip() for x in parts]
+        for y in range(2, tl):
+            #print("gacuti %d = %s" % (y-1, parts[y-1]))
+            #print("search %d = %s" % (y, t[y]))
+            if parts[y-1].startswith(t[y]):
+                matches.append(p[i])
+    return "%s, %s" % (t[0], str(matches[len(matches)-1]))
+
+def list_providers(cfg):
+    if not ensure_file(cfg, 'r'):
+        print('could not read: %s' % (cfg.provider))
+        exit(0)
+    f = open(cfg.provider, 'r')
+    for line in f:
+        print(line.strip())
+    f.close()
 
 def add_provider(cfg):
     if len(cfg.remainder) != 2:
         print "Usage: %s [options] name 'type, assembly'" % (cfg.op.get_prog_name())
         exit(1)
-    
+
     if os.name != 'nt':
         type = get_type(cfg.remainder[1])
     else:
@@ -69,8 +117,12 @@ def add_provider(cfg):
         print("Assembly '%s' not found in GAC" % (cfg.remainder[1]))
         exit(1)
 
-    f = open(cfg.provider, 'r+')
+    ensure_dir(cfg)
+    if not ensure_file(cfg, 'w'):
+        print('could not edit/create: %s' % (cfg.provider))
+        exit(0)
 
+    f = open(cfg.provider, 'r+')
     for line in f:
         line = line.strip()
 
@@ -85,10 +137,13 @@ def add_provider(cfg):
     f.write("%s = %s\n" % (cfg.remainder[0], type))
     f.close()
 
-
 def remove_provider(cfg):
     if len(cfg.remainder) != 1:
-        print "Usage: %s -r name" % (cfg.op.get_prog_name())
+        print("Usage: %s -r name" % (cfg.op.get_prog_name()))
+        exit(1)
+
+    if not ensure_file(cfg, 'r+'):
+        print('could not open for writing: %s' % (cfg.provider))
         exit(1)
 
     tmp = os.path.join(tempfile.gettempdir(), 'pms2-providers')
@@ -115,22 +170,13 @@ def remove_provider(cfg):
 
 if __name__ == '__main__':
     cfg = Config()
-    
-    if not os.access(os.path.dirname(cfg.provider), os.F_OK):
-        try:
-            os.mkdir(os.path.dirname(cfg.provider))
-        except:
-            print("mkdir(%s) failed" % (os.path.dirname(cfg.provider)))
-            exit(1)
 
-    if not os.access(cfg.provider, os.F_OK):
-        try:
-            open(cfg.provider, 'w').close()
-        except:
-            print("touch(%s) failed" % (cfg.provider))
-            exit(1)
-    
-    if not cfg.remove():
+    if not cfg.remove() and not cfg.create():
+        list_providers(cfg)
+    elif cfg.create():
         add_provider(cfg)
-    else:
+    elif cfg.remove():
         remove_provider(cfg)
+    else:
+        print("unsupported commands")
+        exit(1)
