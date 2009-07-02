@@ -187,7 +187,7 @@ namespace PMS.Data
         }
         #endregion
 
-        private TList Reader2List<TList>(string sqlOverride, QueryCallback<T> callback) where TList : IList, new()
+        protected TList Reader2List<TList>(string sqlOverride, QueryCallback<T> callback) where TList : IList, new()
         {
             TList list = Activator.CreateInstance<TList>();
             IEnumerator<T> enumerator = this.GetEnumerator(sqlOverride);
