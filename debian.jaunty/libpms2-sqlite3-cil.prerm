@@ -1,5 +1,5 @@
 #! /bin/sh
-# prerm script for libpms-sqlite3
+# prerm script for libpms2-sqlite3
 #
 # see: dh_installdeb(1)
 
@@ -25,7 +25,7 @@ set -e
 
 case "$1" in
 	remove|upgrade)
-		/usr/bin/pms-providers -r sqlite || true
+		/usr/bin/pms2-providers -r sqlite || true
 	;;
 	deconfigure)
 	;;

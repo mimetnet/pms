@@ -1,5 +1,5 @@
 #! /bin/sh
-# postinst script for libpms-pgsql
+# postinst script for libpms2-pgsql
 #
 # see: dh_installdeb(1)
 
@@ -19,7 +19,7 @@ set -e
 
 case "$1" in
     configure)
-        /usr/bin/pms-providers pgsql "PMS.Data.Postgresql.PostgresqlProvider, PMS.Data.Pgsql"
+        /usr/bin/pms2-providers -c pgsql "PMS.Data.Postgresql.PostgresqlProvider, PMS.Data.Pgsql, Version=1"
     ;;
     abort-remove)
     ;;

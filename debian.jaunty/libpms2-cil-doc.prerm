@@ -1,17 +1,17 @@
 #! /bin/sh
-# prerm script for libpms-cil-doc
+# prerm script for libpms2-cil-doc
 #
 # see: dh_installdeb(1)
 
 set -e
 
 MXML=`pkg-config monodoc --variable=sourcesdir`/../monodoc.xml
-MSRC=`pkg-config monodoc --variable=sourcesdir`/pms.source
+MSRC=`pkg-config monodoc --variable=sourcesdir`/pms2.source
 
 case "$1" in
 	remove|upgrade)
-		if [ -x /usr/bin/pms-monodoc ]; then
-            pms-monodoc -i "$MXML" -o "$MXML" -s "$MSRC" -r
+		if [ -x /usr/bin/pms2-monodoc ]; then
+            pms2-monodoc -i "$MXML" -o "$MXML" -s "$MSRC" -r
 		fi
 	;;
 	deconfigure)

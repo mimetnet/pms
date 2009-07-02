@@ -1,5 +1,5 @@
 #! /bin/sh
-# postinst script for libpms-sqlite3
+# postinst script for libpms2-sqlite3
 #
 # see: dh_installdeb(1)
 
@@ -19,7 +19,7 @@ set -e
 
 case "$1" in
     configure)
-        /usr/bin/pms-providers sqlite "PMS.Data.Sqlite.SqliteProvider, PMS.Data.Sqlite"
+        /usr/bin/pms2-providers -c sqlite "PMS.Data.Sqlite.SqliteProvider, PMS.Data.Sqlite, Version=1"
     ;;
     abort-remove)
     ;;
