@@ -1,0 +1,1597 @@
+<Type Name="Query&lt;Table&gt;" FullName="PMS.Query.Query&lt;Table&gt;">
+  <TypeSignature Language="C#" Value="public class Query&lt;Table&gt;" />
+  <AssemblyInfo>
+    <AssemblyName>PMS</AssemblyName>
+    <AssemblyVersion>1.9.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <TypeParameters>
+    <TypeParameter>Table</TypeParameter>
+  </TypeParameters>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <typeparam name="Table">To be added.</typeparam>
+    <summary>To be added.</summary>
+    <remarks>To be added.</remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Query (PMS.Metadata.Class klass, PMS.Data.IProvider provider, System.Data.IDbConnection connection);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="klass" Type="PMS.Metadata.Class" />
+        <Parameter Name="provider" Type="PMS.Data.IProvider" />
+        <Parameter Name="connection" Type="System.Data.IDbConnection" />
+      </Parameters>
+      <Docs>
+        <param name="klass">To be added.</param>
+        <param name="provider">To be added.</param>
+        <param name="connection">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Add">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; Add (PMS.Query.IClause item);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="item" Type="PMS.Query.IClause" />
+      </Parameters>
+      <Docs>
+        <param name="item">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="And">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; And ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndBetween">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; AndBetween (string field, object val1, object val2);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="val1" Type="System.Object" />
+        <Parameter Name="val2" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="val1">To be added.</param>
+        <param name="val2">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndEqualTo">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; AndEqualTo (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndFilter">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; AndFilter (string sClause);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sClause" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="sClause">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndGreaterOrEqual">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; AndGreaterOrEqual (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndGreaterThan">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; AndGreaterThan (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndIn">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; AndIn (string field, object[] list);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="list" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="list">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndIsNotNull">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; AndIsNotNull (string field);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndIsNull">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; AndIsNull (string field);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndLessOrEqual">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; AndLessOrEqual (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndLessThan">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; AndLessThan (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndLike">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; AndLike (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndLike">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; AndLike (string field, object value, string fieldFunction);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+        <Parameter Name="fieldFunction" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <param name="fieldFunction">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndNotBetween">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; AndNotBetween (string field, object val1, object val2);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="val1" Type="System.Object" />
+        <Parameter Name="val2" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="val1">To be added.</param>
+        <param name="val2">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndNotEqualTo">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; AndNotEqualTo (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndNotFilter">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; AndNotFilter (string sClause);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sClause" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="sClause">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndNotIn">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; AndNotIn (string field, object[] list);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="list" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="list">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndNotLike">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; AndNotLike (string f, object v);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="f" Type="System.String" />
+        <Parameter Name="v" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="f">To be added.</param>
+        <param name="v">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AppendColumns">
+      <MemberSignature Language="C#" Value="public void AppendColumns (System.Text.StringBuilder sql);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sql" Type="System.Text.StringBuilder" />
+      </Parameters>
+      <Docs>
+        <param name="sql">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AppendColumns">
+      <MemberSignature Language="C#" Value="public virtual void AppendColumns (System.Text.StringBuilder sql, PMS.Metadata.Field field);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sql" Type="System.Text.StringBuilder" />
+        <Parameter Name="field" Type="PMS.Metadata.Field" />
+      </Parameters>
+      <Docs>
+        <param name="sql">To be added.</param>
+        <param name="field">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AppendCondition">
+      <MemberSignature Language="C#" Value="public void AppendCondition (System.Text.StringBuilder sql);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sql" Type="System.Text.StringBuilder" />
+      </Parameters>
+      <Docs>
+        <param name="sql">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AppendInsert">
+      <MemberSignature Language="C#" Value="public void AppendInsert (System.Text.StringBuilder sql);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sql" Type="System.Text.StringBuilder" />
+      </Parameters>
+      <Docs>
+        <param name="sql">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AppendInsert">
+      <MemberSignature Language="C#" Value="public void AppendInsert (System.Text.StringBuilder sql, System.Collections.Generic.List&lt;PMS.Query.IClause&gt; list, string prepend);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sql" Type="System.Text.StringBuilder" />
+        <Parameter Name="list" Type="System.Collections.Generic.List&lt;PMS.Query.IClause&gt;" />
+        <Parameter Name="prepend" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="sql">To be added.</param>
+        <param name="list">To be added.</param>
+        <param name="prepend">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AppendLimit">
+      <MemberSignature Language="C#" Value="public void AppendLimit (System.Text.StringBuilder sql);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sql" Type="System.Text.StringBuilder" />
+      </Parameters>
+      <Docs>
+        <param name="sql">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AppendOrderBy">
+      <MemberSignature Language="C#" Value="public void AppendOrderBy (System.Text.StringBuilder sql);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sql" Type="System.Text.StringBuilder" />
+      </Parameters>
+      <Docs>
+        <param name="sql">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AppendWhere">
+      <MemberSignature Language="C#" Value="public void AppendWhere (System.Text.StringBuilder sql);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sql" Type="System.Text.StringBuilder" />
+      </Parameters>
+      <Docs>
+        <param name="sql">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Between">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; Between (string field, object val1, object val2);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="val1" Type="System.Object" />
+        <Parameter Name="val2" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="val1">To be added.</param>
+        <param name="val2">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="cdesc">
+      <MemberSignature Language="C#" Value="protected PMS.Metadata.Class cdesc;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Metadata.Class</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Class">
+      <MemberSignature Language="C#" Value="public PMS.Metadata.Class Class { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Metadata.Class</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="columns">
+      <MemberSignature Language="C#" Value="protected string columns;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Columns">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; Columns (string columns);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="columns" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="columns">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="connection">
+      <MemberSignature Language="C#" Value="protected System.Data.IDbConnection connection;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Data.IDbConnection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CountSql">
+      <MemberSignature Language="C#" Value="protected virtual string CountSql ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateSql">
+      <MemberSignature Language="C#" Value="protected virtual string CreateSql ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="criteria">
+      <MemberSignature Language="C#" Value="protected System.Collections.Generic.List&lt;PMS.Query.IClause&gt; criteria;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.List&lt;PMS.Query.IClause&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DeleteSql">
+      <MemberSignature Language="C#" Value="protected virtual string DeleteSql ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DropSql">
+      <MemberSignature Language="C#" Value="protected virtual string DropSql ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EqualTo">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; EqualTo (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Exec">
+      <MemberSignature Language="C#" Value="public PMS.Data.DbExecutor&lt;Table&gt; Exec ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Data.DbExecutor&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Filter">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; Filter (string sClause);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sClause" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="sClause">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GreaterOrEqual">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; GreaterOrEqual (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GreaterThan">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; GreaterThan (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="In">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; In (string field, object[] list);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="list" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="list">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InsertSql">
+      <MemberSignature Language="C#" Value="protected virtual string InsertSql ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsFieldSet">
+      <MemberSignature Language="C#" Value="protected bool IsFieldSet (PMS.Metadata.Field field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="PMS.Metadata.Field" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsNotNull">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; IsNotNull (string field);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsNull">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; IsNull (string field);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LessOrEqual">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; LessOrEqual (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LessThan">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; LessThan (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Like">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; Like (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="limit">
+      <MemberSignature Language="C#" Value="protected uint limit;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.UInt32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Limit">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; Limit (uint limit);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="limit" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="limit">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Not">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; Not ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="NotBetween">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; NotBetween (string field, object val1, object val2);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="val1" Type="System.Object" />
+        <Parameter Name="val2" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="val1">To be added.</param>
+        <param name="val2">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="NotEqualTo">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; NotEqualTo (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="NotFilter">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; NotFilter (string sClause);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sClause" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="sClause">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="NotIn">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; NotIn (string field, object[] list);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="list" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="list">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="NotLike">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; NotLike (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="offset">
+      <MemberSignature Language="C#" Value="protected uint offset;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.UInt32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Offset">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; Offset (uint offset);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="offset" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="offset">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Or">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; Or ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrBetween">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; OrBetween (string field, object val1, object val2);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="val1" Type="System.Object" />
+        <Parameter Name="val2" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="val1">To be added.</param>
+        <param name="val2">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="order">
+      <MemberSignature Language="C#" Value="protected System.Collections.Generic.List&lt;string&gt; order;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.List&lt;System.String&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrderBy">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; OrderBy (string field);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrderByAsc">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; OrderByAsc (string field);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrderByDesc">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; OrderByDesc (string field);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrEqualTo">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; OrEqualTo (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrFilter">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; OrFilter (string sClause);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sClause" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="sClause">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrGreaterOrEqual">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; OrGreaterOrEqual (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrGreaterThan">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; OrGreaterThan (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrIn">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; OrIn (string field, object[] list);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="list" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="list">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrIsNotNull">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; OrIsNotNull (string field);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrIsNull">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; OrIsNull (string field);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrLessOrEqual">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; OrLessOrEqual (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrLessThan">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; OrLessThan (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrLike">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; OrLike (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrLike">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; OrLike (string field, object value, string fieldFunction);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+        <Parameter Name="fieldFunction" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <param name="fieldFunction">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrNotBetween">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; OrNotBetween (string field, object val1, object val2);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="val1" Type="System.Object" />
+        <Parameter Name="val2" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="val1">To be added.</param>
+        <param name="val2">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrNotEqualTo">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; OrNotEqualTo (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrNotFilter">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; OrNotFilter (string sClause);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sClause" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="sClause">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrNotIn">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; OrNotIn (string field, object[] list);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="list" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="list">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrNotLike">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; OrNotLike (string f, object v);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="f" Type="System.String" />
+        <Parameter Name="v" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="f">To be added.</param>
+        <param name="v">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="parameters">
+      <MemberSignature Language="C#" Value="protected System.Collections.Generic.List&lt;System.Data.IDataParameter&gt; parameters;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.List&lt;System.Data.IDataParameter&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Parameters">
+      <MemberSignature Language="C#" Value="public System.Collections.Generic.List&lt;System.Data.IDataParameter&gt; Parameters { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.List&lt;System.Data.IDataParameter&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="provider">
+      <MemberSignature Language="C#" Value="protected PMS.Data.IProvider provider;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Data.IProvider</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Provider">
+      <MemberSignature Language="C#" Value="public PMS.Data.IProvider Provider { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Data.IProvider</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SelectSql">
+      <MemberSignature Language="C#" Value="protected virtual string SelectSql ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Set">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; Set (Table record);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="record" Type="Table" />
+      </Parameters>
+      <Docs>
+        <param name="record">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Set">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; Set (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="StartGroup">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; StartGroup ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="StopGroup">
+      <MemberSignature Language="C#" Value="public PMS.Query.Query&lt;Table&gt; StopGroup ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Query&lt;Table&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ToString">
+      <MemberSignature Language="C#" Value="public string ToString (PMS.Query.SqlCommand cmd);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cmd" Type="PMS.Query.SqlCommand" />
+      </Parameters>
+      <Docs>
+        <param name="cmd">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UpdateSql">
+      <MemberSignature Language="C#" Value="protected virtual string UpdateSql ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="values">
+      <MemberSignature Language="C#" Value="protected System.Collections.Generic.List&lt;PMS.Query.IClause&gt; values;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.List&lt;PMS.Query.IClause&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="verbose">
+      <MemberSignature Language="C#" Value="protected static bool verbose;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

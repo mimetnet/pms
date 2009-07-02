@@ -1,11 +1,11 @@
 <Type Name="RepositoryManager" FullName="PMS.Metadata.RepositoryManager">
-  <TypeSignature Language="C#" Value="public sealed class RepositoryManager : MarshalByRefObject" />
+  <TypeSignature Language="C#" Value="public sealed class RepositoryManager" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.7.0.3</AssemblyVersion>
+    <AssemblyVersion>1.9.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
-    <BaseTypeName>System.MarshalByRefObject</BaseTypeName>
+    <BaseTypeName>System.Object</BaseTypeName>
   </Base>
   <Interfaces />
   <Docs>
@@ -22,8 +22,20 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public RepositoryManager (string package);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="package" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="package">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Close">
-      <MemberSignature Language="C#" Value="public static void Close ();" />
+      <MemberSignature Language="C#" Value="public void Close ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -59,7 +71,7 @@
       </Docs>
     </Member>
     <Member MemberName="Exists">
-      <MemberSignature Language="C#" Value="public static bool Exists (Type type);" />
+      <MemberSignature Language="C#" Value="public bool Exists (Type type);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -75,7 +87,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetClass">
-      <MemberSignature Language="C#" Value="public static PMS.Metadata.Class GetClass (Type type);" />
+      <MemberSignature Language="C#" Value="public PMS.Metadata.Class GetClass (Type type);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>PMS.Metadata.Class</ReturnType>
@@ -91,7 +103,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetClassListType">
-      <MemberSignature Language="C#" Value="public static Type GetClassListType (Type type);" />
+      <MemberSignature Language="C#" Value="public Type GetClassListType (Type type);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Type</ReturnType>
@@ -101,6 +113,35 @@
       </Parameters>
       <Docs>
         <param name="type">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetDescriptor">
+      <MemberSignature Language="C#" Value="public PMS.Metadata.Connection GetDescriptor ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Metadata.Connection</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetDescriptor">
+      <MemberSignature Language="C#" Value="public PMS.Metadata.Connection GetDescriptor (string connectionID);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Metadata.Connection</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="connectionID" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="connectionID">To be added.</param>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
@@ -177,8 +218,20 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="Package">
+      <MemberSignature Language="C#" Value="public string Package { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Repository">
-      <MemberSignature Language="C#" Value="public static PMS.Metadata.Repository Repository { set; get; };" />
+      <MemberSignature Language="C#" Value="public PMS.Metadata.Repository Repository { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>PMS.Metadata.Repository</ReturnType>

@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public sealed class Connection : System.Xml.Serialization.IXmlSerializable" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.7.0.3</AssemblyVersion>
+    <AssemblyVersion>1.9.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -27,6 +27,18 @@
       <MemberType>Constructor</MemberType>
       <Parameters />
       <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Connection (System.Xml.XmlReader reader);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="reader" Type="System.Xml.XmlReader" />
+      </Parameters>
+      <Docs>
+        <param name="reader">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -85,6 +97,28 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Connection (string id, string conn, PMS.Data.IProvider provider, bool isDefault, int minPool, int maxPool);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="id" Type="System.String" />
+        <Parameter Name="conn" Type="System.String" />
+        <Parameter Name="provider" Type="PMS.Data.IProvider" />
+        <Parameter Name="isDefault" Type="System.Boolean" />
+        <Parameter Name="minPool" Type="System.Int32" />
+        <Parameter Name="maxPool" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="id">To be added.</param>
+        <param name="conn">To be added.</param>
+        <param name="provider">To be added.</param>
+        <param name="isDefault">To be added.</param>
+        <param name="minPool">To be added.</param>
+        <param name="maxPool">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="DEFAULT_POOL_SIZE">
       <MemberSignature Language="C#" Value="public const int DEFAULT_POOL_SIZE = 1;" />
       <MemberType>Field</MemberType>
@@ -121,11 +155,56 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="ID">
+      <MemberSignature Language="C#" Value="public string ID;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="IsDefault">
       <MemberSignature Language="C#" Value="public bool IsDefault;" />
       <MemberType>Field</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsValid">
+      <MemberSignature Language="C#" Value="public bool IsValid { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Maximum">
+      <MemberSignature Language="C#" Value="public int Maximum;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Minimum">
+      <MemberSignature Language="C#" Value="public int Minimum;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>

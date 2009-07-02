@@ -1,6 +1,6 @@
 <Overview>
   <Assemblies>
-    <Assembly Name="PMS" Version="0.7.0.3">
+    <Assembly Name="PMS" Version="1.9.0.0">
       <Attributes>
         <Attribute>
           <AttributeName>System.Runtime.CompilerServices.RuntimeCompatibility(WrapNonExceptionThrows=true)</AttributeName>
@@ -15,7 +15,7 @@
           <AttributeName>System.Reflection.AssemblyTrademark("")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>System.Reflection.AssemblyCopyright("Copyright ?? Matthew Metnetsky 2004-2008")</AttributeName>
+          <AttributeName>System.Reflection.AssemblyCopyright("Copyright © Matthew Metnetsky 2003-2009")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>System.Reflection.AssemblyProduct("PMS")</AttributeName>
@@ -39,30 +39,36 @@
   <Copyright>To be added.</Copyright>
   <Types>
     <Namespace Name="PMS">
-      <Type Name="Config" />
+      <Type Name="DbType" />
       <Type Name="Log" />
       <Type Name="LogLevel" />
     </Namespace>
     <Namespace Name="PMS.Broker">
-      <Type Name="IPersistenceBroker" />
-      <Type Name="PersistenceBroker" />
+      <Type Name="DbBroker" />
       <Type Name="PersistenceBrokerFactory" />
     </Namespace>
     <Namespace Name="PMS.Collections.Pool">
       <Type Name="Item" />
       <Type Name="ItemCollection" />
-      <Type Name="ManagedObjectPool" />
+      <Type Name="ManagedObjectPool`1" DisplayName="ManagedObjectPool&lt;T&gt;" />
       <Type Name="ObjectNotCheckedOutException" />
       <Type Name="ObjectNotInPoolException" />
       <Type Name="ObjectPool" />
       <Type Name="ObjectPoolEmptyException" />
-      <Type Name="PrincipalObjectPool" />
+    </Namespace>
+    <Namespace Name="PMS.Config">
+      <Type Name="Handler" />
+      <Type Name="ProviderElement" />
+      <Type Name="ProviderElementList" />
+      <Type Name="Section" />
     </Namespace>
     <Namespace Name="PMS.Data">
       <Type Name="AbstractProvider" />
       <Type Name="DbCommandProxy" />
       <Type Name="DbConnectionProxy" />
       <Type Name="DbDataReaderProxy" />
+      <Type Name="DbExecutor`1" DisplayName="DbExecutor&lt;T&gt;" />
+      <Type Name="DbManagerFactory" />
       <Type Name="DbResult" />
       <Type Name="IDbInspector" />
       <Type Name="IProvider" />
@@ -72,8 +78,6 @@
     </Namespace>
     <Namespace Name="PMS.DataAccess">
       <Type Name="AccessMode" />
-      <Type Name="DbEngine" />
-      <Type Name="DbEngineNotStartedException" />
       <Type Name="IDbManager" />
     </Namespace>
     <Namespace Name="PMS.IO">
@@ -91,21 +95,24 @@
       <Type Name="Field" />
       <Type Name="FieldCollection" />
       <Type Name="FieldNotFoundException" />
+      <Type Name="MetaObjectEnumerator`1" DisplayName="MetaObjectEnumerator&lt;T&gt;" />
       <Type Name="Reference" />
       <Type Name="Repository" />
       <Type Name="RepositoryDefinitionException" />
+      <Type Name="RepositoryException" />
       <Type Name="RepositoryManager" />
       <Type Name="RepositoryNotFoundException" />
     </Namespace>
     <Namespace Name="PMS.Query">
-      <Type Name="AbstractQuery" />
       <Type Name="AndClause" />
       <Type Name="BetweenClause" />
+      <Type Name="CreateParameterDelegate" />
       <Type Name="Criteria" />
       <Type Name="EqualToClause" />
       <Type Name="GreaterOrEqualToClause" />
       <Type Name="GreaterThanClause" />
       <Type Name="IClause" />
+      <Type Name="InClause" />
       <Type Name="IQuery" />
       <Type Name="IsNotNullClause" />
       <Type Name="IsNullClause" />
@@ -114,13 +121,15 @@
       <Type Name="LikeClause" />
       <Type Name="NotBetweenClause" />
       <Type Name="NotEqualToClause" />
+      <Type Name="NotInClause" />
       <Type Name="NotLikeClause" />
       <Type Name="OrClause" />
-      <Type Name="QueryByCriteria" />
+      <Type Name="Query`1" DisplayName="Query&lt;Table&gt;" />
       <Type Name="QueryByObject" />
       <Type Name="QueryBySql" />
       <Type Name="QueryByType" />
       <Type Name="QueryCallback`1" DisplayName="QueryCallback&lt;T&gt;" />
+      <Type Name="QueryException" />
       <Type Name="RangeClause" />
       <Type Name="SqlCommand" />
       <Type Name="ValueClause" />

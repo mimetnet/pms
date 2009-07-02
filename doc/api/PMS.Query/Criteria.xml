@@ -1,8 +1,8 @@
 <Type Name="Criteria" FullName="PMS.Query.Criteria">
-  <TypeSignature Language="C#" Value="public sealed class Criteria" />
+  <TypeSignature Language="C#" Value="public class Criteria" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>0.7.0.3</AssemblyVersion>
+    <AssemblyVersion>1.9.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -25,6 +25,49 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Criteria (PMS.Metadata.Class klass, PMS.Data.IProvider provider);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="klass" Type="PMS.Metadata.Class" />
+        <Parameter Name="provider" Type="PMS.Data.IProvider" />
+      </Parameters>
+      <Docs>
+        <param name="klass">To be added.</param>
+        <param name="provider">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Add">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria Add (PMS.Query.IClause item);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="item" Type="PMS.Query.IClause" />
+      </Parameters>
+      <Docs>
+        <param name="item">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="And">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria And ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="AndBetween">
       <MemberSignature Language="C#" Value="public void AndBetween (string field, object val1, object val2);" />
       <MemberType>Method</MemberType>
@@ -44,6 +87,26 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="AndBetween">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria AndBetween (string field, object val1, object val2);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="val1" Type="System.Object" />
+        <Parameter Name="val2" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="val1">To be added.</param>
+        <param name="val2">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="AndEqualTo">
       <MemberSignature Language="C#" Value="public void AndEqualTo (string field, object value);" />
       <MemberType>Method</MemberType>
@@ -58,6 +121,58 @@
         <param name="field">To be added.</param>
         <param name="value">To be added.</param>
         <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndEqualTo">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria AndEqualTo (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndFilter">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria AndFilter (string sClause);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sClause" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="sClause">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndGreaterOrEqual">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria AndGreaterOrEqual (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -95,6 +210,24 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="AndGreaterThan">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria AndGreaterThan (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="AndIsNotNull">
       <MemberSignature Language="C#" Value="public void AndIsNotNull (string field);" />
       <MemberType>Method</MemberType>
@@ -110,6 +243,38 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="AndIsNotNull">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria AndIsNotNull (string field);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndIsNull">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria AndIsNull (string field);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="AndIsNull">
       <MemberSignature Language="C#" Value="public void AndIsNull (string field);" />
       <MemberType>Method</MemberType>
@@ -122,6 +287,24 @@
       <Docs>
         <param name="field">To be added.</param>
         <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndLessOrEqual">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria AndLessOrEqual (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -159,6 +342,42 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="AndLessThan">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria AndLessThan (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndLike">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria AndLike (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="AndLike">
       <MemberSignature Language="C#" Value="public void AndLike (string field, object value);" />
       <MemberType>Method</MemberType>
@@ -173,6 +392,26 @@
         <param name="field">To be added.</param>
         <param name="value">To be added.</param>
         <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndLike">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria AndLike (string field, object value, string fieldFunction);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+        <Parameter Name="fieldFunction" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <param name="fieldFunction">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -214,6 +453,26 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="AndNotBetween">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria AndNotBetween (string field, object val1, object val2);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="val1" Type="System.Object" />
+        <Parameter Name="val2" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="val1">To be added.</param>
+        <param name="val2">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="AndNotEqualTo">
       <MemberSignature Language="C#" Value="public void AndNotEqualTo (string field, object value);" />
       <MemberType>Method</MemberType>
@@ -231,6 +490,58 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="AndNotEqualTo">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria AndNotEqualTo (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndNotFilter">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria AndNotFilter (string sClause);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sClause" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="sClause">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AndNotLike">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria AndNotLike (string f, object v);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="f" Type="System.String" />
+        <Parameter Name="v" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="f">To be added.</param>
+        <param name="v">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="AndNotLike">
       <MemberSignature Language="C#" Value="public void AndNotLike (string f, object v);" />
       <MemberType>Method</MemberType>
@@ -244,6 +555,36 @@
       <Docs>
         <param name="f">To be added.</param>
         <param name="v">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AppendCondition">
+      <MemberSignature Language="C#" Value="public void AppendCondition (System.Text.StringBuilder sql);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sql" Type="System.Text.StringBuilder" />
+      </Parameters>
+      <Docs>
+        <param name="sql">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AppendOrderBy">
+      <MemberSignature Language="C#" Value="public void AppendOrderBy (System.Text.StringBuilder sql);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sql" Type="System.Text.StringBuilder" />
+      </Parameters>
+      <Docs>
+        <param name="sql">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -267,6 +608,37 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="Between">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria Between (string field, object val1, object val2);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="val1" Type="System.Object" />
+        <Parameter Name="val2" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="val1">To be added.</param>
+        <param name="val2">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="clause">
+      <MemberSignature Language="C#" Value="protected System.Collections.Generic.List&lt;PMS.Query.IClause&gt; clause;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.List&lt;PMS.Query.IClause&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="ClauseCount">
       <MemberSignature Language="C#" Value="public int ClauseCount { get; };" />
       <MemberType>Property</MemberType>
@@ -276,6 +648,48 @@
       <Docs>
         <summary>To be added.</summary>
         <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Columns">
+      <MemberSignature Language="C#" Value="public string Columns { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Description">
+      <MemberSignature Language="C#" Value="public PMS.Metadata.Class Description { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Metadata.Class</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EqualTo">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria EqualTo (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -293,6 +707,22 @@
         <param name="field">To be added.</param>
         <param name="value">To be added.</param>
         <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Filter">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria Filter (string sClause);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sClause" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="sClause">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -339,6 +769,42 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="GreaterOrEqual">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria GreaterOrEqual (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GreaterThan">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria GreaterThan (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="GreaterThan">
       <MemberSignature Language="C#" Value="public void GreaterThan (string field, object value);" />
       <MemberType>Method</MemberType>
@@ -353,6 +819,22 @@
         <param name="field">To be added.</param>
         <param name="value">To be added.</param>
         <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsNotNull">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria IsNotNull (string field);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -386,6 +868,33 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="IsNull">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria IsNull (string field);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="klass">
+      <MemberSignature Language="C#" Value="protected PMS.Metadata.Class klass;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Metadata.Class</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="LessOrEqual">
       <MemberSignature Language="C#" Value="public void LessOrEqual (string field, object value);" />
       <MemberType>Method</MemberType>
@@ -403,6 +912,24 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="LessOrEqual">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria LessOrEqual (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="LessThan">
       <MemberSignature Language="C#" Value="public void LessThan (string field, object value);" />
       <MemberType>Method</MemberType>
@@ -417,6 +944,42 @@
         <param name="field">To be added.</param>
         <param name="value">To be added.</param>
         <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LessThan">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria LessThan (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Like">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria Like (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -446,6 +1009,39 @@
       <Docs>
         <summary>To be added.</summary>
         <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Not">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria Not ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="NotBetween">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria NotBetween (string field, object val1, object val2);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="val1" Type="System.Object" />
+        <Parameter Name="val2" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="val1">To be added.</param>
+        <param name="val2">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -485,6 +1081,40 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="NotEqualTo">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria NotEqualTo (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="NotFilter">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria NotFilter (string sClause);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sClause" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="sClause">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="NotLike">
       <MemberSignature Language="C#" Value="public void NotLike (string field, object value);" />
       <MemberType>Method</MemberType>
@@ -502,6 +1132,24 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="NotLike">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria NotLike (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Offset">
       <MemberSignature Language="C#" Value="public uint Offset { set; get; };" />
       <MemberType>Property</MemberType>
@@ -511,6 +1159,19 @@
       <Docs>
         <summary>To be added.</summary>
         <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Or">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria Or ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -530,6 +1191,53 @@
         <param name="val1">To be added.</param>
         <param name="val2">To be added.</param>
         <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrBetween">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria OrBetween (string field, object val1, object val2);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="val1" Type="System.Object" />
+        <Parameter Name="val2" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="val1">To be added.</param>
+        <param name="val2">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="order">
+      <MemberSignature Language="C#" Value="protected System.Collections.Generic.List&lt;string&gt; order;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.List&lt;System.String&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrderBy">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria OrderBy (string field);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -563,6 +1271,38 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="OrderByAsc">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria OrderByAsc (string field);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrderByDesc">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria OrderByDesc (string field);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="OrderByDesc">
       <MemberSignature Language="C#" Value="public void OrderByDesc (string field);" />
       <MemberType>Method</MemberType>
@@ -591,6 +1331,24 @@
       </Docs>
     </Member>
     <Member MemberName="OrEqualTo">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria OrEqualTo (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrEqualTo">
       <MemberSignature Language="C#" Value="public void OrEqualTo (string field, object value);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
@@ -604,6 +1362,40 @@
         <param name="field">To be added.</param>
         <param name="value">To be added.</param>
         <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrFilter">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria OrFilter (string sClause);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sClause" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="sClause">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrGreaterOrEqual">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria OrGreaterOrEqual (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -641,6 +1433,40 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="OrGreaterThan">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria OrGreaterThan (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrIsNotNull">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria OrIsNotNull (string field);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="OrIsNotNull">
       <MemberSignature Language="C#" Value="public void OrIsNotNull (string field);" />
       <MemberType>Method</MemberType>
@@ -671,6 +1497,22 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="OrIsNull">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria OrIsNull (string field);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="OrLessOrEqual">
       <MemberSignature Language="C#" Value="public void OrLessOrEqual (string field, object value);" />
       <MemberType>Method</MemberType>
@@ -685,6 +1527,24 @@
         <param name="field">To be added.</param>
         <param name="value">To be added.</param>
         <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrLessOrEqual">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria OrLessOrEqual (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -705,6 +1565,24 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="OrLessThan">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria OrLessThan (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="OrLike">
       <MemberSignature Language="C#" Value="public void OrLike (string field, object value);" />
       <MemberType>Method</MemberType>
@@ -719,6 +1597,24 @@
         <param name="field">To be added.</param>
         <param name="value">To be added.</param>
         <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrLike">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria OrLike (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -741,6 +1637,26 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="OrLike">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria OrLike (string field, object value, string fieldFunction);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+        <Parameter Name="fieldFunction" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <param name="fieldFunction">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="OrNotBetween">
       <MemberSignature Language="C#" Value="public void OrNotBetween (string field, object val1, object val2);" />
       <MemberType>Method</MemberType>
@@ -757,6 +1673,26 @@
         <param name="val1">To be added.</param>
         <param name="val2">To be added.</param>
         <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrNotBetween">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria OrNotBetween (string field, object val1, object val2);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="val1" Type="System.Object" />
+        <Parameter Name="val2" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="val1">To be added.</param>
+        <param name="val2">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -777,6 +1713,40 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="OrNotEqualTo">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria OrNotEqualTo (string field, object value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="field">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrNotFilter">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria OrNotFilter (string sClause);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sClause" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="sClause">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="OrNotLike">
       <MemberSignature Language="C#" Value="public void OrNotLike (string f, object v);" />
       <MemberType>Method</MemberType>
@@ -791,6 +1761,77 @@
         <param name="f">To be added.</param>
         <param name="v">To be added.</param>
         <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrNotLike">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria OrNotLike (string f, object v);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="f" Type="System.String" />
+        <Parameter Name="v" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="f">To be added.</param>
+        <param name="v">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="provider">
+      <MemberSignature Language="C#" Value="protected PMS.Data.IProvider provider;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Data.IProvider</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetColumns">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria SetColumns (string columns);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="columns" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="columns">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="StartGroup">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria StartGroup ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="StopGroup">
+      <MemberSignature Language="C#" Value="public PMS.Query.Criteria StopGroup ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>PMS.Query.Criteria</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
