@@ -10,7 +10,7 @@ namespace PMS.Query
 {
     public partial class Query <Table> where Table : new()
     {
-        protected static readonly log4net.ILog log = log4net.LogManager.GetLogger("Query");
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger("Query");
         protected static bool verbose = false;
         protected IProvider provider = null;
 		protected Class cdesc = null;
