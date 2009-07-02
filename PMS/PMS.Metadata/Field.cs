@@ -9,8 +9,8 @@ namespace PMS.Metadata
 	[Serializable]
     public sealed class Field : IXmlSerializable
     {
-        private static readonly log4net.ILog log =
-            log4net.LogManager.GetLogger("PMS.Metadata.Field");
+        //private static readonly log4net.ILog log =
+        //    log4net.LogManager.GetLogger("PMS.Metadata.Field");
 
         public string Name;
         public string Column;

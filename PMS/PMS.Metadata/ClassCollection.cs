@@ -14,8 +14,8 @@ namespace PMS.Metadata
     [XmlRoot("classes")]
 	public class ClassCollection : ICollection<Class>, IList<Class>, IEnumerable<Class>, IXmlSerializable
     {
-        private static readonly log4net.ILog log =
-            log4net.LogManager.GetLogger("PMS.Metadata.ClassCollection");
+        //private static readonly log4net.ILog log =
+        //    log4net.LogManager.GetLogger("PMS.Metadata.ClassCollection");
 
 		private SortedList<Type, Class> list = new SortedList<Type, Class>(new PMS.Util.TypeComparer());
 		private static ReaderWriterLock listLock = new ReaderWriterLock();

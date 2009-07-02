@@ -10,8 +10,8 @@ namespace PMS.Query
     [Serializable]
     public partial class Criteria
     {
-        private static readonly log4net.ILog log = 
-			log4net.LogManager.GetLogger("PMS.Query.Criteria");
+        //private static readonly log4net.ILog log = 
+		//	log4net.LogManager.GetLogger("PMS.Query.Criteria");
         protected List<IClause> clause = new List<IClause>();
         protected List<String> order = new List<String>();
 		private int limit = -1;
