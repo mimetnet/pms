@@ -1,6 +1,3 @@
-() enumerable results
-() multi-conn per principal
-
 () resign keys now that mono supports PFX
 
 () rewrite repository & dbengine integration
