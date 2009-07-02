@@ -1,5 +1,5 @@
-libpms2-cil (2.0.0-0-0ubuntu3) stable; urgency=low
+libpms2-cil (1.9.0-0.1) unstable; urgency=low
 
-  * Initial release of 2.0 branch
+  * Initial release of 1.9 which will be 2.0 once stable
 
- -- Matthew Metnetsky <matthew@cowarthill.com>  Thu, 14 Jun 2009 18:50:07 -0500
+ -- Matthew Metnetsky <matthew@cowarthill.com>  Thu, 02 Jul 2009 11:34:49 -0400
