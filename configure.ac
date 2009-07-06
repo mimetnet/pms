@@ -39,6 +39,10 @@ AM_CONDITIONAL(HAVE_MONODOC, test "x$MONODOC" != "xno")
 
 ##############################################################################
 
+test "x$prefix" = "xNONE" && prefix=/usr
+
+##############################################################################
+
 AC_ARG_WITH(
 	[log4net],
 	[  --with-log4net=<pkg name>   Override default log4net package],
