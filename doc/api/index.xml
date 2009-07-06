@@ -111,7 +111,6 @@
       <Type Name="GreaterThanClause" />
       <Type Name="IClause" />
       <Type Name="InClause" />
-      <Type Name="IQuery" />
       <Type Name="IsNotNullClause" />
       <Type Name="IsNullClause" />
       <Type Name="LessOrEqualToClause" />
