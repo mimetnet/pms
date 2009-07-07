@@ -1,4 +1,10 @@
-libpms2-cil (1.9.0-0) unstable; urgency=low
+libpms2-cil (1.9.0-1.0) hardy; urgency=low
+
+  * Fixed Sqlite package for deployment
+
+ -- Matthew Metnetsky <matthew@cowarthill.com>  Tue, 07 Jul 2009 11:41:24 -0400
+
+libpms2-cil (1.9.0-0) hardy; urgency=low
 
   * Initial release of 1.9 which will be 2.0 once stable
 
