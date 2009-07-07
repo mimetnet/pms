@@ -44,7 +44,7 @@ namespace PMS.Data.Sqlite
             //return new SqliteParameter(name, value);
 
             IDataParameter p = new SqliteParameter();
-            p.ParamterName = name;
+            p.ParameterName = name;
             if (dbType != null)
                 p.DbType = dbType.SystemDbType;
             p.Value = value;

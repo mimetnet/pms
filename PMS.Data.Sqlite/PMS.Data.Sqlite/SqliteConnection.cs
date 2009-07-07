@@ -43,8 +43,6 @@ namespace PMS.Data.Sqlite
 
                 if (err.ErrorCode == System.Data.SQLite.SQLiteErrorCode.IOErr)
                     return Reopen();
-#else
-#warning "handle Mono.Sqlite.ErrorCode for Reopen()";
 #endif
 
                 return false;
