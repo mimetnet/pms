@@ -2,6 +2,9 @@ prefix=@prefix@
 exec_prefix=${prefix}
 libdir=@pmsdir@
 
+providers=@sysconfdir@/libpms2/providers
+repository_path=@sysconfdir@/libpms2
+
 Name: @PACKAGE@
 Description: PMS - Phil & Matt Spaces for .NET
 
