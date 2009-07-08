@@ -3,8 +3,8 @@ Section: libs
 Priority: optional
 Homepage: http://www.cowarthill.com/
 Maintainer: Matthew Metnetsky <matthew@cowarthill.com>
-Build-Depends: autotools-dev, debhelper (>= 5.0.0), python-lxml
-Build-Depends-Indep: mono-gac, monodoc-base, liblog4net1.2-cil, libmono-npgsql2.0-cil, libmono-sqlite2.0-cil, cli-common-dev (>= 0.4.0), pkg-config
+Build-Depends: autotools-dev, debhelper (>= 5.0.0), python-lxml, pkg-config
+Build-Depends-Indep: mono-gac, monodoc-base, liblog4net1.2-cil, libmono-npgsql2.0-cil, libmono-sqlite2.0-cil, cli-common-dev (>= 0.5.6)
 Standards-Version: 3.6.2
 
 Package: libpms2-cil
@@ -19,7 +19,7 @@ Description: PMS - Phil & Matt Spaces for .NET
  all future development as libpms-cil will only under
  go bug fixes.
  .
- This version is packaged for Mono 2.0. 
+ This version is packaged for Mono 1.2.6
 
 Package: libpms2-cil-dbg
 Architecture: all
@@ -49,5 +49,5 @@ Description: PMS Sqlite3 Debug Symbols
 Package: libpms2-cil-doc
 Section: doc
 Architecture: all
-Depends: python-lxml, monodoc-manual, monodoc-base, ${misc:Depends}
+Depends: python-lxml, monodoc-manual, monodoc-base
 Description: compiled XML documentation for PMS
