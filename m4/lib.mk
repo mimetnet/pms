@@ -23,14 +23,14 @@ $(SOURCES_make): $(DEPS_dir)
 	for f in `find . -name '*.cs' -type f`; do echo $(ASSEMBLY): $$f >> $@; done;
 
 install-data-local:
-	$(install_sh) -d $(DESTDIR)$(pmsdir)
-	$(install_sh_DATA) -t $(DESTDIR)$(pmsdir)/ $(ASSEMBLY) 
-	if test -n "$(DEBUG_FLAGS)"; then $(install_sh_DATA) -t $(DESTDIR)$(pmsdir)/ $(ASSEMBLY).mdb; fi;
+	$(INSTALL) -d $(DESTDIR)$(pmsdir)
+	$(INSTALL_DATA) -t $(DESTDIR)$(pmsdir)/ $(ASSEMBLY)
+	if test -n "$(DEBUG_FLAGS)"; then $(INSTALL_DATA) -t $(DESTDIR)$(pmsdir)/ $(ASSEMBLY).mdb; fi;
 	$(GACUTIL) -i "$(DESTDIR)$(pmsdir)/$(ASSEMBLY)" $(GACUTIL_FLAGS) -check_refs -f
 
 uninstall-local:
-	$(GACUTIL) -us $(DESTDIR)$(pmsdir)/$(ASSEMBLY) $(GACUTIL_FLAGS) 
-	rm $(DESTDIR)$(pmsdir)/$(ASSEMBLY) 
+	$(GACUTIL) -us $(DESTDIR)$(pmsdir)/$(ASSEMBLY) $(GACUTIL_FLAGS)
+	rm $(DESTDIR)$(pmsdir)/$(ASSEMBLY)
 	if test -n "$(DEBUG_FLAGS)"; then rm $(DESTDIR)$(pmsdir)/$(ASSEMBLY).mdb; fi;
 
 -include $(SOURCES_make)

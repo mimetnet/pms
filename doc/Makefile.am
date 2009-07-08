@@ -17,8 +17,8 @@ api-html:
 	$(MONODOCS2HTML) --source api --dest api-html
 
 install-data-local:
-	$(install_sh_DATA) -m 755 -d $(DESTDIR)$(MONODOC_SRC_DIR)/
-	$(install_sh_DATA) -t $(DESTDIR)$(MONODOC_SRC_DIR)/ $(EXTRA_DIST)
+	$(INSTALL) -m 755 -d $(DESTDIR)$(MONODOC_SRC_DIR)/
+	$(INSTALL_DATA) -t $(DESTDIR)$(MONODOC_SRC_DIR)/ $(EXTRA_DIST)
 
 uninstall-local:
 	for file in $(EXTRA_DIST); do \
