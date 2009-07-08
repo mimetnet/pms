@@ -1,4 +1,4 @@
-libpms2-cil (1.9.0-5.0) hardy; urgency=low
+libpms2-cil (1.9.0-5ubuntu0.8.04) hardy; urgency=low
 
   * added pkg-config var providers=@sysconfdir@/libpms2/providers
   * added pkg-config var repository_path=@sysconfdir@/libpms2

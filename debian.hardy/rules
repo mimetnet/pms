@@ -19,7 +19,7 @@ clean:
 	dh_testroot
 	rm -f build-indep-stamp
 	rm -rf $$MONO_SHARED_DIR/.wapi
-	-$(MAKE) clean
+	[ ! -f Makefile ] || $(MAKE) distclean
 	dh_clean 
 
 install: install-indep
@@ -37,6 +37,8 @@ install-indep:
 		find $(DEBDIR)/$$i -type f -name '*.mdb' -prune -exec rm '{}' \; ; \
 	done;
 	find $(DEBDIR)/ -type f -name "*.dll" -or -name "*.mdb" | xargs chmod -x
+
+binary-arch:
 
 binary-common:
 	dh_testdir

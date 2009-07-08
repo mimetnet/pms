@@ -5,7 +5,7 @@ Homepage: http://www.cowarthill.com/
 Maintainer: Matthew Metnetsky <matthew@cowarthill.com>
 Build-Depends: autotools-dev, debhelper (>= 5.0.0), python-lxml, pkg-config
 Build-Depends-Indep: mono-gmcs, mono-gac, monodoc-base, liblog4net1.2-cil, libmono-npgsql2.0-cil, libmono-sqlite2.0-cil, cli-common-dev (>= 0.5.6)
-Standards-Version: 3.6.2
+Standards-Version: 3.7.3
 
 Package: libpms2-cil
 Architecture: all
@@ -23,27 +23,27 @@ Description: PMS - Phil & Matt Spaces for .NET
 
 Package: libpms2-cil-dbg
 Architecture: all
-Depends: libpms2-cil (= ${Source-Version})
+Depends: libpms2-cil (= ${source:Version})
 Description: Debug symbols for PMS
 
 Package: libpms2-pgsql-cil
 Architecture: all
-Depends: libpms2-cil (= ${Source-Version}), ${cli:Depends}
+Depends: libpms2-cil (= ${source:Version}), ${cli:Depends}
 Description: PMS Postgresql Support
 
 Package: libpms2-pgsql-cil-dbg
 Architecture: all
-Depends: libpms2-pgsql-cil (= ${Source-Version})
+Depends: libpms2-pgsql-cil (= ${source:Version})
 Description: PMS Postgresql Debug Symbols
 
 Package: libpms2-sqlite3-cil
 Architecture: all
-Depends: libpms2-cil (= ${Source-Version}), ${cli:Depends}
+Depends: libpms2-cil (= ${source:Version}), ${cli:Depends}
 Description: PMS Sqlite3 Support
 
 Package: libpms2-sqlite3-cil-dbg
 Architecture: all
-Depends: libpms2-sqlite3-cil (= ${Source-Version})
+Depends: libpms2-sqlite3-cil (= ${source:Version})
 Description: PMS Sqlite3 Debug Symbols
 
 Package: libpms2-cil-doc
