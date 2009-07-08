@@ -1,3 +1,9 @@
+libpms2-cil (1.9.0-4.1) januty; urgency=low
+
+  * automake is now run with --copy so missing files are copied not linked
+
+ -- Matthew Metnetsky <matthew@cowarthill.com>  Wed, 08 Jul 2009 11:07:33 -0400
+
 libpms2-cil (1.9.0-3.1) jaunty; urgency=low
 
   * Added mono-gmcs ;-) to Build-Depends-Indep
