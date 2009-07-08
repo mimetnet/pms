@@ -1,4 +1,4 @@
-libpms2-cil (1.9.0-5.ubuntu0.9.04) jaunty; urgency=low
+libpms2-cil (1.9.0-5ubuntu0.9.04) jaunty; urgency=low
 
   * added pkg-config var providers=@sysconfdir@/libpms2/providers
   * added pkg-config var repository_path=@sysconfdir@/libpms2
