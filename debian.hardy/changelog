@@ -1,3 +1,10 @@
+libpms2-cil (1.9.0-5.0) hardy; urgency=low
+
+  * added pkg-config var providers=@sysconfdir@/libpms2/providers
+  * added pkg-config var repository_path=@sysconfdir@/libpms2
+
+ -- Matthew Metnetsky <matthew@cowarthill.com>  Wed, 08 Jul 2009 16:58:21 -0400
+
 libpms2-cil (1.9.0-4.0) hardy; urgency=low
 
   * automake is now run with --copy so missing files are copied not linked
