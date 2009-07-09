@@ -82,10 +82,11 @@ if __name__ == '__main__':
 
     try:
         if cfg.values.output == '-':
-            root.write(sys.stdout, 'utf-8')
+            root.write(sys.stdout, encoding="utf-8", xml_declaration=True)
         else:
-            root.write(cfg.values.output, 'utf-8')
+            root.write(cfg.values.output, encoding="utf-8", xml_declaration=True)
     except:
-        print 'Failed to write (%s) %s' % (sys.argv[2], sys.argv[1])
+        print('Failed to write: %s' % (cfg.values.output))
+        traceback.print_exc()
         sys.exit(1)
 
