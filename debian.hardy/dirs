@@ -3,4 +3,4 @@ usr/lib/mono/gac
 usr/lib/pkgconfig
 usr/bin
 etc/libpms2
-usr/lib/cli/libpms-2.0
+usr/lib/cli/pms-2.0
