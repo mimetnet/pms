@@ -26,13 +26,9 @@ namespace PMS.Config
 			get {
 				string foo = (Environment.OSVersion.Platform == PlatformID.Unix) ?
 					("/etc/libpms2") : ("c:\\Program Files\\Common Files\\PMS\\etc");
-
 				string env = Environment.GetEnvironmentVariable("PMS_CONFIG_PATH");
-				if (env != null) {
-					foo = env;
-				}
 
-				return foo;
+				return String.IsNullOrEmpty(env)? foo : env;
 			}
 		}
 
