@@ -40,6 +40,7 @@ AM_CONDITIONAL(HAVE_MONODOC, test "x$MONODOC" != "xno")
 ##############################################################################
 
 test "x$prefix" = "xNONE" && prefix=/usr
+test "x$sysconfdir" = "x\${prefix}/etc" && sysconfdir=/etc
 
 ##############################################################################
 
