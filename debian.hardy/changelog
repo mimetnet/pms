@@ -1,3 +1,9 @@
+libpms2-cil (1.9.0-6ubuntu0.8.04) hardy; urgency=low
+
+  * as rules:clean now removes dist files config.status now calls configure
+
+ -- Matthew Metnetsky <matthew@cowarthill.com>  Thu, 09 Jul 2009 08:56:31 -0400
+
 libpms2-cil (1.9.0-5ubuntu0.8.04) hardy; urgency=low
 
   * added pkg-config var providers=@sysconfdir@/libpms2/providers
