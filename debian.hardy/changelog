@@ -1,3 +1,10 @@
+libpms2-cil (1.9.0-7ubuntu0.8.04) hardy; urgency=low
+
+  * set default sysconfdir to /etc & removed empty dir
+  * PMS_CONFIG_PATH now ignores empty string and requires "." for current dir
+
+ -- Matthew Metnetsky <matthew@cowarthill.com>  Thu, 09 Jul 2009 10:46:17 -0400
+
 libpms2-cil (1.9.0-6ubuntu0.8.04) hardy; urgency=low
 
   * as rules:clean now removes dist files config.status now calls configure
