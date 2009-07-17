@@ -16,3 +16,5 @@
 () proxy result set to check for dirty properties
 () validation
 () events for life-cycle (CRUD)
+
+() lock timeout settings w/in repo/pmx
