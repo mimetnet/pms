@@ -113,16 +113,9 @@ namespace PMS.Metadata
         private string Load(FileInfo file)
         {
 			using (FileStream fs = file.OpenRead()) {
-				try {
-					repository += (Repository)serializer.Deserialize(fs);
-					return file.FullName;
-				} catch (FileNotFoundException) {
-					if (log.IsErrorEnabled)
-						log.Error("Load(" + file + ") failed");
-				}
+				repository += (Repository)serializer.Deserialize(fs);
+				return file.FullName;
 			}
-
-            return null;
         }
 
 		private bool Load(Type type)
