@@ -16,9 +16,5 @@ namespace PMS.DataAccess
 
         bool Open();
         void Close();
-
-        void BeginTransaction();
-        void RollbackTransaction();
-        void CommitTransaction();
     }
 }

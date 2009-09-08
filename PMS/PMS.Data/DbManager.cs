@@ -31,23 +31,6 @@ namespace PMS.Data
             get { return this.isOpen; }
         }
 
-        #region Transactions
-        public void BeginTransaction()
-        {
-            pool.BeginTransaction();
-        }
-
-        public void CommitTransaction()
-        {
-            pool.CommitTransaction();
-        }
-
-        public void RollbackTransaction()
-        {
-            pool.RollbackTransaction();
-        }
-        #endregion
-
         #region IDbCommand Methods
         public IDbCommand GetCommand(string sql)
         {
