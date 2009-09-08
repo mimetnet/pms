@@ -53,7 +53,7 @@ binary-common:
 	dh_fixperms
 	dh_makeshlibs
 	dh_installdeb
-	dh_makeclilibs -m 1.9.0 -l 1.9.1
+	dh_makeclilibs -m 1.9.1 -l 1.9.2
 	dh_clideps
 	dh_gencontrol
 	dh_md5sums

@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public class Query&lt;Table&gt;" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>1.9.0.0</AssemblyVersion>
+    <AssemblyVersion>1.9.1.0</AssemblyVersion>
   </AssemblyInfo>
   <TypeParameters>
     <TypeParameter>Table</TypeParameter>
@@ -1555,6 +1555,17 @@
         <param name="cmd">To be added.</param>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="unique">
+      <MemberSignature Language="C#" Value="protected System.Collections.Generic.List&lt;PMS.Query.IClause&gt; unique;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.List&lt;PMS.Query.IClause&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

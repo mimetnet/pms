@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public abstract class AbstractProvider : PMS.Data.IProvider" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>1.9.0.0</AssemblyVersion>
+    <AssemblyVersion>1.9.1.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>

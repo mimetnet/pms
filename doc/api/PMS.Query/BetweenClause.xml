@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public sealed class BetweenClause : PMS.Query.RangeClause" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>1.9.0.0</AssemblyVersion>
+    <AssemblyVersion>1.9.1.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>PMS.Query.RangeClause</BaseTypeName>

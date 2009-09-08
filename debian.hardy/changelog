@@ -1,3 +1,11 @@
+libpms2-cil (1.9.1-0ubuntu0.8.04) hardy; urgency=low
+
+  * Fixed DELETE generation to use 'AND' not 'COMMA'
+  * Fixed race condition when loading RepositoryManager's
+  * Fixed NULL exception within transactions
+
+ -- Matthew Metnetsky <matthew@cowarthill.com>  Tue, 08 Sep 2009 17:11:32 -0400
+
 libpms2-cil (1.9.0-7ubuntu0.8.04) hardy; urgency=low
 
   * set default sysconfdir to /etc & removed empty dir
