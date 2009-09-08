@@ -37,20 +37,11 @@ namespace PMS.Metadata
             this.Fields = fields;
         }
 
-        public Class(Type type, string table, FieldCollection fields, Type listType)
-        {
-            this.Type = type;
-            this.Table = table;
-            this.Fields = fields;
-            this.ListType = listType;
-        }
-
 		public Class(Type type)
 		{
 			this.Type = type;
 			this.Table = Generator.CamelToCString(type.Name);
 			this.Fields = Generator.GenerateFields(type);
-			this.ListType = Generator.GenerateListType(type);
 			this.LoadCTypes();
 		}
         #endregion
@@ -118,28 +109,14 @@ namespace PMS.Metadata
             if (this.Table == "order")
                 this.Table = "\"" + this.Table + "\"";
 
-            string ltype = reader.GetAttribute("list-type");
-
-			if (!String.IsNullOrEmpty(ltype)) {
-				try {
-					this.ListType = PMS.Util.TypeLoader.Load(ltype);
-				} catch (Exception e) {
-					log.Error("ReadXml: " + e.Message);
-				}
-			}
-
-            if (reader.IsEmptyElement) {
-                reader.Read();
+            if (reader.IsEmptyElement)
                 return;
-            }
-                
+
             XmlSerializer xml = new XmlSerializer(typeof(FieldCollection));
-            if (reader.ReadToDescendant("fields")) {
+            if (reader.ReadToDescendant("fields"))
                 this.Fields = (FieldCollection) xml.Deserialize(reader);
-            }
 
-            reader.Read();
-
+            //reader.Read();
             //this.LoadCTypes();
 
             //Console.WriteLine("Class.Exit: {0} {1}", reader.LocalName, reader.NodeType);
@@ -152,10 +129,6 @@ namespace PMS.Metadata
 			}
 
             writer.WriteAttributeString("table", this.Table);
-
-            if (this.ListType != null) {
-                writer.WriteAttributeString("list-type", this.ListType.FullName + ", " + this.ListType.Assembly.GetName().ToString());
-            }
 
             XmlSerializer xml = new XmlSerializer(typeof(Field));
 
@@ -213,10 +186,6 @@ namespace PMS.Metadata
                 return false;
             }
 
-            if (obj1.ListType != obj2.ListType) {
-                return false;
-            }
-
             if (obj1.Fields.Count != obj2.Fields.Count) {
                 return false;
             }
@@ -253,8 +222,8 @@ namespace PMS.Metadata
         ///</summary> 
         public override string ToString()
         {
-            return String.Format("[ Class (Name={0}) (Table={1}) (Type={2}) (Fields={3}) ]",
-                                 Type, Table, ListType, Fields.Count);
+            return String.Format("[ Class (Name={0}) (Table={1}) (Fields={2}) ]",
+                                 Type, Table, Fields.Count);
         }
 
         ///<summary>
