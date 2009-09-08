@@ -65,9 +65,11 @@ namespace PMS.Metadata
                 if (reader.ReadToDescendant("class")) {
                     do {
                         //Console.WriteLine("Classes.Middle(1): {0} {1}", reader.LocalName, reader.NodeType);
-                        this.Add((Class) xml.Deserialize(reader));
+						Class k = xml.Deserialize(reader) as Class;
+						if (null != k && null != k.Type)
+							this.Add(k);
                         //Console.WriteLine("Classes.Middle(2): {0} {1}\n", reader.LocalName, reader.NodeType);
-                    } while (reader.ReadToNextSibling("class"));
+					} while (reader.NodeType == XmlNodeType.Element && reader.LocalName == "class");
                 }
             } finally {
                 listLock.ReleaseWriterLock();
