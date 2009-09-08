@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 using PMS.Metadata;
 
@@ -8,19 +9,35 @@ namespace PMS.Metadata
     internal static class RepositoryManagerFactory
     {
         private static SortedList<string, RepositoryManager> managers = new SortedList<string,RepositoryManager>(StringComparer.Ordinal);
+		private static ReaderWriterLock mLock = new ReaderWriterLock();
+
 
         public static RepositoryManager Factory(string package)
         {
             RepositoryManager m = null;
 
-            if (RepositoryManagerFactory.managers.TryGetValue(package, out m))
-                return m;
+			mLock.AcquireReaderLock(2000);
 
-            m = new RepositoryManager(package);
+			if (RepositoryManagerFactory.managers.TryGetValue(package, out m)) {
+				mLock.ReleaseReaderLock();
+				return m;
+			}
 
-            managers.Add(package, m);
+			try {
+				mLock.UpgradeToWriterLock(5000);
+			} catch (Exception e) {
+				mLock.ReleaseReaderLock();
+				throw e;
+			}
 
-            return m;
-        }
-    }
+			try {
+				m = new RepositoryManager(package);
+				managers.Add(package, m);
+			} finally {
+				mLock.ReleaseWriterLock();
+			}
+
+			return m;
+		}
+	}
 }
