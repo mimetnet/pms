@@ -49,6 +49,7 @@
             }
             
             this.db = DbManagerFactory.Factory(this.connDesc);
+            this.conn = this.db.GetConnection();
 		}
 
 		~DbBroker()
@@ -103,8 +104,8 @@
 
             return this.connDesc.Provider.CreateQuery<T>(
                 this.repository.GetClass(typeof(T)), 
-                this.db.GetConnection());
-                //this.conn);
+                this.conn);
+                //this.db.GetConnection());
         }
 
 		public void Close()

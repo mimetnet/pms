@@ -35,7 +35,7 @@ namespace PMS.Data.Pool
         public DbConnectionProxy GetConnection()
         {
             DbConnectionProxy conn = (DbConnectionProxy)this.Borrow();
-            conn.Pool = this;
+            //conn.Pool = this;
 
 			switch (conn.State) {
 				case ConnectionState.Open:
