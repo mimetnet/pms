@@ -11,6 +11,7 @@ namespace PMS.Query
     {
         protected List<IClause> criteria = new List<IClause>();
         protected List<IClause> values = new List<IClause>();
+        protected List<IClause> unique = new List<IClause>();
         protected List<String> order = new List<String>();
 		protected uint limit = 0;
         protected uint offset = 0;
@@ -378,8 +379,6 @@ namespace PMS.Query
 			if (String.IsNullOrEmpty(field))
 				throw new ArgumentNullException("field");
 
-            if (this.values.Count > 0)
-                this.values.Add(new RawClause(", "));
             this.values.Add(new EqualToClause(field, value));
             return this;
         }
@@ -396,11 +395,11 @@ namespace PMS.Query
 
                 if (IsFieldSet(field, fvalue)) {
                     if (!(field.PrimaryKey || field.Unique)) {
-                        if (this.values.Count > 0)
-                            this.values.Add(new RawClause(", "));
+                        //this.values.Add(new EqualToClause(field.Column, fvalue, this.provider.GetDbType(field.DbType)));
                         this.values.Add(new EqualToClause(field.Column, fvalue, this.provider.GetDbType(field.DbType)));
                     } else {
-                        this.EqualTo(field.Column, fvalue);
+                        //this.EqualTo(field.Column, fvalue);
+                        this.unique.Add(new EqualToClause(field.Column, fvalue, this.provider.GetDbType(field.DbType)));
                     }
                 }
             }

@@ -43,21 +43,24 @@ namespace PMS.Query
         #region SQL Generators
         protected virtual string DeleteSql()
         {
+			int i = 0;
+			List<IClause> list = new List<IClause>();
             StringBuilder sql = new StringBuilder("DELETE FROM ");
             sql.Append(this.cdesc.Table);
+
+			this.And();
+
+			if (this.unique.Count > 0) {
+				this.criteria.Clear();
+				list.AddRange(this.unique);
+			} else {
+				list.AddRange(this.values);
+			}
+
+			this.AppendToCriteria(list, delegate(){ this.And(); });
+
             AppendWhere(sql);
-            AppendCondition(sql);
-
-            if (this.values.Count > 0 && this.values[0].IsCondition == false)
-                this.values.RemoveAt(0);
-            
-            this.values.ForEach(delegate(IClause c) {
-                sql.Append(c.ToString());
-            
-                if (c.IsCondition)
-                    this.parameters.AddRange(c.CreateParameters(this.provider.CreateParameter));
-            });
-
+			AppendCondition(sql);
             AppendLimit(sql);
 
             return sql.ToString();
@@ -77,21 +80,25 @@ namespace PMS.Query
 
         protected virtual string UpdateSql()
         {
+			int i = 0;
             StringBuilder sql = new StringBuilder("UPDATE ");
             sql.Append(this.cdesc.Table);
             
             if (this.criteria.Count > 0 || this.values.Count > 0) {
                 sql.Append(" SET ");
 
-                if (this.values[0].IsCondition == false)
-                    this.values.RemoveAt(0);
+				AppendToCriteria(this.unique, delegate(){ this.And(); });
 
-                this.values.ForEach(delegate(IClause c) {
-                    sql.Append(c.ToString());
+				for (i=0; i<this.values.Count; i++) {
+                    sql.Append(this.values[i].ToString());
+
+					if ((i+1) < this.values.Count)
+						sql.Append(", ");
                     
-                    if (c.IsCondition)
-                        this.parameters.AddRange(c.CreateParameters(this.provider.CreateParameter));
-                });
+                    if (this.values[i].IsCondition)
+                        this.parameters.AddRange(this.values[i].CreateParameters(this.provider.CreateParameter));
+				}
+
                 AppendWhere(sql);
                 AppendCondition(sql);
             } else {
@@ -180,12 +187,10 @@ namespace PMS.Query
             sql.Append('(');
 
 			List<IClause> list = new List<IClause>();
+			list.AddRange(this.unique);
 			list.AddRange(this.criteria);
 			list.AddRange(this.values);
 
-            if (list.Count > 0 && list[0].IsCondition == false)
-                list.RemoveAt(0);
-            
             AppendInsert(sql, list, String.Empty);
             sql.Append(") VALUES (");
             AppendInsert(sql, list, "@");
@@ -273,5 +278,17 @@ namespace PMS.Query
 			return SelectSql();
         }
         #endregion
-    }
+
+		void AppendToCriteria(List<IClause> list, BetweenAddCallback foo)
+		{
+			for (int i=0; i<list.Count; i++) {
+				this.criteria.Add(list[i]);
+
+				if ((i+1) < list.Count)
+					foo();
+			}
+		}
+
+		private delegate void BetweenAddCallback();
+	}
 }
