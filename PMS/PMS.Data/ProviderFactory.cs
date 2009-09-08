@@ -42,9 +42,8 @@ namespace PMS.Data
 
         public static IProvider Create(string name)
         {
-			if (String.IsNullOrEmpty(name)) {
+			if (String.IsNullOrEmpty(name))
 				throw new ArgumentNullException("name");
-			}
 
 			IProvider p = null;
 
@@ -105,11 +104,12 @@ namespace PMS.Data
             key = key.Trim();
             sType = sType.Trim();
 
-            if (key == String.Empty || sType == String.Empty)
+			if (String.IsNullOrEmpty(key) || String.IsNullOrEmpty(sType))
                 return;
 
 			if (list.ContainsKey(key)) {
 				log.WarnFormat("Duplicate IProvider key found: '{0}' << SKIP", key);
+				log.WarnFormat("Duplicate> old({0}) new({0})", list[key], sType);
 				return;
 			}
 
@@ -118,8 +118,8 @@ namespace PMS.Data
             try {
                 type = PMS.Util.TypeLoader.Load(sType);
             } catch (Exception e) {
-                log.WarnFormat("Failed to load type: " + sType);
-                log.Warn("Failed to load type: ", e);
+                log.WarnFormat("Failed to load type: '{0}'", sType);
+                //log.Warn("Failed to load type: ", e);
                 return;
             }
 
