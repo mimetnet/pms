@@ -43,7 +43,6 @@ namespace PMS.Query
         #region SQL Generators
         protected virtual string DeleteSql()
         {
-			int i = 0;
 			List<IClause> list = new List<IClause>();
             StringBuilder sql = new StringBuilder("DELETE FROM ");
             sql.Append(this.cdesc.Table);
@@ -114,6 +113,14 @@ namespace PMS.Query
             sql.Append(this.columns);
             sql.Append(" FROM ");
             sql.Append(this.cdesc.Table);
+
+            if (this.unique.Count > 0) {
+				this.criteria.Clear();
+                this.AppendToCriteria(this.unique, delegate(){ this.And(); });
+			} else {
+				this.AppendToCriteria(this.values, delegate(){ this.And(); });
+			}
+
             AppendWhere(sql);
             AppendCondition(sql);
             AppendOrderBy(sql);
