@@ -26,7 +26,7 @@ namespace PMS.Data.MSSQL
         public override IDataParameter CreateParameter(string name, object value, PMS.DbType dbType)
         {
             IDataParameter p = new System.Data.SqlClient.SqlParameter();
-            p.ParamterName = name;
+            p.ParameterName = name;
             if (dbType != null)
                 p.DbType = dbType.SystemDbType;
             p.Value = value;
