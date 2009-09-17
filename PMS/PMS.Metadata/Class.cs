@@ -116,7 +116,9 @@ namespace PMS.Metadata
             if (reader.ReadToDescendant("fields"))
                 this.Fields = (FieldCollection) xml.Deserialize(reader);
 
-            //reader.Read();
+#if NET_2_0
+            reader.Read();
+#endif
             //this.LoadCTypes();
 
             //Console.WriteLine("Class.Exit: {0} {1}", reader.LocalName, reader.NodeType);

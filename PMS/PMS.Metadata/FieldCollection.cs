@@ -31,7 +31,7 @@ namespace PMS.Metadata
 
         public void ReadXml(XmlReader reader)
         {
-            if (!(reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "fields"))
+            if (reader.LocalName != "fields")
                 throw new InvalidOperationException("ReadXml expected <fields/>, but found <" + reader.LocalName + "/> " + reader.LocalName);
 
             if (reader.IsEmptyElement)

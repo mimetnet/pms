@@ -50,7 +50,7 @@ namespace PMS.Metadata
 
         public void ReadXml(XmlReader reader)
         {
-            if (!(reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "classes"))
+            if (reader.LocalName != "classes")
                 throw new InvalidOperationException("ReadXml expected <classes/>, but found <" + reader.LocalName + "/> " + reader.LocalName);
 
             if (reader.IsEmptyElement)
@@ -69,7 +69,11 @@ namespace PMS.Metadata
 						if (null != k && null != k.Type)
 							this.Add(k);
                         //Console.WriteLine("Classes.Middle(2): {0} {1}\n", reader.LocalName, reader.NodeType);
+#if NET_2_0
+                    } while (reader.ReadToNextSibling("class"));
+#else
 					} while (reader.NodeType == XmlNodeType.Element && reader.LocalName == "class");
+#endif
                 }
             } finally {
                 listLock.ReleaseWriterLock();
