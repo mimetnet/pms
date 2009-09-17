@@ -88,18 +88,22 @@ namespace PMS.Collections.Pool
 
         protected virtual long Add()
         {
-			if (this.typeParams == null)
-				this.queue.Enqueue((T)Activator.CreateInstance(type));
-			else
-				this.queue.Enqueue((T)Activator.CreateInstance(type, typeParams));
-
-            Console.WriteLine("ManagedObjectPool.Add(new {0}())", type.Name);
+			Console.WriteLine("ManagedObjectPool.Add(new {0}())", type.Name);
+            
+            if (this.typeParams == null)
+				return this.Add((T)Activator.CreateInstance(type));
+			
+            return this.Add((T)Activator.CreateInstance(type, typeParams));
 
             //if (queue.Count > THRESHOLD) {
 			//    ZombieKiller(30);
 		    //}
+        }
 
-		    return queue.Count;
+        protected long Add(T obj)
+        {
+            this.queue.Enqueue(obj);
+            return this.queue.Count;
         }
 
         public bool Open()
