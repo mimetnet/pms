@@ -117,7 +117,7 @@ namespace PMS.Data
             
             try {
                 type = PMS.Util.TypeLoader.Load(sType);
-            } catch (Exception e) {
+            } catch (Exception) {
                 log.WarnFormat("Failed to load type: '{0}'", sType);
                 //log.Warn("Failed to load type: ", e);
                 return;
