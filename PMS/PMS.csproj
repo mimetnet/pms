@@ -76,24 +76,19 @@
     <Compile Include="PMS.Metadata\RepositoryException.cs" />
     <Compile Include="PMS.Metadata\Generator.cs" />
     <Compile Include="PMS.Metadata\RepositoryDefinitionException.cs" />
-    <Compile Include="PMS.Metadata.Generic\MetaObject.cs" />
     <Compile Include="PMS.Query\NotInClause.cs" />
     <Compile Include="PMS.Query\InClause.cs" />
     <Compile Include="PMS.Query\CreateParameterDelegate.cs" />
     <Compile Include="PMS.Query\QueryCriteria.cs" />
     <Compile Include="PMS.Query\Query.cs" />
+    <Compile Include="PMS.Query\QueryException.cs" />
     <Compile Include="PMS.Query\RawClause.cs" />
     <Compile Include="PMS.Query\QueryCallback.cs" />
     <Compile Include="PMS.Util\TypeComparer.cs" />
     <Compile Include="PMS.Util\TypeLoader.cs" />
-    <Compile Include="PMS.Broker\IPersistenceBroker.cs" />
-    <Compile Include="PMS.Broker\PersistenceBroker.cs" />
-    <Compile Include="PMS.Broker\PersistenceBrokerFactory.cs" />
     <Compile Include="PMS.Collections.Pool\ItemCollection.cs" />
     <Compile Include="PMS.Collections.Pool\ObjectPool.cs" />
-    <Compile Include="PMS.Collections.Pool\PrincipalObjectPool.cs" />
     <Compile Include="PMS.Collections.Pool\IObjectPool.cs" />
-    <Compile Include="PMS.DataAccess\DbEngineNotStartedException.cs" />
     <Compile Include="PMS.Data\DbConnectionProxy.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -114,9 +109,7 @@
     <Compile Include="PMS.Collections.Pool\ObjectNotInPoolException.cs" />
     <Compile Include="PMS.Data.Pool\ConnectionPool.cs" />
     <Compile Include="PMS.DataAccess\AccessMode.cs" />
-    <Compile Include="PMS.DataAccess\DbEngine.cs" />
     <Compile Include="PMS.DataAccess\IDbManager.cs" />
-    <Compile Include="PMS.DataAccess\SingleDbManager.cs" />
     <Compile Include="PMS.Data\AbstractProvider.cs" />
     <Compile Include="PMS.Data\DbResult.cs" />
     <Compile Include="PMS.Data\IDbInspector.cs" />
@@ -129,17 +122,13 @@
     <Compile Include="PMS.Metadata\Connection.cs" />
     <Compile Include="PMS.Metadata\Field.cs" />
     <Compile Include="PMS.Metadata\FieldNotFoundException.cs" />
-    <Compile Include="PMS.Metadata\MetaObject.cs" />
     <Compile Include="PMS.Metadata\Repository.cs" />
-    <Compile Include="PMS.Query\AbstractQuery.cs" />
     <Compile Include="PMS.Query\AndClause.cs" />
     <Compile Include="PMS.Query\BetweenClause.cs" />
-    <Compile Include="PMS.Query\Criteria.cs" />
     <Compile Include="PMS.Query\EqualToClause.cs" />
     <Compile Include="PMS.Query\GreaterOrEqualToClause.cs" />
     <Compile Include="PMS.Query\GreaterThanClause.cs" />
     <Compile Include="PMS.Query\IClause.cs" />
-    <Compile Include="PMS.Query\IQuery.cs" />
     <Compile Include="PMS.Query\IsNotNullClause.cs" />
     <Compile Include="PMS.Query\IsNullClause.cs" />
     <Compile Include="PMS.Query\LessOrEqualToClause.cs" />
@@ -149,15 +138,12 @@
     <Compile Include="PMS.Query\NotEqualToClause.cs" />
     <Compile Include="PMS.Query\NotLikeClause.cs" />
     <Compile Include="PMS.Query\OrClause.cs" />
-    <Compile Include="PMS.Query\QueryByCriteria.cs" />
-    <Compile Include="PMS.Query\QueryByObject.cs" />
-    <Compile Include="PMS.Query\QueryBySql.cs" />
-    <Compile Include="PMS.Query\QueryByType.cs" />
     <Compile Include="PMS.Query\RangeClause.cs" />
     <Compile Include="PMS.Query\SqlCommand.cs" />
     <Compile Include="PMS.Query\ValueClause.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PMS\DbType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -190,9 +176,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PMS\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
