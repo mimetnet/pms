@@ -67,7 +67,7 @@ namespace PMS.Query
 
         protected virtual string InsertSql()
         {
-            if (this.criteria.Count == 0 && this.values.Count == 0)
+            if (this.criteria.Count == 0 && this.values.Count == 0 && this.unique.Count == 0)
                 throw new QueryException("No criteria found to perform INSERT with");
 
             StringBuilder sql = new StringBuilder("INSERT INTO ");
