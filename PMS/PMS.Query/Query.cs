@@ -83,7 +83,7 @@ namespace PMS.Query
             StringBuilder sql = new StringBuilder("UPDATE ");
             sql.Append(this.cdesc.Table);
             
-            if (this.criteria.Count > 0 || this.values.Count > 0) {
+            if (this.criteria.Count > 0 || this.values.Count > 0 || this.unique.Count > 0) {
                 sql.Append(" SET ");
 
 				AppendToCriteria(this.unique, delegate(){ this.And(); });
