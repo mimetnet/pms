@@ -26,10 +26,10 @@ install-data-local:
 	$(INSTALL) -d $(DESTDIR)$(pmsdir)
 	$(INSTALL_DATA) -t $(DESTDIR)$(pmsdir)/ $(ASSEMBLY)
 	if test -n "$(DEBUG_FLAGS)"; then $(INSTALL_DATA) -t $(DESTDIR)$(pmsdir)/ $(ASSEMBLY).mdb; fi;
-	$(GACUTIL) -i "$(DESTDIR)$(pmsdir)/$(ASSEMBLY)" $(GACUTIL_FLAGS) -check_refs -f
+	if test "" = "$(MONO_GAC_LATE)"; then $(GACUTIL) -i "$(DESTDIR)$(pmsdir)/$(ASSEMBLY)" $(GACUTIL_FLAGS) -check_refs -f; fi;
 
 uninstall-local:
-	$(GACUTIL) -us $(DESTDIR)$(pmsdir)/$(ASSEMBLY) $(GACUTIL_FLAGS)
+	if test "" = "$(MONO_GAC_LATE)"; then $(GACUTIL) -us $(DESTDIR)$(pmsdir)/$(ASSEMBLY) $(GACUTIL_FLAGS); fi;
 	rm $(DESTDIR)$(pmsdir)/$(ASSEMBLY)
 	if test -n "$(DEBUG_FLAGS)"; then rm $(DESTDIR)$(pmsdir)/$(ASSEMBLY).mdb; fi;
 

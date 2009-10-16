@@ -1,3 +1,9 @@
+libpms2-cil (1.9.1-2ubuntu0.8.04) hardy; urgency=low
+
+  * Install into the GAC via /usr/share/cli-common/gac-package-install
+
+ -- Matthew Metnetsky <matthew@cowarthill.com>  Thu, 15 Oct 2009 16:26:50 -0400
+
 libpms2-cil (1.9.1-1ubuntu0.8.04) hardy; urgency=low
 
   * Fixed SQL UPDATE of unique keys
