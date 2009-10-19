@@ -41,15 +41,25 @@ namespace PMS.Query
         }
 
         #region SQL Generators
+		protected virtual void CheckParameters(string mode)
+		{
+            if (this.criteria.Count == 0 &&
+				this.values.Count == 0 &&
+				this.unique.Count == 0 &&
+				this.pkey.Count == 0)
+                throw new QueryException("No criteria found to perform mode: " + mode);
+		}
+
         protected virtual string DeleteSql()
         {
 			List<IClause> list = new List<IClause>();
             StringBuilder sql = new StringBuilder("DELETE FROM ");
             sql.Append(this.cdesc.Table);
 
-			this.And();
-
-			if (this.unique.Count > 0) {
+			if (this.pkey.Count > 0) {
+				this.criteria.Clear();
+				list.AddRange(this.pkey);
+			} else if (this.unique.Count > 0) {
 				this.criteria.Clear();
 				list.AddRange(this.unique);
 			} else {
@@ -67,8 +77,7 @@ namespace PMS.Query
 
         protected virtual string InsertSql()
         {
-            if (this.criteria.Count == 0 && this.values.Count == 0 && this.unique.Count == 0)
-                throw new QueryException("No criteria found to perform INSERT with");
+			this.CheckParameters("Insert");
 
             StringBuilder sql = new StringBuilder("INSERT INTO ");
             sql.Append(this.cdesc.Table);
@@ -79,30 +88,32 @@ namespace PMS.Query
 
         protected virtual string UpdateSql()
         {
+			this.CheckParameters("Update");
+
 			int i = 0;
             StringBuilder sql = new StringBuilder("UPDATE ");
             sql.Append(this.cdesc.Table);
-            
-            if (this.criteria.Count > 0 || this.values.Count > 0 || this.unique.Count > 0) {
-                sql.Append(" SET ");
+			sql.Append(" SET ");
 
+			if (this.pkey.Count > 0) {
+				this.AppendToCriteria(this.pkey, delegate(){ this.And(); });
+				this.values.AddRange(this.unique);
+			} else if (this.unique.Count > 0) {
 				AppendToCriteria(this.unique, delegate(){ this.And(); });
+			}
 
-				for (i=0; i<this.values.Count; i++) {
-                    sql.Append(this.values[i].ToString());
+			for (i=0; i<this.values.Count; i++) {
+				sql.Append(this.values[i].ToString());
 
-					if ((i+1) < this.values.Count)
-						sql.Append(", ");
-                    
-                    if (this.values[i].IsCondition)
-                        this.parameters.AddRange(this.values[i].CreateParameters(this.provider.CreateParameter));
-				}
+				if ((i+1) < this.values.Count)
+					sql.Append(", ");
 
-                AppendWhere(sql);
-                AppendCondition(sql);
-            } else {
-                throw new QueryException("No criteria found to perform UPDATE with");
-            }
+				if (this.values[i].IsCondition)
+					this.parameters.AddRange(this.values[i].CreateParameters(this.provider.CreateParameter));
+			}
+
+			AppendWhere(sql);
+			AppendCondition(sql);
 
             return sql.ToString();
         }
@@ -114,7 +125,10 @@ namespace PMS.Query
             sql.Append(" FROM ");
             sql.Append(this.cdesc.Table);
 
-            if (this.unique.Count > 0) {
+            if (this.pkey.Count > 0) {
+				this.criteria.Clear();
+                this.AppendToCriteria(this.pkey, delegate(){ this.And(); });
+			} else if (this.unique.Count > 0) {
 				this.criteria.Clear();
                 this.AppendToCriteria(this.unique, delegate(){ this.And(); });
 			} else {
@@ -125,6 +139,7 @@ namespace PMS.Query
             AppendCondition(sql);
             AppendOrderBy(sql);
             AppendLimit(sql);
+
             return sql.ToString();
         }
 
@@ -132,10 +147,22 @@ namespace PMS.Query
         {
             StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ");
             sql.Append(this.cdesc.Table);
+
+            if (this.pkey.Count > 0) {
+				this.criteria.Clear();
+                this.AppendToCriteria(this.pkey, delegate(){ this.And(); });
+			} else if (this.unique.Count > 0) {
+				this.criteria.Clear();
+                this.AppendToCriteria(this.unique, delegate(){ this.And(); });
+			} else {
+				this.AppendToCriteria(this.values, delegate(){ this.And(); });
+			}
+
             AppendWhere(sql);
             AppendCondition(sql);
             AppendOrderBy(sql);
             AppendLimit(sql);
+
             return sql.ToString();
         }
 
@@ -194,6 +221,7 @@ namespace PMS.Query
             sql.Append('(');
 
 			List<IClause> list = new List<IClause>();
+			list.AddRange(this.pkey);
 			list.AddRange(this.unique);
 			list.AddRange(this.criteria);
 			list.AddRange(this.values);

@@ -12,6 +12,7 @@ namespace PMS.Query
         protected List<IClause> criteria = new List<IClause>();
         protected List<IClause> values = new List<IClause>();
         protected List<IClause> unique = new List<IClause>();
+        protected List<IClause> pkey = new List<IClause>();
         protected List<String> order = new List<String>();
 		protected uint limit = 0;
         protected uint offset = 0;
@@ -379,7 +380,21 @@ namespace PMS.Query
 			if (String.IsNullOrEmpty(field))
 				throw new ArgumentNullException("field");
 
-            this.values.Add(new EqualToClause(field, value));
+			Field f = this.cdesc.Fields[field];
+
+			if (f == null)
+				throw new ArgumentNullException("field '" + field + "' not found for " + this.cdesc.Type);
+
+			IClause c = new EqualToClause(f.Column, value, this.provider.GetDbType(f.DbType));
+
+			if (f.PrimaryKey) {
+				this.pkey.Add(c);
+			} else if (f.Unique) {
+				this.unique.Add(c);
+			} else {
+				this.values.Add(c);
+			}
+
             return this;
         }
 
@@ -393,14 +408,17 @@ namespace PMS.Query
 			    //if ((fvalue == null && field.Default == null) || (fvalue != null && field.Default != null && field.Default.ToString() == fvalue.ToString()))
 				//    fvalue = field.DefaultDb;
 
-                if (IsFieldSet(field, fvalue)) {
-                    if (!(field.PrimaryKey || field.Unique)) {
-                        //this.values.Add(new EqualToClause(field.Column, fvalue, this.provider.GetDbType(field.DbType)));
-                        this.values.Add(new EqualToClause(field.Column, fvalue, this.provider.GetDbType(field.DbType)));
-                    } else {
-                        //this.EqualTo(field.Column, fvalue);
-                        this.unique.Add(new EqualToClause(field.Column, fvalue, this.provider.GetDbType(field.DbType)));
-                    }
+                if (!IsFieldSet(field, fvalue))
+					continue;
+
+				IClause c = new EqualToClause(field.Column, fvalue, this.provider.GetDbType(field.DbType));
+
+				if (field.PrimaryKey) {
+					this.pkey.Add(c);
+				} else if (field.Unique) {
+					this.unique.Add(c);
+				} else {
+					this.values.Add(c);
                 }
             }
 
