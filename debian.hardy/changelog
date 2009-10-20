@@ -1,3 +1,9 @@
+libpms2-cil (1.9.1-3ubuntu0.8.04) hardy; urgency=low
+
+  * Differentiate between unique and primary-key for UPDATES
+
+ -- Matthew Metnetsky <matthew@cowarthill.com>  Tue, 20 Oct 2009 13:06:53 -0400
+
 libpms2-cil (1.9.1-2ubuntu0.8.04) hardy; urgency=low
 
   * Install into the GAC via /usr/share/cli-common/gac-package-install
