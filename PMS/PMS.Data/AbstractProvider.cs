@@ -420,6 +420,10 @@ namespace PMS.Data
 				case "timestamp":
 				case "timestampz":
                     return new PMS.DbType(System.Data.DbType.DateTime);
+
+                case "bin":
+                case "binary":
+                    return new PMS.DbType(System.Data.DbType.Binary);
 			}
 
             return null;
