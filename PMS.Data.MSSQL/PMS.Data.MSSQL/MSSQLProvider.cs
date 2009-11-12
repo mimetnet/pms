@@ -29,7 +29,7 @@ namespace PMS.Data.MSSQL
             p.ParameterName = name;
             if (dbType != null)
                 p.DbType = dbType.SystemDbType;
-            p.Value = value;
+            p.Value = (value != null)? value : DBNull.Value;
             return p;
         }
 
