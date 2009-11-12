@@ -124,9 +124,9 @@ namespace PMS.Data
         }
 
         public T Single()
-		{
+        {
             return this.First();
-		}
+        }
 
         public T Single(string sqlOverride)
         {
@@ -134,9 +134,9 @@ namespace PMS.Data
         }
 
         public T First()
-		{
-			return First(query.ToString(SqlCommand.Select));
-		}
+        {
+            return First(query.ToString(SqlCommand.Select));
+        }
 
         public T First(string sqlOverride)
         {
@@ -148,11 +148,11 @@ namespace PMS.Data
         }
 
         public T Last()
-		{
-			return Last(query.ToString(SqlCommand.Select));
-		}
+        {
+            return Last(query.ToString(SqlCommand.Select));
+        }
 
-		public T Last(string sqlOverride)
+        public T Last(string sqlOverride)
         {
             T current = default(T);
 
