@@ -25,16 +25,17 @@ namespace PMS.Metadata
         {
         }
 
-		public Class(System.Xml.XmlReader reader)
-		{
-			ReadXml(reader);
-		}
+        public Class(System.Xml.XmlReader reader)
+        {
+            this.ReadXml(reader);
+        }
 
         public Class(Type type, string table, FieldCollection fields)
         {
             this.Type = type;
             this.Table = table;
             this.Fields = fields;
+            this.LoadCTypes();
         }
 
 		public Class(Type type)
@@ -119,7 +120,7 @@ namespace PMS.Metadata
 #if NET_2_0
             reader.Read();
 #endif
-            //this.LoadCTypes();
+            this.LoadCTypes();
 
             //Console.WriteLine("Class.Exit: {0} {1}", reader.LocalName, reader.NodeType);
         }
@@ -152,12 +153,12 @@ namespace PMS.Metadata
 
 			for (int x=0; x<Fields.Count; x++) {
                 try {
-				finfo = Type.GetField(Fields[x].Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-				if (finfo != null) {
-					Fields[x].LoadType(finfo.FieldType);
-				} else {
-					ids.Add(x);
-				}
+				    finfo = Type.GetField(Fields[x].Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+				    if (finfo != null) {
+					    Fields[x].LoadType(finfo.FieldType);
+				    } else {
+					    ids.Add(x);
+				    }
                 } catch (Exception e) {
                     Console.WriteLine("LoadCTypes: " + e.Message);
                 }
