@@ -18,14 +18,6 @@ namespace PMS.Query
         protected uint offset = 0;
         protected string columns = "*";
 
-        //public string Columns {
-        //    get { return this.columns; }
-        //}
-
-        //public Class Description {
-        //    get { return this.klass; }
-        //}
-
         #region Filter
         public Query<Table> Filter(string sClause)
         {
@@ -66,12 +58,12 @@ namespace PMS.Query
 
         public Query<Table> AndGreaterOrEqual(string field, object value)
         {
-            return And().Add(new GreaterOrEqualToClause(field, value));
+            return And().Add(new GreaterOrEqualToClause(GetColumn(field), value));
         }
 
         public Query<Table> OrGreaterOrEqual(string field, object value)
         {
-            return Or().Add(new GreaterOrEqualToClause(field, value));
+            return Or().Add(new GreaterOrEqualToClause(GetColumn(field), value));
         }
         #endregion
 
@@ -83,12 +75,12 @@ namespace PMS.Query
         
         public Query<Table> AndLessOrEqual(string field, object value)
         {
-            return And().Add(new LessOrEqualToClause(field, value));
+            return And().Add(new LessOrEqualToClause(GetColumn(field), value));
         }
 
         public Query<Table> OrLessOrEqual(string field, object value)
         {
-            return Or().Add(new LessOrEqualToClause(field, value));
+            return Or().Add(new LessOrEqualToClause(GetColumn(field), value));
         }
         #endregion
 
@@ -100,12 +92,12 @@ namespace PMS.Query
         
         public Query<Table> AndGreaterThan(string field, object value)
         {
-            return And().Add(new GreaterThanClause(field, value));
+            return And().Add(new GreaterThanClause(GetColumn(field), value));
         }
 
         public Query<Table> OrGreaterThan(string field, object value)
         {
-            return Or().Add(new GreaterThanClause(field, value));
+            return Or().Add(new GreaterThanClause(GetColumn(field), value));
         }
         #endregion
 
@@ -117,12 +109,12 @@ namespace PMS.Query
         
         public Query<Table> AndLessThan(string field, object value)
         {
-            return And().Add(new LessThanClause(field, value));
+            return And().Add(new LessThanClause(GetColumn(field), value));
         }
 
         public Query<Table> OrLessThan(string field, object value)
         {
-            return Or().Add(new LessThanClause(field, value));
+            return Or().Add(new LessThanClause(GetColumn(field), value));
         }
         #endregion
 
@@ -134,12 +126,12 @@ namespace PMS.Query
         
         public Query<Table> AndEqualTo(string field, object value)
         {
-            return And().Add(new EqualToClause(field, value));
+            return And().Add(new EqualToClause(GetColumn(field), value));
         }
 
         public Query<Table> OrEqualTo(string field, object value)
         {
-            return Or().Add(new EqualToClause(field, value));
+            return Or().Add(new EqualToClause(GetColumn(field), value));
         }
         #endregion
 
@@ -151,12 +143,12 @@ namespace PMS.Query
         
         public Query<Table> AndNotEqualTo(string field, object value)
         {
-            return And().Add(new NotEqualToClause(field, value));
+            return And().Add(new NotEqualToClause(GetColumn(field), value));
         }
 
         public Query<Table> OrNotEqualTo(string field, object value)
         {
-            return Or().Add(new NotEqualToClause(field, value));
+            return Or().Add(new NotEqualToClause(GetColumn(field), value));
         }
         #endregion
 
@@ -168,12 +160,12 @@ namespace PMS.Query
         
         public Query<Table> AndIsNotNull(string field)
         {
-            return And().Add(new IsNotNullClause(field));
+            return And().Add(new IsNotNullClause(GetColumn(field)));
         }
 
         public Query<Table> OrIsNotNull(string field)
         {
-            return Or().Add(new IsNotNullClause(field));
+            return Or().Add(new IsNotNullClause(GetColumn(field)));
         }
         #endregion
 
@@ -185,12 +177,12 @@ namespace PMS.Query
 
         public Query<Table> AndIsNull(string field)
         {
-            return And().Add(new IsNullClause(field));
+            return And().Add(new IsNullClause(GetColumn(field)));
         }
 
         public Query<Table> OrIsNull(string field)
         {
-            return Or().Add(new IsNullClause(field));
+            return Or().Add(new IsNullClause(GetColumn(field)));
         }
         #endregion
 
@@ -200,24 +192,29 @@ namespace PMS.Query
             return AndLike(field, value);
         }
 
-        public Query<Table> AndLike(string field, object value)
+        public Query<Table> Like(string field, object value, string sqlFieldFunction)
         {
-            return And().Add(new LikeClause(field, value));
+            return AndLike(field, value, sqlFieldFunction);
         }
 
-        public Query<Table> AndLike(string field, object value, string fieldFunction)
+        public Query<Table> AndLike(string field, object value)
         {
-            return And().Add(new LikeClause(fieldFunction + "(" + field + ")", value));
+            return And().Add(new LikeClause(GetColumn(field), value));
+        }
+
+        public Query<Table> AndLike(string field, object value, string sqlFieldFunction)
+        {
+            return And().Add(new LikeClause(sqlFieldFunction, GetColumn(field) , value));
         }
 
         public Query<Table> OrLike(string field, object value)
         {
-            return Or().Add(new LikeClause(field, value));
+            return Or().Add(new LikeClause(GetColumn(field), value));
         }
 
-        public Query<Table> OrLike(string field, object value, string fieldFunction)
+        public Query<Table> OrLike(string field, object value, string sqlFieldFunction)
         {
-            return Or().Add(new LikeClause(fieldFunction + "(" + field + ")", value));
+            return Or().Add(new LikeClause(sqlFieldFunction, GetColumn(field), value));
         } 
         #endregion
 
@@ -227,14 +224,14 @@ namespace PMS.Query
             return AndNotLike(field, value);
         }
 
-        public Query<Table> AndNotLike(string f, object v)
+        public Query<Table> AndNotLike(string field, object v)
         {
-            return And().Add(new NotLikeClause(f, v));
+            return And().Add(new NotLikeClause(GetColumn(field), v));
         }
 
-        public Query<Table> OrNotLike(string f, object v)
+        public Query<Table> OrNotLike(string field, object v)
         {
-            return Or().Add(new NotLikeClause(f, v));
+            return Or().Add(new NotLikeClause(GetColumn(field), v));
         } 
         #endregion
 
@@ -246,12 +243,12 @@ namespace PMS.Query
 
         public Query<Table> AndIn(string field, params object[] list)
         {
-            return And().Add(new InClause(field, list));
+            return And().Add(new InClause(GetColumn(field), list));
         }
 
         public Query<Table> OrIn(string field, params object[] list)
         {
-            return Or().Add(new InClause(field, list));
+            return Or().Add(new InClause(GetColumn(field), list));
         }
         #endregion
 
@@ -263,12 +260,12 @@ namespace PMS.Query
 
         public Query<Table> AndNotIn(string field, params object[] list)
         {
-            return And().Add(new NotInClause(field, list));
+            return And().Add(new NotInClause(GetColumn(field), list));
         }
 
         public Query<Table> OrNotIn(string field, params object[] list)
         {
-            return Or().Add(new NotInClause(field, list));
+            return Or().Add(new NotInClause(GetColumn(field), list));
         }
         #endregion
 
@@ -280,12 +277,12 @@ namespace PMS.Query
 
         public Query<Table> AndBetween(string field, object val1, object val2)
         {
-            return And().Add(new BetweenClause(field, val1, val2));
+            return And().Add(new BetweenClause(GetColumn(field), val1, val2));
         }
 
         public Query<Table> OrBetween(string field, object val1, object val2)
         {
-            return Or().Add(new BetweenClause(field, val1, val2));
+            return Or().Add(new BetweenClause(GetColumn(field), val1, val2));
         } 
         #endregion
 
@@ -297,26 +294,26 @@ namespace PMS.Query
 
         public Query<Table> AndNotBetween(string field, object val1, object val2)
         {
-            return And().Add(new NotBetweenClause(field, val1, val2));
+            return And().Add(new NotBetweenClause(GetColumn(field), val1, val2));
         }
 
         public Query<Table> OrNotBetween(string field, object val1, object val2)
         {
-            return Or().Add(new NotBetweenClause(field, val1, val2));
+            return Or().Add(new NotBetweenClause(GetColumn(field), val1, val2));
         } 
         #endregion
 
         #region Internal
         public Query<Table> And()
         {
-            if (criteria.Count != 0)
+            if (criteria.Count != 0 && criteria[criteria.Count - 1].IsCondition)
                 criteria.Add(new AndClause());
             return this;
         }
 
         public Query<Table> Or()
         {
-            if (criteria.Count != 0)
+            if (criteria.Count != 0 && criteria[criteria.Count - 1].IsCondition)
                 criteria.Add(new OrClause());
             return this;
         }
@@ -332,6 +329,13 @@ namespace PMS.Query
             this.criteria.Add(item);
             return this;
         }
+
+        protected string GetColumn(string value)
+        {
+            Field f = this.cdesc.Fields[value];
+
+            return (null != f)? f.Column : value;
+        }
         #endregion
 
         #region Order
@@ -339,7 +343,7 @@ namespace PMS.Query
         {
             if (order.Count > 0)
                 order.Add(", ");
-            order.Add(field);
+            order.Add(GetColumn(field));
             return this;
         }
 
@@ -347,7 +351,7 @@ namespace PMS.Query
         {
             if (order.Count > 0)
                 order.Add(", ");
-            order.Add(field + " ASC");
+            order.Add(GetColumn(field) + " ASC");
             return this;
         }
 
@@ -355,7 +359,7 @@ namespace PMS.Query
         {
             if (order.Count > 0)
                 order.Add(", ");
-            order.Add(field + " DESC");
+            order.Add(GetColumn(field) + " DESC");
             return this;
         } 
         #endregion
@@ -370,6 +374,17 @@ namespace PMS.Query
         public Query<Table> StopGroup()
         {
             this.criteria.Add(new RawClause(")"));
+            return this;
+        }
+
+        public delegate void QueryGroupDelegate(Query<Table> item);
+
+        public Query<Table> Group(QueryGroupDelegate callback)
+        {
+            this.StartGroup();
+            callback(this);
+            this.StopGroup();
+            
             return this;
         }
         #endregion
@@ -443,8 +458,12 @@ namespace PMS.Query
 			}
 
 			if (value != null) {
-				init = (field.Default == null)? 
-					provider.GetTypeInit(field.DbType) : provider.ConvertToType(field.DbType, field.Default);
+				//init = (field.Default == null)? 
+				//	provider.GetTypeInit(field.DbType, value.GetType()) : provider.ConvertToType(field.DbType, field.Default);
+                init = field.Default;
+
+				//init = (field.Default == null)? 
+				//	Activator.CreateInstance(value.GetType()) : provider.ConvertToType(field.DbType, field.Default);
 
 				if (verbose) {
 					log.InfoFormat("     Init: '{0}'", init);
