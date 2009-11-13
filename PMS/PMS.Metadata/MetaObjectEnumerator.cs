@@ -68,8 +68,9 @@ namespace PMS.Metadata
         {
             T obj = (T) Activator.CreateInstance<T>();
 
+            Type dbType;
             FieldInfo finfo;
-			Object dbColumn;
+            Object dbColumn;
 
 			//DateTime now = DateTime.Now;
 
@@ -91,13 +92,20 @@ namespace PMS.Metadata
 					continue;
 				}
 
-				if (dbColumn == null || dbColumn.GetType() == typeof(DBNull))
+				if (dbColumn == null || DBNull.Value.Equals(dbColumn))
 					continue;
+
+                if (typeof(DBNull) == (dbType = dbColumn.GetType()))
+                    continue;
 
 				//Console.WriteLine("Field '{0}' ({1}) => {2}", f.Name, dbColumn.GetType().ToString(), dbColumn);
 
 				try {
-					finfo.SetValue(obj, provider.ConvertToType(f.DbType, dbColumn));
+                    if (finfo.FieldType == dbType) {
+                        finfo.SetValue(obj, dbColumn);
+                    } else {
+                        finfo.SetValue(obj, provider.ConvertToType(f.DbType, dbColumn));
+                    }
 				} catch (Exception e) {
 					log.Warn("PopulateObject: Assignment " + cdesc.Table + "." + f.Name + " >> " + dbColumn + " >> " + f.DbType + " || " + e.Message);
 				}
