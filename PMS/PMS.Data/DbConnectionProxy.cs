@@ -157,7 +157,8 @@ namespace PMS.Data
 
 		public virtual bool CanReopen(Exception ex)
 		{
-            log.Info("Exception<?>: ", ex);
+            if (log.IsDebugEnabled)
+                log.Debug("CanReopen.Exception<?>: ", ex);
 
 			try {
 				if (ex == null)

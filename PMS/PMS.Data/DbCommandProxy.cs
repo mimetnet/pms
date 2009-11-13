@@ -66,25 +66,26 @@ namespace PMS.Data
 
         public int ExecuteNonQuery()
         {
-			int x = 0;
+            int x = 0;
 
-			if (!this.connection.AcquireLock())
-				throw new ApplicationException("ExecuteNonQuery: Failed to lock connection");
+            if (!this.connection.AcquireLock())
+                throw new ApplicationException("ExecuteNonQuery: Failed to lock connection");
 
-			try {
-				x = this.command.ExecuteNonQuery();
-			} catch (Exception e) {
+            try {
+                x = this.command.ExecuteNonQuery();
+            } catch (Exception e) {
                 if (this.CanReopenConnection(e)) {
                     x = this.command.ExecuteNonQuery();
                 } else {
                     throw e;
                 }
-			} finally {
-				this.connection.ReleaseLock();
-                log.Debug("ExecuteNonQuery("+this.command.Parameters.Count+"): " + this.command.CommandText);
-			}
+            } finally {
+                this.connection.ReleaseLock();
+                if (log.IsDebugEnabled)
+                    log.Debug("ExecuteNonQuery("+this.command.Parameters.Count+"): " + this.command.CommandText);
+            }
 
-			return x;
+            return x;
         }
 
         public IDataReader ExecuteReader(CommandBehavior behavior)
@@ -107,7 +108,8 @@ namespace PMS.Data
 					this.connection.ReleaseLock();
 					this.connection = null;
 				}
-                log.Debug("ExecuteReader("+this.command.Parameters.Count+"): " + this.command.CommandText);
+                if (log.IsDebugEnabled)
+                    log.Debug("ExecuteReader("+this.command.Parameters.Count+"): " + this.command.CommandText);
 			}
 			
             return new DbDataReaderProxy(reader, this.connection);
@@ -133,7 +135,8 @@ namespace PMS.Data
 					this.connection.ReleaseLock();
 					this.connection = null;
 				}
-                log.Debug("ExecuteReader("+this.command.Parameters.Count+"): " + this.command.CommandText);
+                if (log.IsDebugEnabled)
+                    log.Debug("ExecuteReader("+this.command.Parameters.Count+"): " + this.command.CommandText);
 			}
 
             return new DbDataReaderProxy(reader, this.connection);
@@ -156,7 +159,8 @@ namespace PMS.Data
                 }
 			} finally {
 				this.connection.ReleaseLock();
-                log.Debug("ExecuteScalar("+this.command.Parameters.Count+"): " + this.command.CommandText);
+                if (log.IsDebugEnabled)
+                    log.Debug("ExecuteScalar("+this.command.Parameters.Count+"): " + this.command.CommandText);
 			}
 
             return obj;
