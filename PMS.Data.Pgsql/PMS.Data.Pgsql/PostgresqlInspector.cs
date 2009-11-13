@@ -75,8 +75,8 @@ namespace PMS.Data.Postgresql
                     while (colReader.Read()) {
                         column = new DataColumn();
                         column.ColumnName = (string) colReader["field"];
-                        column.DataType = 
-                            provider.GetType((string)colReader["type"]);
+                        //column.DataType = 
+                        //    provider.GetType((string)colReader["type"]);
                         table.Columns.Add(column);
                     }
 

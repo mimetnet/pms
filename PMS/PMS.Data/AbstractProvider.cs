@@ -22,120 +22,15 @@ namespace PMS.Data
 			set { this.name = value; }
 		}
 
-        public virtual string PrepareSqlValue(string dbType, object value)
-        {
-            if (dbType == "varchar" || dbType == "text" || dbType == "char") {
-                return PrepareSqlString(value);
-            } else if (dbType.StartsWith("bool")) {
-                return PrepareSqlBoolean(value);
-            } else if (dbType.StartsWith("serial")) {
-                return PrepareSqlAutoIncrement(value);
-            } else if (dbType == "timestamp" || dbType == "timestampz") {
-                return PrepareSqlTimestamp(value);
-            } else if (dbType == "date") {
-                return PrepareSqlDate(value);
-            } else if (dbType == "bit" || dbType == "varbit") {
-                return PrepareSqlBit(value);
-            } else if (dbType == "inet") {
-                return PrepareSqlInetAddr(value);
-            } else if (dbType == "numeric") {
-				return PrepareSqlDecimal(Convert.ToDecimal(value));
-			}
+        //public virtual string PrepareSqlTimestamp(object value, bool tz)
+        //{
+        //    DateTime t = Convert.ToDateTime(value);
 
-            return value.ToString();
-        }
+        //    if (t.Kind != DateTimeKind.Unspecified)
+        //        t = t.ToLocalTime();
 
-        public virtual string PrepareSqlDecimal(Decimal obj)
-        {
-			return obj.ToString(CultureInfo.InvariantCulture);
-        }
-
-        public virtual string PrepareSqlString(object value)
-        {
-			if (value != null)
-				return "'" + value.ToString().Replace("\\", "\\\\").Replace("'", "''") + "'";
-
-			return "null";
-        }
-
-        public virtual string PrepareSqlBoolean(object value)
-        {
-            return (Convert.ToBoolean(value) == true)? "'t'" : "'f'";
-        }
-
-        public virtual string PrepareSqlAutoIncrement(object value)
-        {
-            return (Convert.ToInt32(value) == 0)? "DEFAULT" : value.ToString();
-        }
-
-        public virtual string PrepareSqlTimestamp(object value)
-		{
-			return PrepareSqlTimestamp(value, false);
-		}
-
-        public virtual string PrepareSqlTimestamp(object value, bool tz)
-        {
-			DateTime t = Convert.ToDateTime(value);
-
-			if (t.Kind != DateTimeKind.Unspecified)
-				t = t.ToLocalTime();
-
-			return "'" + t.ToString("yyyy-MM-dd HH:mm:sszz") + "'";
-        }
-
-        public virtual string PrepareSqlDate(object value)
-        {
-            return "'" + Convert.ToDateTime(value).ToString("yyyy-MM-dd") + "'";
-        }
-
-        public virtual string PrepareSqlBit(object value)
-        {
-            string sBit = String.Empty;
-            if (value is BitArray) { 
-                BitArray bitArr = new BitArray((value as BitArray));
-                foreach (bool bit in bitArr) {
-                    sBit += (bit == true)? '1' : '0';
-                }
-            }
-            
-            return "B'" + sBit + "'";
-        }
-
-        public virtual string PrepareSqlInetAddr(object value)
-        {
-            return "inet'" + value + "'";
-        }
-
-        public virtual object GetTypeInit(string type)
-        {
-            type = type.ToLower();
-
-            if (type == "varchar" || type == "text") {
-				return null;
-                //return String.Empty;
-            } else if ((type == "int") || (type == "integer") || 
-                       (type == "int4") || (type == "serial") || 
-                       (type == "serial4")) {
-                return new Int32();
-            } else if ((type == "bigint") || (type == "int8") || 
-                       (type == "serial8") || (type == "bigserial")) {
-                return new Int64();
-            } else if ((type == "bool") || (type == "boolean")) {
-                return false;
-            } else if ((type == "int2") || (type == "smallint")) {
-                return new Int16();
-            } else if ((type == "date") || (type == "timestamp") || (type == "timestampz")) {
-                return new DateTime();
-            } else if (type == "char") {
-                return new Char();
-            } else if (type == "bit") {
-                return new BitArray(0);
-            } else if (type == "numeric" || type == "money") {
-                return new Decimal();
-            } else {
-                return null;
-            }
-        }
+        //    return "'" + t.ToString("yyyy-MM-dd HH:mm:sszz") + "'";
+        //}
 
         public virtual Type GetType(string type)
         {
@@ -161,7 +56,7 @@ namespace PMS.Data
         public virtual object ConvertToType(string dbType, object obj)
         {
 			if (obj is String) {
-				if (dbType == "varchar" || dbType == "text") {
+				if (dbType == "varchar" || dbType == "text" || dbType == "nvarchar") {
 					return obj;
 				} else {
 					return ConvertToType(dbType, (String)obj);
@@ -173,7 +68,7 @@ namespace PMS.Data
 					return ConvertToType(dbType, (Boolean)obj);
 				}
 			} else if (obj is Int16) {
-				if (dbType == "int2" || dbType == "smallint") {
+				if (dbType == "int2" || dbType == "smallint" || dbType == "short") {
 					return obj;
 				} else {
 					return ConvertToType(dbType, (Int16)obj);

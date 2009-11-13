@@ -11,19 +11,6 @@ namespace PMS.Data
 		String Name { get; set; }
 		Type Type { get; }
 
-        string PrepareSqlValue(string dbType, object value);
-        string PrepareSqlString(object value);
-        string PrepareSqlBoolean(object value);
-        string PrepareSqlAutoIncrement(object value);
-        string PrepareSqlTimestamp(object value);
-        string PrepareSqlTimestamp(object value, bool tz);
-        string PrepareSqlDate(object value);
-        string PrepareSqlBit(object value);
-        
-        // ---------------------------------------------------------------
-
-        object GetTypeInit(string dbType);
-
         // ---------------------------------------------------------------
 		
         object ConvertToType(string dbType, Object obj);
