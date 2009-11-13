@@ -12,7 +12,7 @@
 
     public class DbBroker : IDisposable
     {
-		private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Broker.Session");
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Broker.DbBroker");
         private RepositoryManager repository = null;
         private Connection connDesc = null;
         private IDbManager db = null;
@@ -22,24 +22,27 @@
         static DbBroker()
         {
             FileInfo file = new FileInfo("PMS.dll.config");
-            
-			if (file.Exists)
-				log4net.Config.XmlConfigurator.ConfigureAndWatch(file);
 
-			if (log.IsInfoEnabled)
-				log.Info("Version " + Version);
+            if (file.Exists)
+                log4net.Config.XmlConfigurator.ConfigureAndWatch(file);
+
+            if (log.IsInfoEnabled)
+                log.Info("Version " + Version);
         }
 
         public DbBroker() : this("repository.xml", null)
         {
         }
 
-        public DbBroker(string connectionID) : this(connectionID, connectionID)
-		{
-		}
+        public DbBroker(string repository) : this(null, repository)
+        {
+        }
 
-		public DbBroker(string repository, string connectionID)
-		{
+        public DbBroker(string repository, string connectionID)
+        {
+            if (String.IsNullOrEmpty(repository))
+                repository = "repository.xml";
+
             this.repository = RepositoryManagerFactory.Factory(repository);
             
             if (!String.IsNullOrEmpty(connectionID)) {
@@ -50,13 +53,13 @@
             
             this.db = DbManagerFactory.Factory(this.connDesc);
             this.conn = this.db.GetConnection();
-		}
+        }
 
-		~DbBroker()
-		{
-			this.Close();
-		} 
-		/* }}} */
+        ~DbBroker()
+        {
+            this.Close();
+        } 
+        /* }}} */
 
 		/* Properties {{{ */
 		public static string Version {
