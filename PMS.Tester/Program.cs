@@ -10,6 +10,13 @@ using PMS.Query;
 
 namespace PMS.Tester
 {
+    public enum Gender
+    {
+        Unknown,
+        Male,
+        Female
+    }
+
     public class Department
     {
         private int id;
@@ -52,7 +59,7 @@ namespace PMS.Tester
 	    private int id, did, rid;
 	    private string email, fun, fname, lname;
         private DateTime cdate;
-        private short gender;
+        private Gender gender;
 
         public Member()
 	    {
@@ -93,7 +100,7 @@ namespace PMS.Tester
             set { cdate = value; }
         }
 
-        public short Gender {
+        public Gender Gender {
             get { return gender; }
             set { gender = value; }
         }
@@ -119,44 +126,25 @@ namespace PMS.Tester
                 // - Pull IDbConnection from pool based on unique name (from config file)
                 // - This is useful if you have multiple databases to chat with
                 // - Not specifying a name will load the one marked default or the first one found
-		        using (DbBroker cxt = new DbBroker("peon")) {
+		        using (DbBroker cxt = new DbBroker("repository.xml")) {
                     //TestOne(cxt);
-                    //TestTwo(cxt);
+                    TestTwo(cxt);
                     //TestThree(cxt);
                     //TestFour(cxt);
                     //TestFive(cxt);
                     //TestSix(cxt);
-                    TestSeven(cxt);
                 }
 
                 //TestZero();
             } catch (Exception e) {
-                Console.WriteLine(e);
+                Console.WriteLine("TEST EXCEPTION: " + e.ToString());
             } finally {
                 DbManagerFactory.Close();
 
                 Console.ReadLine();
             }
 
-		    return 0;
-	    }
-
-        private static void TestSeven(DbBroker cxt)
-        {
-            foreach (Member u in cxt.Query<Member>().IsNull("reports_to_id").Exec()) {
-                Console.WriteLine("0: " + u.ToString());
-                TestSevenQ(cxt, u.ID, 0);
-            }
-        }
-
-        private static void TestSevenQ(DbBroker cxt, int rid, int cnt)
-        {
-            foreach (Member u in cxt.Query<Member>().EqualTo("reports_to_id", rid).Exec()) {
-                Console.Write(new String(' ', cnt));
-                Console.WriteLine(rid + ": " + u.ToString());
-
-                TestSevenQ(cxt, u.ID, (cnt+1));
-            }
+            return 0;
         }
 
         //private static void TestZero()
@@ -193,7 +181,7 @@ namespace PMS.Tester
 
         private static void TestTwo(DbBroker cxt)
         {
-            foreach (Member m in cxt.Query<Member>().Like("email", "%a%").OrderBy("id").Exec()) {
+            foreach (Member m in cxt.Query<Member>().Like("lname", "%m%").OrderBy("id").Exec()) {
                 Console.WriteLine(" : " + m);
             }
         }
@@ -228,10 +216,13 @@ namespace PMS.Tester
         {
             Member m = new Member();
             m.Email = "matthew@kmbs";
+            m.FirstName = "Matthew";
+            m.LastName = "Metnetsky";
 
             using (IDbTransaction t = cxt.Begin()) {
-                Console.WriteLine(" : " + (m.ID = cxt.Exec<Member>(m).Insert()));
-                
+                Console.WriteLine(" : " + cxt.Exec<Member>(m).Insert());
+
+                m = cxt.Exec<Member>(m).Object();
                 m.Creation = DateTime.Now.Subtract(new TimeSpan(2, 0, 0, 0));
                 Console.WriteLine(" : " + cxt.Exec<Member>(m).Update());
 

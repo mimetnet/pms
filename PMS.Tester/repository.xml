@@ -4,9 +4,9 @@
     <generate-types>false</generate-types>
 
     <connections>
-        <connection provider="pgsql" default="true">Server=fluffy;User Id=groove;Password=no_password_yet;Database=pod_people;Pooling=false;</connection>
-        <connection provider="mssql" id="peon2">Server=PEON-ONE\PEONSQLE,1433;User Id=groove;Password=2$k9nagh;Database=peon;Pooling=false</connection>
-        <connection provider="sqlite" id="peon">Data Source=data.db;Pooling=false</connection>
+        <!--<connection provider="pgsql" default="true">Server=fluffy;User Id=groove;Password=no_password_yet;Database=pod_people;Pooling=false;</connection>-->
+        <connection provider="mssql" id="peon">Server=PEON-ONE\PEONSQLE,1433;User Id=groove;Password=2$k9nagh;Database=peon;Pooling=false</connection>
+        <!--<connection provider="sqlite" id="peon2">Data Source=data.db;Pooling=false</connection>-->
     </connections>
 
     <classes>
@@ -23,16 +23,12 @@
         <class type="PMS.Tester.Member, PMS.Tester" table="member">
             <fields>
                 <field name="id" column="id" db_type="int" primary="true" />
-                <field name="did" column="department_id" db_type="int" />
-                <field name="rid" column="reports_to_id" db_type="int" />
-
-                <field name="email" column="email" db_type="varchar" unique="true"/>
+                <field name="email" column="email" db_type="varchar" />
                 <field name="fname" column="first_name" db_type="varchar" />
                 <field name="lname" column="last_name" db_type="varchar" />
-
                 <field name="gender" column="gender" db_type="smallint" />
-
-                <!-- field name="cdate" column="creation_date" db_type="timestampz" -->
+                <field name="did" column="department_id" db_type="int" />
+                <field name="rid" column="reports_to_id" db_type="int" />
             </fields>
         </class>
         
