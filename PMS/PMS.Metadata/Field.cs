@@ -15,13 +15,13 @@ namespace PMS.Metadata
         public string Name;
         public string Column;
         public string DbType;
-		public object Default;
-		public string DefaultDb;
+        public object Default;
+        public string DefaultDb;
         public bool Unique = false;
         public bool PrimaryKey = false;
         public bool IgnoreDefault = true;
         public Reference Reference = null;
-		public Type CType = null;
+        public Type CType = null;
 
         public bool HasReference {
             get { return (Reference != null); }
@@ -137,15 +137,12 @@ namespace PMS.Metadata
 			if (type == null) 
 				throw new ArgumentNullException("type");
 
-
 			if (Default == null) {
-				if ((CType = type).IsPrimitive) {
-					Default = Activator.CreateInstance(type);
-				//} else if (type == typeof(String)) {
-				//	Default = String.Empty;
-				} else {
-					Default = null;
-				}
+                if (type.IsEnum) {
+                    Default = Enum.ToObject(type, Enum.GetValues(type).GetValue(0));
+                } else if (!type.IsAbstract && !type.IsInterface && !type.IsClass) {
+                    Default = Activator.CreateInstance(type);
+                }
 			} else {
 				if ((CType = type).IsPrimitive) {
 					if (type == typeof(Boolean))
@@ -172,7 +169,11 @@ namespace PMS.Metadata
 						Default = Convert.ToDouble(Default);
 					else if (type == typeof(Single))
 						Default = Convert.ToSingle(Default);
-				}
+				} else if (type.IsEnum) {
+                    Default = Enum.Parse(type, Default.ToString(), true);
+                } else if (!type.IsAbstract && !type.IsInterface && !type.IsClass) {
+                    Default = Activator.CreateInstance(type);
+                }
 			}
 		}
 
