@@ -34,7 +34,7 @@
         {
         }
 
-        public DbBroker(string repository) : this(null, repository)
+        public DbBroker(string repository) : this(repository, null)
         {
         }
 
