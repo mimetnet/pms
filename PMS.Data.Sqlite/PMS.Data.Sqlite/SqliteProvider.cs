@@ -42,8 +42,11 @@ namespace PMS.Data.Sqlite
             //    value = ((DateTime)value).ToString("yyyy-MM-dd HH:mm:sszz");
             //}
             //return new SqliteParameter(name, value);
-
+#if NET_2_0
+            IDataParameter p = new SQLiteParameter();
+#else
             IDataParameter p = new SqliteParameter();
+#endif
             p.ParameterName = name;
             if (dbType != null)
                 p.DbType = dbType.SystemDbType;
