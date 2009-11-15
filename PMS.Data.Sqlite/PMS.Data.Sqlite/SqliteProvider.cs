@@ -11,19 +11,19 @@ namespace PMS.Data.Sqlite
     [Serializable]
     internal sealed class SqliteProvider : PMS.Data.AbstractProvider
     {
-		public override Type Type {
-			get { return typeof(SqliteConnection); }
-		}
+        public override Type Type {
+            get { return typeof(SqliteConnection); }
+        }
 
         public override IDbConnection GetConnection()
         {
-			return new SqliteConnection();
+            return new SqliteConnection();
         }
 
         public override IDbConnection GetConnection(string properties)
         {
-			return new SqliteConnection(properties);
-		}
+            return new SqliteConnection(properties);
+        }
 
         public override IDbInspector GetInspector()
         {
@@ -37,11 +37,6 @@ namespace PMS.Data.Sqlite
 
         public override IDataParameter CreateParameter(string name, object value, PMS.DbType dbType)
         {
-            //Type t = value.GetType();
-            //if (typeof(DateTime) == t) {
-            //    value = ((DateTime)value).ToString("yyyy-MM-dd HH:mm:sszz");
-            //}
-            //return new SqliteParameter(name, value);
 #if NET_2_0
             IDataParameter p = new SQLiteParameter();
 #else
