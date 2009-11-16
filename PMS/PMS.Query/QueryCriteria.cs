@@ -218,6 +218,23 @@ namespace PMS.Query
         } 
         #endregion
 
+        #region ILike
+        public Query<Table> ILike(string field, object value)
+        {
+            return AndILike(field, value);
+        }
+
+        public Query<Table> AndILike(string field, object value)
+        {
+            return And().Add(new LikeClause("LOWER", GetColumn(field), "LOWER", value));
+        }
+
+        public Query<Table> OrILike(string field, object value)
+        {
+            return Or().Add(new LikeClause("LOWER", GetColumn(field), "LOWER", value));
+        }
+        #endregion
+
         #region NotLike
         public Query<Table> NotLike(string field, object value)
         {

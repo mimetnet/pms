@@ -8,7 +8,12 @@ namespace PMS.Query
         }
 
         public LikeClause(string sqlFunction, string field, object value) : 
-            base(sqlFunction + "(" + field + ")", value, "LIKE")
+            base(sqlFunction, field, value, "LIKE")
+        {
+        }
+
+        public LikeClause(string sqlFunction, string field, string sqlValueFunction, object value) : 
+            base(sqlFunction, field, sqlValueFunction, value, "LIKE")
         {
         }
     }

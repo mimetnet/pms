@@ -88,6 +88,16 @@
 		}
 		/* }}} */
 
+        public DbExecutor<T> X<T>() where T : new()
+        {
+            return this.Q<T>().X();
+        }
+
+        public DbExecutor<T> X<T>(T record) where T : new()
+        {
+            return this.Q<T>().Set(record).X();
+        }
+
         public DbExecutor<T> Exec<T>() where T : new()
         {
             return this.Query<T>().Exec();
@@ -96,6 +106,19 @@
         public DbExecutor<T> Exec<T>(T record) where T : new()
         {
             return this.Query<T>().Set(record).Exec();
+        }
+
+        public Query<T> Q<T>() where T : new()
+        {
+            //if (this.conn != null)
+            //    this.db.ReturnConnection(this.conn);
+
+            //this.conn = this.db.GetConnection();
+
+            return this.connDesc.Provider.CreateQuery<T>(
+                this.repository.GetClass(typeof(T)), 
+                this.conn);
+                //this.db.GetConnection());
         }
 
         public Query<T> Query<T>() where T : new()
