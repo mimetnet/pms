@@ -274,6 +274,11 @@ namespace PMS.Query
         }
         #endregion
 
+        public DbExecutor<Table> X()
+        {
+            return new DbExecutor<Table>(this);
+        }
+        
         public DbExecutor<Table> Exec()
         {
             return new DbExecutor<Table>(this);
