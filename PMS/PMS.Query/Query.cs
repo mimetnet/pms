@@ -10,10 +10,10 @@ namespace PMS.Query
 {
     public partial class Query <Table> where Table : new()
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger("Query");
+        protected static readonly log4net.ILog log = log4net.LogManager.GetLogger("Query");
         protected static bool verbose = false;
         protected IProvider provider = null;
-		protected Class cdesc = null;
+        protected Class cdesc = null;
         protected IDbConnection connection = null;
         protected List<IDataParameter> parameters = new List<IDataParameter>();
 
@@ -34,6 +34,10 @@ namespace PMS.Query
 
         public List<IDataParameter> Parameters {
             get { return this.parameters; }
+        }
+
+        public CommandType CommandType {
+            get { return this.commandType; }
         }
 
         internal IDbConnection Connection {
@@ -182,6 +186,24 @@ namespace PMS.Query
             sql.Append(this.cdesc.Table);
             return sql.ToString();
         }
+
+        protected virtual string ProcedureSql()
+        {
+            this.criteria.ForEach(delegate(IClause c) {
+                this.parameters.AddRange(c.CreateParameters(this.provider.CreateParameter));
+            });
+            this.values.ForEach(delegate(IClause c) {
+                this.parameters.AddRange(c.CreateParameters(this.provider.CreateParameter));
+            });
+            this.unique.ForEach(delegate(IClause c) {
+                this.parameters.AddRange(c.CreateParameters(this.provider.CreateParameter));
+            });
+            this.pkey.ForEach(delegate(IClause c) {
+                this.parameters.AddRange(c.CreateParameters(this.provider.CreateParameter));
+            });
+
+            return this.procedure;
+        }
         #endregion
 
         #region StringBuilder Appenders
@@ -292,6 +314,9 @@ namespace PMS.Query
 
         public string ToString(SqlCommand cmd)
         {
+            if (this.commandType == CommandType.StoredProcedure)
+                return ProcedureSql();
+
 			switch (cmd) {
 				case SqlCommand.Select:
 					return SelectSql();

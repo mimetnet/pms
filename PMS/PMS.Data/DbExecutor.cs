@@ -46,8 +46,14 @@ namespace PMS.Data
 
         public int NonQuery(string sqlOverride)
         {
+            return NonQuery(sqlOverride, query.CommandType);
+        }
+
+        public int NonQuery(string sqlOverride, CommandType type)
+        {
             using (IDbCommand cmd = query.Connection.CreateCommand()) {
                 cmd.CommandText = sqlOverride;
+                cmd.CommandType = type;
                 
                 foreach (IDataParameter p in query.Parameters)
                     cmd.Parameters.Add(p);
@@ -58,13 +64,19 @@ namespace PMS.Data
 
         public IDataReader Reader()
         {
-            return this.Reader(query.ToString(SqlCommand.Select));
+            return this.Reader(query.ToString(SqlCommand.Select), query.CommandType);
         }
 
         public IDataReader Reader(string sqlOverride)
         {
+            return Reader(sqlOverride, query.CommandType);
+        }
+
+        public IDataReader Reader(string sqlOverride, CommandType type)
+        {
             IDbCommand cmd = query.Connection.CreateCommand();
             cmd.CommandText = sqlOverride;
+            cmd.CommandType = type;
 
             foreach (IDataParameter p in query.Parameters)
                 cmd.Parameters.Add(p);
@@ -74,9 +86,14 @@ namespace PMS.Data
 
         public TResult Scalar<TResult>(String sqlOverride)
         {
+            return Scalar<TResult>(sqlOverride);
+        }
+
+        public TResult Scalar<TResult>(String sqlOverride, CommandType type)
+        {
             Object o = null;
             
-            if ((o = this.Scalar(sqlOverride)) != null && o is TResult)
+            if ((o = this.Scalar(sqlOverride, type)) != null && o is TResult)
                 return (TResult) o;
 
             return default(TResult);
@@ -84,8 +101,14 @@ namespace PMS.Data
 
         public Object Scalar(String sqlOverride)
         {
+            return Scalar(sqlOverride, query.CommandType);
+        }
+
+        public Object Scalar(String sqlOverride, CommandType type)
+        {
             using (IDbCommand cmd = query.Connection.CreateCommand()) {
                 cmd.CommandText = sqlOverride;
+                cmd.CommandType = type;
 
                 foreach (IDataParameter p in query.Parameters)
                     cmd.Parameters.Add(p);

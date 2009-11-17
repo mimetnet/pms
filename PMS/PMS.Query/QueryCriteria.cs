@@ -14,9 +14,11 @@ namespace PMS.Query
         protected List<IClause> unique = new List<IClause>();
         protected List<IClause> pkey = new List<IClause>();
         protected List<String> order = new List<String>();
-		protected uint limit = 0;
+        protected uint limit = 0;
         protected uint offset = 0;
         protected string columns = "*";
+        protected string procedure = null;
+        protected System.Data.CommandType commandType = System.Data.CommandType.Text;
 
         #region Filter
         public Query<Table> Filter(string sClause)
@@ -516,6 +518,16 @@ namespace PMS.Query
         public Query<Table> Offset(uint offset)
         {
             this.offset = offset;
+            return this;
+        }
+
+        public Query<Table> Procedure(string name)
+        {
+            if (String.Empty.Equals(name))
+                throw new ArgumentException("Procedure cannot be set to an empty string");
+
+            this.procedure = name;
+            this.commandType = System.Data.CommandType.StoredProcedure;
             return this;
         }
     }

@@ -108,6 +108,13 @@
             return this.Query<T>().Set(record).Exec();
         }
 
+        public Query<T> P<T>(string storedProcedure) where T : new()
+        {
+            Query<T> q = this.Q<T>();
+            q.Procedure(storedProcedure);
+            return q;
+        }
+
         public Query<T> Q<T>() where T : new()
         {
             //if (this.conn != null)
