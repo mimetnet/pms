@@ -45,7 +45,13 @@ namespace PMS.Data.MSSQL
 
         //public override Query<T> CreateQuery<T>(Class cdesc, IDbConnection connection)
         //{
-        //    throw new Exception();
+        //    if (cdesc == null)
+        //        throw new ArgumentNullException("Class");
+
+        //    if (connection == null)
+        //        throw new ArgumentNullException("IDbConnection");
+
+        //    return new MSSQLQuery<T>(cdesc, this, connection);
         //}
     }
 }
