@@ -33,7 +33,7 @@ libpms2-cil (1.9.0-5ubuntu0.9.04) jaunty; urgency=low
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Wed, 08 Jul 2009 16:58:21 -0400
 
-libpms2-cil (1.9.0-4.1) januty; urgency=low
+libpms2-cil (1.9.0-4.1) jaunty; urgency=low
 
   * automake is now run with --copy so missing files are copied not linked
 
