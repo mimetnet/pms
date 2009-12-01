@@ -42,7 +42,31 @@ AM_CONDITIONAL(HAVE_MONODOC, test "x$MONODOC" != "xno")
 test "x$prefix" = "xNONE" && prefix=/usr
 test "x$sysconfdir" = "x\${prefix}/etc" && sysconfdir=/etc
 
-##############################################################################
+### DOCUMENTATION ############################################################
+
+AC_ARG_ENABLE([doc],
+	AC_HELP_STRING([--enable-doc], [Create documentation]),
+	enable_doc=${enableval}, enable_doc=no
+)
+
+if test "x$enable_doc" = "xyes"; then
+	AM_CONDITIONAL(HAVE_DOCS, test a = a)
+else
+	AM_CONDITIONAL(HAVE_DOCS, test a = b)
+fi
+
+#### DEBUG ###################################################################
+
+AC_ARG_ENABLE([debug],
+	AC_HELP_STRING([--enable-debug], [Create debug files (.mdb)]),
+	enable_debug=${enableval}, enable_debug=yes
+)
+
+if test "x$enable_debug" = "xyes"; then
+	DEBUG_FLAGS='-debug'
+fi
+
+#### LOG4NET #################################################################
 
 AC_ARG_WITH(
 	[log4net],
@@ -55,13 +79,13 @@ PKG_CHECK_MODULES(LOG4NET, $with_log4net)
 
 ##############################################################################
 
-AC_ARG_ENABLE([debug],
-	AC_HELP_STRING([--enable-debug], [Create debug files (.mdb)]),
-	enable_debug=${enableval}, enable_debug=yes
-)
-
-if test "x$enable_debug" = "xyes"; then
-	DEBUG_FLAGS='-debug'
+AC_MSG_CHECKING(for System.Data)
+if test "`${GACUTIL} -l System.Data | tail -1 | awk '{print $5}'`" -gt "0"; then
+	AC_MSG_RESULT([yes])
+	AM_CONDITIONAL(HAVE_MSSQL, test a = a)
+else
+	AC_MSG_RESULT([no])
+	AM_CONDITIONAL(HAVE_MSSQL, test a = b)
 fi
 
 ##############################################################################
@@ -85,12 +109,6 @@ else
 	AC_MSG_RESULT([no])
 	AM_CONDITIONAL(HAVE_NPGSQL, test a = b)
 fi
-
-##############################################################################
-
-AC_MSG_CHECKING(for System.Data.SqlClient)
-AC_MSG_RESULT([no])
-AM_CONDITIONAL(HAVE_MSSQL, test a = b)
 
 ##############################################################################
 
@@ -119,6 +137,7 @@ AC_OUTPUT([
 			  PMS/Makefile
 			  PMS.Data.Pgsql/Makefile
 			  PMS.Data.Sqlite/Makefile
+			  PMS.Data.MSSQL/Makefile
 			  build/pms-2.0.pc
 			  build/Makefile
 			  scripts/Makefile
