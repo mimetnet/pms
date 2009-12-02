@@ -17,11 +17,11 @@ namespace PMS.Metadata
         private Class cdesc = null;
         private IProvider provider = null;
         private IDataReader reader = null;
-        
+
         public MetaObjectEnumerator(Class cdesc, IProvider provider, IDataReader reader)
         {
-		    this.cdesc = cdesc;
-		    this.provider = provider;
+            this.cdesc = cdesc;
+            this.provider = provider;
             this.reader = reader;
         }
 
@@ -66,7 +66,7 @@ namespace PMS.Metadata
 
         private T CreateObject()
         {
-            T obj = (T) Activator.CreateInstance<T>();
+            T obj = new T();
 
             Type dbType;
             FieldInfo finfo;
