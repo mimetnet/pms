@@ -3,6 +3,7 @@
 PROJECT=PMS
 CONFIGURE=configure.ac
 LSB_RELEASE=$(lsb_release -sc)
+LSB_ID=$(lsb_release -si)
 
 : ${AUTOCONF=autoconf}
 : ${AUTOHEADER=autoheader}
@@ -11,9 +12,28 @@ LSB_RELEASE=$(lsb_release -sc)
 : ${ACLOCAL=aclocal}
 : ${LIBTOOL=libtool}
 
-if [ ! -d debian ]; then
-	ln -s debian.${LSB_RELEASE}/ debian
-fi
+debfolder()
+{
+	if [ ! -d debian ]; then
+		if [ -d debian.${LSB_RELEASE} ]; then
+			ln -s debian.${LSB_RELEASE}/ debian
+		else
+			echo "autogen.sh (debfolder): LSB_RELEASE not package-able: '${LSB_RELEASE}'" >&2
+			echo >&2
+		fi
+	fi
+}
+
+case "${LSB_ID}" in
+	Debian)
+		debfolder;;
+	Ubuntu)
+		debfolder;;
+	*)
+		echo "autogen.sh called by unkown LSB_ID: '${LSB_ID}'" >&2
+		exit 1
+		;;
+esac
 
 if [ -z "$conf_flags" ]; then
 	conf_flags="--prefix=/usr --mandir=/usr/share/man"
