@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace PMS.Collections.Pool
 {
-    public class ManagedObjectPool<T> : IObjectPool<T>
+    public class ManagedObjectPool<T> : IObjectPool<T> where T : class
     {
         private int min = 0;
         private int max = 0;
@@ -19,19 +19,19 @@ namespace PMS.Collections.Pool
         private Object lockObject = new Object();
 
         public ManagedObjectPool(Type type, int min, int max, string sFree) :
-			this(type, null, min, max, sFree)
+            this(type, null, min, max, sFree)
         {
         }
 
-		public ManagedObjectPool(Type type, object[] typeParams, int min, int max, string sFree)
-		{
+        public ManagedObjectPool(Type type, object[] typeParams, int min, int max, string sFree)
+        {
             this.type = type;
             this.typeParams = typeParams;
             this.min = min;
             this.max = max;
             this.cleanup = type.GetMethod(sFree);
             this.poolGate = new Semaphore(max, max);
-		}
+        }
 
         ~ManagedObjectPool()
         {
@@ -61,14 +61,14 @@ namespace PMS.Collections.Pool
                 //Console.WriteLine("Borrow: " + queue.Peek().GetHashCode());
                 return queue.Dequeue();
             }
-		}
+        }
 
         public bool Return(T obj)
-		{
+        {
             if (obj == null)
                 return false;
 
-			lock (this.lockObject) {
+            lock (this.lockObject) {
                 if (this.queue.Contains(obj))
                     throw new Exception("Return: queue already has object??");
 
@@ -79,7 +79,7 @@ namespace PMS.Collections.Pool
             }
 
             return true;
-		}
+        }
 
         public bool Remove(T obj)
         {
@@ -88,16 +88,12 @@ namespace PMS.Collections.Pool
 
         protected virtual long Add()
         {
-			Console.WriteLine("ManagedObjectPool.Add(new {0}())", type.Name);
-            
-            if (this.typeParams == null)
-				return this.Add(new T());
-			
-            return this.Add((T)Activator.CreateInstance(type, typeParams));
+            //Console.WriteLine("ManagedObjectPool.Add(new {0}())", type.Name);
 
-            //if (queue.Count > THRESHOLD) {
-			//    ZombieKiller(30);
-		    //}
+            if (this.typeParams == null)
+                return this.Add(Activator.CreateInstance<T>());
+
+            return this.Add((T)Activator.CreateInstance(type, typeParams));
         }
 
         protected long Add(T obj)
@@ -109,7 +105,7 @@ namespace PMS.Collections.Pool
         public bool Open()
         {
             lock (this.lockObject) {
-                Console.WriteLine("ManagedObjectPool.Open()");
+                //Console.WriteLine("ManagedObjectPool.Open()");
 
                 for (int x=this.queue.Count; x<this.min; x++) {
                     this.Add();
@@ -122,15 +118,15 @@ namespace PMS.Collections.Pool
         public void Close()
         {
             lock (this.lockObject) {
-                Console.WriteLine("ManagedObjectPool.Close({0})", this.queue.Count);
+                //Console.WriteLine("ManagedObjectPool.Close({0})", this.queue.Count);
                 while (this.queue.Count > 0) {
                     Object o = this.queue.Dequeue();
-                    
+
                     if (cleanup != null) {
-					    cleanup.Invoke(o, null);
+                        cleanup.Invoke(o, null);
                     }
                 }
             }
         }
-	}
+    }
 }
