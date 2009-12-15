@@ -70,7 +70,7 @@ namespace PMS.Query
 				list.AddRange(this.values);
 			}
 
-			this.AppendToCriteria(list, delegate(){ this.And(); });
+			this.AppendToCriteria(list, this.And);
 
             AppendWhere(sql);
 			AppendCondition(sql);
@@ -100,10 +100,10 @@ namespace PMS.Query
 			sql.Append(" SET ");
 
 			if (this.pkey.Count > 0) {
-				this.AppendToCriteria(this.pkey, delegate(){ this.And(); });
+				this.AppendToCriteria(this.pkey, this.And);
 				this.values.AddRange(this.unique);
 			} else if (this.unique.Count > 0) {
-				AppendToCriteria(this.unique, delegate(){ this.And(); });
+				AppendToCriteria(this.unique, this.And);
 			}
 
 			for (i=0; i<this.values.Count; i++) {
@@ -131,12 +131,12 @@ namespace PMS.Query
 
             if (this.pkey.Count > 0) {
 				this.criteria.Clear();
-                this.AppendToCriteria(this.pkey, delegate(){ this.And(); });
+                this.AppendToCriteria(this.pkey, this.And);
 			} else if (this.unique.Count > 0) {
 				this.criteria.Clear();
-                this.AppendToCriteria(this.unique, delegate(){ this.And(); });
+                this.AppendToCriteria(this.unique, this.And);
 			} else {
-				this.AppendToCriteria(this.values, delegate(){ this.And(); });
+				this.AppendToCriteria(this.values, this.And);
 			}
 
             AppendWhere(sql);
@@ -154,12 +154,12 @@ namespace PMS.Query
 
             if (this.pkey.Count > 0) {
 				this.criteria.Clear();
-                this.AppendToCriteria(this.pkey, delegate(){ this.And(); });
+                this.AppendToCriteria(this.pkey, this.And);
 			} else if (this.unique.Count > 0) {
 				this.criteria.Clear();
-                this.AppendToCriteria(this.unique, delegate(){ this.And(); });
+                this.AppendToCriteria(this.unique, this.And);
 			} else {
-				this.AppendToCriteria(this.values, delegate(){ this.And(); });
+				this.AppendToCriteria(this.values, this.And);
 			}
 
             AppendWhere(sql);
@@ -344,16 +344,16 @@ namespace PMS.Query
         }
         #endregion
 
-		void AppendToCriteria(List<IClause> list, BetweenAddCallback foo)
+		void AppendToCriteria(List<IClause> list, BetweenAddCallback callback)
 		{
 			for (int i=0; i<list.Count; i++) {
 				this.criteria.Add(list[i]);
 
 				if ((i+1) < list.Count)
-					foo();
+					callback();
 			}
 		}
 
-		private delegate void BetweenAddCallback();
+		private delegate Query<Table> BetweenAddCallback();
 	}
 }
