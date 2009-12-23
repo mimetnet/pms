@@ -1,4 +1,4 @@
-libpms2-cil (1.9.1-4ubuntu0.8.04) jaunty; urgency=low
+libpms2-cil (1.9.1-4ubuntu0.8.04) karmic; urgency=low
 
   * DbBroker.ctor(str) sets repository NOT connection-id
   * LikeClause now supports column operator like OP(field) = value
@@ -10,25 +10,25 @@ libpms2-cil (1.9.1-4ubuntu0.8.04) jaunty; urgency=low
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Tue, 20 Oct 2009 13:06:53 -0400
 
-libpms2-cil (1.9.1-3ubuntu0.8.04) jaunty; urgency=low
+libpms2-cil (1.9.1-3ubuntu0.8.04) karmic; urgency=low
 
   * Differentiate between unique and primary-key for UPDATES
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Tue, 20 Oct 2009 13:06:53 -0400
 
-libpms2-cil (1.9.1-2ubuntu0.8.04) jaunty; urgency=low
+libpms2-cil (1.9.1-2ubuntu0.8.04) karmic; urgency=low
 
   * Install into the GAC via /usr/share/cli-common/gac-package-install
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Thu, 15 Oct 2009 16:26:50 -0400
 
-libpms2-cil (1.9.1-1ubuntu0.9.04) jaunty; urgency=low
+libpms2-cil (1.9.1-1ubuntu0.9.04) karmic; urgency=low
 
   * Fixed SQL UPDATE of unique keys
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Mon, 12 Oct 2009 11:21:40 -0400
 
-libpms2-cil (1.9.1-0ubuntu0.9.04) jaunty; urgency=low
+libpms2-cil (1.9.1-0ubuntu0.9.04) karmic; urgency=low
 
   * Fixed DELETE generation to use 'AND' not 'COMMA'
   * Fixed race condition when loading RepositoryManager's
@@ -37,51 +37,51 @@ libpms2-cil (1.9.1-0ubuntu0.9.04) jaunty; urgency=low
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Thu, 17 Sep 2009 09:30:32 -0400
 
-libpms2-cil (1.9.0-7ubuntu0.9.04) jaunty; urgency=low
+libpms2-cil (1.9.0-7ubuntu0.9.04) karmic; urgency=low
 
   * set default sysconfdir to /etc & removed empty dir
   * PMS_CONFIG_PATH now ignores empty string and requires "." for current dir
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Thu, 09 Jul 2009 10:46:17 -0400
 
-libpms2-cil (1.9.0-6ubuntu0.9.04) jaunty; urgency=low
+libpms2-cil (1.9.0-6ubuntu0.9.04) karmic; urgency=low
 
   * as rules:clean now removes dist files config.status now calls configure
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Thu, 09 Jul 2009 08:56:31 -0400
 
-libpms2-cil (1.9.0-5ubuntu0.9.04) jaunty; urgency=low
+libpms2-cil (1.9.0-5ubuntu0.9.04) karmic; urgency=low
 
   * added pkg-config var providers=@sysconfdir@/libpms2/providers
   * added pkg-config var repository_path=@sysconfdir@/libpms2
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Wed, 08 Jul 2009 16:58:21 -0400
 
-libpms2-cil (1.9.0-4.1) jaunty; urgency=low
+libpms2-cil (1.9.0-4.1) karmic; urgency=low
 
   * automake is now run with --copy so missing files are copied not linked
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Wed, 08 Jul 2009 11:07:33 -0400
 
-libpms2-cil (1.9.0-3.1) jaunty; urgency=low
+libpms2-cil (1.9.0-3.1) karmic; urgency=low
 
   * Added mono-gmcs ;-) to Build-Depends-Indep
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Wed, 08 Jul 2009 08:59:38 -0400
 
-libpms2-cil (1.9.0-2.1) jaunty; urgency=low
+libpms2-cil (1.9.0-2.1) karmic; urgency=low
 
   * Updated Build-Depends's to try and capture everything
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Tue, 07 Jul 2009 23:58:02 -0400
 
-libpms2-cil (1.9.0-1.1) jaunty; urgency=low
+libpms2-cil (1.9.0-1.1) karmic; urgency=low
 
   * Fixed Sqlite package for deployment
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Tue, 07 Jul 2009 11:41:24 -0400
 
-libpms2-cil (1.9.0-0.1) jaunty; urgency=low
+libpms2-cil (1.9.0-0.1) karmic; urgency=low
 
   * Initial release of 1.9 which will be 2.0 once stable
 
