@@ -1,3 +1,15 @@
+libpms2-cil (1.9.1-4ubuntu0.8.04) hardy; urgency=low
+
+  * DbBroker.ctor(str) sets repository NOT connection-id
+  * LikeClause now supports column operator like OP(field) = value
+  * ILike(field, value) now available from Query<T>
+  * Added Query<T>.P(plsql)
+  * Object creation performance improvements b/c of generics
+  * MetaObjectEnumerator no longer converts types unless necessary
+  * AbstractProvider now supports bin|binary data-type
+
+ -- Matthew Metnetsky <matthew@cowarthill.com>  Tue, 20 Oct 2009 13:06:53 -0400
+
 libpms2-cil (1.9.1-3ubuntu0.8.04) hardy; urgency=low
 
   * Differentiate between unique and primary-key for UPDATES
