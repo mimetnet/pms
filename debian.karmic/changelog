@@ -1,4 +1,4 @@
-libpms2-cil (1.9.1-4ubuntu0.8.04) karmic; urgency=low
+libpms2-cil (1.9.1-4ubuntu0.9.10) karmic; urgency=low
 
   * DbBroker.ctor(str) sets repository NOT connection-id
   * LikeClause now supports column operator like OP(field) = value
@@ -10,13 +10,13 @@ libpms2-cil (1.9.1-4ubuntu0.8.04) karmic; urgency=low
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Tue, 20 Oct 2009 13:06:53 -0400
 
-libpms2-cil (1.9.1-3ubuntu0.8.04) karmic; urgency=low
+libpms2-cil (1.9.1-3ubuntu0.9.10) karmic; urgency=low
 
   * Differentiate between unique and primary-key for UPDATES
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Tue, 20 Oct 2009 13:06:53 -0400
 
-libpms2-cil (1.9.1-2ubuntu0.8.04) karmic; urgency=low
+libpms2-cil (1.9.1-2ubuntu0.9.10) karmic; urgency=low
 
   * Install into the GAC via /usr/share/cli-common/gac-package-install
 
