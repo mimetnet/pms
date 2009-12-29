@@ -2,7 +2,7 @@
   <TypeSignature Language="C#" Value="public sealed class ObjectPoolEmptyException : ApplicationException" />
   <AssemblyInfo>
     <AssemblyName>PMS</AssemblyName>
-    <AssemblyVersion>1.9.1.0</AssemblyVersion>
+    <AssemblyVersion>1.9.1.4</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.ApplicationException</BaseTypeName>

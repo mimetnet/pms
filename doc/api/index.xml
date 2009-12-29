@@ -1,6 +1,6 @@
 <Overview>
   <Assemblies>
-    <Assembly Name="PMS" Version="1.9.1.0">
+    <Assembly Name="PMS" Version="1.9.1.4">
       <Attributes>
         <Attribute>
           <AttributeName>System.Runtime.CompilerServices.RuntimeCompatibility(WrapNonExceptionThrows=true)</AttributeName>
@@ -122,6 +122,7 @@
       <Type Name="NotLikeClause" />
       <Type Name="OrClause" />
       <Type Name="Query`1" DisplayName="Query&lt;Table&gt;" />
+      <Type Name="Query`1+QueryGroupDelegate" DisplayName="Query&lt;Table&gt;+QueryGroupDelegate" />
       <Type Name="QueryCallback`1" DisplayName="QueryCallback&lt;T&gt;" />
       <Type Name="QueryException" />
       <Type Name="RangeClause" />

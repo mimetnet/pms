@@ -1,0 +1,24 @@
+<Type Name="Query&lt;Table&gt;+QueryGroupDelegate" FullName="PMS.Query.Query&lt;Table&gt;+QueryGroupDelegate">
+  <TypeSignature Language="C#" Value="public delegate void Query&lt;Table&gt;.QueryGroupDelegate(Query&lt;Table&gt; item);" />
+  <AssemblyInfo>
+    <AssemblyName>PMS</AssemblyName>
+    <AssemblyVersion>1.9.1.4</AssemblyVersion>
+  </AssemblyInfo>
+  <TypeParameters>
+    <TypeParameter>Table</TypeParameter>
+  </TypeParameters>
+  <Base>
+    <BaseTypeName>System.Delegate</BaseTypeName>
+  </Base>
+  <Parameters>
+    <Parameter Name="item" Type="PMS.Query.Query&lt;Table&gt;" />
+  </Parameters>
+  <ReturnValue>
+    <ReturnType>System.Void</ReturnType>
+  </ReturnValue>
+  <Docs>
+    <param name="item">To be added.</param>
+    <summary>To be added.</summary>
+    <remarks>To be added.</remarks>
+  </Docs>
+</Type>
