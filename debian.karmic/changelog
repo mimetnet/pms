@@ -8,7 +8,7 @@ libpms2-cil (1.9.1-4ubuntu0.9.10) karmic; urgency=low
   * MetaObjectEnumerator no longer converts types unless necessary
   * AbstractProvider now supports bin|binary data-type
 
- -- Matthew Metnetsky <matthew@cowarthill.com>  Tue, 20 Oct 2009 13:06:53 -0400
+ -- Matthew Metnetsky <matthew@cowarthill.com>  Tue, 29 Dec 2009 12:01:14 -0400
 
 libpms2-cil (1.9.1-3ubuntu0.9.10) karmic; urgency=low
 
