@@ -7,7 +7,7 @@ DEBDIR=$(CURDIR)/debian
 
 config.status: configure
 	dh_testdir
-	./configure
+	./configure --enable-doc
 
 build: build-indep
 build-indep: build-indep-stamp
