@@ -31,12 +31,10 @@ debian.*/libpms2-sqlite3-cil
 debian.*/libpms2-sqlite3-cil-dbg
 debian.*/*.substvars
 debian/tmp
-doc/api-html/*
-doc/Makefile
-doc/Makefile.in
-doc/*.tree
-doc/*.zip
-doc/*.stamp
+doc/mdoc/api-html/*
+doc/mdoc/*.tree
+doc/mdoc/*.zip
+doc/mdoc/*.stamp
 install-sh
 ltmain.sh
 Makefile
