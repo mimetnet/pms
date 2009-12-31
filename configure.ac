@@ -144,4 +144,5 @@ AC_OUTPUT([
 			  policy/Makefile
 			  doc/Makefile
 			  doc/man/Makefile
+			  doc/mdoc/Makefile
 ])

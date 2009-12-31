@@ -1,4 +1,4 @@
-SUBDIRS = PMS scripts policy build
+SUBDIRS = PMS scripts policy build doc
 
 if HAVE_MSSQL
 SUBDIRS += PMS.Data.MSSQL
@@ -10,10 +10,6 @@ endif
 
 if HAVE_SQLITE
 SUBDIRS += PMS.Data.Sqlite
-endif
-
-if HAVE_DOCS
-SUBDIRS += doc
 endif
 
 EXTRA_DIST = PMS.snk certs/PMS.snk certs/PMS.pfx
