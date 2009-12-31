@@ -35,10 +35,6 @@ case "${LSB_ID}" in
 		;;
 esac
 
-if [ -z "$conf_flags" ]; then
-	conf_flags="--prefix=/usr --mandir=/usr/share/man"
-fi
-
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
 
@@ -102,6 +98,6 @@ $AUTOMAKE --add-missing --copy --gnu $am_opt
 echo "Running $AUTOCONF ..."
 $AUTOCONF
 
-echo Running $srcdir/configure $conf_flags "$@" ...
-$srcdir/configure --enable-maintainer-mode $conf_flags "$@" \
+echo Running $srcdir/configure "$@" ...
+$srcdir/configure --enable-maintainer-mode "$@" \
 
