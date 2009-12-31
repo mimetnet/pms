@@ -46,8 +46,3 @@ Architecture: all
 Depends: libpms2-sqlite3-cil (= ${binary:Version})
 Description: PMS Sqlite3 Debug Symbols
 
-Package: libpms2-cil-doc
-Section: doc
-Architecture: all
-Depends: python-lxml, monodoc-manual, monodoc-base
-Description: compiled XML documentation for PMS
