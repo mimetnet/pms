@@ -1,6 +1,0 @@
-<Namespace Name="PMS.IO">
-  <Docs>
-    <summary>Contain's PMS' IO bound classes like <see cref="T:PMS.IO.FileLock" />.</summary>
-    <remarks>To be added.</remarks>
-  </Docs>
-</Namespace>
