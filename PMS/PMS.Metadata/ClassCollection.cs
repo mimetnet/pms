@@ -12,13 +12,13 @@ namespace PMS.Metadata
     /// ClassCollection Class
     /// </summary>
     [XmlRoot("classes")]
-	public class ClassCollection : ICollection<Class>, IList<Class>, IEnumerable<Class>, IXmlSerializable
+    public class ClassCollection : ICollection<Class>, IList<Class>, IEnumerable<Class>, IXmlSerializable
     {
         //private static readonly log4net.ILog log =
         //    log4net.LogManager.GetLogger("PMS.Metadata.ClassCollection");
 
-		private SortedList<Type, Class> list = new SortedList<Type, Class>(new PMS.Util.TypeComparer());
-		private static ReaderWriterLock listLock = new ReaderWriterLock();
+        private SortedList<Type, Class> list = new SortedList<Type, Class>(new PMS.Util.TypeComparer());
+        private static ReaderWriterLock listLock = new ReaderWriterLock();
 
         ///<summary>
         /// Default constructor.
@@ -27,19 +27,35 @@ namespace PMS.Metadata
         {
         }
 
-		public Class this[Type type]
-		{
-			get {
-				Class klass = null;
+        public Class this[Type type]
+        {
+            get {
+                Class klass = null;
 
-				listLock.AcquireReaderLock(2000);
-				this.list.TryGetValue(type, out klass);
-				listLock.ReleaseReaderLock();
+                try {
+                    listLock.AcquireReaderLock(2000);
+                    this.list.TryGetValue(type, out klass);
+                } finally {
+                    listLock.ReleaseReaderLock();
+                }
 
-				return klass;
-			}
-			set { throw new NotSupportedException(); }
-		}
+                return klass;
+            }
+            set {
+                if (null == value)
+                    throw new ArgumentNullException("value must be a Class instance");
+
+                if (value.Type != type)
+                    throw new ArgumentException(String.Format("type({0}) != value.Type({1})", type, value.Type));
+
+                try {
+                    listLock.AcquireWriterLock(2000);
+                    this.list[type] = value;
+                } finally {
+                    listLock.ReleaseWriterLock();
+                }
+            }
+        }
 
         #region IXmlSerializable Members
 
@@ -65,14 +81,14 @@ namespace PMS.Metadata
                 if (reader.ReadToDescendant("class")) {
                     do {
                         //Console.WriteLine("Classes.Middle(1): {0} {1}", reader.LocalName, reader.NodeType);
-						Class k = xml.Deserialize(reader) as Class;
-						if (null != k && null != k.Type)
-							this.Add(k);
+                        Class k = xml.Deserialize(reader) as Class;
+                        if (null != k && null != k.Type)
+                            this.Add(k);
                         //Console.WriteLine("Classes.Middle(2): {0} {1}\n", reader.LocalName, reader.NodeType);
 #if NET_2_0
                     } while (reader.ReadToNextSibling("class"));
 #else
-					} while (reader.NodeType == XmlNodeType.Element && reader.LocalName == "class");
+                    } while (reader.NodeType == XmlNodeType.Element && reader.LocalName == "class");
 #endif
                 }
             } finally {
@@ -96,13 +112,7 @@ namespace PMS.Metadata
 
 		public void Add(Class item)
 		{
-			listLock.AcquireWriterLock(2000);
-
-			if (this.list.ContainsKey(item.Type) == false) {
-				this.list.Add(item.Type, item);
-			}
-
-			listLock.ReleaseWriterLock();
+			this[item.Type] = item;
 		}
 
 		public void Clear()
