@@ -1,9 +1,15 @@
+libpms2-cil (1.9.1.5-0ubuntu0.8.04) hardy; urgency=low
+
+  * fixed policy file version number
+
+ -- Matthew Metnetsky <matthew@cowarthill.com>  Thu, 07 Jan 2010 09:52:06 -0500
+
 libpms2-cil (1.9.1-4ubuntu0.8.04) hardy; urgency=low
 
   * DbBroker.ctor(str) sets repository NOT connection-id
   * LikeClause now supports column operator like OP(field) = value
   * ILike(field, value) now available from Query<T>
-  * Added Query<T>.P(plsql)
+  * Fixed usage of Query<T>.P(plsql)
   * Object creation performance improvements b/c of generics
   * MetaObjectEnumerator no longer converts types unless necessary
   * AbstractProvider now supports bin|binary data-type
