@@ -91,7 +91,7 @@ namespace PMS.Collections.Pool
             //Console.WriteLine("ManagedObjectPool.Add(new {0}())", type.Name);
 
             if (this.typeParams == null)
-                return this.Add(Activator.CreateInstance<T>());
+                return this.Add((T)Activator.CreateInstance(type));
 
             return this.Add((T)Activator.CreateInstance(type, typeParams));
         }
