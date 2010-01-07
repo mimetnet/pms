@@ -1,36 +1,117 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
 
 namespace PMS.Metadata
 {
-	[Serializable]
+    [Serializable]
     [XmlRoot("fields")]
-    public class FieldCollection : List<Field>, IXmlSerializable
+    public class FieldCollection : ICollection<Field>, IList<Field>, IEnumerable<Field>, IXmlSerializable
     {
+        private SortedList<String, Field> list = new SortedList<String, Field>(StringComparer.Ordinal);
+
         public FieldCollection()
         {
         }
 
         public Field this[string name] {
-            get { 
+            get {
                 if (!String.IsNullOrEmpty(name)) {
-                    foreach (Field f in this)
+                    IList<Field> values = this.list.Values;
+
+                    foreach (Field f in values)
                         if (0 == StringComparer.InvariantCulture.Compare(f.Name, name))
                             return f;
-                    foreach (Field f in this)
+                    foreach (Field f in values)
                         if (0 == StringComparer.InvariantCulture.Compare(f.Column, name))
                             return f;
                 }
 
                 return null;
             }
+            set { this.list[value.Name] = value; }
         }
+
+#region ICollection<Field> Members
+        public void Add(Field item)
+        {
+            this[item.Name] = item;
+        }
+
+        public void Clear()
+        {
+            this.list.Clear();
+        }
+
+        public bool Contains(Field item)
+        {
+            return this.list.ContainsKey(item.Name);
+        }
+
+        public void CopyTo(Field[] array, int arrayIndex)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        public int Count {
+            get { return this.list.Count; }
+        }
+
+        public bool IsReadOnly {
+            get { return false; }
+        }
+
+        public bool Remove(Field item)
+        {
+            return this.list.Remove(item.Name);
+        }
+#endregion
+
+#region IList<Field> Members
+        public int IndexOf(Field item)
+        {
+            return this.list.IndexOfKey(item.Name);
+        }
+
+        public void Insert(int index, Field item)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void RemoveAt(int index)
+        {
+            this.list.RemoveAt(index);
+        }
+
+        public Field this[int i] {
+            get { return this.list.Values[i]; }
+            set { this.list.Values[i] = value; }
+        }
+#endregion
+
+#region IEnumerable<Field> Members
+        public IEnumerator<Field> GetEnumerator()
+        {
+            foreach (KeyValuePair<String, Field> kv in this.list) {
+                yield return kv.Value;
+            }
+        }
+#endregion
+
+#region IEnumerable Members
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            foreach (KeyValuePair<String, Field> kv in this.list) {
+                yield return kv.Value;
+            }
+        }
+#endregion
 
         public System.Xml.Schema.XmlSchema GetSchema()
         {
-			return null;
+            return null;
         }
 
         public void ReadXml(XmlReader reader)
