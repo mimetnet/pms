@@ -9,7 +9,7 @@ using PMS.Metadata;
 namespace PMS.Metadata
 {
     [XmlRoot("class")]
-	[Serializable]
+    [Serializable]
     public sealed class Class : IXmlSerializable
     {
         public Type Type;
@@ -38,13 +38,13 @@ namespace PMS.Metadata
             this.LoadCTypes();
         }
 
-		public Class(Type type)
-		{
-			this.Type = type;
-			this.Table = Generator.CamelToCString(type.Name);
-			this.Fields = Generator.GenerateFields(type);
-			this.LoadCTypes();
-		}
+        public Class(Type type)
+        {
+            this.Type = type;
+            this.Table = Generator.CamelToCString(type.Name);
+            this.Fields = Generator.GenerateFields(type);
+            this.LoadCTypes();
+        }
         #endregion
 
         public bool HasReferences {
@@ -69,15 +69,15 @@ namespace PMS.Metadata
             return null;
         }
 
-		public object GetValue(Field field, Object obj)
-		{
-			FieldInfo finfo = Type.GetField(field.Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+        public object GetValue(Field field, Object obj)
+        {
+            FieldInfo finfo = Type.GetField(field.Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
 
-			if (finfo != null)
-				return finfo.GetValue(obj);
+            if (finfo != null)
+                return finfo.GetValue(obj);
 
-			return null;
-		}
+            return null;
+        }
 
         public Field this[int index] {
             get { return Fields[index]; }
@@ -144,34 +144,33 @@ namespace PMS.Metadata
         #endregion
 
         private void LoadCTypes()
-		{
+        {
             if (this.Type == null)
                 return;
 
-			FieldInfo finfo = null;
-            List<Int32> ids = new List<Int32>();
+            FieldInfo finfo = null;
+            List<Field> erase = new List<Field>();
 
-			for (int x=0; x<Fields.Count; x++) {
+            foreach (Field f in this.Fields) {
                 try {
-				    finfo = Type.GetField(Fields[x].Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-				    if (finfo != null) {
-					    Fields[x].LoadType(finfo.FieldType);
-				    } else {
-					    ids.Add(x);
-				    }
+                    finfo = Type.GetField(f.Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+                    if (null != finfo) {
+                        f.LoadType(finfo.FieldType);
+                    } else {
+                        erase.Add(f);
+                    }
                 } catch (Exception e) {
-                    Console.WriteLine("LoadCTypes: " + e.Message);
+                    log.Error("LoadCTypes(" + Type + "): ", e);
                 }
-			}
+            }
 
-			foreach (Int32 f in ids) {
-				log.WarnFormat("Removing Field({0}) - not found in Type({1})", Fields[f].Name, Type.ToString());
-				Fields.RemoveAt(f);
-			}
-		}
+            foreach (Field f in erase) {
+                log.WarnFormat("Removing \"{0}:{1}\" - member not found", Type.ToString(), f.Name);
+                this.Fields.Remove(f);
+            }
+        }
 
         #region Object Overloads
-
         ///<summary>
         ///OverLoading == operator
         ///</summary> 
