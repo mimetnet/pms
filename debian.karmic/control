@@ -3,7 +3,7 @@ Section: libs
 Priority: optional
 Homepage: http://www.cowarthill.com/
 Maintainer: Matthew Metnetsky <matthew@cowarthill.com>
-Build-Depends: autotools-dev, debhelper (>= 5.0.0), python-lxml, pkg-config
+Build-Depends: autotools-dev, debhelper (>= 5.0.0), python-lxml, pkg-config, cli-common-dev
 Build-Depends-Indep: mono-gmcs, mono-gac, monodoc-base, liblog4net1.2-cil, libmono-npgsql2.0-cil, libmono-sqlite2.0-cil, cli-common-dev (>= 0.5.3)
 Standards-Version: 3.8.0
 
