@@ -92,23 +92,27 @@ namespace PMS.Metadata
 					continue;
 				}
 
-				if (dbColumn == null || DBNull.Value.Equals(dbColumn))
+				if (null == dbColumn || DBNull.Value.Equals(dbColumn))
 					continue;
 
                 if (typeof(DBNull) == (dbType = dbColumn.GetType()))
                     continue;
 
-				//Console.WriteLine("Field '{0}' ({1}) => {2}", f.Name, dbColumn.GetType().ToString(), dbColumn);
+                //Console.WriteLine("Field '{0}' ({1}) => {2}", f.Name, dbColumn.GetType().ToString(), dbColumn);
 
-				try {
-                    if (finfo.FieldType == dbType) {
+                if (finfo.FieldType == dbType) {
+                    try {
                         finfo.SetValue(obj, dbColumn);
-                    } else {
-                        finfo.SetValue(obj, provider.ConvertToType(f.DbType, dbColumn));
+                    } catch (Exception e) {
+                        log.Warn("PopulateObject: Unexpected Error -> ", e);
                     }
-				} catch (Exception e) {
-					log.Warn("PopulateObject: Assignment " + cdesc.Table + "." + f.Name + " >> " + dbColumn + " >> " + f.DbType + " || " + e.Message);
-				}
+                } else {
+                    try {
+                        finfo.SetValue(obj, Type.DefaultBinder.ChangeType(dbColumn, finfo.FieldType, null));
+                    } catch (Exception e) {
+                        log.Warn("PopulateObject: Failed to set "+typeof(T).Name+"."+f.Name+"::"+finfo.FieldType.Name+" = "+dbColumn+"::"+dbType.Name+" ("+f.Column+"::"+f.DbType+")", e);
+                    }
+                }
             }
 
             return obj;
