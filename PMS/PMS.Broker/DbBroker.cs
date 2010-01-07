@@ -34,16 +34,16 @@
         {
         }
 
-        public DbBroker(string repository) : this(repository, null)
+        public DbBroker(string repoNameOrPath) : this(repoNameOrPath, null)
         {
         }
 
-        public DbBroker(string repository, string connectionID)
+        public DbBroker(string repoNameOrPath, string connectionID)
         {
-            if (String.IsNullOrEmpty(repository))
-                repository = "repository.xml";
+            if (String.IsNullOrEmpty(repoNameOrPath))
+                repoNameOrPath = "repository.xml";
 
-            this.repository = RepositoryManagerFactory.Factory(repository);
+            this.repository = RepositoryManagerFactory.Factory(repoNameOrPath);
             
             if (!String.IsNullOrEmpty(connectionID)) {
                 this.connDesc = this.repository.GetDescriptor(connectionID);
