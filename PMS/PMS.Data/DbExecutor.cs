@@ -119,11 +119,9 @@ namespace PMS.Data
 
         public bool Exists()
         {
-            using (IEnumerator<T> list = this.GetEnumerator())
-                if (list.MoveNext())
-                    return true;
-
-            return false;
+            using (IEnumerator<T> list = this.GetEnumerator()) {
+                return list.MoveNext();
+            }
         }
 
         public int Count()
