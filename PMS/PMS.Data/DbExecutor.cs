@@ -54,7 +54,7 @@ namespace PMS.Data
             using (IDbCommand cmd = query.Connection.CreateCommand()) {
                 cmd.CommandText = sqlOverride;
                 cmd.CommandType = type;
-                
+
                 foreach (IDataParameter p in query.Parameters)
                     cmd.Parameters.Add(p);
 
@@ -86,13 +86,13 @@ namespace PMS.Data
 
         public TResult Scalar<TResult>(String sqlOverride)
         {
-            return Scalar<TResult>(sqlOverride);
+            return Scalar<TResult>(sqlOverride, query.CommandType);
         }
 
         public TResult Scalar<TResult>(String sqlOverride, CommandType type)
         {
             Object o = null;
-            
+
             if ((o = this.Scalar(sqlOverride, type)) != null && o is TResult)
                 return (TResult) o;
 
