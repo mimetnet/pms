@@ -1,6 +1,7 @@
-libpms2-cil (1.9.1.5-0ubuntu0.9.10) karmic; urgency=low
+libpms2-cil (1.9.1.5-0ubuntu0.9.10) karmic; urgency=high
 
   * fixed policy file version number
+  * removed possible recursive calls to retrieve scalar values
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Thu, 07 Jan 2010 09:52:06 -0500
 
