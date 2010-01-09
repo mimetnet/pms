@@ -6,7 +6,7 @@ using System.Data.SQLite;
 using Mono.Data.Sqlite;
 #endif
 
-namespace PMS.Data.Sqlite
+namespace PMS.Driver.Sqlite
 {
     [Serializable]
     internal sealed class SqliteProvider : PMS.Data.AbstractProvider
@@ -25,12 +25,12 @@ namespace PMS.Data.Sqlite
             return new SqliteConnection(properties);
         }
 
-        public override IDbInspector GetInspector()
+        public override PMS.Data.IDbInspector GetInspector()
         {
             return new SqliteInspector();
         }
 
-        public override IDbInspector GetInspector(IDbConnection conn)
+        public override PMS.Data.IDbInspector GetInspector(IDbConnection conn)
         {
             return new SqliteInspector(conn);
         }

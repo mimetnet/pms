@@ -4,7 +4,7 @@ using System.Data;
 using PMS.Metadata;
 using PMS.Query;
 
-namespace PMS.Data.MSSQL
+namespace PMS.Driver.MSSQL
 {
     [Serializable]
     internal sealed class MSSQLProvider : PMS.Data.AbstractProvider
@@ -33,12 +33,12 @@ namespace PMS.Data.MSSQL
             return p;
         }
 
-        public override IDbInspector GetInspector()
+        public override PMS.Data.IDbInspector GetInspector()
         {
             return new MSSQLInspector();
         }
 
-        public override IDbInspector GetInspector(IDbConnection conn)
+        public override PMS.Data.IDbInspector GetInspector(IDbConnection conn)
         {
             return new MSSQLInspector(conn);
         }

@@ -2,13 +2,11 @@ using System;
 using System.Data;
 using System.IO;
 
-using PMS.Data;
-
 using Npgsql;
 
-namespace PMS.Data.Postgresql
+namespace PMS.Driver.Postgresql
 {
-    internal sealed class PostgresqlConnection : DbConnectionProxy
+    internal sealed class PostgresqlConnection : PMS.Data.DbConnectionProxy
     {
 		public PostgresqlConnection() : base(typeof(NpgsqlConnection))
 		{

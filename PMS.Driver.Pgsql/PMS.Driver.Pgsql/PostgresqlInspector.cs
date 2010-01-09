@@ -1,14 +1,11 @@
 using System;
 using System.Data;
 
-using PMS.Data;
-
-namespace PMS.Data.Sqlite
+namespace PMS.Driver.Postgresql
 {
-    public sealed class SqliteInspector : IDbInspector
+    public sealed class PostgresqlInspector : PMS.Data.IDbInspector
     {
         private DataSet database = new DataSet();
-        private IProvider provider = new SqliteProvider();
         private IDbConnection connection;
 
         private const string sqlTables = "SELECT oid as id, relname as name, relnatts as column_count FROM pg_class WHERE relkind = 'r' AND relname NOT LIKE 'pg_%'";
@@ -21,7 +18,7 @@ namespace PMS.Data.Sqlite
         /// <summary>
         /// Construct
         /// </summary>
-        public SqliteInspector()
+        public PostgresqlInspector()
         {
 
         }
@@ -30,7 +27,7 @@ namespace PMS.Data.Sqlite
         /// Construct and set connection
         /// </summary>
         /// <param name="conn">Connection to inspect</param>
-        public SqliteInspector(IDbConnection conn)
+        public PostgresqlInspector(IDbConnection conn)
         {
             connection = conn;
         }
@@ -64,7 +61,7 @@ namespace PMS.Data.Sqlite
                 while (reader.Read()) {
                     table = new DataTable();
                     table.TableName = (string) reader["name"];
-                    
+
                     cmd.CommandText = String.Format(sqlTableColumns, 
                                                     table.TableName);
                     colReader = cmd.ExecuteReader();
@@ -78,7 +75,6 @@ namespace PMS.Data.Sqlite
 
                     database.Tables.Add(table);
                 }
-                
             } catch (Exception e) {
                 throw e;
             } finally {

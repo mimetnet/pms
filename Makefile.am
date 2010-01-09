@@ -1,21 +1,23 @@
-SUBDIRS = PMS scripts policy build doc
+SUBDIRS = PMS
 
 if HAVE_MSSQL
-SUBDIRS += PMS.Data.MSSQL
+SUBDIRS += PMS.Driver.MSSQL
 endif
 
 if HAVE_NPGSQL
-SUBDIRS += PMS.Data.Pgsql
+SUBDIRS += PMS.Driver.Pgsql
 endif
 
 if HAVE_SQLITE
-SUBDIRS += PMS.Data.Sqlite
+SUBDIRS += PMS.Driver.Sqlite
 endif
+
+SUBDIRS += scripts policy build doc
 
 EXTRA_DIST = PMS.snk certs/PMS.snk certs/PMS.pfx
 
 REWRITE = \
-	sed -e "s|\@prefix\@|$(prefix)|g"	\
+	sed -e "s|\@prefix\@|$(prefix)|g" \
 		 -e "s|\@pkglibdir\@|$(pkglibdir)|g" \
-		 -e "s|\@bindir\@|$(bindir)|g"	\
-		 -e "s|\@MONO\@|$(MONO)|g" 
+		 -e "s|\@bindir\@|$(bindir)|g" \
+		 -e "s|\@MONO\@|$(MONO)|g"

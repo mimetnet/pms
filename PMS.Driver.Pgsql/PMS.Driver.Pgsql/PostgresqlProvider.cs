@@ -1,7 +1,7 @@
 using System;
 using System.Data;
 
-namespace PMS.Data.Postgresql
+namespace PMS.Driver.Postgresql
 {
     internal sealed class PostgresqlProvider : PMS.Data.AbstractProvider
     {
@@ -37,12 +37,12 @@ namespace PMS.Data.Postgresql
             return new PostgresqlConnection(properties);
         }
 
-        public override IDbInspector GetInspector()
+        public override PMS.Data.IDbInspector GetInspector()
         {
             return new PostgresqlInspector();
         }
 
-        public override IDbInspector GetInspector(IDbConnection conn)
+        public override PMS.Data.IDbInspector GetInspector(IDbConnection conn)
         {
             return new PostgresqlInspector(conn);
         }

@@ -1,191 +1,188 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{DD828130-E4B7-404F-8F2B-56D1AF2BBC48}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PMS</RootNamespace>
-    <AssemblyName>PMS2</AssemblyName>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\certs\PMS.pfx</AssemblyOriginatorKeyFile>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>2.0</OldToolsVersion>
-    <PublishUrl>http://localhost/PMS/</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Web</InstallFrom>
-    <UpdateEnabled>true</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>true</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NET_2_0</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;NET_2_0</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="PMS.Config\Handler.cs" />
-    <Compile Include="PMS.Config\Sections.cs" />
-    <Compile Include="PMS.Config\ProviderElement.cs" />
-    <Compile Include="PMS.Config\ProviderElementList.cs" />
-    <Compile Include="PMS.Data\DbExecutor.cs" />
-    <Compile Include="PMS.Data\DbManagerFactory.cs" />
-    <Compile Include="PMS.Broker\DbBroker.cs" />
-    <Compile Include="PMS.Metadata\MetaObjectEnumerator.cs" />
-    <Compile Include="PMS.Metadata\RepositoryManagerFactory.cs" />
-    <Compile Include="PMS.Metadata\RepositoryManager.cs" />
-    <Compile Include="PMS.Data\DbManager.cs" />
-    <Compile Include="PMS.Metadata\RepositoryException.cs" />
-    <Compile Include="PMS.Metadata\Generator.cs" />
-    <Compile Include="PMS.Metadata\RepositoryDefinitionException.cs" />
-    <Compile Include="PMS.Query\NotInClause.cs" />
-    <Compile Include="PMS.Query\InClause.cs" />
-    <Compile Include="PMS.Query\CreateParameterDelegate.cs" />
-    <Compile Include="PMS.Query\QueryCriteria.cs" />
-    <Compile Include="PMS.Query\Query.cs" />
-    <Compile Include="PMS.Query\QueryException.cs" />
-    <Compile Include="PMS.Query\RawClause.cs" />
-    <Compile Include="PMS.Query\QueryCallback.cs" />
-    <Compile Include="PMS.Util\TypeComparer.cs" />
-    <Compile Include="PMS.Util\TypeLoader.cs" />
-    <Compile Include="PMS.Collections.Pool\ItemCollection.cs" />
-    <Compile Include="PMS.Collections.Pool\ObjectPool.cs" />
-    <Compile Include="PMS.Collections.Pool\IObjectPool.cs" />
-    <Compile Include="PMS.Data\DbConnectionProxy.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="PMS.Data\DbCommandProxy.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="PMS.Data\DbDataReaderProxy.cs" />
-    <Compile Include="PMS.IO\FileLock.cs" />
-    <Compile Include="PMS.Metadata\Auto.cs" />
-    <Compile Include="PMS.Metadata\Class.cs" />
-    <Compile Include="PMS.Metadata\ClassCollection.cs" />
-    <Compile Include="PMS.Metadata\ConnectionCollection.cs" />
-    <Compile Include="PMS.Metadata\AssemblyCollection.cs" />
-    <Compile Include="PMS.Metadata\FieldCollection.cs" />
-    <Compile Include="PMS.Metadata\RepositoryNotFoundException.cs" />
-    <Compile Include="PMS.Collections.Pool\ManagedObjectPool.cs" />
-    <Compile Include="PMS.Collections.Pool\ObjectNotCheckedOutException.cs" />
-    <Compile Include="PMS.Collections.Pool\ObjectNotInPoolException.cs" />
-    <Compile Include="PMS.Data.Pool\ConnectionPool.cs" />
-    <Compile Include="PMS.DataAccess\AccessMode.cs" />
-    <Compile Include="PMS.DataAccess\IDbManager.cs" />
-    <Compile Include="PMS.Data\AbstractProvider.cs" />
-    <Compile Include="PMS.Data\DbResult.cs" />
-    <Compile Include="PMS.Data\IDbInspector.cs" />
-    <Compile Include="PMS.Data\IProvider.cs" />
-    <Compile Include="PMS.Data\ProviderDefaultException.cs" />
-    <Compile Include="PMS.Data\ProviderFactory.cs" />
-    <Compile Include="PMS.Data\ProviderNotFoundException.cs" />
-    <Compile Include="PMS.Metadata\Reference.cs" />
-    <Compile Include="PMS.Metadata\ClassNotFoundException.cs" />
-    <Compile Include="PMS.Metadata\Connection.cs" />
-    <Compile Include="PMS.Metadata\Field.cs" />
-    <Compile Include="PMS.Metadata\FieldNotFoundException.cs" />
-    <Compile Include="PMS.Metadata\Repository.cs" />
-    <Compile Include="PMS.Query\AndClause.cs" />
-    <Compile Include="PMS.Query\BetweenClause.cs" />
-    <Compile Include="PMS.Query\EqualToClause.cs" />
-    <Compile Include="PMS.Query\GreaterOrEqualToClause.cs" />
-    <Compile Include="PMS.Query\GreaterThanClause.cs" />
-    <Compile Include="PMS.Query\IClause.cs" />
-    <Compile Include="PMS.Query\IsNotNullClause.cs" />
-    <Compile Include="PMS.Query\IsNullClause.cs" />
-    <Compile Include="PMS.Query\LessOrEqualToClause.cs" />
-    <Compile Include="PMS.Query\LessThanClause.cs" />
-    <Compile Include="PMS.Query\LikeClause.cs" />
-    <Compile Include="PMS.Query\NotBetweenClause.cs" />
-    <Compile Include="PMS.Query\NotEqualToClause.cs" />
-    <Compile Include="PMS.Query\NotLikeClause.cs" />
-    <Compile Include="PMS.Query\OrClause.cs" />
-    <Compile Include="PMS.Query\RangeClause.cs" />
-    <Compile Include="PMS.Query\SqlCommand.cs" />
-    <Compile Include="PMS.Query\ValueClause.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PMS\DbType.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\certs\PMS.pfx" />
-    <None Include="dll.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DD828130-E4B7-404F-8F2B-56D1AF2BBC48}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PMS</RootNamespace>
+    <AssemblyName>PMS2</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\certs\PMS.pfx</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <PublishUrl>http://localhost/PMS/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET_2_0</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NET_2_0</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PMS.Config\Handler.cs" />
+    <Compile Include="PMS.Config\Sections.cs" />
+    <Compile Include="PMS.Config\ProviderElement.cs" />
+    <Compile Include="PMS.Config\ProviderElementList.cs" />
+    <Compile Include="PMS.Data\DbExecutor.cs" />
+    <Compile Include="PMS.Data\DbManagerFactory.cs" />
+    <Compile Include="PMS.Broker\DbBroker.cs" />
+    <Compile Include="PMS.Metadata\MetaObjectEnumerator.cs" />
+    <Compile Include="PMS.Metadata\RepositoryManagerFactory.cs" />
+    <Compile Include="PMS.Metadata\RepositoryManager.cs" />
+    <Compile Include="PMS.Data\DbManager.cs" />
+    <Compile Include="PMS.Metadata\RepositoryException.cs" />
+    <Compile Include="PMS.Metadata\Generator.cs" />
+    <Compile Include="PMS.Metadata\RepositoryDefinitionException.cs" />
+    <Compile Include="PMS.Query\NotInClause.cs" />
+    <Compile Include="PMS.Query\InClause.cs" />
+    <Compile Include="PMS.Query\CreateParameterDelegate.cs" />
+    <Compile Include="PMS.Query\QueryCriteria.cs" />
+    <Compile Include="PMS.Query\Query.cs" />
+    <Compile Include="PMS.Query\QueryException.cs" />
+    <Compile Include="PMS.Query\RawClause.cs" />
+    <Compile Include="PMS.Query\QueryCallback.cs" />
+    <Compile Include="PMS.Util\TypeComparer.cs" />
+    <Compile Include="PMS.Util\TypeLoader.cs" />
+    <Compile Include="PMS.Collections.Pool\ItemCollection.cs" />
+    <Compile Include="PMS.Collections.Pool\ObjectPool.cs" />
+    <Compile Include="PMS.Collections.Pool\IObjectPool.cs" />
+    <Compile Include="PMS.Data\DbConnectionProxy.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PMS.Data\DbCommandProxy.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PMS.Data\DbDataReaderProxy.cs" />
+    <Compile Include="PMS.IO\FileLock.cs" />
+    <Compile Include="PMS.Metadata\Auto.cs" />
+    <Compile Include="PMS.Metadata\Class.cs" />
+    <Compile Include="PMS.Metadata\ClassCollection.cs" />
+    <Compile Include="PMS.Metadata\ConnectionCollection.cs" />
+    <Compile Include="PMS.Metadata\AssemblyCollection.cs" />
+    <Compile Include="PMS.Metadata\FieldCollection.cs" />
+    <Compile Include="PMS.Metadata\RepositoryNotFoundException.cs" />
+    <Compile Include="PMS.Collections.Pool\ManagedObjectPool.cs" />
+    <Compile Include="PMS.Data.Pool\ConnectionPool.cs" />
+    <Compile Include="PMS.Data\AccessMode.cs" />
+    <Compile Include="PMS.Data\IDbManager.cs" />
+    <Compile Include="PMS.Data\AbstractProvider.cs" />
+    <Compile Include="PMS.Data\IDbInspector.cs" />
+    <Compile Include="PMS.Data\IProvider.cs" />
+    <Compile Include="PMS.Data\ProviderDefaultException.cs" />
+    <Compile Include="PMS.Data\ProviderFactory.cs" />
+    <Compile Include="PMS.Data\ProviderNotFoundException.cs" />
+    <Compile Include="PMS.Metadata\Reference.cs" />
+    <Compile Include="PMS.Metadata\ClassNotFoundException.cs" />
+    <Compile Include="PMS.Metadata\Connection.cs" />
+    <Compile Include="PMS.Metadata\Field.cs" />
+    <Compile Include="PMS.Metadata\FieldNotFoundException.cs" />
+    <Compile Include="PMS.Metadata\Repository.cs" />
+    <Compile Include="PMS.Query\AndClause.cs" />
+    <Compile Include="PMS.Query\BetweenClause.cs" />
+    <Compile Include="PMS.Query\EqualToClause.cs" />
+    <Compile Include="PMS.Query\GreaterOrEqualToClause.cs" />
+    <Compile Include="PMS.Query\GreaterThanClause.cs" />
+    <Compile Include="PMS.Query\IClause.cs" />
+    <Compile Include="PMS.Query\IsNotNullClause.cs" />
+    <Compile Include="PMS.Query\IsNullClause.cs" />
+    <Compile Include="PMS.Query\LessOrEqualToClause.cs" />
+    <Compile Include="PMS.Query\LessThanClause.cs" />
+    <Compile Include="PMS.Query\LikeClause.cs" />
+    <Compile Include="PMS.Query\NotBetweenClause.cs" />
+    <Compile Include="PMS.Query\NotEqualToClause.cs" />
+    <Compile Include="PMS.Query\NotLikeClause.cs" />
+    <Compile Include="PMS.Query\OrClause.cs" />
+    <Compile Include="PMS.Query\RangeClause.cs" />
+    <Compile Include="PMS.Query\SqlCommand.cs" />
+    <Compile Include="PMS.Query\ValueClause.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PMS\DbType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\certs\PMS.pfx" />
+    <None Include="dll.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
   </Target>
-  -->
-  <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(ProjectDir)dll.config"  "$(TargetPath).config"</PostBuildEvent>
-  </PropertyGroup>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(ProjectDir)dll.config"  "$(TargetPath).config"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

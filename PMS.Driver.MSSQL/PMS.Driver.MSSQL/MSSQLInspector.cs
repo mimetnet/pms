@@ -1,14 +1,11 @@
 using System;
 using System.Data;
 
-using PMS.Data;
-
-namespace PMS.Data.MSSQL
+namespace PMS.Driver.MSSQL
 {
-    public sealed class MSSQLInspector : IDbInspector
+    public sealed class MSSQLInspector : PMS.Data.IDbInspector
     {
         private DataSet database = new DataSet();
-        private IProvider provider = new MSSQLProvider();
         private IDbConnection connection;
 
         private const string sqlTables = "SELECT oid as id, relname as name, relnatts as column_count FROM pg_class WHERE relkind = 'r' AND relname NOT LIKE 'pg_%'";
@@ -51,8 +48,8 @@ namespace PMS.Data.MSSQL
                 while (reader.Read()) {
                     table = new DataTable();
                     table.TableName = (string) reader["name"];
-                    
-                    cmd.CommandText = String.Format(sqlTableColumns, 
+
+                    cmd.CommandText = String.Format(sqlTableColumns,
                                                     table.TableName);
                     colReader = cmd.ExecuteReader();
                     while (colReader.Read()) {
@@ -65,7 +62,6 @@ namespace PMS.Data.MSSQL
 
                     database.Tables.Add(table);
                 }
-                
             } catch (Exception e) {
                 throw e;
             } finally {

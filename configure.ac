@@ -133,9 +133,9 @@ fi
 AC_OUTPUT([
 			  Makefile
 			  PMS/Makefile
-			  PMS.Data.Pgsql/Makefile
-			  PMS.Data.Sqlite/Makefile
-			  PMS.Data.MSSQL/Makefile
+			  PMS.Driver.Pgsql/Makefile
+			  PMS.Driver.Sqlite/Makefile
+			  PMS.Driver.MSSQL/Makefile
 			  build/pms-2.0.pc
 			  build/Makefile
 			  scripts/Makefile

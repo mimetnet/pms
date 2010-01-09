@@ -1,12 +1,9 @@
 using System;
 using System.Data;
-using System.IO;
 
-using PMS.Data;
-
-namespace PMS.Data.Sqlite
+namespace PMS.Driver.Sqlite
 {
-    internal sealed class SqliteConnection : DbConnectionProxy
+    internal sealed class SqliteConnection : PMS.Data.DbConnectionProxy
     {
 		public SqliteConnection() : 
 #if NET_2_0

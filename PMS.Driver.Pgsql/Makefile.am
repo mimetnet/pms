@@ -1,13 +1,14 @@
 AUTOMAKE_OPTIONS = gnu
 
-if HAVE_MSSQL
+if HAVE_NPGSQL
 include $(top_srcdir)/m4/lib.mk
 endif
 
-ASSEMBLY = PMS.Data.MSSQL.dll
+ASSEMBLY = PMS.Driver.Pgsql.dll
 
 REFERENCES =  \
-	-r:System.dll \
-	-r:System.Data.dll \
+	-r:System \
+	-r:System.Data \
+	-r:Npgsql \
 	-r:$(top_srcdir)/PMS/PMS.dll \
 	$(LOG4NET_LIBS)

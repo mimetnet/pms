@@ -1,14 +1,11 @@
 using System;
 using System.Data;
 
-using PMS.Data;
-
-namespace PMS.Data.Postgresql
+namespace PMS.Driver.Sqlite
 {
-    public sealed class PostgresqlInspector : IDbInspector
+    public sealed class SqliteInspector : PMS.Data.IDbInspector
     {
         private DataSet database = new DataSet();
-        private IProvider provider = new PostgresqlProvider();
         private IDbConnection connection;
 
         private const string sqlTables = "SELECT oid as id, relname as name, relnatts as column_count FROM pg_class WHERE relkind = 'r' AND relname NOT LIKE 'pg_%'";
@@ -21,7 +18,7 @@ namespace PMS.Data.Postgresql
         /// <summary>
         /// Construct
         /// </summary>
-        public PostgresqlInspector()
+        public SqliteInspector()
         {
 
         }
@@ -30,7 +27,7 @@ namespace PMS.Data.Postgresql
         /// Construct and set connection
         /// </summary>
         /// <param name="conn">Connection to inspect</param>
-        public PostgresqlInspector(IDbConnection conn)
+        public SqliteInspector(IDbConnection conn)
         {
             connection = conn;
         }
@@ -39,12 +36,8 @@ namespace PMS.Data.Postgresql
         /// Connection to inspect
         /// </summary>
         public IDbConnection Connection {
-            get {
-                return connection;
-            }
-            set {
-                connection = value;
-            }
+            get { return connection; }
+            set { connection = value; }
         }
 
         /// <summary>
@@ -68,21 +61,20 @@ namespace PMS.Data.Postgresql
                 while (reader.Read()) {
                     table = new DataTable();
                     table.TableName = (string) reader["name"];
-                    
-                    cmd.CommandText = String.Format(sqlTableColumns, 
+
+                    cmd.CommandText = String.Format(sqlTableColumns,
                                                     table.TableName);
                     colReader = cmd.ExecuteReader();
                     while (colReader.Read()) {
                         column = new DataColumn();
                         column.ColumnName = (string) colReader["field"];
-                        //column.DataType = 
+                        //column.DataType =
                         //    provider.GetType((string)colReader["type"]);
                         table.Columns.Add(column);
                     }
 
                     database.Tables.Add(table);
                 }
-                
             } catch (Exception e) {
                 throw e;
             } finally {

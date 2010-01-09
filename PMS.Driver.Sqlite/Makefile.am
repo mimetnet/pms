@@ -4,7 +4,7 @@ if HAVE_SQLITE
 include $(top_srcdir)/m4/lib.mk
 endif
 
-ASSEMBLY = PMS.Data.Sqlite.dll
+ASSEMBLY = PMS.Driver.Sqlite.dll
 
 REFERENCES =  \
 	-r:System.dll \
