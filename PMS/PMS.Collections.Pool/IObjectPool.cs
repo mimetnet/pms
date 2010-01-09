@@ -2,7 +2,7 @@
 
 namespace PMS.Collections.Pool
 {
-    interface IObjectPool<T> where T : class
+    public interface IObjectPool<T> where T : class
     {
         T Borrow();
         bool Return(T obj);
