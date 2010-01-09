@@ -1,4 +1,4 @@
-AC_INIT([pms], [2.0], [matthew@cowarthill.com])
+AC_INIT([pms2], [2.0], [matthew@cowarthill.com])
 AC_CONFIG_SRCDIR([PMS/Makefile.am])
 AM_INIT_AUTOMAKE([foreign tar-pax])
 AM_MAINTAINER_MODE
@@ -8,12 +8,9 @@ AC_PROG_INSTALL
 AC_PATH_PROG(AL, al, no)
 AC_PATH_PROG(GMCS, gmcs, no)
 AC_PATH_PROG(MONO, mono, no)
+AC_PATH_PROG(MDOC, mdoc, no)
 AC_PATH_PROG(GACUTIL, gacutil, no)
 AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
-AC_PATH_PROG(MDASSEMBLER, mdassembler, no)
-AC_PATH_PROG(MONODOC, monodoc, no)
-AC_PATH_PROG(MONODOCER, monodocer, no)
-AC_PATH_PROG(MONODOCS2HTML, monodocs2html, no)
 
 if test "x$PKG_CONFIG" = "xno"; then
 	AC_MSG_ERROR([You need to install pkg-config])
@@ -35,7 +32,7 @@ if test "x$MONO" = "xno"; then
 	AC_MSG_ERROR([No mono runtime found])
 fi
 
-AM_CONDITIONAL(HAVE_MONODOC, test "x$MONODOC" != "xno")
+AM_CONDITIONAL(HAVE_MDOC, test "x$MDOC" != "xno")
 
 ##############################################################################
 
@@ -115,11 +112,12 @@ fi
 AC_SUBST(AL)
 AC_SUBST(GMCS)
 AC_SUBST(MONO)
+AC_SUBST(MDOC)
 AC_SUBST(GACUTIL)
 AC_SUBST(PKG_CONFIG)
 AC_SUBST(DEBUG_FLAGS)
 AC_SUBST([GACUTIL_FLAGS], ['-root $(DESTDIR)$(prefix)/lib'])
-AC_SUBST([MONODOC_SRC_DIR], [`$PKG_CONFIG monodoc --variable=sourcesdir`])
+AC_SUBST([MDOC_SRC_DIR], [`$PKG_CONFIG monodoc --variable=sourcesdir`])
 AC_SUBST([MONO_VERSION], [MONO_`$GMCS --version | awk '{print $5}' | sed 's/\./ /g' | awk '{print $1"_"$2}'`])
 
 ##############################################################################
