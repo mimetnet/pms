@@ -1,10 +1,10 @@
-EXTRA_DIST = $(PACKGE).zip $(PACKGE).tree $(PACKGE).source
-CLEANFILES = $(PACKGE).zip $(PACKGE).tree $(PACKGE).stamp
+EXTRA_DIST = $(PACKAGE).zip $(PACKAGE).tree $(PACKAGE).source
+CLEANFILES = $(PACKAGE).zip $(PACKAGE).tree $(PACKAGE).stamp
 
 if HAVE_MDOC
-all: $(PACKGE).stamp
+all: $(builddir)/$(PACKAGE).stamp
 
-$(PACKGE).stamp: $(builddir)/api/index.xml
+$(builddir)/$(PACKAGE).stamp: $(builddir)/api/index.xml
 	$(MDOC) assemble -o $(PACKAGE) $(builddir)/api
 	touch $@
 
