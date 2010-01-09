@@ -8,7 +8,7 @@ using PMS.Metadata;
 
 namespace PMS.Data
 {
-    internal sealed class DbManager : PMS.DataAccess.IDbManager
+    internal sealed class DbManager : PMS.Data.IDbManager
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PMS.Data.DbManager");
         private ConnectionPool pool = null;

@@ -2,8 +2,6 @@ using System;
 using System.Data;
 using System.ComponentModel;
 
-using PMS.DataAccess;
-
 namespace PMS.Data
 {
     public class DbCommandProxy : Component, IDbCommand

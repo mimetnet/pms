@@ -1,6 +1,6 @@
 using System;
 
-namespace PMS.DataAccess
+namespace PMS.Data
 {
     /// <summary>
     /// Represents AccessMode of a database connection

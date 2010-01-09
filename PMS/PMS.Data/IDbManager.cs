@@ -1,8 +1,7 @@
 using System;
 using System.Data;
-using System.Security.Principal;
 
-namespace PMS.DataAccess
+namespace PMS.Data
 {
     public interface IDbManager
     {
