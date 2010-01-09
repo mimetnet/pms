@@ -5,7 +5,7 @@ namespace PMS.Config
 {
     [Serializable]
     [XmlRoot("add")]
-    public class ProviderElement : IXmlSerializable
+    internal class ProviderElement : IXmlSerializable
     {
         public string Name;
         public string Type;

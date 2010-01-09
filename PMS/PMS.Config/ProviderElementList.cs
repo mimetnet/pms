@@ -5,12 +5,12 @@ using System.Xml.Serialization;
 
 namespace PMS.Config
 {
-    public class ProviderElementList : List<ProviderElement>, IXmlSerializable
+    internal class ProviderElementList : List<ProviderElement>, IXmlSerializable
     {
         #region IXmlSerializable Members
         public System.Xml.Schema.XmlSchema GetSchema()
         {
-			return null;
+            return null;
         }
 
         public void ReadXml(XmlReader reader)

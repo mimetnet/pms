@@ -5,7 +5,7 @@ using System.IO;
 
 namespace PMS.Config
 {
-    public class Section
+    internal class Section
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger("KMBS.SEC.Web.Config.Manager");	
         private static XmlNode section = null;

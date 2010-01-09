@@ -4,7 +4,7 @@ using System.Xml;
 
 namespace PMS.Config
 {
-    public sealed class Handler : IConfigurationSectionHandler
+    internal class Handler : IConfigurationSectionHandler
     {
         public Handler()
         {
