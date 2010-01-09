@@ -4,18 +4,10 @@ using System.Collections;
 
 namespace PMS.Metadata
 {
-	[Serializable]
-    public enum DbManagerMode : short
-    { 
-        [XmlEnum("single")] Single = 0,
-        [XmlEnum("replication")] Replication = 1
-    }
-
     [XmlRoot("repository")]
     public sealed class Repository : IXmlSerializable
     {
-		public bool GenerateTypes = false;
-        public DbManagerMode DbManagerMode = DbManagerMode.Single;
+        public bool GenerateTypes = false;
         public AssemblyCollection Assemblies = new AssemblyCollection();
         public ConnectionCollection Connections = new ConnectionCollection();
         public ClassCollection Classes = new ClassCollection();
@@ -108,8 +100,8 @@ namespace PMS.Metadata
         ///</summary> 
         public override string ToString()
         {
-            return String.Format("[ Repository (DbManager={0}) (Connections={1}) (Classes={2}) ]",
-                                 DbManagerMode, Connections.Count, Classes.Count);
+            return String.Format("[ Repository Connections=({1}) Classes=({2}) ]",
+                                 Connections.Count, Classes.Count);
         }
 
         ///<summary>
@@ -137,12 +129,6 @@ namespace PMS.Metadata
                 reader.MoveToElement();
 
                 switch (reader.LocalName) {
-                    case "dbmanager-mode":
-                        if (reader.ReadString().ToLower() == "single") {
-                            this.DbManagerMode = DbManagerMode.Single;
-						}
-                        break;
-
 					case "generate-types":
 						if ((gt = reader.ReadString()) != null && gt.Length > 0)
 							this.GenerateTypes = Boolean.Parse(gt);
@@ -173,11 +159,8 @@ namespace PMS.Metadata
 
         public void WriteXml(System.Xml.XmlWriter writer)
         {
-			if (this.GenerateTypes) {
+            if (this.GenerateTypes)
                 writer.WriteElementString("generate-types", "true");
-			}
-
-            writer.WriteElementString("dbmanager-mode", this.DbManagerMode.ToString());
 
             XmlSerializer xml = null;
 
