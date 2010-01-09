@@ -19,7 +19,7 @@ set -e
 
 case "$1" in
     configure)
-        /usr/bin/pms2-providers -c pgsql "PMS.Data.Postgresql.PostgresqlProvider, PMS.Data.Pgsql, Version=1"
+        /usr/bin/pms2-providers -c pgsql "PMS.Driver.Postgresql.PostgresqlProvider, PMS.Driver.Pgsql, Version=1"
     ;;
     abort-remove)
     ;;

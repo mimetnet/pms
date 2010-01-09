@@ -1,2 +1,2 @@
-usr/lib/cli/libpms-*/PMS.Data.Sqlite.dll
-usr/lib/mono/gac/PMS.Data.Sqlite/*
+usr/lib/cli/libpms-*/PMS.Driver.Sqlite.dll
+usr/lib/mono/gac/PMS.Driver.Sqlite/*
