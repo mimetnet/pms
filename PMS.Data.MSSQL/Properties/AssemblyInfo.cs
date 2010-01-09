@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("PMS MSSQL")]
-[assembly: AssemblyCopyright("Copyright © Matthew Metnetsky 2004-2009")]
+[assembly: AssemblyCopyright("Copyright © Matthew Metnetsky 2004-2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -19,4 +19,4 @@ using System.Runtime.InteropServices;
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
 
-[assembly: AssemblyVersion("1.9.1.1")]
+[assembly: AssemblyVersion("1.9.2.0")]

@@ -1,3 +1,12 @@
+libpms2-cil (1.9.2.0-0ubuntu0.9.10) karmic; urgency=low
+
+  * internalized PMS.Config
+  * moved remaining DataAccess classes to Data
+  * removed most of the left over Collection classes from 1.x
+  * removed DbResult
+
+ -- Matthew Metnetsky <matthew@cowarthill.com>  Sat, 09 Jan 2010 14:27:26 -0500
+
 libpms2-cil (1.9.1.5-0ubuntu0.9.10) karmic; urgency=high
 
   * fixed policy file version number
