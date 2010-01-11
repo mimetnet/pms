@@ -51,3 +51,14 @@ Section: doc
 Architecture: all
 Depends: python-lxml, monodoc-manual, monodoc-base
 Description: compiled XML documentation for PMS
+
+Package: libpms2-mssql-cil
+Architecture: all
+Depends: libpms2-cil (= ${source:Version}), ${cli:Depends}
+Description: PMS MSSQL Support
+
+Package: libpms2-mssql-cil-dbg
+Architecture: all
+Depends: libpms2-mssql-cil (= ${binary:Version})
+Description: PMS MSSQL Debug Symbols
+

@@ -30,11 +30,11 @@ install-indep:
 	dh_testroot
 	dh_clean -k -i 
 	dh_installdirs -i
-	$(MAKE) install DESTDIR=$(DEBDIR)/tmp
+	$(MAKE) install DESTDIR=$(DEBDIR)/tmp MONO_GAC_LATE=true
 	install -d $(DEBDIR)/tmp/etc/libpms2
 	echo "# providers" > $(DEBDIR)/tmp/etc/libpms2/providers
 	dh_install -i --sourcedir=$(DEBDIR)/tmp
-	for i in libpms2-cil libpms2-pgsql-cil libpms2-sqlite3-cil; do \
+	for i in libpms2-cil libpms2-pgsql-cil libpms2-sqlite3-cil libpms2-mssql-cil; do \
 		find $(DEBDIR)/$$i -type f -name '*.mdb' -prune -exec rm '{}' \; ; \
 	done;
 	find $(DEBDIR)/ -type f -name "*.dll" -or -name "*.mdb" | xargs chmod -x
@@ -44,16 +44,17 @@ binary-arch:
 binary-common:
 	dh_testdir
 	dh_testroot
-	dh_installchangelogs -plibpms2-cil -plibpms2-pgsql-cil -plibpms2-sqlite3-cil -plibpms2-cil-doc
+	dh_installchangelogs -plibpms2-cil -plibpms2-pgsql-cil -plibpms2-sqlite3-cil -plibpms2-mssql-cil -plibpms2-cil-doc
 	dh_installdocs -plibpms2-cil
 	dh_installman -plibpms2-cil -plibpms2-cil-doc
+	dh_installcligac -plibpms2-cil -plibpms2-pgsql-cil -plibpms2-sqlite3-cil -plibpms2-mssql-cil
 	dh_link
 	dh_strip
 	dh_compress 
 	dh_fixperms
 	dh_makeshlibs
 	dh_installdeb
-	dh_makeclilibs -m 1.9.1 -l 1.9.2
+	dh_makeclilibs -m 1.9.2 -l 1.9.3
 	dh_clideps
 	dh_gencontrol
 	dh_md5sums
