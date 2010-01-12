@@ -15,6 +15,8 @@ namespace PMS.Config
         static Section()
         {
             Load();
+
+            repositoryPath = AppDomain.CurrentDomain.BaseDirectory;
         }
 
         public static string RepositoryPath {
