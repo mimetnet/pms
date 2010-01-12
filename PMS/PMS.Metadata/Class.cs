@@ -14,7 +14,6 @@ namespace PMS.Metadata
     {
         public Type Type;
         public FieldCollection Fields = new FieldCollection();
-        public Type ListType = null;
         public string Table;
 
         private static readonly log4net.ILog log =

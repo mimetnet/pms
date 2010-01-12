@@ -24,8 +24,8 @@ namespace PMS.Metadata
         {
             Repository c = new Repository();
 
-			c.GenerateTypes = (a.GenerateTypes || b.GenerateTypes);
-            
+            c.GenerateTypes = (a.GenerateTypes || b.GenerateTypes);
+
             if (a.Classes != null)
                 foreach (Class classDesc in a.Classes)
                     c.Classes.Add(classDesc);
@@ -55,7 +55,7 @@ namespace PMS.Metadata
             if (Object.ReferenceEquals(obj2, null)) return false;
 
             if (obj1.Connections.Count != obj2.Connections.Count) {
-                return false;    
+                return false;
             }
 
             for (int x = 0; x < obj1.Connections.Count; x++) {
@@ -118,21 +118,21 @@ namespace PMS.Metadata
 
         public System.Xml.Schema.XmlSchema GetSchema()
         {
-			return null;
+            return null;
         }
 
         public void ReadXml(System.Xml.XmlReader reader)
         {
-			string gt = null;
+            string gt = null;
 
             while (reader.Read()) {
                 reader.MoveToElement();
 
                 switch (reader.LocalName) {
-					case "generate-types":
-						if ((gt = reader.ReadString()) != null && gt.Length > 0)
-							this.GenerateTypes = Boolean.Parse(gt);
-						break;
+                    case "generate-types":
+                        if ((gt = reader.ReadString()) != null && gt.Length > 0)
+                            Boolean.TryParse(gt, out this.GenerateTypes);
+                    break;
 
                     case "assemblies":
                         this.Assemblies.ReadXml(reader);
@@ -147,14 +147,6 @@ namespace PMS.Metadata
                         break;
                 }
             }
-
-			if (this.GenerateTypes) {
-				foreach (Class c in this.Classes) {
-					if (c.ListType == null) {
-						c.ListType = Generator.GenerateListType(c.Type);
-					}
-				}
-			}
         }
 
         public void WriteXml(System.Xml.XmlWriter writer)

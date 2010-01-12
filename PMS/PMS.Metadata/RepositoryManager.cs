@@ -73,20 +73,10 @@ namespace PMS.Metadata
             return true;
         }
 
-        public Type GetClassListType(Type type)
-        {
-            Class cdesc = GetClass(type);
-
-            if (cdesc != null)
-                return cdesc.ListType;
-
-            return null;
-        }
-
         public bool Exists(Type type)
         {
             return GetClass(type) != null;
-        } 
+        }
         #endregion
 
         #region File IO
