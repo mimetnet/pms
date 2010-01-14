@@ -97,7 +97,7 @@ namespace PMS.Metadata
 			XmlSerializer xml = new XmlSerializer(typeof(Connection));
 
 			foreach (FileInfo pmsFile in dir.GetFiles("*.pmx")) {
-				using (FileLock flock = new FileLock(f.FullName)) {
+				using (FileLock flock = new FileLock(pmsFile)) {
 					Connection conn = (Connection) xml.Deserialize(new FileStream(pmsFile.FullName, FileMode.Open, FileAccess.Read, FileShare.Read));
 					if (conn != null && conn.Provider != null) {
 						repository.Connections.Add(conn);
@@ -110,10 +110,12 @@ namespace PMS.Metadata
 
         private string Load(FileInfo file)
         {
-			using (FileStream fs = file.OpenRead()) {
-				repository += (Repository)serializer.Deserialize(fs);
-				return file.FullName;
-			}
+            using (FileLock flock = new FileLock(file)) {
+                using (FileStream fs = file.OpenRead()) {
+                    repository += (Repository)serializer.Deserialize(fs);
+                    return file.FullName;
+                }
+            }
         }
 
         private bool Load(Type type)
@@ -127,7 +129,7 @@ namespace PMS.Metadata
             }
 
             try {
-                using (FileLock flock = new FileLock(f.FullName)) {
+                using (FileLock flock = new FileLock(f)) {
                     Class klass = (Class) xml.Deserialize(new FileStream(f.FullName, FileMode.Open, FileAccess.Read, FileShare.Read));
                     if (null != klass && null != klass.Type) {
                         this.repository.Classes.Add(klass);
