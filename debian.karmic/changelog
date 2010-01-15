@@ -4,6 +4,8 @@ libpms2-cil (1.9.2.0-0ubuntu0.9.10) karmic; urgency=low
   * moved remaining DataAccess classes to Data
   * removed most of the left over Collection classes from 1.x
   * removed DbResult
+  * DbExecutor.Count() now returns Int64
+  * Field XML value comparison is no longer case-sensitive
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Sat, 09 Jan 2010 14:27:26 -0500
 
