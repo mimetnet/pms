@@ -1,6 +1,6 @@
 AC_INIT([pms2], [2.0], [matthew@cowarthill.com])
 AC_CONFIG_SRCDIR([PMS/Makefile.am])
-AM_INIT_AUTOMAKE([foreign tar-pax])
+AM_INIT_AUTOMAKE
 AM_MAINTAINER_MODE
 
 AC_PROG_INSTALL
