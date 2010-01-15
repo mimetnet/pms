@@ -149,7 +149,9 @@ namespace PMS.Query
 
         protected virtual string CountSql()
         {
-            StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ");
+            StringBuilder sql = new StringBuilder("SELECT COUNT(");
+            sql.Append(this.columns);
+            sql.Append(") FROM ");
             sql.Append(this.cdesc.Table);
 
             if (this.pkey.Count > 0) {
