@@ -199,21 +199,20 @@ namespace PMS.Metadata
             string tmp = null;
 
             if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("primarykey"))) {
-                if (tmp == "true") PrimaryKey = true;
+                if (Compare(tmp, "true")) PrimaryKey = true;
             } else if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("primary"))) {
-                if (tmp == "true") PrimaryKey = true;
+                if (Compare(tmp, "true")) PrimaryKey = true;
             }
 
             if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("unique")))
-                if (tmp == "true")
-                    Unique = true;
+                if (Compare(tmp, "true")) Unique = true;
 
             if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("ignore_default"))) {
-                if (tmp == "false") IgnoreDefault = false;
+                if (Compare(tmp, "false")) IgnoreDefault = false;
             } else if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("not-null"))) {
-                if (tmp == "false") IgnoreDefault = false;
+                if (Compare(tmp, "false")) IgnoreDefault = false;
             } else if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("nullable"))) {
-                if (tmp == "false") IgnoreDefault = false;
+                if (Compare(tmp, "false")) IgnoreDefault = false;
             }
 
             if ((DefaultDb = reader.GetAttribute("default_db")) == null)
@@ -250,5 +249,10 @@ namespace PMS.Metadata
         }
 
 #endregion
+
+        private bool Compare(string a, string b)
+        {
+            return 0 == StringComparer.InvariantCultureIgnoreCase.Compare(a, b);
+        }
     }
 }
