@@ -124,9 +124,9 @@ namespace PMS.Data
             }
         }
 
-        public int Count()
+        public Int64 Count()
         {
-            return this.Scalar<int>(query.ToString(SqlCommand.Count));
+            return this.Scalar<Int64>(query.ToString(SqlCommand.Count));
         }
 
         public TResult Count<TResult>()
