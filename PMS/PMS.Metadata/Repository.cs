@@ -54,6 +54,9 @@ namespace PMS.Metadata
             if (Object.ReferenceEquals(obj1, null)) return false;
             if (Object.ReferenceEquals(obj2, null)) return false;
 
+            if (obj1.GenerateTypes != obj2.GenerateTypes)
+                return false;
+
             if (obj1.Connections.Count != obj2.Connections.Count) {
                 return false;
             }
