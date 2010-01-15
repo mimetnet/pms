@@ -6,7 +6,7 @@ using System.Xml;
 namespace PMS.Metadata
 {
     [XmlRoot("field")]
-	[Serializable]
+    [Serializable]
     public sealed class Field : IXmlSerializable
     {
         //private static readonly log4net.ILog log =
@@ -32,10 +32,10 @@ namespace PMS.Metadata
         {
         }
 
-		public Field(System.Xml.XmlReader reader)
-		{
-			ReadXml(reader);
-		}
+        public Field(System.Xml.XmlReader reader)
+        {
+            ReadXml(reader);
+        }
 
         public Field(string name, string column, string dbType)
             : this(name, column, dbType, false, false, null)
@@ -89,13 +89,13 @@ namespace PMS.Metadata
 
             if (obj1.DbType != obj2.DbType)
                 return false;
-            
+
             if (obj1.PrimaryKey != obj2.PrimaryKey)
                 return false;
-            
+
             if (obj1.IgnoreDefault != obj2.IgnoreDefault)
                 return false;
-            
+
             if (obj1.Reference != obj2.Reference)
                 return false;
 
@@ -132,61 +132,61 @@ namespace PMS.Metadata
 
         #endregion
 
-		internal void LoadType(Type type)
-		{
-			if (type == null) 
-				throw new ArgumentNullException("type");
+        internal void LoadType(Type type)
+        {
+            if (type == null)
+                throw new ArgumentNullException("type");
 
-			if (Default == null) {
+            if (Default == null) {
                 if (type.IsEnum) {
                     Default = Enum.ToObject(type, Enum.GetValues(type).GetValue(0));
                 } else if (!type.IsAbstract && !type.IsInterface && !type.IsClass) {
                     Default = Activator.CreateInstance(type);
                 }
-			} else {
-				if ((CType = type).IsPrimitive) {
-					if (type == typeof(Boolean))
-						Default = Convert.ToBoolean(Default);
-					else if (type == typeof(Byte))
-						Default = Convert.ToByte(Default);
-					else if (type == typeof(SByte))
-						Default = Convert.ToSByte(Default);
-					else if (type == typeof(Int16))
-						Default = Convert.ToInt16(Default);
-					else if (type == typeof(UInt16))
-						Default = Convert.ToUInt16(Default);
-					else if (type == typeof(Int32))
-						Default = Convert.ToInt32(Default);
-					else if (type == typeof(UInt32))
-						Default = Convert.ToUInt32(Default);
-					else if (type == typeof(Int64))
-						Default = Convert.ToInt64(Default);
-					else if (type == typeof(UInt64))
-						Default = Convert.ToUInt64(Default);
-					else if (type == typeof(Char))
-						Default = Convert.ToChar(Default);
-					else if (type == typeof(Double))
-						Default = Convert.ToDouble(Default);
-					else if (type == typeof(Single))
-						Default = Convert.ToSingle(Default);
-				} else if (type.IsEnum) {
+            } else {
+                if ((CType = type).IsPrimitive) {
+                    if (type == typeof(Boolean))
+                        Default = Convert.ToBoolean(Default);
+                    else if (type == typeof(Byte))
+                        Default = Convert.ToByte(Default);
+                    else if (type == typeof(SByte))
+                        Default = Convert.ToSByte(Default);
+                    else if (type == typeof(Int16))
+                        Default = Convert.ToInt16(Default);
+                    else if (type == typeof(UInt16))
+                        Default = Convert.ToUInt16(Default);
+                    else if (type == typeof(Int32))
+                        Default = Convert.ToInt32(Default);
+                    else if (type == typeof(UInt32))
+                        Default = Convert.ToUInt32(Default);
+                    else if (type == typeof(Int64))
+                        Default = Convert.ToInt64(Default);
+                    else if (type == typeof(UInt64))
+                        Default = Convert.ToUInt64(Default);
+                    else if (type == typeof(Char))
+                        Default = Convert.ToChar(Default);
+                    else if (type == typeof(Double))
+                        Default = Convert.ToDouble(Default);
+                    else if (type == typeof(Single))
+                        Default = Convert.ToSingle(Default);
+                } else if (type.IsEnum) {
                     Default = Enum.Parse(type, Default.ToString(), true);
                 } else if (!type.IsAbstract && !type.IsInterface && !type.IsClass) {
                     Default = Activator.CreateInstance(type);
                 }
-			}
-		}
+            }
+        }
 
-        #region IXmlSerializable Members
+#region IXmlSerializable Members
 
         public System.Xml.Schema.XmlSchema GetSchema()
         {
-			return null;
+            return null;
         }
 
         public void ReadXml(System.Xml.XmlReader reader)
         {
-			if (!(reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "field"))
+            if (!(reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "field"))
                 throw new InvalidOperationException("ReadXml expected <field/>, but found <" + reader.LocalName + "/>");
 
             Name = reader.GetAttribute("name");
@@ -198,18 +198,18 @@ namespace PMS.Metadata
 
             string tmp = null;
 
-			if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("primarykey"))) {
-				if (tmp == "true") PrimaryKey = true;
+            if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("primarykey"))) {
+                if (tmp == "true") PrimaryKey = true;
             } else if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("primary"))) {
-				if (tmp == "true") PrimaryKey = true;
+                if (tmp == "true") PrimaryKey = true;
             }
 
-			if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("unique")))
-				if (tmp == "true")
-					Unique = true;
+            if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("unique")))
+                if (tmp == "true")
+                    Unique = true;
 
-			if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("ignore_default"))) {
-				if (tmp == "false") IgnoreDefault = false;
+            if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("ignore_default"))) {
+                if (tmp == "false") IgnoreDefault = false;
             } else if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("not-null"))) {
                 if (tmp == "false") IgnoreDefault = false;
             } else if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("nullable"))) {
@@ -217,7 +217,7 @@ namespace PMS.Metadata
             }
 
             if ((DefaultDb = reader.GetAttribute("default_db")) == null)
-				DefaultDb = "null";
+                DefaultDb = "null";
 
             if (reader.IsEmptyElement == false)
                 reader.Read();
@@ -234,9 +234,9 @@ namespace PMS.Metadata
             if (!IgnoreDefault)
                 writer.WriteAttributeString("nullable", "false");
 
-			if (Default != null)
-				writer.WriteAttributeString("default", Default.ToString());
-        
+            if (Default != null)
+                writer.WriteAttributeString("default", Default.ToString());
+
             if (PrimaryKey)
                 writer.WriteAttributeString("primary", "true");
 
@@ -249,6 +249,6 @@ namespace PMS.Metadata
             }
         }
 
-        #endregion
+#endregion
     }
 }
