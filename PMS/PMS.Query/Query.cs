@@ -191,18 +191,10 @@ namespace PMS.Query
 
         protected virtual string ProcedureSql()
         {
-            this.criteria.ForEach(delegate(IClause c) {
-                this.parameters.AddRange(c.CreateParameters(this.provider.CreateParameter));
-            });
-            this.values.ForEach(delegate(IClause c) {
-                this.parameters.AddRange(c.CreateParameters(this.provider.CreateParameter));
-            });
-            this.unique.ForEach(delegate(IClause c) {
-                this.parameters.AddRange(c.CreateParameters(this.provider.CreateParameter));
-            });
-            this.pkey.ForEach(delegate(IClause c) {
-                this.parameters.AddRange(c.CreateParameters(this.provider.CreateParameter));
-            });
+            this.criteria.ForEach(AddParameterIfCondition);
+            this.values.ForEach(AddParameterIfCondition);
+            this.unique.ForEach(AddParameterIfCondition);
+            this.pkey.ForEach(AddParameterIfCondition);
 
             return this.procedure;
         }
@@ -354,6 +346,12 @@ namespace PMS.Query
                 if ((i+1) < list.Count)
                     callback();
             }
+        }
+
+        protected void AddParameterIfCondition(IClause c)
+        {
+            if (c.IsCondition)
+                this.parameters.AddRange(c.CreateParameters(this.provider.CreateParameter));
         }
 
         private delegate Query<Table> BetweenAddCallback();
