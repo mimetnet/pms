@@ -32,6 +32,7 @@ namespace PMS.Data
                 }
             } catch (Exception e) {
                 Console.WriteLine("Problem reading configuration section : {0}", e.Message);
+                log.Warn("Problem reading config section: ", e);
                 return;
             }
 		}
