@@ -43,13 +43,13 @@
                 repoNameOrPath = "repository.xml";
 
             this.repository = RepositoryManagerFactory.Factory(repoNameOrPath);
-            
+
             if (!String.IsNullOrEmpty(connectionID)) {
                 this.connDesc = this.repository.GetDescriptor(connectionID);
             } else {
                 this.connDesc = this.repository.GetDescriptor();
             }
-            
+
             this.db = DbManagerFactory.Factory(this.connDesc);
             this.conn = this.db.GetConnection();
         }
@@ -57,7 +57,7 @@
         ~DbBroker()
         {
             this.Close();
-        } 
+        }
         /* }}} */
 
 		/* Properties {{{ */
@@ -114,6 +114,32 @@
             return q;
         }
 
+        public Query<T> P<T>(string storedProcedure, params object [] args) where T : new()
+        {
+            Query<T> q = this.Q<T>();
+
+            if (null != args && 0 < args.Length) {
+                if (0 != (args.Length % 2))
+                    throw new ArgumentException("args must be even pairs of name=value");
+
+                String name = null;
+
+                for (int i=0; i<args.Length; i++) {
+                    if (0 == (i % 2)) {
+                        if (args[i] is String)
+                            name = (String) args[i];
+                    } else {
+                        if (!String.IsNullOrEmpty(name)) {
+                            q.EqualTo(name, args[i]);
+                        }
+                    }
+                }
+            }
+
+            q.Procedure(storedProcedure);
+            return q;
+        }
+
         public Query<T> Q<T>() where T : new()
         {
             //if (this.conn != null)
@@ -122,7 +148,7 @@
             //this.conn = this.db.GetConnection();
 
             return this.connDesc.Provider.CreateQuery<T>(
-                this.repository.GetClass(typeof(T)), 
+                this.repository.GetClass(typeof(T)),
                 this.conn);
                 //this.db.GetConnection());
         }
@@ -135,7 +161,7 @@
             //this.conn = this.db.GetConnection();
 
             return this.connDesc.Provider.CreateQuery<T>(
-                this.repository.GetClass(typeof(T)), 
+                this.repository.GetClass(typeof(T)),
                 this.conn);
                 //this.db.GetConnection());
         }
