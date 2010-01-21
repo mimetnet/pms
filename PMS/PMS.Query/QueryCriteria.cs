@@ -411,23 +411,25 @@ namespace PMS.Query
         #region UPDATE foo SET
         public Query<Table> Set(string field, object value)
         {
-			if (String.IsNullOrEmpty(field))
-				throw new ArgumentNullException("field");
+            if (String.IsNullOrEmpty(field))
+                throw new ArgumentNullException("field");
 
-			Field f = this.cdesc.Fields[field];
+            IClause c = null;
+            Field f = this.cdesc.Fields[field];
 
-			if (f == null)
-				throw new ArgumentNullException("field '" + field + "' not found for " + this.cdesc.Type);
+            if (null != f) {
+                c = new EqualToClause(f.Column, value, this.provider.GetDbType(f.DbType));
+            } else {
+                c = new EqualToClause(field, value);
+            }
 
-			IClause c = new EqualToClause(f.Column, value, this.provider.GetDbType(f.DbType));
-
-			if (f.PrimaryKey) {
-				this.pkey.Add(c);
-			} else if (f.Unique) {
-				this.unique.Add(c);
-			} else {
-				this.values.Add(c);
-			}
+            if (null != f && f.PrimaryKey) {
+                this.pkey.Add(c);
+            } else if (null != f && f.Unique) {
+                this.unique.Add(c);
+            } else {
+                this.values.Add(c);
+            }
 
             return this;
         }
