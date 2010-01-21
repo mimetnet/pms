@@ -350,6 +350,9 @@ namespace PMS.Query
 
                 case SqlCommand.Drop:
                     return DropSql();
+
+                case SqlCommand.Procedure:
+                    return ProcedureSql();
             }
 
             return SelectSql();
