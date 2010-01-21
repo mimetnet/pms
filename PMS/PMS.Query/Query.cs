@@ -198,6 +198,24 @@ namespace PMS.Query
 
             return this.procedure;
         }
+
+        public void LoadParameters()
+        {
+            this.parameters.Clear();
+
+            /**
+             * Most SQL generators fill criteria
+             * from pkey, unique, and values
+             * so lets try not to duplicate params
+             */
+            if (0 < this.criteria.Count) {
+                this.criteria.ForEach(AddParameterIfCondition);
+            } else {
+                this.pkey.ForEach(AddParameterIfCondition);
+                this.unique.ForEach(AddParameterIfCondition);
+                this.values.ForEach(AddParameterIfCondition);
+            }
+        }
         #endregion
 
         #region StringBuilder Appenders
