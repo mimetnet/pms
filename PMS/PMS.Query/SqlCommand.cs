@@ -9,5 +9,7 @@ namespace PMS.Query
         Delete,
         Create,
         Drop,
+        Procedure
+
     }
 }
