@@ -554,5 +554,16 @@ namespace PMS.Query
 
             return this;
         }
+
+        public Query<Table> Clear()
+        {
+            this.parameters.Clear();
+            this.criteria.Clear();
+            this.values.Clear();
+            this.unique.Clear();
+            this.pkey.Clear();
+            this.order.Clear();
+            return this;
+        }
     }
 }
