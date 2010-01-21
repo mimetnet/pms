@@ -532,5 +532,27 @@ namespace PMS.Query
             this.commandType = System.Data.CommandType.StoredProcedure;
             return this;
         }
+
+        public Query<Table> AddParameters(params object[] args)
+        {
+            if (null == args || 0 == args.Length)
+                return this;
+
+            if (0 != (args.Length % 2))
+                throw new ArgumentException("args must be even pairs of name=value");
+
+            String name = null;
+
+            for (int i=0; i<args.Length; i++) {
+                if (1 == (i % 2)) {
+                    name = (String) args[i-1];
+                    if (!String.IsNullOrEmpty(name)) {
+                        this.Set(name, args[i]);
+                    }
+                }
+            }
+
+            return this;
+        }
     }
 }
