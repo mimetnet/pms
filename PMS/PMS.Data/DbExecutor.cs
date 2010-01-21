@@ -46,17 +46,31 @@ namespace PMS.Data
 
         public int NonQuery(string sqlOverride)
         {
-            return NonQuery(sqlOverride, query.CommandType);
+            return NonQuery(sqlOverride, query.CommandType, null);
+        }
+
+        public int NonQuery(string sqlOverride, params object[] parameters)
+        {
+            return NonQuery(sqlOverride, query.CommandType, parameters);
         }
 
         public int NonQuery(string sqlOverride, CommandType type)
         {
-            using (IDbCommand cmd = query.Connection.CreateCommand()) {
+            return NonQuery(sqlOverride, type, null);
+        }
+
+        public int NonQuery(string sqlOverride, CommandType type, params object[] parameters)
+        {
+            this.query.AddParameters(parameters);
+            this.query.LoadParameters();
+
+            using (IDbCommand cmd = this.query.Connection.CreateCommand()) {
                 cmd.CommandText = sqlOverride;
                 cmd.CommandType = type;
 
-                foreach (IDataParameter p in query.Parameters)
+                foreach (IDataParameter p in this.query.Parameters) {
                     cmd.Parameters.Add(p);
+                }
 
                 return cmd.ExecuteNonQuery();
             }
@@ -64,36 +78,60 @@ namespace PMS.Data
 
         public IDataReader Reader()
         {
-            return this.Reader(query.ToString(SqlCommand.Select), query.CommandType);
+            return this.Reader(query.ToString(SqlCommand.Select), query.CommandType, null);
         }
 
         public IDataReader Reader(string sqlOverride)
         {
-            return Reader(sqlOverride, query.CommandType);
+            return Reader(sqlOverride, query.CommandType, null);
+        }
+
+        public IDataReader Reader(string sqlOverride, params object[] parameters)
+        {
+            return Reader(sqlOverride, query.CommandType, parameters);
         }
 
         public IDataReader Reader(string sqlOverride, CommandType type)
         {
-            IDbCommand cmd = query.Connection.CreateCommand();
+            return Reader(sqlOverride, type, null);
+        }
+
+        public IDataReader Reader(string sqlOverride, CommandType type, params object[] parameters)
+        {
+            this.query.AddParameters(parameters);
+            this.query.LoadParameters();
+
+            IDbCommand cmd = this.query.Connection.CreateCommand();
             cmd.CommandText = sqlOverride;
             cmd.CommandType = type;
 
-            foreach (IDataParameter p in query.Parameters)
+            foreach (IDataParameter p in this.query.Parameters) {
                 cmd.Parameters.Add(p);
+            }
 
             return cmd.ExecuteReader();
         }
 
         public TResult Scalar<TResult>(String sqlOverride)
         {
-            return Scalar<TResult>(sqlOverride, query.CommandType);
+            return Scalar<TResult>(sqlOverride, query.CommandType, null);
+        }
+
+        public TResult Scalar<TResult>(String sqlOverride, params object[] parameters)
+        {
+            return Scalar<TResult>(sqlOverride, query.CommandType, parameters);
         }
 
         public TResult Scalar<TResult>(String sqlOverride, CommandType type)
         {
+            return Scalar<TResult>(sqlOverride, type, null);
+        }
+
+        public TResult Scalar<TResult>(String sqlOverride, CommandType type, params object[] parameters)
+        {
             Object o = null;
 
-            if ((o = this.Scalar(sqlOverride, type)) != null && o is TResult)
+            if ((o = this.Scalar(sqlOverride, type, parameters)) != null && o is TResult)
                 return (TResult) o;
 
             return default(TResult);
@@ -101,17 +139,31 @@ namespace PMS.Data
 
         public Object Scalar(String sqlOverride)
         {
-            return Scalar(sqlOverride, query.CommandType);
+            return Scalar(sqlOverride, query.CommandType, null);
+        }
+
+        public Object Scalar(String sqlOverride, params object[] parameters)
+        {
+            return Scalar(sqlOverride, query.CommandType, parameters);
         }
 
         public Object Scalar(String sqlOverride, CommandType type)
         {
-            using (IDbCommand cmd = query.Connection.CreateCommand()) {
+            return Scalar(sqlOverride, type, null);
+        }
+
+        public Object Scalar(String sqlOverride, CommandType type, params object[] parameters)
+        {
+            this.query.AddParameters(parameters);
+            this.query.LoadParameters();
+
+            using (IDbCommand cmd = this.query.Connection.CreateCommand()) {
                 cmd.CommandText = sqlOverride;
                 cmd.CommandType = type;
 
-                foreach (IDataParameter p in query.Parameters)
+                foreach (IDataParameter p in this.query.Parameters) {
                     cmd.Parameters.Add(p);
+                }
 
                 return cmd.ExecuteScalar();
             }
@@ -142,6 +194,11 @@ namespace PMS.Data
             return this.First(sqlOverride);
         }
 
+        public T Object(string sqlOverride, params object[] parameters)
+        {
+            return this.First(sqlOverride, parameters);
+        }
+
         public T Single()
         {
             return this.First();
@@ -152,6 +209,11 @@ namespace PMS.Data
             return this.First(sqlOverride);
         }
 
+        public T Single(string sqlOverride, params object[] parameters)
+        {
+            return this.First(sqlOverride, parameters);
+        }
+
         public T First()
         {
             return First(query.ToString(SqlCommand.Select));
@@ -159,7 +221,12 @@ namespace PMS.Data
 
         public T First(string sqlOverride)
         {
-            using (IEnumerator<T> list = this.GetEnumerator(sqlOverride))
+            return this.First(sqlOverride, null);
+        }
+
+        public T First(string sqlOverride, params object[] parameters)
+        {
+            using (IEnumerator<T> list = this.GetEnumerator(sqlOverride, parameters))
                 if (list.MoveNext())
                     return list.Current;
 
@@ -173,9 +240,14 @@ namespace PMS.Data
 
         public T Last(string sqlOverride)
         {
+            return this.Last(sqlOverride, null);
+        }
+
+        public T Last(string sqlOverride, params object[] parameters)
+        {
             T current = default(T);
 
-            using (IEnumerator<T> list = this.GetEnumerator())
+            using (IEnumerator<T> list = this.GetEnumerator(sqlOverride, parameters))
                 while (list.MoveNext())
                     current = list.Current;
 
@@ -197,19 +269,29 @@ namespace PMS.Data
         #region Objects<TList> with SQL override
         public TList Objects<TList>(string sqlOverride) where TList : IList, new()
         {
-            return this.Reader2List<TList>(sqlOverride, null);
+            return this.Reader2List<TList>(sqlOverride, null, null);
+        }
+
+        public TList Objects<TList>(string sqlOverride, params object[] parameters) where TList : IList, new()
+        {
+            return this.Reader2List<TList>(sqlOverride, null, parameters);
         }
 
         public TList Objects<TList>(string sqlOverride, QueryCallback<T> callback) where TList : IList, new()
         {
-            return this.Reader2List<TList>(sqlOverride, callback);
+            return this.Reader2List<TList>(sqlOverride, callback, null);
+        }
+
+        public TList Objects<TList>(string sqlOverride, QueryCallback<T> callback, params object[] parameters) where TList : IList, new()
+        {
+            return this.Reader2List<TList>(sqlOverride, callback, parameters);
         }
         #endregion
 
-        protected TList Reader2List<TList>(string sqlOverride, QueryCallback<T> callback) where TList : IList, new()
+        protected TList Reader2List<TList>(string sqlOverride, QueryCallback<T> callback, params object[] parameters) where TList : IList, new()
         {
             TList list = Activator.CreateInstance<TList>();
-            IEnumerator<T> enumerator = this.GetEnumerator(sqlOverride);
+            IEnumerator<T> enumerator = this.GetEnumerator(sqlOverride, parameters);
 
             try {
                 if (callback == null) {
@@ -236,12 +318,17 @@ namespace PMS.Data
         #region IEnumerable Members
         public IEnumerator<T> GetEnumerator()
         {
-            return new MetaObjectEnumerator<T>(query.Class, query.Provider, this.Reader(query.ToString(SqlCommand.Select)));
+            return new MetaObjectEnumerator<T>(query.Class, query.Provider, this.Reader(query.ToString(SqlCommand.Select), query.CommandType));
         }
 
         public IEnumerator<T> GetEnumerator(string sql)
         {
-            return new MetaObjectEnumerator<T>(query.Class, query.Provider, this.Reader(sql));
+            return new MetaObjectEnumerator<T>(query.Class, query.Provider, this.Reader(sql, query.CommandType));
+        }
+
+        public IEnumerator<T> GetEnumerator(string sql, params object[] parameters)
+        {
+            return new MetaObjectEnumerator<T>(query.Class, query.Provider, this.Reader(sql, query.CommandType, parameters));
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
