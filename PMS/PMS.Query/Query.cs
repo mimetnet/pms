@@ -112,8 +112,8 @@ namespace PMS.Query
                 if ((i+1) < this.values.Count)
                     sql.Append(", ");
 
-                if (this.values[i].IsCondition)
-                    this.parameters.AddRange(this.values[i].CreateParameters(this.provider.CreateParameter));
+                //if (this.values[i].IsCondition)
+                //    this.parameters.AddRange(this.values[i].CreateParameters(this.provider.CreateParameter));
             }
 
             AppendWhere(sql);
@@ -191,11 +191,6 @@ namespace PMS.Query
 
         protected virtual string ProcedureSql()
         {
-            this.criteria.ForEach(AddParameterIfCondition);
-            this.values.ForEach(AddParameterIfCondition);
-            this.unique.ForEach(AddParameterIfCondition);
-            this.pkey.ForEach(AddParameterIfCondition);
-
             return this.procedure;
         }
 
@@ -244,8 +239,8 @@ namespace PMS.Query
                 this.criteria.ForEach(delegate(IClause c) {
                     sql.Append(c.ToString());
 
-                    if (c.IsCondition)
-                        this.parameters.AddRange(c.CreateParameters(this.provider.CreateParameter));
+                    //if (c.IsCondition)
+                    //    this.parameters.AddRange(c.CreateParameters(this.provider.CreateParameter));
                 });
             }
         }
@@ -275,8 +270,8 @@ namespace PMS.Query
                     sql.Append(prepend);
                     sql.Append(list[i].Name);
 
-                    if (!String.IsNullOrEmpty(prepend))
-                        this.parameters.AddRange(list[i].CreateParameters(this.provider.CreateParameter));
+                    //if (!String.IsNullOrEmpty(prepend))
+                    //    this.parameters.AddRange(list[i].CreateParameters(this.provider.CreateParameter));
                 }
             }
         }
