@@ -10,4 +10,5 @@ REFERENCES =  \
 	-r:System.dll \
 	-r:System.Data.dll \
 	-r:$(top_srcdir)/PMS/PMS.dll \
-	$(LOG4NET_LIBS)
+	$(LOG4NET_LIBS) \
+	$(NULL)
