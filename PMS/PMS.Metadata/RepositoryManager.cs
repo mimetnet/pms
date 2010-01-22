@@ -41,7 +41,7 @@ namespace PMS.Metadata
             return GetClass(type, false);
         }
 
-        protected Class GetClass(Type type, bool inner)
+        private Class GetClass(Type type, bool inner)
         {
             Class klass = this.repository.Classes[type];
 
