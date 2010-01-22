@@ -48,8 +48,8 @@ namespace PMS.Metadata
 
         public bool HasReferences {
             get {
-                for (int x = 0; x < this.Fields.Count; x++)
-                    if (this.Fields[x].HasReference)
+                foreach (Field field in Fields)
+                    if (field.HasReference)
                         return true;
 
                 return false;
@@ -93,7 +93,7 @@ namespace PMS.Metadata
 
         public System.Xml.Schema.XmlSchema GetSchema()
         {
-			return null;
+            return null;
         }
 
         public void ReadXml(XmlReader reader)
