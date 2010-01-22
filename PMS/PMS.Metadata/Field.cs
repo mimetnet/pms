@@ -138,7 +138,7 @@ namespace PMS.Metadata
 
         #endregion
 
-        internal void LoadType(Type type)
+        private void LoadType(Type type)
         {
             if (type == null)
                 throw new ArgumentNullException("type");

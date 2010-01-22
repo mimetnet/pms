@@ -144,20 +144,15 @@ namespace PMS.Metadata
 
         private void LoadCTypes()
         {
-            if (this.Type == null)
+            if (null == this.Type)
                 return;
 
-            FieldInfo finfo = null;
             List<Field> erase = new List<Field>();
 
             foreach (Field f in this.Fields) {
                 try {
-                    finfo = Type.GetField(f.Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-                    if (null != finfo) {
-                        f.LoadType(finfo.FieldType);
-                    } else {
+                    if (!f.Load(this.Type))
                         erase.Add(f);
-                    }
                 } catch (Exception e) {
                     log.Error("LoadCTypes(" + Type + "): ", e);
                 }
