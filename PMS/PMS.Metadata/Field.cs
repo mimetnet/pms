@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Reflection;
 using System.Xml.Serialization;
 using System.Xml;
 
@@ -9,8 +10,9 @@ namespace PMS.Metadata
     [Serializable]
     public sealed class Field : IXmlSerializable
     {
-        //private static readonly log4net.ILog log =
-        //    log4net.LogManager.GetLogger("PMS.Metadata.Field");
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger("PMS.Metadata.Field");
+        public static readonly Type DBNullType = typeof(DBNull);
 
         public string Name;
         public string Column;
@@ -22,6 +24,9 @@ namespace PMS.Metadata
         public bool IgnoreDefault = true;
         public Reference Reference = null;
         public Type CType = null;
+        public bool IsProperty = false;
+        public FieldInfo FieldInfo = null;
+        public PropertyInfo PropertyInfo = null;
 
         public bool HasReference {
             get { return (Reference != null); }
@@ -109,7 +114,8 @@ namespace PMS.Metadata
 
         public override bool Equals(object obj)
         {
-            if (!(obj is Field)) return false;
+            if (!(obj is Field))
+                return false;
 
             return this == (Field)obj;
         }
@@ -137,14 +143,16 @@ namespace PMS.Metadata
             if (type == null)
                 throw new ArgumentNullException("type");
 
-            if (Default == null) {
+            this.CType = type;
+
+            if (null == Default) {
                 if (type.IsEnum) {
                     Default = Enum.ToObject(type, Enum.GetValues(type).GetValue(0));
                 } else if (!type.IsAbstract && !type.IsInterface && !type.IsClass) {
                     Default = Activator.CreateInstance(type);
                 }
             } else {
-                if ((CType = type).IsPrimitive) {
+                if (type.IsPrimitive) {
                     if (type == typeof(Boolean))
                         Default = Convert.ToBoolean(Default);
                     else if (type == typeof(Byte))
@@ -199,13 +207,13 @@ namespace PMS.Metadata
             string tmp = null;
 
             if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("primarykey"))) {
-                if (Compare(tmp, "true")) PrimaryKey = true;
+                PrimaryKey = Compare(tmp, "true");
             } else if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("primary"))) {
-                if (Compare(tmp, "true")) PrimaryKey = true;
+                PrimaryKey = Compare(tmp, "true");
             }
 
             if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("unique")))
-                if (Compare(tmp, "true")) Unique = true;
+                Unique = Compare(tmp, "true");
 
             if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("ignore_default"))) {
                 if (Compare(tmp, "false")) IgnoreDefault = false;
@@ -214,6 +222,9 @@ namespace PMS.Metadata
             } else if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("nullable"))) {
                 if (Compare(tmp, "false")) IgnoreDefault = false;
             }
+
+            if (!String.IsNullOrEmpty(tmp = reader.GetAttribute("property")))
+                IsProperty = Compare(tmp, "true");
 
             if ((DefaultDb = reader.GetAttribute("default_db")) == null)
                 DefaultDb = "null";
@@ -229,6 +240,9 @@ namespace PMS.Metadata
             writer.WriteAttributeString("name", this.Name);
             writer.WriteAttributeString("column", this.Column);
             writer.WriteAttributeString("db_type", this.DbType);
+
+            if (IsProperty)
+                writer.WriteAttributeString("property", "true");
 
             if (!IgnoreDefault)
                 writer.WriteAttributeString("nullable", "false");
@@ -253,6 +267,55 @@ namespace PMS.Metadata
         private bool Compare(string a, string b)
         {
             return 0 == StringComparer.InvariantCultureIgnoreCase.Compare(a, b);
+        }
+
+        public bool Load(Type parentType)
+        {
+            if (false == this.IsProperty) {
+                this.FieldInfo = parentType.GetField(this.Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+
+                if (null != this.FieldInfo) {
+                    this.LoadType(this.FieldInfo.FieldType);
+                    return true;
+                }
+            } else {
+                this.PropertyInfo = parentType.GetProperty(this.Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+
+                if (null != this.PropertyInfo) {
+                    this.LoadType(this.PropertyInfo.PropertyType);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public object GetValue(Object obj)
+        {
+            if (false == this.IsProperty)
+                return (null != this.FieldInfo)? this.FieldInfo.GetValue(obj) : null;
+
+            return (null != this.PropertyInfo)? this.PropertyInfo.GetValue(obj, null) : null;
+        }
+
+        public void SetValue(Object obj, Object value)
+        {
+            if (null == value)
+                return;
+
+            Type vtype = value.GetType();
+
+            if (DBNull.Value.Equals(value) || DBNullType == vtype)
+                return;
+
+            try {
+                if (false == this.IsProperty)
+                    this.FieldInfo.SetValue(obj, Type.DefaultBinder.ChangeType(value, this.CType, null));
+                else
+                    this.PropertyInfo.SetValue(obj, Type.DefaultBinder.ChangeType(value, this.CType, null), null);
+            } catch (Exception e) {
+                log.Warn("PopulateObject: Failed to set ."+this.Name+"::"+CType.Name+" = "+value+"::"+vtype.Name+" ("+this.Column+"::"+this.DbType+")", e);
+            }
         }
     }
 }
