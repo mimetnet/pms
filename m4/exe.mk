@@ -9,10 +9,10 @@ SOURCES_make = $(DEPS_dir)/makefrag
 SOURCES_file = $(DEPS_dir)/sources
 
 CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb $(SOURCES_file) $(SOURCES_make)
-EXTRA_DIST = $(SOURCES) $(subst .dll,.csproj,$(ASSEMBLY))
+EXTRA_DIST = $(SOURCES) $(subst .exe,.csproj,$(ASSEMBLY))
 
 $(ASSEMBLY): $(SOURCES) $(SOURCES_file)
-	$(GMCS) $(MFLAGS) -target:library -out:$@ $(REFERENCES) @$(SOURCES_file)
+	$(GMCS) $(MFLAGS) -target:exe -out:$@ $(REFERENCES) @$(SOURCES_file)
 
 $(DEPS_dir):
 	mkdir $@
@@ -27,10 +27,8 @@ install-data-local:
 	$(INSTALL) -d $(DESTDIR)$(pmsdir)
 	$(INSTALL_DATA) -t $(DESTDIR)$(pmsdir)/ $(ASSEMBLY)
 	if test -n "$(DEBUG_FLAGS)"; then $(INSTALL_DATA) -t $(DESTDIR)$(pmsdir)/ $(ASSEMBLY).mdb; fi;
-	if test "" = "$(MONO_GAC_LATE)"; then $(GACUTIL) -i "$(DESTDIR)$(pmsdir)/$(ASSEMBLY)" $(GACUTIL_FLAGS) -check_refs -f; fi;
 
 uninstall-local:
-	if test "" = "$(MONO_GAC_LATE)"; then $(GACUTIL) -us $(DESTDIR)$(pmsdir)/$(ASSEMBLY) $(GACUTIL_FLAGS); fi;
 	rm $(DESTDIR)$(pmsdir)/$(ASSEMBLY)
 	if test -n "$(DEBUG_FLAGS)"; then rm $(DESTDIR)$(pmsdir)/$(ASSEMBLY).mdb; fi;
 
