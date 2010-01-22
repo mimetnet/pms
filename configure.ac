@@ -136,6 +136,7 @@ AC_OUTPUT([
 			  PMS.Driver.Pgsql/Makefile
 			  PMS.Driver.Sqlite/Makefile
 			  PMS.Driver.MSSQL/Makefile
+			  PMS.Tester/Makefile
 			  build/pms-2.0.pc
 			  build/Makefile
 			  scripts/Makefile

@@ -12,7 +12,7 @@ if HAVE_SQLITE
 SUBDIRS += PMS.Driver.Sqlite
 endif
 
-SUBDIRS += scripts policy build doc
+SUBDIRS += PMS.Tester scripts policy build doc
 
 EXTRA_DIST = PMS.snk certs/PMS.snk certs/PMS.pfx
 
