@@ -68,16 +68,6 @@ namespace PMS.Metadata
             return null;
         }
 
-        public object GetValue(Field field, Object obj)
-        {
-            FieldInfo finfo = Type.GetField(field.Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-
-            if (finfo != null)
-                return finfo.GetValue(obj);
-
-            return null;
-        }
-
         public Field this[int index] {
             get { return Fields[index]; }
             set { Fields[index] = value; }

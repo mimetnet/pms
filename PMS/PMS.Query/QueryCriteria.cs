@@ -439,7 +439,7 @@ namespace PMS.Query
 			if (null == record) return this;
 
             foreach (Field field in this.cdesc.Fields) {
-                Object fvalue = cdesc.GetValue(field, record);
+                Object fvalue = field.GetValue(record);
 
 			    //if ((fvalue == null && field.Default == null) || (fvalue != null && field.Default != null && field.Default.ToString() == fvalue.ToString()))
 				//    fvalue = field.DefaultDb;
