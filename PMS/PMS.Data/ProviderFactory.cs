@@ -119,7 +119,7 @@ namespace PMS.Data
             try {
                 type = PMS.Util.TypeLoader.Load(sType);
             } catch (Exception) {
-                log.WarnFormat("Failed to load type: '{0}'", sType);
+                log.WarnFormat("Failed to load driver: '{0}'", sType);
                 //log.Warn("Failed to load type: ", e);
                 return;
             }
