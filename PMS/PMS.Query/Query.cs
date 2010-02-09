@@ -198,17 +198,20 @@ namespace PMS.Query
         {
             this.parameters.Clear();
 
-            /**
-             * Most SQL generators fill criteria
-             * from pkey, unique, and values
-             * so lets try not to duplicate params
-             */
-            if (0 < this.criteria.Count) {
-                this.criteria.ForEach(AddParameterIfCondition);
-            } else {
-                this.pkey.ForEach(AddParameterIfCondition);
-                this.unique.ForEach(AddParameterIfCondition);
-                this.values.ForEach(AddParameterIfCondition);
+            Dictionary<String, IClause> dict = new Dictionary<String, IClause>(StringComparer.Ordinal);
+
+            Action<IClause> func = delegate(IClause c) {
+                if (c.IsCondition)
+                    dict[c.Name] = c;
+            };
+
+            this.criteria.ForEach(func);
+            this.values.ForEach(func);
+            this.unique.ForEach(func);
+            this.pkey.ForEach(func);
+
+            foreach (IClause c in dict.Values) {
+                this.parameters.AddRange(c.CreateParameters(this.provider.CreateParameter));
             }
         }
         #endregion
@@ -362,12 +365,6 @@ namespace PMS.Query
                 if ((i+1) < list.Count)
                     callback();
             }
-        }
-
-        protected void AddParameterIfCondition(IClause c)
-        {
-            if (c.IsCondition)
-                this.parameters.AddRange(c.CreateParameters(this.provider.CreateParameter));
         }
 
         private delegate Query<Table> BetweenAddCallback();
