@@ -24,7 +24,7 @@ set -e
 
 case "$1" in
     configure)
-        /usr/bin/pms2-providers -c sqlite "PMS.Driver.Sqlite.SqliteProvider, PMS.Driver.Sqlite, Version=1"
+        /usr/bin/pms2-providers -c sqlite "PMS.Driver.Sqlite.SqliteProvider, PMS.Driver.Sqlite, Version=1" || true
     ;;
     abort-remove)
     ;;
