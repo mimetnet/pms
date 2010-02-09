@@ -99,8 +99,12 @@ namespace PMS.Metadata
 			foreach (FileInfo pmsFile in dir.GetFiles("*.pmx")) {
 				using (FileLock flock = new FileLock(pmsFile)) {
 					Connection conn = (Connection) xml.Deserialize(new FileStream(pmsFile.FullName, FileMode.Open, FileAccess.Read, FileShare.Read));
-					if (conn != null && conn.Provider != null) {
-						repository.Connections.Add(conn);
+					if (conn != null) {
+                        if (null != conn.Provider) {
+                            repository.Connections.Add(conn);
+                        } else {
+                            log.WarnFormat("<connection id='{0}' /> skipped as it's provider could not be loaded", conn.ID);
+                        }
 					}
 				}
 			}
@@ -148,10 +152,10 @@ namespace PMS.Metadata
             this.repository = new Repository();
         }
 
-		private string GetPath(string package)
-		{
-			return Path.Combine(PMS.Config.Section.SystemPath, package);
-		}
+        private string GetPath(string package)
+        {
+            return Path.Combine(PMS.Config.Section.SystemPath, package);
+        }
         #endregion
 
         public Connection GetDescriptor(string connectionID)
@@ -165,16 +169,16 @@ namespace PMS.Metadata
 
         public Connection GetDescriptor()
         {
+            if (null == this.repository.Connections || 0 == this.repository.Connections.Count)
+                throw new RepositoryException(String.Format("Package({0}) contains no loaded <connection/>'s", this.package));
+
             foreach (Connection c in this.repository.Connections)
                 if (c.IsDefault)
                     return c;
 
             log.DebugFormat("Package({0}) doesn't have default <connection /> - using first one", this.package);
 
-            if (this.repository.Connections.Count > 0)
-                return this.repository.Connections[0];
-
-            throw new RepositoryException(String.Format("Package({0}) contains no <connection/> tags", this.package));
+            return this.repository.Connections[0];
         }
     }
 }
