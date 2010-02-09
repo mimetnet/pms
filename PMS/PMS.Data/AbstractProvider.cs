@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Data;
 using System.Globalization;
+using System.Reflection;
 
 using PMS.Metadata;
 using PMS.Query;
@@ -15,12 +16,13 @@ namespace PMS.Data
     [Serializable]
     public abstract class AbstractProvider : IProvider
     {
-		protected string name;
+        protected static Binder binder = new PMS.Util.TypeBinder();
+        protected string name = null;
 
         public string Name {
-			get { return this.name; }
-			set { this.name = value; }
-		}
+            get { return this.name; }
+            set { this.name = value; }
+        }
 
         //public virtual string PrepareSqlTimestamp(object value, bool tz)
         //{
@@ -150,9 +152,22 @@ namespace PMS.Data
                 case "bin":
                 case "binary":
                     return new PMS.DbType(System.Data.DbType.Binary);
-			}
+            }
 
             return null;
         }
-	}
+
+        public virtual Binder GetBinder()
+        {
+            return binder;
+        }
+
+        public virtual Binder GetBinder(Type type)
+        {
+            if (null == type)
+                throw new ArgumentNullException("type");
+
+            return binder;
+        }
+    }
 }

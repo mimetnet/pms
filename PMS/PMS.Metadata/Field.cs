@@ -296,7 +296,12 @@ namespace PMS.Metadata
             return (null != this.PropertyInfo)? this.PropertyInfo.GetValue(obj, null) : null;
         }
 
-        public void SetValue(Object obj, Object value)
+        public void SetValue(Object self, Object value)
+        {
+            this.SetValue(self, value, Type.DefaultBinder);
+        }
+
+        public void SetValue(Object self, Object value, Binder binder)
         {
             if (null == value)
                 return;
@@ -307,10 +312,13 @@ namespace PMS.Metadata
                 return;
 
             try {
+                if (null == binder)
+                    binder = Type.DefaultBinder;
+
                 if (false == this.IsProperty)
-                    this.FieldInfo.SetValue(obj, Type.DefaultBinder.ChangeType(value, this.CType, null));
+                    this.FieldInfo.SetValue(self, binder.ChangeType(value, this.CType, null));
                 else
-                    this.PropertyInfo.SetValue(obj, Type.DefaultBinder.ChangeType(value, this.CType, null), null);
+                    this.PropertyInfo.SetValue(self, binder.ChangeType(value, this.CType, null), null);
             } catch (Exception e) {
                 log.Warn("PopulateObject: Failed to set ."+this.Name+"::"+CType.Name+" = "+value+"::"+vtype.Name+" ("+this.Column+"::"+this.DbType+")", e);
             }

@@ -18,11 +18,13 @@ namespace PMS.Metadata
         private Class cdesc = null;
         private IProvider provider = null;
         private IDataReader reader = null;
+        private Binder binder = null;
 
         public MetaObjectEnumerator(Class cdesc, IProvider provider, IDataReader reader)
         {
             this.cdesc = cdesc;
             this.provider = provider;
+            this.binder = provider.GetBinder();
             this.reader = reader;
         }
 
@@ -71,7 +73,7 @@ namespace PMS.Metadata
 
             foreach (Field f in cdesc.Fields) {
                 try {
-                    f.SetValue(obj, reader[f.Column]);
+                    f.SetValue(obj, reader[f.Column], this.binder);
                 } catch (Exception) {
                 }
             }
