@@ -1,4 +1,12 @@
-libpms2-cil (1.9.2.1-0ubuntu0.8.04) karmic; urgency=medium
+libpms2-cil (1.9.2.2-0ubuntu0.9.10) karmi; urgency=medium
+
+  * Query<Table> tries to set all IDataParameter's now!
+  * IProvider now has GetBinder() 
+  * Added overloaded Binder for more type conversions
+
+ -- Matthew Metnetsky <matthew@cowarthill.com>  Tue, 09 Feb 2010 14:23:23 -0500
+
+libpms2-cil (1.9.2.1-0ubuntu0.9.10) karmic; urgency=medium
 
   * DbExecutor - added IDataParameter assignment to sql overridable public methods
   * DbBroker - P<T>(sql, params object[]) used Query.AddParameters now
