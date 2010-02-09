@@ -118,11 +118,11 @@ def add_provider(cfg):
         exit(1)
 
     ensure_dir(cfg)
-    if not ensure_file(cfg, 'w'):
+    if not ensure_file(cfg, 'a+'):
         print('could not edit/create: %s' % (cfg.provider))
         exit(0)
 
-    f = open(cfg.provider, 'r+')
+    f = open(cfg.provider, 'a+')
     for line in f:
         line = line.strip()
 

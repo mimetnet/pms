@@ -1,8 +1,9 @@
-libpms2-cil (1.9.2.2-0ubuntu0.9.10) karmi; urgency=medium
+libpms2-cil (1.9.2.2-0ubuntu0.9.10) karmic; urgency=medium
 
   * Query<Table> tries to set all IDataParameter's now!
   * IProvider now has GetBinder() 
   * Added overloaded Binder for more type conversions
+  * pms2-providers opens file with a+ as python changed something
 
  -- Matthew Metnetsky <matthew@cowarthill.com>  Tue, 09 Feb 2010 14:23:23 -0500
 
