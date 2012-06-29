@@ -1,3 +1,9 @@
+libpms2-cil (1.9.2.3-0ubuntu0.8.04) hardy; urgency=medium
+
+  * fixed pms2-* scripts which used an old lxml API
+
+ -- Matthew Metnetsky <matthew@cowarthill.com>  Fri, 29 Jun 2012 10:14:32 -0400
+
 libpms2-cil (1.9.2.2-0ubuntu0.8.04) hardy; urgency=medium
 
   * Query<Table> tries to set all IDataParameter's now!
