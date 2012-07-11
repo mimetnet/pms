@@ -1,3 +1,9 @@
+libpms2-cil (1.9.2.4-0ubuntu0.8.04) hardy; urgency=medium
+
+  * fixed duplicate entry error in RepositoryManagerFactory
+
+ -- Matthew Metnetsky <matthew@cowarthill.com>  Fri, 11 Jul 2012 13:15:26 -0400
+
 libpms2-cil (1.9.2.3-0ubuntu0.8.04) hardy; urgency=medium
 
   * fixed pms2-* scripts which used an old lxml API
