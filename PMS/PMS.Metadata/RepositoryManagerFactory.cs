@@ -32,7 +32,7 @@ namespace PMS.Metadata
 
 			try {
 				m = new RepositoryManager(package);
-				managers.Add(package, m);
+				managers[package] = m;
 			} finally {
 				mLock.ReleaseWriterLock();
 			}
